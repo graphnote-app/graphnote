@@ -1,0 +1,708 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F8EA408A279CFF55001F74B5 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4089279CFF55001F74B5 /* Tests_iOS.swift */; };
+		F8EA408C279CFF55001F74B5 /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA408B279CFF55001F74B5 /* Tests_iOSLaunchTests.swift */; };
+		F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */; };
+		F8EA4098279CFF55001F74B5 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */; };
+		F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */; };
+		F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */; };
+		F8EA409B279CFF55001F74B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4072279CFF54001F74B5 /* ContentView.swift */; };
+		F8EA409C279CFF55001F74B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4072279CFF54001F74B5 /* ContentView.swift */; };
+		F8EA409D279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
+		F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F8EA4086279CFF55001F74B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8EA406C279CFF54001F74B5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F8EA4077279CFF55001F74B5;
+			remoteInfo = "Graphnote (iOS)";
+		};
+		F8EA4092279CFF55001F74B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8EA406C279CFF54001F74B5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F8EA407D279CFF55001F74B5;
+			remoteInfo = "Graphnote (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphnoteApp.swift; sourceTree = "<group>"; };
+		F8EA4072279CFF54001F74B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F8EA4073279CFF54001F74B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F8EA4078279CFF55001F74B5 /* Graphnote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphnote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8EA407E279CFF55001F74B5 /* Graphnote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphnote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8EA4080279CFF55001F74B5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		F8EA4085279CFF55001F74B5 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8EA4089279CFF55001F74B5 /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
+		F8EA408B279CFF55001F74B5 /* Tests_iOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOSLaunchTests.swift; sourceTree = "<group>"; };
+		F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
+		F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F8EA4075279CFF55001F74B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA407B279CFF55001F74B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA4082279CFF55001F74B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA408E279CFF55001F74B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F8EA406B279CFF54001F74B5 = {
+			isa = PBXGroup;
+			children = (
+				F8EA4070279CFF54001F74B5 /* Shared */,
+				F8EA407F279CFF55001F74B5 /* macOS */,
+				F8EA4088279CFF55001F74B5 /* Tests iOS */,
+				F8EA4094279CFF55001F74B5 /* Tests macOS */,
+				F8EA4079279CFF55001F74B5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F8EA4070279CFF54001F74B5 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
+				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
+				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		F8EA4079279CFF55001F74B5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F8EA4078279CFF55001F74B5 /* Graphnote.app */,
+				F8EA407E279CFF55001F74B5 /* Graphnote.app */,
+				F8EA4085279CFF55001F74B5 /* Tests iOS.xctest */,
+				F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F8EA407F279CFF55001F74B5 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				F8EA4080279CFF55001F74B5 /* macOS.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		F8EA4088279CFF55001F74B5 /* Tests iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F8EA4089279CFF55001F74B5 /* Tests_iOS.swift */,
+				F8EA408B279CFF55001F74B5 /* Tests_iOSLaunchTests.swift */,
+			);
+			path = "Tests iOS";
+			sourceTree = "<group>";
+		};
+		F8EA4094279CFF55001F74B5 /* Tests macOS */ = {
+			isa = PBXGroup;
+			children = (
+				F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */,
+				F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */,
+			);
+			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F8EA4077279CFF55001F74B5 /* Graphnote (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8EA40A1279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Graphnote (iOS)" */;
+			buildPhases = (
+				F8EA4074279CFF55001F74B5 /* Sources */,
+				F8EA4075279CFF55001F74B5 /* Frameworks */,
+				F8EA4076279CFF55001F74B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Graphnote (iOS)";
+			productName = "Graphnote (iOS)";
+			productReference = F8EA4078279CFF55001F74B5 /* Graphnote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F8EA407D279CFF55001F74B5 /* Graphnote (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8EA40A4279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Graphnote (macOS)" */;
+			buildPhases = (
+				F8EA407A279CFF55001F74B5 /* Sources */,
+				F8EA407B279CFF55001F74B5 /* Frameworks */,
+				F8EA407C279CFF55001F74B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Graphnote (macOS)";
+			productName = "Graphnote (macOS)";
+			productReference = F8EA407E279CFF55001F74B5 /* Graphnote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F8EA4084279CFF55001F74B5 /* Tests iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8EA40A7279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Tests iOS" */;
+			buildPhases = (
+				F8EA4081279CFF55001F74B5 /* Sources */,
+				F8EA4082279CFF55001F74B5 /* Frameworks */,
+				F8EA4083279CFF55001F74B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8EA4087279CFF55001F74B5 /* PBXTargetDependency */,
+			);
+			name = "Tests iOS";
+			productName = "Tests iOS";
+			productReference = F8EA4085279CFF55001F74B5 /* Tests iOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F8EA4090279CFF55001F74B5 /* Tests macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8EA40AA279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Tests macOS" */;
+			buildPhases = (
+				F8EA408D279CFF55001F74B5 /* Sources */,
+				F8EA408E279CFF55001F74B5 /* Frameworks */,
+				F8EA408F279CFF55001F74B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8EA4093279CFF55001F74B5 /* PBXTargetDependency */,
+			);
+			name = "Tests macOS";
+			productName = "Tests macOS";
+			productReference = F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F8EA406C279CFF54001F74B5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					F8EA4077279CFF55001F74B5 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					F8EA407D279CFF55001F74B5 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					F8EA4084279CFF55001F74B5 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = F8EA4077279CFF55001F74B5;
+					};
+					F8EA4090279CFF55001F74B5 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = F8EA407D279CFF55001F74B5;
+					};
+				};
+			};
+			buildConfigurationList = F8EA406F279CFF54001F74B5 /* Build configuration list for PBXProject "Graphnote" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F8EA406B279CFF54001F74B5;
+			productRefGroup = F8EA4079279CFF55001F74B5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F8EA4077279CFF55001F74B5 /* Graphnote (iOS) */,
+				F8EA407D279CFF55001F74B5 /* Graphnote (macOS) */,
+				F8EA4084279CFF55001F74B5 /* Tests iOS */,
+				F8EA4090279CFF55001F74B5 /* Tests macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F8EA4076279CFF55001F74B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8EA409D279CFF55001F74B5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA407C279CFF55001F74B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA4083279CFF55001F74B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA408F279CFF55001F74B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F8EA4074279CFF55001F74B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8EA409B279CFF55001F74B5 /* ContentView.swift in Sources */,
+				F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA407A279CFF55001F74B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8EA409C279CFF55001F74B5 /* ContentView.swift in Sources */,
+				F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA4081279CFF55001F74B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8EA408C279CFF55001F74B5 /* Tests_iOSLaunchTests.swift in Sources */,
+				F8EA408A279CFF55001F74B5 /* Tests_iOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8EA408D279CFF55001F74B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8EA4098279CFF55001F74B5 /* Tests_macOSLaunchTests.swift in Sources */,
+				F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F8EA4087279CFF55001F74B5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F8EA4077279CFF55001F74B5 /* Graphnote (iOS) */;
+			targetProxy = F8EA4086279CFF55001F74B5 /* PBXContainerItemProxy */;
+		};
+		F8EA4093279CFF55001F74B5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F8EA407D279CFF55001F74B5 /* Graphnote (macOS) */;
+			targetProxy = F8EA4092279CFF55001F74B5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F8EA409F279CFF55001F74B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F8EA40A0279CFF55001F74B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		F8EA40A2279CFF55001F74B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cerebralstudio.Graphnote;
+				PRODUCT_NAME = Graphnote;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F8EA40A3279CFF55001F74B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cerebralstudio.Graphnote;
+				PRODUCT_NAME = Graphnote;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F8EA40A5279CFF55001F74B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cerebralstudio.Graphnote;
+				PRODUCT_NAME = Graphnote;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F8EA40A6279CFF55001F74B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cerebralstudio.Graphnote;
+				PRODUCT_NAME = Graphnote;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F8EA40A8279CFF55001F74B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Graphnote (iOS)";
+			};
+			name = Debug;
+		};
+		F8EA40A9279CFF55001F74B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Tests-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Graphnote (iOS)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F8EA40AB279CFF55001F74B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Graphnote (macOS)";
+			};
+			name = Debug;
+		};
+		F8EA40AC279CFF55001F74B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Tests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Graphnote (macOS)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F8EA406F279CFF54001F74B5 /* Build configuration list for PBXProject "Graphnote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8EA409F279CFF55001F74B5 /* Debug */,
+				F8EA40A0279CFF55001F74B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8EA40A1279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Graphnote (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8EA40A2279CFF55001F74B5 /* Debug */,
+				F8EA40A3279CFF55001F74B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8EA40A4279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Graphnote (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8EA40A5279CFF55001F74B5 /* Debug */,
+				F8EA40A6279CFF55001F74B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8EA40A7279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Tests iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8EA40A8279CFF55001F74B5 /* Debug */,
+				F8EA40A9279CFF55001F74B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8EA40AA279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8EA40AB279CFF55001F74B5 /* Debug */,
+				F8EA40AC279CFF55001F74B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F8EA406C279CFF54001F74B5 /* Project object */;
+}
