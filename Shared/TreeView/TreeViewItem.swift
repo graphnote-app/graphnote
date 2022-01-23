@@ -17,6 +17,7 @@ fileprivate let color = Color.gray
 struct Title: Identifiable {
     let id: String
     let value: String
+    let selected: Bool
 }
 
 struct TreeViewItem: View, Identifiable {
@@ -25,7 +26,16 @@ struct TreeViewItem: View, Identifiable {
     @State private var toggle = false
     let id: String
     let title: String
-    let documentTitles: [Title]
+    let documents: [Title]
+    
+    func innerCell(title: Title) -> some View {
+        HStack {
+            BulletView()
+                .padding(Dimensions.rowPadding.rawValue)
+            Text(title.value)
+                .padding(Dimensions.rowPadding.rawValue)
+        }
+    }
         
     var body: some View {
         VStack(alignment: .leading) {
@@ -55,16 +65,19 @@ struct TreeViewItem: View, Identifiable {
         
         if toggle {
             VStack(alignment: .leading) {
-                ForEach(documentTitles) { title in
-                    HStack {
-                        BulletView()
-                            .padding(Dimensions.rowPadding.rawValue)
-                        Text(title.value)
-                            .padding(Dimensions.rowPadding.rawValue)
-                    }.onTapGesture {
-                        treeViewModel.closure(self.id, title.id)
+                ForEach(documents) { title in
+                    if title.selected {
+                        self.innerCell(title: title)
+                            .background(Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
+                            .onTapGesture {
+                                treeViewModel.closure(self.id, title.id)
+                            }
+                    } else {
+                        self.innerCell(title: title)
+                            .onTapGesture {
+                                treeViewModel.closure(self.id, title.id)
+                            }
                     }
-                    
                 }
             }
             .padding([.leading])
@@ -75,6 +88,6 @@ struct TreeViewItem: View, Identifiable {
 
 struct TreeViewItem_Previews: PreviewProvider {
     static var previews: some View {
-        TreeViewItem(id: "123", title: "Testing title", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")])
+        TreeViewItem(id: "123", title: "Testing title", documents: [Title(id: "123", value: "Title 1", selected: false), Title(id: "321", value: "Title 2", selected: true)])
     }
 }

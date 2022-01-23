@@ -7,30 +7,45 @@
 
 import SwiftUI
 
+struct TreeDatum {
+    let id: String
+    let title: String
+    let documents: [(id: String, title: String)]
+}
+
 struct ContentView: View {
     @State private var selected: (String, String) = ("124353", "123")
     
+    let data = [
+        TreeDatum(id: "123", title: "Kanception", documents: [(id: "123", title: "Title 1"), (id: "123321", title: "Title 123")]),
+        TreeDatum(id: "234", title: "Graphnote", documents: [(id: "234", title: "Title 2"), (id: "1234324", title: "Title 1")]),
+        TreeDatum(id: "345", title: "SwiftBook", documents: [(id: "345", title: "Title 3")]),
+        TreeDatum(id: "456", title: "DarkTorch", documents: [(id: "456", title: "Title 4")]),
+        TreeDatum(id: "123123", title: "Kanception", documents: [(id: "123123", title: "Title 1")]),
+        TreeDatum(id: "234234", title: "Graphnote", documents: [(id: "234234", title: "Title 2")]),
+        TreeDatum(id: "345345", title: "SwiftBook", documents: [(id: "345345", title: "Title 3")]),
+        TreeDatum(id: "456456", title: "DarkTorch", documents: [(id: "456456", title: "Title 4")]),
+        TreeDatum(id: "5677", title: "Kanception", documents: [(id: "1231343", title: "Title 1"), (id: "54555", title: "Title 123")]),
+        TreeDatum(id: "736", title: "Graphnote", documents: [(id: "123123", title: "Title 2"), (id: "44444", title: "Title 1")]),
+        TreeDatum(id: "8678", title: "SwiftBook", documents: [(id: "123131", title: "Title 3")]),
+        TreeDatum(id: "345353", title: "DarkTorch", documents: [(id: "234242", title: "Title 4")]),
+        TreeDatum(id: "45645647", title: "Kanception", documents: [(id: "3453", title: "Title 1")]),
+        TreeDatum(id: "323478", title: "Graphnote", documents: [(id: "4563", title: "Title 2")]),
+        TreeDatum(id: "4578843563", title: "SwiftBook", documents: [(id: "7866", title: "Title 3")]),
+        TreeDatum(id: "345245", title: "DarkTorch", documents: [(id: "645", title: "Title 4")]),
+    ]
+    
     var body: some View {
-        let items = [
-            TreeViewItem(id: "124353", title: "Kanception", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "232344", title: "Graphnote", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "342345", title: "SwiftBook", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "4543256", title: "Fragment", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "523467", title: "DarkTorch", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "623478", title: "Calcify", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "122343", title: "Kanception", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "23234", title: "Graphnote", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "345", title: "SwiftBook", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "456", title: "Fragment", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "567", title: "DarkTorch", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "678", title: "Calcify", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "789", title: "Kanception", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "890", title: "Graphnote", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "412", title: "SwiftBook", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "346", title: "Fragment", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "7432", title: "DarkTorch", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-            TreeViewItem(id: "4324", title: "Calcify", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
-        ]
+        let items = data.map { datum in
+            TreeViewItem(
+                id: datum.id,
+                title: datum.title,
+                documents: datum.documents.map { document in
+                    Title(id: document.id, value: document.title, selected: datum.id == selected.0 && document.id == selected.1)
+                }
+            )
+        }
+        
         HStack(alignment: .top) {
             TreeView(items: items) { treeViewItemId, documentId in
                 print("\(treeViewItemId) \(documentId)")
