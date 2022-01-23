@@ -13,7 +13,18 @@ struct TreeDatum {
     let documents: [(id: String, title: String)]
 }
 
+#if os(macOS)
+let darkBackgroundColor = Color(NSColor.controlBackgroundColor)
+#else
+let darkBackgroundColor = Color(red: 30 / 255.0, green: 30 / 255.0, blue: 30 / 255.0, opacity: 1.0)
+#endif
+
+let lightBackgroundColor = Color.white
+
+let lightTreeColor = Color(red: 248 / 255.0, green: 238 / 255.0, blue: 248 / 255.0, opacity: 1.0)
+
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
     @State private var selected: (workspaceId: String, documentId: String) = ("", "")
     
     let data = [
@@ -51,15 +62,38 @@ struct ContentView: View {
         }
         
         HStack(alignment: .top) {
+            #if os(macOS)
             TreeView(items: items) { treeViewItemId, documentId in
                 print("\(treeViewItemId) \(documentId)")
                 selected = (treeViewItemId, documentId)
-            }.padding()
+            }
+                .padding()
                 .layoutPriority(100)
-            Text("Workspace ID: \(selected.workspaceId) Document ID: \(selected.documentId)")
-                .padding(40)
+            #else
+            
+            TreeView(items: items) { treeViewItemId, documentId in
+                print("\(treeViewItemId) \(documentId)")
+                selected = (treeViewItemId, documentId)
+            }
+                .padding()
+                .background(colorScheme == .dark ? .clear : lightTreeColor)
+                .layoutPriority(100)
+            #endif
+
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack {
+                        Text("Workspace ID: \(selected.workspaceId) Document ID: \(selected.documentId)")
+                            .padding(40)
+                            .foregroundColor(.primary)
+                        Spacer()
+                    }
+                    .frame(minWidth: geometry.size.width, minHeight: geometry.size.height * 1.3)
+                    .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+                    
+                }.background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+            }
         }
-        
     }
 }
 

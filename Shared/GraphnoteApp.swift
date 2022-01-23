@@ -21,7 +21,7 @@ struct GraphnoteApp: App {
                 ContentView()
                     .toolbar {
                         ToolbarItem {
-                            Text("")
+                        
                         }
                     }
                     
@@ -37,5 +37,6 @@ struct GraphnoteApp: App {
             }
             #endif
         }
+//        .windowToolbarStyle(.unifiedCompact)
     }
 }
