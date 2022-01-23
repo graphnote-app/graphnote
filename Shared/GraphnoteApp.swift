@@ -41,7 +41,9 @@ struct GraphnoteApp: App {
         #if os(macOS)
         WindowGroup() {
             content()
-        }.windowToolbarStyle(.unifiedCompact)
+        }
+        .windowToolbarStyle(.unifiedCompact)
+        .windowStyle(.hiddenTitleBar)
             
         #else
         WindowGroup {
