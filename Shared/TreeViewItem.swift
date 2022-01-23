@@ -12,7 +12,7 @@ fileprivate enum Dimensions: CGFloat {
     case rowPadding = 4
 }
 
-fileprivate let color = Color.blue
+fileprivate let color = Color.gray
 
 struct Title: Identifiable {
     let id: String
@@ -37,6 +37,8 @@ struct TreeViewItem: View {
                         .frame(width: Dimensions.arrowWidthHeight.rawValue, height: Dimensions.arrowWidthHeight.rawValue)
                         .foregroundColor(color)
                 }
+                FileIconView()
+                    .padding(Dimensions.rowPadding.rawValue)
                 Text(title)
                     .padding(Dimensions.rowPadding.rawValue)
             }
@@ -45,6 +47,7 @@ struct TreeViewItem: View {
                 toggle = !toggle
             }
         }
+        
         
         if toggle {
             VStack(alignment: .leading) {
@@ -60,6 +63,7 @@ struct TreeViewItem: View {
             }
             .padding([.leading])
         }
+
     }
 }
 

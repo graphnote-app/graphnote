@@ -15,7 +15,7 @@ struct BulletView: View {
     var body: some View {
         Circle()
             .frame(width: Dimensions.bulletDiameter.rawValue, height: Dimensions.bulletDiameter.rawValue)
-            .foregroundColor(Color.black)
+            .foregroundColor(Color.gray)
     }
 }
 
