@@ -56,7 +56,7 @@ struct ContentView: View {
                 selected = (treeViewItemId, documentId)
             }.padding()
                 .layoutPriority(100)
-            Text("Workspace ID: \(selected.0) Document ID: \(selected.1)")
+            Text("Workspace ID: \(selected.workspaceId) Document ID: \(selected.documentId)")
                 .padding(40)
         }
         

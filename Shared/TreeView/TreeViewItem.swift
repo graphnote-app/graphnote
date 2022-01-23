@@ -22,6 +22,7 @@ struct Title: Identifiable {
 
 struct TreeViewItem: View, Identifiable {
     @EnvironmentObject var treeViewModel: TreeViewModel
+    @Environment(\.colorScheme) var colorScheme
     
     @State private var toggle = false
     let id: String
@@ -67,11 +68,22 @@ struct TreeViewItem: View, Identifiable {
             VStack(alignment: .leading) {
                 ForEach(documents) { title in
                     if title.selected {
-                        self.innerCell(title: title)
-                            .background(Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
-                            .onTapGesture {
-                                treeViewModel.closure(self.id, title.id)
-                            }
+                        if colorScheme == .dark {
+                            self.innerCell(title: title)
+                                .background(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1))
+                                .cornerRadius(4)
+                                .onTapGesture {
+                                    treeViewModel.closure(self.id, title.id)
+                                }
+                        } else {
+                            self.innerCell(title: title)
+                                .background(Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
+                                .cornerRadius(4)
+                                .onTapGesture {
+                                    treeViewModel.closure(self.id, title.id)
+                                }
+                        }
+                        
                     } else {
                         self.innerCell(title: title)
                             .onTapGesture {
