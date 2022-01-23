@@ -14,7 +14,7 @@ struct TreeDatum {
 }
 
 struct ContentView: View {
-    @State private var selected: (workspaceId: String, documentId: String) = ("124353", "123")
+    @State private var selected: (workspaceId: String, documentId: String) = ("", "")
     
     let data = [
         TreeDatum(id: "123", title: "Kanception", documents: [(id: "123", title: "Title 1"), (id: "123321", title: "Title 123")]),
