@@ -13,6 +13,9 @@ struct GraphnoteApp: App {
         WindowGroup {
             GeometryReader { geometry in
                 ContentView()
+                    .toolbar {
+                        Text("")
+                    }
             }
         }
     }
