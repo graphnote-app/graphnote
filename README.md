@@ -2,6 +2,9 @@
 ![alt text](https://raw.githubusercontent.com/graphnote-io/graphnote/master/graphnote_128.png)
 
 # Graphnote
+
+"Augment your memory"
+
 Graphnote Client for iOS and macOS
 
 
