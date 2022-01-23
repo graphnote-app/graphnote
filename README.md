@@ -1,2 +1,2 @@
 # Graphnote
-Client for iOS and macOS
+Graphnote Client for iOS and macOS
