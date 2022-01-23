@@ -57,6 +57,7 @@ struct TreeViewItem: View, Identifiable {
                     .bold()
                     .padding(Dimensions.rowPadding.rawValue)
             }
+            
             .padding(Dimensions.rowPadding.rawValue)
             .onTapGesture {
                 toggle = !toggle

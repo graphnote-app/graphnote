@@ -25,6 +25,7 @@ struct TreeView: View {
                 ForEach(items) { item in
                     item.environmentObject(TreeViewModel(closure: closure))
                 }
+                
             }
             .padding()
         }
