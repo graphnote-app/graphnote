@@ -20,15 +20,11 @@ let darkBackgroundColor = Color(red: 30 / 255.0, green: 30 / 255.0, blue: 30 / 2
 #endif
 
 let lightBackgroundColor = Color.white
-
 let lightTreeColor = Color(red: 248 / 255.0, green: 238 / 255.0, blue: 248 / 255.0, opacity: 1.0)
 
 fileprivate let treeWidth: CGFloat = 200
 fileprivate let documentWidth: CGFloat = 800
 fileprivate let treeLayourPriority: CGFloat = 100
-fileprivate let pad: Double = 40
-fileprivate let scrollWidth: CGFloat = 16
-fileprivate let pageMinHeightMultiplier = 1.3
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -88,31 +84,7 @@ struct ContentView: View {
                 .layoutPriority(treeLayourPriority)
             #endif
 
-            GeometryReader { geometry in
-                ScrollView(showsIndicators: true) {
-                    #if os(macOS)
-                    VStack(alignment: .leading) {
-                        Text("Workspace ID: \(selected.workspaceId) Document ID: \(selected.documentId)")
-                            .frame(maxWidth: documentWidth)
-                            .padding(pad)
-                            .foregroundColor(.primary)
-                        Spacer()
-                    }
-                    .frame(minWidth: geometry.size.width - scrollWidth, minHeight: geometry.size.height * pageMinHeightMultiplier)
-                    .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-                    #else
-                    VStack(alignment: .leading) {
-                        Text("Workspace ID: \(selected.workspaceId) Document ID: \(selected.documentId)")
-                            .frame(width: geometry.size.width / 2)
-                            .padding(pad)
-                            .foregroundColor(.primary)
-                        Spacer()
-                    }
-                    .frame(minWidth: geometry.size.width, minHeight: geometry.size.height * pageMinHeightMultiplier)
-                    .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-                    #endif
-                }.background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-            }
+            DocumentView(selected: selected)
         }
     }
 }
