@@ -8,7 +8,7 @@
 import SwiftUI
 
 fileprivate enum MacOSDimensions: CGFloat {
-    case windowMinWidth = 1138
+    case windowMinWidth = 1038
     case windowMinHeight = 600
 }
 
