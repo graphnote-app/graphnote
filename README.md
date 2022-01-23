@@ -5,8 +5,8 @@
 Graphnote Client for iOS and macOS
 
 
-🗺️
-### Roadmap
+
+### Roadmap 🗺️
 
 - [ ] Workspaces
 - [ ] Files
