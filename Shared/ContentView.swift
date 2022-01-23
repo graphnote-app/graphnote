@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selected: (String, String) = ("124353", "123")
+    
     var body: some View {
         let items = [
             TreeViewItem(id: "124353", title: "Kanception", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
@@ -29,9 +31,15 @@ struct ContentView: View {
             TreeViewItem(id: "7432", title: "DarkTorch", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
             TreeViewItem(id: "4324", title: "Calcify", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
         ]
-        TreeView(items: items) { treeViewItemId, documentId in
-            print("\(treeViewItemId) \(documentId)")
-        }.padding()
+        HStack(alignment: .top) {
+            TreeView(items: items) { treeViewItemId, documentId in
+                print("\(treeViewItemId) \(documentId)")
+                selected = (treeViewItemId, documentId)
+            }.padding()
+            Text("Workspace ID: \(selected.0) Document ID: \(selected.1)")
+                .padding(40)
+        }
+        
     }
 }
 
