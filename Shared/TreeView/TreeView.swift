@@ -7,14 +7,23 @@
 
 import SwiftUI
 
+final class TreeViewModel: ObservableObject {
+    @Published public var closure: (_ treeViewItemId: String, _ documentId: String) -> ()
+    
+    init(closure: @escaping (_ treeViewItemId: String, _ documentId: String) -> ()) {
+        self.closure = closure
+    }
+}
+
 struct TreeView: View {
     let items: [TreeViewItem]
+    let closure: (_ treeViewItemId: String, _ documentId: String) -> ()
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading) {
                 ForEach(items) { item in
-                    item
+                    item.environmentObject(TreeViewModel(closure: closure))
                 }
             }
             .padding()
@@ -38,6 +47,8 @@ struct TreeView_Previews: PreviewProvider {
             TreeViewItem(id: "7432", title: "DarkTorch", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
             TreeViewItem(id: "4324", title: "Calcify", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
         ]
-        TreeView(items: items)
+        TreeView(items: items) { treeViewItem, documentId in
+            
+        }
     }
 }

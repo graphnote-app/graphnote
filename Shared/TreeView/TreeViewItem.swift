@@ -20,6 +20,8 @@ struct Title: Identifiable {
 }
 
 struct TreeViewItem: View, Identifiable {
+    @EnvironmentObject var treeViewModel: TreeViewModel
+    
     @State private var toggle = false
     let id: String
     let title: String
@@ -59,6 +61,8 @@ struct TreeViewItem: View, Identifiable {
                             .padding(Dimensions.rowPadding.rawValue)
                         Text(title.value)
                             .padding(Dimensions.rowPadding.rawValue)
+                    }.onTapGesture {
+                        treeViewModel.closure(self.id, title.id)
                     }
                     
                 }

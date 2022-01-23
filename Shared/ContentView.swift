@@ -29,8 +29,9 @@ struct ContentView: View {
             TreeViewItem(id: "7432", title: "DarkTorch", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
             TreeViewItem(id: "4324", title: "Calcify", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")]),
         ]
-        TreeView(items: items)
-            .padding()
+        TreeView(items: items) { treeViewItemId, documentId in
+            print("\(treeViewItemId) \(documentId)")
+        }.padding()
     }
 }
 
