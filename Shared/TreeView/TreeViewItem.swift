@@ -19,8 +19,9 @@ struct Title: Identifiable {
     let value: String
 }
 
-struct TreeViewItem: View {
+struct TreeViewItem: View, Identifiable {
     @State private var toggle = false
+    let id: String
     let title: String
     let documentTitles: [Title]
         
@@ -70,6 +71,6 @@ struct TreeViewItem: View {
 
 struct TreeViewItem_Previews: PreviewProvider {
     static var previews: some View {
-        TreeViewItem(title: "Testing title", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")])
+        TreeViewItem(id: "123", title: "Testing title", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")])
     }
 }
