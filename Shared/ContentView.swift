@@ -41,7 +41,11 @@ struct ContentView: View {
                 id: datum.id,
                 title: datum.title,
                 documents: datum.documents.map { document in
-                    Title(id: document.id, value: document.title, selected: datum.id == selected.workspaceId && document.id == selected.documentId)
+                    Title(
+                        id: document.id,
+                        value: document.title,
+                        selected: datum.id == selected.workspaceId && document.id == selected.documentId
+                    )
                 }
             )
         }
