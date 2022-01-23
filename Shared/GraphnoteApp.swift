@@ -11,7 +11,9 @@ import SwiftUI
 struct GraphnoteApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            GeometryReader { geometry in
+                ContentView()
+            }
         }
     }
 }
