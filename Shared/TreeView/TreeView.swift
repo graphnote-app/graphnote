@@ -10,7 +10,7 @@ import SwiftUI
 struct TreeView: View {
     var body: some View {
         
-        ScrollView(.vertical) {
+        ScrollView(.vertical, showsIndicators: false) {
             VStack {
                 VStack(alignment: .leading) {
                     TreeViewItem(title: "Kanception", documentTitles: [Title(id: "123", value: "Title 1"), Title(id: "321", value: "Title 2")])
