@@ -11,6 +11,7 @@ fileprivate let scrollWidth: CGFloat = 16
 fileprivate let pageMinHeightMultiplier = 1.3
 fileprivate let maxBlockWidth: CGFloat = 800
 fileprivate let pad: Double = 40
+fileprivate let textSpacing: Double = 14.0
 
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -30,7 +31,7 @@ struct DocumentView: View {
                     HStack {
                         Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
                             .font(.body)
-                            .lineSpacing(10.0)
+                            .lineSpacing(textSpacing)
                             .padding(pad)
                             .foregroundColor(.primary)
                         Spacer()
