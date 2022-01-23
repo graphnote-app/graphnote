@@ -36,6 +36,7 @@ struct ContentView: View {
                 print("\(treeViewItemId) \(documentId)")
                 selected = (treeViewItemId, documentId)
             }.padding()
+                .layoutPriority(100)
             Text("Workspace ID: \(selected.0) Document ID: \(selected.1)")
                 .padding(40)
         }
