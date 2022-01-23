@@ -14,7 +14,7 @@ struct TreeDatum {
 }
 
 struct ContentView: View {
-    @State private var selected: (String, String) = ("124353", "123")
+    @State private var selected: (workspaceId: String, documentId: String) = ("124353", "123")
     
     let data = [
         TreeDatum(id: "123", title: "Kanception", documents: [(id: "123", title: "Title 1"), (id: "123321", title: "Title 123")]),
@@ -41,7 +41,7 @@ struct ContentView: View {
                 id: datum.id,
                 title: datum.title,
                 documents: datum.documents.map { document in
-                    Title(id: document.id, value: document.title, selected: datum.id == selected.0 && document.id == selected.1)
+                    Title(id: document.id, value: document.title, selected: datum.id == selected.workspaceId && document.id == selected.documentId)
                 }
             )
         }
