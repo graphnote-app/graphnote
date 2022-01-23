@@ -40,6 +40,7 @@ struct TreeViewItem: View {
                 FileIconView()
                     .padding(Dimensions.rowPadding.rawValue)
                 Text(title)
+                    .bold()
                     .padding(Dimensions.rowPadding.rawValue)
             }
             .padding(Dimensions.rowPadding.rawValue)
