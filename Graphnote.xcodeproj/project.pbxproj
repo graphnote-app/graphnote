@@ -98,6 +98,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F81CC936279D108400A1F693 /* TreeView */ = {
+			isa = PBXGroup;
+			children = (
+				F81CC924279D027000A1F693 /* Arrow.swift */,
+				F81CC930279D0CF700A1F693 /* BulletView.swift */,
+				F81CC927279D06B600A1F693 /* TreeView.swift */,
+				F81CC92A279D078D00A1F693 /* TreeViewItem.swift */,
+				F81CC933279D0ECA00A1F693 /* FileIconView.swift */,
+			);
+			path = TreeView;
+			sourceTree = "<group>";
+		};
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
@@ -115,11 +127,7 @@
 				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
 				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
-				F81CC924279D027000A1F693 /* Arrow.swift */,
-				F81CC930279D0CF700A1F693 /* BulletView.swift */,
-				F81CC927279D06B600A1F693 /* TreeView.swift */,
-				F81CC92A279D078D00A1F693 /* TreeViewItem.swift */,
-				F81CC933279D0ECA00A1F693 /* FileIconView.swift */,
+				F81CC936279D108400A1F693 /* TreeView */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
