@@ -21,7 +21,6 @@ let darkBackgroundColor = Color(red: 30 / 255.0, green: 30 / 255.0, blue: 30 / 2
 #endif
 
 let lightBackgroundColor = Color.white
-let lightTreeColor = Color(red: 237 / 255.0, green: 235 / 255.0, blue: 240 / 255.0, opacity: 1.0)
 
 let treeWidth: CGFloat = 250
 let mobileTreeWidth: CGFloat = 275
@@ -79,11 +78,10 @@ struct ContentView: View {
                         selected = (treeViewItemId, documentId)
                     }
                         .padding()
-                        .background(colorScheme == .dark ? .clear : lightTreeColor)
                        
-                }.frame(width: treeWidth)
-                    .edgesIgnoringSafeArea([.bottom])
-                
+                }
+                .frame(width: treeWidth)
+                .edgesIgnoringSafeArea([.bottom])
                 #else
                 ZStack() {
                     EffectView()
@@ -91,7 +89,6 @@ struct ContentView: View {
                         selected = (treeViewItemId, documentId)
                     }
                         .layoutPriority(treeLayourPriority)
-                        .background(colorScheme == .dark ? .clear : lightTreeColor)
                         
                 }
                 .frame(width: mobileTreeWidth)
