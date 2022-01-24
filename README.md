@@ -1,5 +1,5 @@
 
-![Icon](https://raw.githubusercontent.com/graphnote-io/graphnote/master/Resources/graphnote_128.png)
+![Icon](https://raw.githubusercontent.com/graphnote-io/graphnote/master/Resources/graphnote_icon_128.png)
 
 # Graphnote
 
