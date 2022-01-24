@@ -21,30 +21,7 @@ struct DocumentView: View {
     var open: Binding<Bool>
     
     func toolbar(size: CGSize, open: Binding<Bool>) -> some View {
-        HStack {
-            if !open.wrappedValue {
-                #if os(macOS)
-                Spacer()
-                    .frame(width: 100)
-                #else
-                Spacer()
-                    .frame(width: 10)
-                #endif
-                
-            } else {
-                Spacer()
-                    .frame(width: 10)
-            }
-            NavigationButtonView()
-                .padding()
-                .onTapGesture {
-                    open.wrappedValue = !open.wrappedValue
-                }
-            Spacer()
-            
-        }.zIndex(1)
-            .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-            .frame(width: size.width)
+        ToolbarView(size: size, open: open)
     }
     
     func documentBody(size: CGSize) -> some View {

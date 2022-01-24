@@ -21,6 +21,8 @@
 		F81CC939279E047100A1F693 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC937279E047100A1F693 /* DocumentView.swift */; };
 		F81CC93C279E24AD00A1F693 /* NavigationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */; };
 		F81CC93D279E24AD00A1F693 /* NavigationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */; };
+		F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
+		F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F8EA408A279CFF55001F74B5 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4089279CFF55001F74B5 /* Tests_iOS.swift */; };
 		F8EA408C279CFF55001F74B5 /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA408B279CFF55001F74B5 /* Tests_iOSLaunchTests.swift */; };
 		F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */; };
@@ -58,6 +60,7 @@
 		F81CC933279D0ECA00A1F693 /* FileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconView.swift; sourceTree = "<group>"; };
 		F81CC937279E047100A1F693 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonView.swift; sourceTree = "<group>"; };
+		F899DFEE279E2B3800305AFA /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphnoteApp.swift; sourceTree = "<group>"; };
 		F8EA4072279CFF54001F74B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F8EA4073279CFF54001F74B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -120,9 +123,17 @@
 			isa = PBXGroup;
 			children = (
 				F81CC937279E047100A1F693 /* DocumentView.swift */,
-				F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */,
 			);
 			path = DocumentView;
+			sourceTree = "<group>";
+		};
+		F899DFF1279E2BC700305AFA /* ToolbarView */ = {
+			isa = PBXGroup;
+			children = (
+				F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */,
+				F899DFEE279E2B3800305AFA /* ToolbarView.swift */,
+			);
+			path = ToolbarView;
 			sourceTree = "<group>";
 		};
 		F8EA406B279CFF54001F74B5 = {
@@ -141,6 +152,7 @@
 			children = (
 				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
 				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
+				F899DFF1279E2BC700305AFA /* ToolbarView */,
 				F81CC93A279E06D300A1F693 /* DocumentView */,
 				F81CC936279D108400A1F693 /* TreeView */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
@@ -349,6 +361,7 @@
 				F81CC928279D06B600A1F693 /* TreeView.swift in Sources */,
 				F81CC934279D0ECA00A1F693 /* FileIconView.swift in Sources */,
 				F8EA409B279CFF55001F74B5 /* ContentView.swift in Sources */,
+				F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F81CC925279D027000A1F693 /* Arrow.swift in Sources */,
 				F81CC938279E047100A1F693 /* DocumentView.swift in Sources */,
@@ -365,6 +378,7 @@
 				F81CC929279D06B600A1F693 /* TreeView.swift in Sources */,
 				F81CC935279D0ECA00A1F693 /* FileIconView.swift in Sources */,
 				F8EA409C279CFF55001F74B5 /* ContentView.swift in Sources */,
+				F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F81CC926279D027000A1F693 /* Arrow.swift in Sources */,
 				F81CC939279E047100A1F693 /* DocumentView.swift in Sources */,
