@@ -33,7 +33,7 @@ struct ContentView: View {
     @State private var open: Bool = true
     
     let data = [
-        TreeDatum(id: "123", title: "Kanception", documents: [(id: "123", title: "Title 1"), (id: "123321", title: "Title 123")]),
+        TreeDatum(id: "123", title: "Kanception", documents: [(id: "123", title: "Title 1"), (id: "12312312312312312312321", title: "Title 123")]),
         TreeDatum(id: "234", title: "Graphnote", documents: [(id: "234", title: "Title 2"), (id: "1234324", title: "Title 1")]),
         TreeDatum(id: "345", title: "SwiftBook", documents: [(id: "345", title: "Title 3")]),
         TreeDatum(id: "456", title: "DarkTorch", documents: [(id: "456", title: "Title 4")]),
