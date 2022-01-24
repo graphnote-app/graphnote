@@ -51,6 +51,13 @@ struct ContentView: View {
         TreeDatum(id: "345245", title: "DarkTorch", documents: [(id: "645", title: "Title 4")]),
     ]
     
+    init() {
+        print("init")
+        if let datum = data.first, let documentId = datum.documents.first?.id {
+            self._selected = State(initialValue: (workspaceId: datum.id, documentId: documentId))
+        }
+    }
+    
     var body: some View {
         let items = data.map { datum in
             TreeViewItem(
@@ -92,8 +99,10 @@ struct ContentView: View {
                 }.frame(width: mobileTreeWidth)
                 #endif
             }
+            if let title = data.filter { $0.id == selected.workspaceId }.first?.title {
+                DocumentView(title: title, selected: selected, open: $open)
+            }
             
-            DocumentView(selected: selected, open: $open)
         }
     }
 }

@@ -16,6 +16,7 @@ fileprivate let toolbarHeight: CGFloat = 50
 
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
+    let title: String
     let selected: (workspaceId: String, documentId: String)
     
     var open: Binding<Bool>
