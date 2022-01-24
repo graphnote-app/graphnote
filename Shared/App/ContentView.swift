@@ -52,7 +52,6 @@ struct ContentView: View {
     ]
     
     init() {
-        print("init")
         if let datum = data.first, let documentId = datum.documents.first?.id {
             self._selected = State(initialValue: (workspaceId: datum.id, documentId: documentId))
         }
