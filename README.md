@@ -1,5 +1,5 @@
 
-![Icon](https://raw.githubusercontent.com/graphnote-io/graphnote/master/graphnote_128.png)
+![Icon](https://raw.githubusercontent.com/graphnote-io/graphnote/master/Resources/graphnote_128.png)
 
 # Graphnote
 
@@ -7,7 +7,7 @@
 
 Graphnote Client for iOS and macOS
 
-![Screenshot](https://raw.githubusercontent.com/graphnote-io/graphnote/master/graphnote_screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/graphnote-io/graphnote/master/Resources/graphnote_screenshot.png)
 
 
 ### Roadmap 🗺️
