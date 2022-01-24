@@ -124,8 +124,6 @@ struct TreeViewItem: View, Identifiable {
                                         .foregroundColor(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1))
                                         .cornerRadius(4)
                                 }
-                                
-                                
                                 .onTapGesture {
                                     treeViewModel.closure(self.id, title.id)
                                 }

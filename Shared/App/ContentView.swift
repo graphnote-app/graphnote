@@ -84,6 +84,7 @@ struct ContentView: View {
                         .background(colorScheme == .dark ? .clear : lightTreeColor)
                        
                 }.frame(width: treeWidth)
+                    .edgesIgnoringSafeArea([.bottom])
                 
                 #else
                 ZStack() {
@@ -92,14 +93,18 @@ struct ContentView: View {
                         selected = (treeViewItemId, documentId)
                     }
                         .layoutPriority(treeLayourPriority)
-                        .padding()
                         .background(colorScheme == .dark ? .clear : lightTreeColor)
                         
-                }.frame(width: mobileTreeWidth)
+                }
+                .frame(width: mobileTreeWidth)
+                .edgesIgnoringSafeArea([.top, .bottom])
                 #endif
             }
-            if let title = data.filter { $0.id == selected.workspaceId }.first?.title {
-                DocumentView(title: title, selected: selected, open: $open)
+            
+
+            
+            if let datum = data.filter { $0.id == selected.workspaceId }.first, let title = datum.documents.filter { $0.id == selected.documentId }.first?.title  {
+                DocumentView(title: title, workspaceTitle: datum.title, selected: selected, open: $open)
             }
             
         }

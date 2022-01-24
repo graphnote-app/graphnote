@@ -17,6 +17,7 @@ fileprivate let toolbarHeight: CGFloat = 50
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
     let title: String
+    let workspaceTitle: String
     let selected: (workspaceId: String, documentId: String)
     
     var open: Binding<Bool>
@@ -36,11 +37,18 @@ struct DocumentView: View {
 
                 VStack(alignment: .leading, spacing: pad) {
                     HStack {
-                        Text("Workspace ID: \(selected.workspaceId) Document ID: \(selected.documentId)")
-                            .padding(pad)
+                        VStack(alignment: .leading) {
+                            Text(title)
+                                .font(.largeTitle)
+                            Spacer()
+                                .frame(height: 20)
+                            Text(workspaceTitle)
+                                .font(.headline)
+                        }
+                            .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
+                            .padding(open.wrappedValue ? .top : [], pad)
                             .foregroundColor(.primary)
-                        Spacer()
-                    }.frame(width: maxBlockWidth)
+                    }
                     HStack {
                         Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
                             .font(.body)
@@ -56,10 +64,19 @@ struct DocumentView: View {
                 #else
                 VStack(alignment: .leading, spacing: pad) {
                     HStack {
-                        Text("Workspace ID: \(selected.workspaceId) Document ID: \(selected.documentId)")
-                            .padding(open.wrappedValue ? pad / 2 : pad)
+                        VStack(alignment: .leading) {
+                            Text(title)
+                                .font(.largeTitle)
+                            Spacer()
+                                .frame(height: 20)
+                            Text(workspaceTitle)
+                                .font(.headline)
+                        }
+//                            .padding(open.wrappedValue ? pad / 2 : pad)
+                        .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], open.wrappedValue ? pad / 2 : pad)
                             .padding(open.wrappedValue ? [.top, .bottom] : [], pad)
                             .foregroundColor(.primary)
+                        
                     }
                     HStack {
                         Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")

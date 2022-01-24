@@ -16,6 +16,7 @@ final class TreeViewModel: ObservableObject {
 }
 
 struct TreeView: View {
+    @EnvironmentObject var orientationInfo: OrientationInfo
     let items: [TreeViewItem]
     let closure: (_ treeViewItemId: String, _ documentId: String) -> ()
     
@@ -23,7 +24,13 @@ struct TreeView: View {
         ZStack {
             EffectView()
             ScrollView(.vertical, showsIndicators: false) {
-                
+                #if os(iOS)
+                Spacer()
+                    .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
+                #else
+          
+          
+                #endif
                 VStack(alignment: .leading) {
                     ForEach(items) { item in
                         item.environmentObject(TreeViewModel(closure: closure))

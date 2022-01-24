@@ -18,7 +18,7 @@ struct GraphnoteApp: App {
         #if os(macOS)
         GeometryReader { geometry in
             ContentView()
-                
+                .environmentObject(OrientationInfo())
         }.frame(
             minWidth: MacOSDimensions.windowMinWidth.rawValue,
             idealWidth: MacOSDimensions.windowMinWidth.rawValue,
@@ -28,6 +28,7 @@ struct GraphnoteApp: App {
         #else
         GeometryReader { geometry in
             ContentView()
+                .environmentObject(OrientationInfo())
         }
         #endif
     }
