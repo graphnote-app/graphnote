@@ -136,6 +136,15 @@
 			path = ToolbarView;
 			sourceTree = "<group>";
 		};
+		F899DFF2279E425B00305AFA /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
+				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
@@ -150,8 +159,7 @@
 		F8EA4070279CFF54001F74B5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
-				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
+				F899DFF2279E425B00305AFA /* App */,
 				F899DFF1279E2BC700305AFA /* ToolbarView */,
 				F81CC93A279E06D300A1F693 /* DocumentView */,
 				F81CC936279D108400A1F693 /* TreeView */,

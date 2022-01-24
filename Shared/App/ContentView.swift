@@ -72,7 +72,6 @@ struct ContentView: View {
                 ZStack() {
                     EffectView()
                     TreeView(items: items) { treeViewItemId, documentId in
-                        print("\(treeViewItemId) \(documentId)")
                         selected = (treeViewItemId, documentId)
                     }
                         .padding()
@@ -84,7 +83,6 @@ struct ContentView: View {
                 ZStack() {
                     EffectView()
                     TreeView(items: items) { treeViewItemId, documentId in
-                        print("\(treeViewItemId) \(documentId)")
                         selected = (treeViewItemId, documentId)
                     }
                         .layoutPriority(treeLayourPriority)

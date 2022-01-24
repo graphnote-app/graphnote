@@ -18,11 +18,6 @@ struct GraphnoteApp: App {
         #if os(macOS)
         GeometryReader { geometry in
             ContentView()
-                .toolbar {
-                    ToolbarItem {
-                        Text("")
-                    }
-                }
                 
         }.frame(
             minWidth: MacOSDimensions.windowMinWidth.rawValue,
