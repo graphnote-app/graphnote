@@ -17,7 +17,7 @@ struct ToolbarView: View {
             if !open.wrappedValue {
                 #if os(macOS)
                 Spacer()
-                    .frame(width: 100)
+                    .frame(width: 268)
                 #else
                 Spacer()
                     .frame(width: 10)
