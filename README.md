@@ -9,6 +9,8 @@ Graphnote Client for iOS and macOS
 
 ![Screenshot](https://raw.githubusercontent.com/graphnote-io/graphnote/master/Resources/graphnote_screenshot.png)
 
+![Screenshot](https://raw.githubusercontent.com/graphnote-io/graphnote/master/Resources/graphnote_screenshot_dark.png)
+
 
 ### Roadmap 🗺️
 
