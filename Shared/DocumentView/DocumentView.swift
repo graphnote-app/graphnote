@@ -12,7 +12,7 @@ fileprivate let pageMinHeightMultiplier = 1.3
 fileprivate let maxBlockWidth: CGFloat = 800
 fileprivate let pad: Double = 40
 fileprivate let textSpacing: Double = 14.0
-fileprivate let toolbarHeight: CGFloat = 40
+fileprivate let toolbarHeight: CGFloat = 50
 
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -22,6 +22,7 @@ struct DocumentView: View {
     
     func toolbar(size: CGSize, open: Binding<Bool>) -> some View {
         ToolbarView(size: size, open: open)
+            .frame(height: toolbarHeight)
     }
     
     func documentBody(size: CGSize) -> some View {
