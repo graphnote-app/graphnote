@@ -20,14 +20,18 @@ struct TreeView: View {
     let closure: (_ treeViewItemId: String, _ documentId: String) -> ()
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading) {
-                ForEach(items) { item in
-                    item.environmentObject(TreeViewModel(closure: closure))
-                }
+        ZStack {
+            EffectView()
+            ScrollView(.vertical, showsIndicators: false) {
                 
+                VStack(alignment: .leading) {
+                    ForEach(items) { item in
+                        item.environmentObject(TreeViewModel(closure: closure))
+                    }
+                    
+                }
+                .padding()
             }
-            .padding()
         }
     }
 }

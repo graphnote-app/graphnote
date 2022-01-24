@@ -10,7 +10,8 @@ import SwiftUI
 struct FileIconView: View {
     var body: some View {
         Image(systemName: "doc.plaintext")
-            .foregroundColor(.purple)
+//            .foregroundColor(Color(red: 94 / 255.0, green: 129 / 255.0, blue: 255 / 255.0, opacity: 1.0))
+            .foregroundColor(Color.purple)
     }
 }
 

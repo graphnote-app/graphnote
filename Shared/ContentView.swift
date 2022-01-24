@@ -20,9 +20,10 @@ let darkBackgroundColor = Color(red: 30 / 255.0, green: 30 / 255.0, blue: 30 / 2
 #endif
 
 let lightBackgroundColor = Color.white
-let lightTreeColor = Color(red: 248 / 255.0, green: 238 / 255.0, blue: 248 / 255.0, opacity: 1.0)
+let lightTreeColor = Color(red: 237 / 255.0, green: 235 / 255.0, blue: 240 / 255.0, opacity: 1.0)
 
-fileprivate let treeWidth: CGFloat = 200
+let treeWidth: CGFloat = 250
+let mobileTreeWidth: CGFloat = 275
 fileprivate let documentWidth: CGFloat = 800
 fileprivate let treeLayourPriority: CGFloat = 100
 
@@ -68,22 +69,29 @@ struct ContentView: View {
         HStack(alignment: .top) {
             if open {
                 #if os(macOS)
-                TreeView(items: items) { treeViewItemId, documentId in
-                    print("\(treeViewItemId) \(documentId)")
-                    selected = (treeViewItemId, documentId)
-                }
-                    .frame(width: treeWidth)
-                    .padding()
-                    .layoutPriority(treeLayourPriority)
+                ZStack() {
+                    EffectView()
+                    TreeView(items: items) { treeViewItemId, documentId in
+                        print("\(treeViewItemId) \(documentId)")
+                        selected = (treeViewItemId, documentId)
+                    }
+                        .padding()
+                        .background(colorScheme == .dark ? .clear : lightTreeColor)
+                       
+                }.frame(width: treeWidth)
+                
                 #else
-
-                TreeView(items: items) { treeViewItemId, documentId in
-                    print("\(treeViewItemId) \(documentId)")
-                    selected = (treeViewItemId, documentId)
-                }
-                    .padding()
-                    .background(colorScheme == .dark ? .clear : lightTreeColor)
-                    .layoutPriority(treeLayourPriority)
+                ZStack() {
+                    EffectView()
+                    TreeView(items: items) { treeViewItemId, documentId in
+                        print("\(treeViewItemId) \(documentId)")
+                        selected = (treeViewItemId, documentId)
+                    }
+                        .layoutPriority(treeLayourPriority)
+                        .padding()
+                        .background(colorScheme == .dark ? .clear : lightTreeColor)
+                        
+                }.frame(width: mobileTreeWidth)
                 #endif
             }
             
