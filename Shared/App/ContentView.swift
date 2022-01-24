@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftyJSON
 
 struct TreeDatum {
     let id: String
@@ -27,31 +28,28 @@ let mobileTreeWidth: CGFloat = 275
 fileprivate let documentWidth: CGFloat = 800
 fileprivate let treeLayourPriority: CGFloat = 100
 
+let jsonString = "[{\"id\":\"123\", \"title\": \"Kanception\", \"documents\": [{\"id\": \"321\", \"title\": \"Design Doc\", \"selected\": false}]}, {\"id\":\"234\", \"title\": \"Graphnote\", \"documents\": [{\"id\": \"432\", \"title\": \"Project Kickoff\", \"selected\": false}]},{\"id\":\"345\", \"title\": \"SwiftBook\", \"documents\": [{\"id\": \"543\", \"title\": \"MVP\", \"selected\": false}]},{\"id\":\"456\", \"title\": \"DarkTorch\", \"documents\": [{\"id\": \"543\", \"title\": \"Design Doc\", \"selected\": false}]},]"
+
+
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var selected: (workspaceId: String, documentId: String) = ("", "")
     @State private var open: Bool = true
     
-    let data = [
-        TreeDatum(id: "123", title: "Kanception", documents: [(id: "123", title: "Design Doc"), (id: "12312312312312312312321", title: "Title 123")]),
-        TreeDatum(id: "234", title: "Graphnote", documents: [(id: "234", title: "Title 2"), (id: "1234324", title: "Title 1")]),
-        TreeDatum(id: "345", title: "SwiftBook", documents: [(id: "345", title: "Title 3")]),
-        TreeDatum(id: "456", title: "DarkTorch", documents: [(id: "456", title: "Title 4")]),
-        TreeDatum(id: "123123", title: "Kanception", documents: [(id: "123123", title: "Title 1")]),
-        TreeDatum(id: "234234", title: "Graphnote", documents: [(id: "234234", title: "Title 2")]),
-        TreeDatum(id: "345345", title: "SwiftBook", documents: [(id: "345345", title: "Title 3")]),
-        TreeDatum(id: "456456", title: "DarkTorch", documents: [(id: "456456", title: "Title 4")]),
-        TreeDatum(id: "5677", title: "Kanception", documents: [(id: "1231343", title: "Title 1"), (id: "54555", title: "Title 123")]),
-        TreeDatum(id: "736", title: "Graphnote", documents: [(id: "123123", title: "Title 2"), (id: "44444", title: "Title 1")]),
-        TreeDatum(id: "8678", title: "SwiftBook", documents: [(id: "123131", title: "Title 3")]),
-        TreeDatum(id: "345353", title: "DarkTorch", documents: [(id: "234242", title: "Title 4")]),
-        TreeDatum(id: "45645647", title: "Kanception", documents: [(id: "3453", title: "Title 1")]),
-        TreeDatum(id: "323478", title: "Graphnote", documents: [(id: "4563", title: "Title 2")]),
-        TreeDatum(id: "4578843563", title: "SwiftBook", documents: [(id: "7866", title: "Title 3")]),
-        TreeDatum(id: "345245", title: "DarkTorch", documents: [(id: "645", title: "Title 4")]),
-    ]
+    var data: [TreeDatum] = []
     
     init() {
+        if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
+            if let json = try? JSON(data: dataFromString) {
+                data = json.arrayValue.map { row in
+                    let id = row["id"].stringValue
+                    let title = row["title"].stringValue
+                    let documents = row["documents"].arrayValue.map { (id: $0["id"].stringValue, title: $0["title"].stringValue) }
+                    return TreeDatum(id: id, title: title, documents: documents)
+                }
+            }
+        }
+        
         if let datum = data.first, let documentId = datum.documents.first?.id {
             self._selected = State(initialValue: (workspaceId: datum.id, documentId: documentId))
         }

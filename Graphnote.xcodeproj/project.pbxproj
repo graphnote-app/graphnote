@@ -25,6 +25,8 @@
 		F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F899DFF4279E770F00305AFA /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
 		F899DFF5279E770F00305AFA /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
+		F899DFF8279E87D400305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFF7279E87D400305AFA /* SwiftyJSON */; };
+		F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFFA279E87E500305AFA /* SwiftyJSON */; };
 		F8EA408A279CFF55001F74B5 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4089279CFF55001F74B5 /* Tests_iOS.swift */; };
 		F8EA408C279CFF55001F74B5 /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA408B279CFF55001F74B5 /* Tests_iOSLaunchTests.swift */; };
 		F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */; };
@@ -83,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F899DFF8279E87D400305AFA /* SwiftyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +153,13 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		F899DFF9279E87E500305AFA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +168,7 @@
 				F8EA4088279CFF55001F74B5 /* Tests iOS */,
 				F8EA4094279CFF55001F74B5 /* Tests macOS */,
 				F8EA4079279CFF55001F74B5 /* Products */,
+				F899DFF9279E87E500305AFA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -225,6 +237,9 @@
 			dependencies = (
 			);
 			name = "Graphnote (iOS)";
+			packageProductDependencies = (
+				F899DFF7279E87D400305AFA /* SwiftyJSON */,
+			);
 			productName = "Graphnote (iOS)";
 			productReference = F8EA4078279CFF55001F74B5 /* Graphnote.app */;
 			productType = "com.apple.product-type.application";
@@ -242,6 +257,9 @@
 			dependencies = (
 			);
 			name = "Graphnote (macOS)";
+			packageProductDependencies = (
+				F899DFFA279E87E500305AFA /* SwiftyJSON */,
+			);
 			productName = "Graphnote (macOS)";
 			productReference = F8EA407E279CFF55001F74B5 /* Graphnote.app */;
 			productType = "com.apple.product-type.application";
@@ -317,6 +335,9 @@
 				Base,
 			);
 			mainGroup = F8EA406B279CFF54001F74B5;
+			packageReferences = (
+				F899DFF6279E87D400305AFA /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+			);
 			productRefGroup = F8EA4079279CFF55001F74B5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -789,6 +810,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F899DFF6279E87D400305AFA /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F899DFF7279E87D400305AFA /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F899DFF6279E87D400305AFA /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		F899DFFA279E87E500305AFA /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F899DFF6279E87D400305AFA /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F8EA406C279CFF54001F74B5 /* Project object */;
 }
