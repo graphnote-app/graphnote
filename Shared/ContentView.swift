@@ -29,6 +29,7 @@ fileprivate let treeLayourPriority: CGFloat = 100
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var selected: (workspaceId: String, documentId: String) = ("", "")
+    @State private var open: Bool = true
     
     let data = [
         TreeDatum(id: "123", title: "Kanception", documents: [(id: "123", title: "Title 1"), (id: "123321", title: "Title 123")]),
@@ -65,26 +66,28 @@ struct ContentView: View {
         }
         
         HStack(alignment: .top) {
-            #if os(macOS)
-            TreeView(items: items) { treeViewItemId, documentId in
-                print("\(treeViewItemId) \(documentId)")
-                selected = (treeViewItemId, documentId)
-            }
-                .frame(width: treeWidth)
-                .padding()
-                .layoutPriority(treeLayourPriority)
-            #else
-            
-            TreeView(items: items) { treeViewItemId, documentId in
-                print("\(treeViewItemId) \(documentId)")
-                selected = (treeViewItemId, documentId)
-            }
-                .padding()
-                .background(colorScheme == .dark ? .clear : lightTreeColor)
-                .layoutPriority(treeLayourPriority)
-            #endif
+            if open {
+                #if os(macOS)
+                TreeView(items: items) { treeViewItemId, documentId in
+                    print("\(treeViewItemId) \(documentId)")
+                    selected = (treeViewItemId, documentId)
+                }
+                    .frame(width: treeWidth)
+                    .padding()
+                    .layoutPriority(treeLayourPriority)
+                #else
 
-            DocumentView(selected: selected)
+                TreeView(items: items) { treeViewItemId, documentId in
+                    print("\(treeViewItemId) \(documentId)")
+                    selected = (treeViewItemId, documentId)
+                }
+                    .padding()
+                    .background(colorScheme == .dark ? .clear : lightTreeColor)
+                    .layoutPriority(treeLayourPriority)
+                #endif
+            }
+            
+            DocumentView(selected: selected, open: $open)
         }
     }
 }

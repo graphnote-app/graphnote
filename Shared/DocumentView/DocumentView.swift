@@ -18,14 +18,40 @@ struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
     let selected: (workspaceId: String, documentId: String)
     
+    var open: Binding<Bool>
+    
+    func toolbar(size: CGSize, open: Binding<Bool>) -> some View {
+        HStack {
+            if !open.wrappedValue {
+                #if os(macOS)
+                Spacer()
+                    .frame(width: 100)
+                #else
+                Spacer()
+                    .frame(width: 10)
+                #endif
+                
+            } else {
+                Spacer()
+                    .frame(width: 10)
+            }
+            NavigationButtonView()
+                .padding()
+                .onTapGesture {
+                    open.wrappedValue = !open.wrappedValue
+                }
+            Spacer()
+            
+        }.zIndex(1)
+            .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+            .frame(width: size.width)
+    }
+    
     func documentBody(size: CGSize) -> some View {
         VStack {
-            HStack {
-                Text("Graphnote")
-                    .frame(width: size.width, height: toolbarHeight)
-            }.zIndex(1)
-                .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-                .frame(width: size.width)
+            #if os(macOS)
+            self.toolbar(size: size, open: open)
+            #endif
             ScrollView(showsIndicators: true) {
                 #if os(macOS)
 
@@ -68,6 +94,9 @@ struct DocumentView: View {
                 .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
                 #endif
             }.background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+            #if os(iOS)
+            self.toolbar(size: size, open: open)
+            #endif
         }
     }
     
@@ -84,15 +113,9 @@ struct DocumentView: View {
                 documentBody(size: geometry.size)
             }
             .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+            .edgesIgnoringSafeArea(.trailing)
             #endif
         }.background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-    }
-}
-
-struct DocumentView_Previews: PreviewProvider {
-    static var previews: some View {
-        let selected: (workspaceId: String, documentId: String) = ("", "")
-        
-        DocumentView(selected: selected)
+            
     }
 }
