@@ -9,12 +9,6 @@ import SwiftUI
 import CoreData
 import SwiftyJSON
 
-struct TreeDatum {
-    let id: String
-    let title: String
-    let documents: [(id: String, title: String)]
-}
-
 #if os(macOS)
 let darkBackgroundColor = Color(NSColor.controlBackgroundColor)
 #else
@@ -28,8 +22,8 @@ let mobileTreeWidth: CGFloat = 275
 fileprivate let documentWidth: CGFloat = 800
 fileprivate let treeLayourPriority: CGFloat = 100
 
-let jsonString = "[{\"id\":\"123\", \"title\": \"Kanception\", \"documents\": [{\"id\": \"321\", \"title\": \"Design Doc\", \"selected\": false}]}, {\"id\":\"234\", \"title\": \"Graphnote\", \"documents\": [{\"id\": \"432\", \"title\": \"Project Kickoff\", \"selected\": false}]},{\"id\":\"345\", \"title\": \"SwiftBook\", \"documents\": [{\"id\": \"543\", \"title\": \"MVP\", \"selected\": false}]},{\"id\":\"456\", \"title\": \"DarkTorch\", \"documents\": [{\"id\": \"543\", \"title\": \"Design Doc\", \"selected\": false}]},]"
-
+//let jsonString = "[{\"id\":\"123\", \"title\": \"Kanception\", \"documents\": [{\"id\": \"321\", \"title\": \"Design Doc\", \"selected\": false}]}, {\"id\":\"234\", \"title\": \"Graphnote\", \"documents\": [{\"id\": \"432\", \"title\": \"Project Kickoff\", \"selected\": false}]},{\"id\":\"345\", \"title\": \"SwiftBook\", \"documents\": [{\"id\": \"543\", \"title\": \"MVP\", \"selected\": false}]},{\"id\":\"456\", \"title\": \"DarkTorch\", \"documents\": [{\"id\": \"543\", \"title\": \"Design Doc\", \"selected\": false}]},]"
+//
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -37,26 +31,21 @@ struct ContentView: View {
     @State private var selected: (workspaceId: String, documentId: String) = ("", "")
     @State private var open: Bool = true
     @FetchRequest var workspaces: FetchedResults<Workspace>
-    
-    var data: [TreeDatum] = []
 
     init(moc: NSManagedObjectContext) {
         self.moc = moc
         
-        if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
-            if let json = try? JSON(data: dataFromString) {
-                data = json.arrayValue.map { row in
-                    let id = row["id"].stringValue
-                    let title = row["title"].stringValue
-                    let documents = row["documents"].arrayValue.map { (id: $0["id"].stringValue, title: $0["title"].stringValue) }
-                    return TreeDatum(id: id, title: title, documents: documents)
-                }
-            }
-        }
-        
-        if let datum = data.first, let documentId = datum.documents.first?.id {
-            self._selected = State(initialValue: (workspaceId: datum.id, documentId: documentId))
-        }
+//        if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
+//            if let json = try? JSON(data: dataFromString) {
+//                data = json.arrayValue.map { row in
+//                    let id = row["id"].stringValue
+//                    let title = row["title"].stringValue
+//                    let documents = row["documents"].arrayValue.map { (id: $0["id"].stringValue, title: $0["title"].stringValue) }
+//                    return TreeDatum(id: id, title: title, documents: documents)
+//                }
+//            }
+//        }
+//
         
         self._workspaces = FetchRequest(
             entity: Workspace.entity(),
@@ -69,26 +58,46 @@ struct ContentView: View {
 //        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 //        try! self.moc.execute(deleteRequest)
 
-//        let workspace = Workspace(context: moc)
-//        workspace.id = UUID()
-//        workspace.title = "Graphnote"
+//        let workspaceTitles = [
+//            "SwiftBook",
+//            "DarkTorch",
+//            "NSSWitch",
+//            "Kanception",
+//        ]
+//
+//        let documentTitles = [
+//            "Design Doc",
+//            "Project Kickoff",
+//            "Technical Specification",
+//        ]
+//
+//        for title in workspaceTitles {
+//            let workspace = Workspace(context: moc)
+//            workspace.id = UUID()
+//            workspace.title = title
+//
+//            for docTitle in documentTitles {
+//                let document = Document(context: moc)
+//                document.id = UUID()
+//                document.title = docTitle
+//                document.workspace = workspace
+//            }
+//
+//        }
 //
 //        try! moc.save()
     }
     
     var body: some View {
-        let items = data.map { datum in
+        let items = workspaces.map { workspace in
             TreeViewItem(
-                id: datum.id,
-                title: datum.title,
-                documents: datum.documents.map { document in
-                    Title(
-                        id: document.id,
-                        value: document.title,
-                        selected: datum.id == selected.workspaceId && document.id == selected.documentId
-                    )
-                }
+                id: workspace.id!.uuidString,
+                title: workspace.title!,
+                documents: (workspace.documents?.allObjects as? [Document])?.map {
+                    Title(id: $0.id!.uuidString, value: $0.title!, selected: workspace.id!.uuidString == selected.workspaceId && $0.id!.uuidString == selected.documentId)
+                } ?? []
             )
+            
         }
         
         HStack(alignment: .top) {
@@ -96,14 +105,10 @@ struct ContentView: View {
                 #if os(macOS)
                 ZStack() {
                     EffectView()
-                    ForEach(self.workspaces) { workspace in
-                        Text(workspace.title!)
-                        
+                    TreeView(items: items) { treeViewItemId, documentId in
+                        selected = (treeViewItemId, documentId)
                     }
-//                    TreeView(items: items) { treeViewItemId, documentId in
-//                        selected = (treeViewItemId, documentId)
-//                    }
-//                        .padding()
+                        .padding()
                        
                 }
                 .frame(width: treeWidth)
@@ -123,11 +128,17 @@ struct ContentView: View {
             }
             
 
-            
-            if let datum = data.filter { $0.id == selected.workspaceId }.first, let title = datum.documents.filter { $0.id == selected.documentId }.first?.title  {
-                DocumentView(title: title, workspaceTitle: datum.title, selected: selected, open: $open)
+            if let datum = (workspaces.filter { $0.id?.uuidString == selected.workspaceId }.first?.documents?.allObjects as? [Document])?.filter { doc in doc.id?.uuidString == selected.documentId }.first {
+                DocumentView(title: datum.title!, workspaceTitle: datum.workspace!.title!, selected: selected, open: $open)
             }
             
+        }.onAppear {
+            if workspaces.count > 0 {
+                if let workspace = workspaces.first, let document = (workspace.documents!.allObjects as? [Document])?.first {
+                    selected = (workspaceId: workspace.id!.uuidString, document.id!.uuidString)
+                }
+                
+            }
         }
     }
 }
