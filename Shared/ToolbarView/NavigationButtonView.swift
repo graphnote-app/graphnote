@@ -10,14 +10,14 @@ import SwiftUI
 struct NavigationButtonView: View {
     @Environment(\.colorScheme) var colorScheme
     let width: CGFloat = 20
-    let barHeight: CGFloat = 2
+    let barHeight: CGFloat = 1.5
     
     var body: some View {
         ZStack {
             Rectangle()
                 .frame(width: width, height: width)
                 .foregroundColor(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-            VStack(spacing: 5) {
+            VStack(spacing: 4) {
                 Rectangle()
                     .frame(width: width, height: barHeight)
                 Rectangle()

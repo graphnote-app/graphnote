@@ -28,7 +28,7 @@ struct ToolbarView: View {
                     .frame(width: 10)
             }
             NavigationButtonView()
-                .padding(10)
+                .padding(2)
                 .onTapGesture {
                     open.wrappedValue = !open.wrappedValue
                 }

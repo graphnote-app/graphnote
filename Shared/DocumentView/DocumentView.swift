@@ -12,7 +12,7 @@ fileprivate let pageMinHeightMultiplier = 1.3
 fileprivate let maxBlockWidth: CGFloat = 800
 fileprivate let pad: Double = 40
 fileprivate let textSpacing: Double = 14.0
-fileprivate let toolbarHeight: CGFloat = 50
+fileprivate let toolbarHeight: CGFloat = 28
 
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
