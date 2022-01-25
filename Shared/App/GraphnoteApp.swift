@@ -5,6 +5,7 @@
 //  Created by Hayden Pennington on 1/22/22.
 //
 
+import CoreData
 import SwiftUI
 
 fileprivate enum MacOSDimensions: CGFloat {
@@ -14,10 +15,13 @@ fileprivate enum MacOSDimensions: CGFloat {
 
 @main
 struct GraphnoteApp: App {
+    @StateObject private var dataController = DataController()
+    
     func content() -> some View {
         #if os(macOS)
         GeometryReader { geometry in
-            ContentView()
+            ContentView(moc: dataController.container.viewContext)
+                .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(OrientationInfo())
         }.frame(
             minWidth: MacOSDimensions.windowMinWidth.rawValue,
@@ -27,7 +31,8 @@ struct GraphnoteApp: App {
         )
         #else
         GeometryReader { geometry in
-            ContentView()
+            ContentView(moc: dataController.container.viewContext)
+                .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(OrientationInfo())
         }
         #endif
@@ -37,6 +42,7 @@ struct GraphnoteApp: App {
         #if os(macOS)
         WindowGroup() {
             content()
+                
         }
         .windowToolbarStyle(.unifiedCompact)
         .windowStyle(.hiddenTitleBar)
@@ -44,6 +50,7 @@ struct GraphnoteApp: App {
         #else
         WindowGroup {
             content()
+                
         }
         #endif
     }

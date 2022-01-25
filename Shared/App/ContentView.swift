@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 import SwiftyJSON
 
 struct TreeDatum {
@@ -32,12 +33,16 @@ let jsonString = "[{\"id\":\"123\", \"title\": \"Kanception\", \"documents\": [{
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
+    let moc: NSManagedObjectContext
     @State private var selected: (workspaceId: String, documentId: String) = ("", "")
     @State private var open: Bool = true
+    @FetchRequest var workspaces: FetchedResults<Workspace>
     
     var data: [TreeDatum] = []
-    
-    init() {
+
+    init(moc: NSManagedObjectContext) {
+        self.moc = moc
+        
         if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
             if let json = try? JSON(data: dataFromString) {
                 data = json.arrayValue.map { row in
@@ -52,6 +57,23 @@ struct ContentView: View {
         if let datum = data.first, let documentId = datum.documents.first?.id {
             self._selected = State(initialValue: (workspaceId: datum.id, documentId: documentId))
         }
+        
+        self._workspaces = FetchRequest(
+            entity: Workspace.entity(),
+            sortDescriptors: [
+                
+            ]
+        )
+        
+//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Workspace.fetchRequest()
+//        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+//        try! self.moc.execute(deleteRequest)
+
+//        let workspace = Workspace(context: moc)
+//        workspace.id = UUID()
+//        workspace.title = "Graphnote"
+//
+//        try! moc.save()
     }
     
     var body: some View {
@@ -74,10 +96,14 @@ struct ContentView: View {
                 #if os(macOS)
                 ZStack() {
                     EffectView()
-                    TreeView(items: items) { treeViewItemId, documentId in
-                        selected = (treeViewItemId, documentId)
+                    ForEach(self.workspaces) { workspace in
+                        Text(workspace.title!)
+                        
                     }
-                        .padding()
+//                    TreeView(items: items) { treeViewItemId, documentId in
+//                        selected = (treeViewItemId, documentId)
+//                    }
+//                        .padding()
                        
                 }
                 .frame(width: treeWidth)
@@ -103,11 +129,5 @@ struct ContentView: View {
             }
             
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
