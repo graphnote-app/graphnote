@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 enum TreeViewItemDimensions: CGFloat {
     case arrowWidthHeight = 12
