@@ -7,57 +7,97 @@
 
 import SwiftUI
 
-fileprivate enum Dimensions: CGFloat {
+enum TreeViewItemDimensions: CGFloat {
     case arrowWidthHeight = 12
     case rowPadding = 4
 }
 
 fileprivate let color = Color.gray
 
-struct Title: Identifiable {
+struct Title: Identifiable, Comparable {
+    
+    static func < (lhs: Title, rhs: Title) -> Bool {
+        return lhs.value < rhs.value
+    }
+    
     let id: String
     let value: String
     let selected: Bool
 }
 
-#if os(macOS)
-
-struct NSEffectView: NSViewRepresentable {
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView(frame: CGRect(x: 0, y: 0, width: treeWidth, height: Dimensions.arrowWidthHeight.rawValue))
-        view.material = .windowBackground
-        view.blendingMode = .withinWindow
-        return view
-    }
+struct TreeViewItemCell: View {
+    @Environment(\.colorScheme) var colorScheme
+    let id: String
+    let workspaceId: String
+    @State var title: String
+    @State var selected: Bool
+    @State private var editable: Bool = false
+    let deleteDocument: (_ workspaceId: String, _ documentId: String) -> ()
     
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
+    @ViewBuilder func textOrTextField() -> some View {
+        HStack {
+            if editable {
+                CheckmarkView()
+                    .onTapGesture {
+                        editable = false
+                    }
+                TextField("", text: $title)
+            } else {
+                BulletView()
+                    .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                Text(title)
+            }
+        }
     }
-}
 
-#else
-
-struct UIEffectView: UIViewRepresentable {
-    typealias UIViewType = UIVisualEffectView
-    
-    func makeUIView(context: Context) -> UIVisualEffectView {
-        let view = UIVisualEffectView()
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-    }
-}
-
-#endif
-
-struct EffectView: View {
     var body: some View {
-        #if os(macOS)
-        NSEffectView()
-        #else
-        UIEffectView()
-        #endif
+        ZStack(alignment: .leading) {
+            EffectView()
+            if selected {
+                self.textOrTextField()
+                    .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                    .overlay {
+                        Rectangle()
+                            .foregroundColor(colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1) : Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
+                            .cornerRadius(4)
+                    }
+                    .contextMenu {
+                        Button {
+                            editable = true
+                            selected = false
+                        } label: {
+                            Text("Rename")
+                        }
+                        Button {
+                            print("Delete document: \(id)")
+                            deleteDocument(workspaceId, id)
+                        } label: {
+                            Text("Delete document")
+                        }
+                    }
+            } else {
+                self.textOrTextField()
+                    .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                    .contextMenu {
+                        Button {
+                            editable = true
+                        } label: {
+                            Text("Rename")
+                        }
+                        Button {
+                            print("Delete document: \(id)")
+                            deleteDocument(workspaceId, id)
+                        } label: {
+                            Text("Delete document")
+                        }
+                    }
+            }
+            
+        }
+        
+        
     }
+    
 }
 
 struct TreeViewItem: View, Identifiable {
@@ -67,19 +107,13 @@ struct TreeViewItem: View, Identifiable {
     @State private var toggle = false
     let id: String
     let title: String
+    let addDocument: (String) -> ()
+    let deleteDocument: (_ workspaceId: String, _ documentId: String) -> ()
+    let deleteWorkspace: (_ id: String) -> ()
     let documents: [Title]
     
     func innerCell(title: Title) -> some View {
-        ZStack(alignment: .leading) {
-            EffectView()
-            HStack {
-                BulletView()
-                    .padding(Dimensions.rowPadding.rawValue)
-                Text(title.value)
-                    .padding(Dimensions.rowPadding.rawValue)
-            }
-        }
-        
+        TreeViewItemCell(id: title.id, workspaceId: id, title: title.value, selected: title.selected, deleteDocument: deleteDocument)
     }
         
     var body: some View {
@@ -89,23 +123,30 @@ struct TreeViewItem: View, Identifiable {
                 HStack {
                     if toggle {
                         Arrow()
-                            .frame(width: Dimensions.arrowWidthHeight.rawValue, height: Dimensions.arrowWidthHeight.rawValue)
+                            .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
                             .foregroundColor(color)
                             .rotationEffect(Angle(degrees: 90))
                     } else {
                         Arrow()
-                            .frame(width: Dimensions.arrowWidthHeight.rawValue, height: Dimensions.arrowWidthHeight.rawValue)
+                            .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
                             .foregroundColor(color)
                     }
                     FileIconView()
-                        .padding(Dimensions.rowPadding.rawValue)
+                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
                     Text(title)
                         .bold()
-                        .padding(Dimensions.rowPadding.rawValue)
+                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
                 }
-                
-                .padding(Dimensions.rowPadding.rawValue)
+                .padding(TreeViewItemDimensions.rowPadding.rawValue)
   
+            }
+            .contextMenu {
+                Button {
+                    print("Delete workspace \(id)")
+                    deleteWorkspace(id)
+                } label: {
+                    Text("Delete workspace")
+                }
             }
             .onTapGesture {
                 toggle = !toggle
@@ -117,28 +158,11 @@ struct TreeViewItem: View, Identifiable {
             VStack(alignment: .leading) {
                 ForEach(documents) { title in
                     if title.selected {
-                        if colorScheme == .dark {
-                            self.innerCell(title: title)
-                                .overlay {
-                                    Rectangle()
-                                        .foregroundColor(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1))
-                                        .cornerRadius(4)
-                                }
-                                .onTapGesture {
-                                    treeViewModel.closure(self.id, title.id)
-                                }
-                        } else {
-                            self.innerCell(title: title)
-                                .overlay {
-                                    Rectangle()
-                                        .foregroundColor(Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
-                                        .cornerRadius(4)
-                                }
-                                .onTapGesture {
-                                    treeViewModel.closure(self.id, title.id)
-                                }
-                        }
-                        
+                        self.innerCell(title: title)
+
+                            .onTapGesture {
+                                treeViewModel.closure(self.id, title.id)
+                            }
                     } else {
                         self.innerCell(title: title)
                             .onTapGesture {
@@ -146,15 +170,14 @@ struct TreeViewItem: View, Identifiable {
                             }
                     }
                 }
+                TreeViewAddView()
+                    .padding(.top, 10)
+                    .onTapGesture {
+                        addDocument(id)
+                    }
             }
             .padding([.leading], 40)
         }
 
-    }
-}
-
-struct TreeViewItem_Previews: PreviewProvider {
-    static var previews: some View {
-        TreeViewItem(id: "123", title: "Testing title", documents: [Title(id: "123", value: "Title 1", selected: false), Title(id: "321", value: "Title 2", selected: true)])
     }
 }

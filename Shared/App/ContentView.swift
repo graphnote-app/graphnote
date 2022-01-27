@@ -9,16 +9,6 @@ import SwiftUI
 import CoreData
 import SwiftyJSON
 
-#if os(macOS)
-let darkBackgroundColor = Color(NSColor.controlBackgroundColor)
-#else
-let darkBackgroundColor = Color(red: 30 / 255.0, green: 30 / 255.0, blue: 30 / 255.0, opacity: 1.0)
-#endif
-
-let lightBackgroundColor = Color.white
-
-let treeWidth: CGFloat = 250
-let mobileTreeWidth: CGFloat = 275
 fileprivate let documentWidth: CGFloat = 800
 fileprivate let treeLayourPriority: CGFloat = 100
 
@@ -50,14 +40,14 @@ struct ContentView: View {
         self._workspaces = FetchRequest(
             entity: Workspace.entity(),
             sortDescriptors: [
-                
+                NSSortDescriptor(key: "title", ascending: true)
             ]
         )
         
 //        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Workspace.fetchRequest()
 //        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 //        try! self.moc.execute(deleteRequest)
-
+//
 //        let workspaceTitles = [
 //            "SwiftBook",
 //            "DarkTorch",
@@ -88,14 +78,58 @@ struct ContentView: View {
 //        try! moc.save()
     }
     
+    func addWorkspace() {
+        let workspace = Workspace(context: moc)
+        workspace.id = UUID()
+        workspace.title = ""
+        
+        try? moc.save()
+    }
+    
+    func addDocument(workspaceId: String) {
+        if let workspace = workspaces.filter({ $0.id!.uuidString == workspaceId }).first {
+            let document = Document(context: moc)
+            document.id = UUID()
+            document.title = ""
+            document.workspace = workspace
+            
+            try? moc.save()
+        }
+    }
+    
+    func deleteDocument(workspaceId: String, documentId: String) {
+        if let workspace = workspaces.filter({ $0.id!.uuidString == workspaceId }).first {
+            let items = workspace.mutableSetValue(forKey: "documents")
+            
+            if let documents = items.allObjects as? [Document], let document = documents.filter({ $0.id!.uuidString == documentId }).first {
+                let documentManagedObject = document as NSManagedObject
+                moc.delete(documentManagedObject)
+                
+                try? moc.save()
+            }
+        }
+    }
+    
+    func deleteWorkspace(id: String) {
+        if let workspace = workspaces.filter({ $0.id!.uuidString == id }).first {
+            let workspaceManagedObject = workspace as NSManagedObject
+            moc.delete(workspaceManagedObject)
+            
+            try? moc.save()
+        }
+    }
+    
     var body: some View {
         let items = workspaces.map { workspace in
             TreeViewItem(
                 id: workspace.id!.uuidString,
                 title: workspace.title!,
+                addDocument: addDocument,
+                deleteDocument: deleteDocument,
+                deleteWorkspace: deleteWorkspace,
                 documents: (workspace.documents?.allObjects as? [Document])?.map {
                     Title(id: $0.id!.uuidString, value: $0.title!, selected: workspace.id!.uuidString == selected.workspaceId && $0.id!.uuidString == selected.documentId)
-                } ?? []
+                }.sorted() ?? []
             )
             
         }
@@ -105,7 +139,7 @@ struct ContentView: View {
                 #if os(macOS)
                 ZStack() {
                     EffectView()
-                    TreeView(items: items) { treeViewItemId, documentId in
+                    TreeView(items: items, addWorkspace: addWorkspace) { treeViewItemId, documentId in
                         selected = (treeViewItemId, documentId)
                     }
                         .padding()
@@ -116,7 +150,7 @@ struct ContentView: View {
                 #else
                 ZStack() {
                     EffectView()
-                    TreeView(items: items) { treeViewItemId, documentId in
+                    TreeView(items: items, addWorkspace: addWorkspace) { treeViewItemId, documentId in
                         selected = (treeViewItemId, documentId)
                     }
                         .layoutPriority(treeLayourPriority)
