@@ -27,6 +27,7 @@ struct Title: Identifiable, Comparable {
 
 struct TreeViewItemCell: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.managedObjectContext) var moc
     let id: String
     let workspaceId: String
     @State var title: String
@@ -42,6 +43,19 @@ struct TreeViewItemCell: View {
                         editable = false
                     }
                 TextField("", text: $title)
+                    .onChange(of: title) { newValue in
+                        
+                        let entity = NSEntityDescription.entity(forEntityName: "Document", in: moc)
+                        let request = NSFetchRequest<NSFetchRequestResult>()
+                        request.entity = entity
+                        let predicate = NSPredicate(format: "(id = %@)", id)
+                        request.predicate = predicate
+                        if let results = try? moc.fetch(request), let objectUpdate = results.first as? NSManagedObject {
+                            objectUpdate.setValue(title, forKey: "title")
+                            print(objectUpdate)
+                            try? moc.save()
+                        }
+                    }
             } else {
                 BulletView()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
@@ -103,10 +117,12 @@ struct TreeViewItemCell: View {
 struct TreeViewItem: View, Identifiable {
     @EnvironmentObject var treeViewModel: TreeViewModel
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.managedObjectContext) var moc
     
     @State private var toggle = false
+    @State private var editable = false
     let id: String
-    let title: String
+    @State var title: String
     let addDocument: (String) -> ()
     let deleteDocument: (_ workspaceId: String, _ documentId: String) -> ()
     let deleteWorkspace: (_ id: String) -> ()
@@ -131,16 +147,46 @@ struct TreeViewItem: View, Identifiable {
                             .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
                             .foregroundColor(color)
                     }
-                    FileIconView()
-                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                    Text(title)
-                        .bold()
-                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                    
+                    
+                    if editable {
+                        CheckmarkView()
+                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                            .onTapGesture {
+                                editable = false
+                            }
+                        TextField("", text: $title)
+                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                            .onChange(of: title) { newValue in
+                                let entity = NSEntityDescription.entity(forEntityName: "Workspace", in: moc)
+                                let request = NSFetchRequest<NSFetchRequestResult>()
+                                request.entity = entity
+                                let predicate = NSPredicate(format: "(id = %@)", id)
+                                request.predicate = predicate
+                                if let results = try? moc.fetch(request), let objectUpdate = results.first as? NSManagedObject {
+                                    objectUpdate.setValue(title, forKey: "title")
+                                    print(objectUpdate)
+                                    try? moc.save()
+                                }
+                            }
+                    } else {
+                        FileIconView()
+                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                        Text(title)
+                            .bold()
+                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                    }
+                    
                 }
                 .padding(TreeViewItemDimensions.rowPadding.rawValue)
   
             }
             .contextMenu {
+                Button {
+                    editable = true
+                } label: {
+                    Text("Rename workspace")
+                }
                 Button {
                     print("Delete workspace \(id)")
                     deleteWorkspace(id)

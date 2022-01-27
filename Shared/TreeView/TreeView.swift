@@ -28,9 +28,6 @@ struct TreeView: View {
                 #if os(iOS)
                 Spacer()
                     .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
-                #else
-          
-          
                 #endif
                 VStack(alignment: .leading) {
                     ForEach(items) { item in
