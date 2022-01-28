@@ -18,6 +18,8 @@ fileprivate let treeLayourPriority: CGFloat = 100
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     let moc: NSManagedObjectContext
+    @State private var newWorkspaceId = ""
+    @State private var newDocumentId = ""
     @State private var selected: (workspaceId: String, documentId: String) = ("", "")
     @State private var open: Bool = true
     @FetchRequest var workspaces: FetchedResults<Workspace>
@@ -83,6 +85,8 @@ struct ContentView: View {
         workspace.id = UUID()
         workspace.title = ""
         
+        self.newWorkspaceId = workspace.id!.uuidString
+        
         try? moc.save()
     }
     
@@ -92,6 +96,8 @@ struct ContentView: View {
             document.id = UUID()
             document.title = ""
             document.workspace = workspace
+            
+            newDocumentId = document.id!.uuidString
             
             try? moc.save()
         }
@@ -119,9 +125,15 @@ struct ContentView: View {
         }
     }
     
+    func setSelectedDocument(documentId: String, workspaceId: String) {
+        selected = (workspaceId: workspaceId, documentId: documentId)
+    }
+    
     var body: some View {
         let items = workspaces.map { workspace in
             TreeViewItem(
+                editable: workspace.id!.uuidString == self.newWorkspaceId,
+                newDocumentId: newDocumentId,
                 id: workspace.id!.uuidString,
                 title: workspace.title!,
                 addDocument: addDocument,
@@ -129,7 +141,12 @@ struct ContentView: View {
                 deleteWorkspace: deleteWorkspace,
                 documents: (workspace.documents?.allObjects as? [Document])?.map {
                     Title(id: $0.id!.uuidString, value: $0.title!, selected: workspace.id!.uuidString == selected.workspaceId && $0.id!.uuidString == selected.documentId)
-                }.sorted() ?? []
+                }.sorted() ?? [],
+                clearNewIDCallback: {
+                    newDocumentId = ""
+                    newWorkspaceId = ""
+                },
+                setSelectedDocument: setSelectedDocument
             )
             
         }

@@ -26,6 +26,10 @@ struct Title: Identifiable, Comparable {
     let selected: Bool
 }
 
+enum FocusField: Hashable {
+   case field
+}
+
 struct TreeViewItemCell: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var moc
@@ -33,17 +37,35 @@ struct TreeViewItemCell: View {
     let workspaceId: String
     @State var title: String
     @State var selected: Bool
-    @State private var editable: Bool = false
+    @State var editable: Bool
+    @FocusState private var focusedField: FocusField?
     let deleteDocument: (_ workspaceId: String, _ documentId: String) -> ()
+    let clearNewIDCallback: () -> ()
+    let setSelectedDocument: (_ documentId: String, _ workspaceId: String) -> ()
     
     @ViewBuilder func textOrTextField() -> some View {
         HStack {
             if editable {
                 CheckmarkView()
                     .onTapGesture {
-                        editable = false
+                       editable = false
                     }
                 TextField("", text: $title)
+                    .onSubmit {
+                        editable = false
+                        focusedField = nil
+                        clearNewIDCallback()
+                        
+                        setSelectedDocument(id, workspaceId)
+                        
+                    }
+                    .focused($focusedField, equals: .field)
+                    .onAppear {
+                        print("onAppear")
+                        if editable {
+                            focusedField = .field
+                        }
+                    }
                     .onChange(of: title) { newValue in
                         
                         let entity = NSEntityDescription.entity(forEntityName: "Document", in: moc)
@@ -121,16 +143,20 @@ struct TreeViewItem: View, Identifiable {
     @Environment(\.managedObjectContext) var moc
     
     @State private var toggle = false
-    @State private var editable = false
+    @FocusState private var focusedField: FocusField?
+    @State var editable: Bool
+    var newDocumentId: String
     let id: String
     @State var title: String
     let addDocument: (String) -> ()
     let deleteDocument: (_ workspaceId: String, _ documentId: String) -> ()
     let deleteWorkspace: (_ id: String) -> ()
     let documents: [Title]
+    let clearNewIDCallback: () -> ()
+    let setSelectedDocument: (_ documentId: String, _ workspaceId: String) -> ()
     
     func innerCell(title: Title) -> some View {
-        TreeViewItemCell(id: title.id, workspaceId: id, title: title.value, selected: title.selected, deleteDocument: deleteDocument)
+        TreeViewItemCell(id: title.id, workspaceId: id, title: title.value, selected: title.selected, editable: title.id == newDocumentId, deleteDocument: deleteDocument, clearNewIDCallback: clearNewIDCallback, setSelectedDocument: setSelectedDocument)
     }
         
     var body: some View {
@@ -157,6 +183,21 @@ struct TreeViewItem: View, Identifiable {
                                 editable = false
                             }
                         TextField("", text: $title)
+                            .onSubmit {
+                                editable = false
+                                focusedField = nil
+                                clearNewIDCallback()
+                                
+                                if let document = documents.first {
+                                    setSelectedDocument(document.id, id)
+                                }
+                            }
+                            .focused($focusedField, equals: .field)
+                            .onAppear {
+                                if editable {
+                                    focusedField = .field
+                                }
+                            }
                             .padding(TreeViewItemDimensions.rowPadding.rawValue)
                             .onChange(of: title) { newValue in
                                 let entity = NSEntityDescription.entity(forEntityName: "Workspace", in: moc)
