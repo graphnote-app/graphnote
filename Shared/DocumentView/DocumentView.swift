@@ -16,9 +16,9 @@ fileprivate let toolbarHeight: CGFloat = 28
 
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
-    let title: String
-    let workspaceTitle: String
-    let selected: (workspaceId: String, documentId: String)
+    var title: Binding<String>
+    var workspaceTitle: Binding<String>
+    let selected: SelectedDocument
     
     var open: Binding<Bool>
     
@@ -35,20 +35,22 @@ struct DocumentView: View {
             ScrollView(showsIndicators: true) {
                 #if os(macOS)
 
-                VStack(alignment: .leading, spacing: pad) {
-                    HStack {
+                VStack(alignment: .center, spacing: pad) {
+                    HStack() {
                         VStack(alignment: .leading) {
-                            Text(title)
+                            TextField("", text: title)
                                 .font(.largeTitle)
+                                .textFieldStyle(.plain)
                             Spacer()
                                 .frame(height: 20)
-                            Text(workspaceTitle)
+                            TextField("", text: workspaceTitle)
                                 .font(.headline)
+                                .textFieldStyle(.plain)
                         }
                             .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
                             .padding(open.wrappedValue ? .top : [], pad)
                             .foregroundColor(.primary)
-                    }
+                    }.frame(width: maxBlockWidth)
                     HStack {
                         Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
                             .font(.body)
@@ -65,11 +67,11 @@ struct DocumentView: View {
                 VStack(alignment: .leading, spacing: pad) {
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(title)
+                            Text(title.wrappedValue)
                                 .font(.largeTitle)
                             Spacer()
                                 .frame(height: 20)
-                            Text(workspaceTitle)
+                            Text(workspaceTitle.wrappedValue)
                                 .font(.headline)
                         }
 //                            .padding(open.wrappedValue ? pad / 2 : pad)

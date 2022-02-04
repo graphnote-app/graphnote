@@ -22,8 +22,9 @@ struct Title: Identifiable, Comparable {
     }
     
     let id: String
-    let value: String
+    var value: String
     let selected: Bool
+    let createdAt: Date
 }
 
 enum FocusField: Hashable {
@@ -35,7 +36,7 @@ struct TreeViewItemCell: View {
     @Environment(\.managedObjectContext) var moc
     let id: String
     let workspaceId: String
-    @State var title: String
+    var title: Binding<String>
     @State var selected: Bool
     @State var editable: Bool
     @FocusState private var focusedField: FocusField?
@@ -50,7 +51,7 @@ struct TreeViewItemCell: View {
                     .onTapGesture {
                        editable = false
                     }
-                TextField("", text: $title)
+                TextField("", text: title)
                     .onSubmit {
                         editable = false
                         focusedField = nil
@@ -66,7 +67,7 @@ struct TreeViewItemCell: View {
                             focusedField = .field
                         }
                     }
-                    .onChange(of: title) { newValue in
+                    .onChange(of: title.wrappedValue) { newValue in
                         
                         let entity = NSEntityDescription.entity(forEntityName: "Document", in: moc)
                         let request = NSFetchRequest<NSFetchRequestResult>()
@@ -82,7 +83,10 @@ struct TreeViewItemCell: View {
             } else {
                 BulletView()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                Text(title)
+                HStack {
+                    Text(title.wrappedValue)
+                    Spacer()
+                }.frame(width: 130)
             }
         }
     }
@@ -156,7 +160,7 @@ struct TreeViewItem: View, Identifiable {
     let setSelectedDocument: (_ documentId: String, _ workspaceId: String) -> ()
     
     func innerCell(title: Title) -> some View {
-        TreeViewItemCell(id: title.id, workspaceId: id, title: title.value, selected: title.selected, editable: title.id == newDocumentId, deleteDocument: deleteDocument, clearNewIDCallback: clearNewIDCallback, setSelectedDocument: setSelectedDocument)
+        TreeViewItemCell(id: title.id, workspaceId: id, title: .constant(title.value), selected: title.selected, editable: title.id == newDocumentId, deleteDocument: deleteDocument, clearNewIDCallback: clearNewIDCallback, setSelectedDocument: setSelectedDocument)
     }
         
     var body: some View {

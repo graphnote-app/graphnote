@@ -15,14 +15,26 @@ fileprivate let treeLayourPriority: CGFloat = 100
 //let jsonString = "[{\"id\":\"123\", \"title\": \"Kanception\", \"documents\": [{\"id\": \"321\", \"title\": \"Design Doc\", \"selected\": false}]}, {\"id\":\"234\", \"title\": \"Graphnote\", \"documents\": [{\"id\": \"432\", \"title\": \"Project Kickoff\", \"selected\": false}]},{\"id\":\"345\", \"title\": \"SwiftBook\", \"documents\": [{\"id\": \"543\", \"title\": \"MVP\", \"selected\": false}]},{\"id\":\"456\", \"title\": \"DarkTorch\", \"documents\": [{\"id\": \"543\", \"title\": \"Design Doc\", \"selected\": false}]},]"
 //
 
+struct SelectedDocument: Equatable {
+    let workspaceId: String
+    let documentId: String
+}
+
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     let moc: NSManagedObjectContext
+    
+    @EnvironmentObject var dataController: DataController
     @State private var newWorkspaceId = ""
     @State private var newDocumentId = ""
-    @State private var selected: (workspaceId: String, documentId: String) = ("", "")
+    @State private var selected = SelectedDocument(workspaceId: "", documentId: "")
     @State private var open: Bool = true
     @FetchRequest var workspaces: FetchedResults<Workspace>
+    
+    @State private var title: String = ""
+    @State private var workspaceTitle: String = ""
+    
+//    @State private var titles: [String: String] = [:]
 
     init(moc: NSManagedObjectContext) {
         self.moc = moc
@@ -42,9 +54,15 @@ struct ContentView: View {
         self._workspaces = FetchRequest(
             entity: Workspace.entity(),
             sortDescriptors: [
-                NSSortDescriptor(key: "title", ascending: true)
+                NSSortDescriptor(key: "createdAt", ascending: true)
             ]
         )
+        
+//        if let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
+//            let url = baseURL.appendingPathComponent("Graphnote/Graphnote.sqlite")
+//            try! FileManager.default.removeItem(at: url)
+//        }
+//
         
 //        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Workspace.fetchRequest()
 //        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -63,14 +81,20 @@ struct ContentView: View {
 //            "Technical Specification",
 //        ]
 //
+//
 //        for title in workspaceTitles {
 //            let workspace = Workspace(context: moc)
+//            let createdAt = Date.now
+//            workspace.createdAt = createdAt
+//            workspace.modifiedAt = createdAt
 //            workspace.id = UUID()
 //            workspace.title = title
 //
 //            for docTitle in documentTitles {
 //                let document = Document(context: moc)
 //                document.id = UUID()
+//                document.createdAt = createdAt
+//                document.modifiedAt = createdAt
 //                document.title = docTitle
 //                document.workspace = workspace
 //            }
@@ -81,9 +105,12 @@ struct ContentView: View {
     }
     
     func addWorkspace() {
+        let now = Date.now
         let workspace = Workspace(context: moc)
         workspace.id = UUID()
         workspace.title = ""
+        workspace.createdAt = now
+        workspace.modifiedAt = now
         
         self.newWorkspaceId = workspace.id!.uuidString
         
@@ -92,10 +119,13 @@ struct ContentView: View {
     
     func addDocument(workspaceId: String) {
         if let workspace = workspaces.filter({ $0.id!.uuidString == workspaceId }).first {
+            let now = Date.now
             let document = Document(context: moc)
             document.id = UUID()
             document.title = ""
             document.workspace = workspace
+            document.createdAt = now
+            document.modifiedAt = now
             
             newDocumentId = document.id!.uuidString
             
@@ -126,7 +156,7 @@ struct ContentView: View {
     }
     
     func setSelectedDocument(documentId: String, workspaceId: String) {
-        selected = (workspaceId: workspaceId, documentId: documentId)
+        selected = SelectedDocument(workspaceId: workspaceId, documentId: documentId)
     }
     
     var body: some View {
@@ -140,8 +170,10 @@ struct ContentView: View {
                 deleteDocument: deleteDocument,
                 deleteWorkspace: deleteWorkspace,
                 documents: (workspace.documents?.allObjects as? [Document])?.map {
-                    Title(id: $0.id!.uuidString, value: $0.title!, selected: workspace.id!.uuidString == selected.workspaceId && $0.id!.uuidString == selected.documentId)
-                }.sorted() ?? [],
+                    Title(id: $0.id!.uuidString, value: $0.title!, selected: workspace.id!.uuidString == selected.workspaceId && $0.id!.uuidString == selected.documentId, createdAt: $0.createdAt!)
+                }.sorted {
+                    $0.createdAt > $1.createdAt
+                } ?? [],
                 clearNewIDCallback: {
                     newDocumentId = ""
                     newWorkspaceId = ""
@@ -157,7 +189,7 @@ struct ContentView: View {
                 ZStack() {
                     EffectView()
                     TreeView(items: items, addWorkspace: addWorkspace) { treeViewItemId, documentId in
-                        selected = (treeViewItemId, documentId)
+                        selected = SelectedDocument(workspaceId: treeViewItemId, documentId: documentId)
                     }
                         .padding()
                        
@@ -168,7 +200,7 @@ struct ContentView: View {
                 ZStack() {
                     EffectView()
                     TreeView(items: items, addWorkspace: addWorkspace) { treeViewItemId, documentId in
-                        selected = (treeViewItemId, documentId)
+                        selected = SelectedDocument(workspaceId: treeViewItemId, documentId: documentId)
                     }
                         .layoutPriority(treeLayourPriority)
                         
@@ -177,18 +209,37 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea([.top, .bottom])
                 #endif
             }
-            
-
-            if let datum = (workspaces.filter { $0.id?.uuidString == selected.workspaceId }.first?.documents?.allObjects as? [Document])?.filter { doc in doc.id?.uuidString == selected.documentId }.first {
-                DocumentView(title: datum.title!, workspaceTitle: datum.workspace!.title!, selected: selected, open: $open)
-            }
+    
+            DocumentView(title: $title, workspaceTitle: $workspaceTitle, selected: selected, open: $open)
+                .onChange(of: selected, perform: { newValue in
+                    if let currentDatum = (workspaces.filter({ $0.id?.uuidString == newValue.workspaceId }).first?.documents?.allObjects as? [Document])?.filter({ doc in doc.id?.uuidString == newValue.documentId }).first {
+                    
+                        title = currentDatum.title!
+                        workspaceTitle = currentDatum.workspace!.title!
+                    }
+                    
+                    
+                })
+                .onChange(of: title) { newValue in
+                    if let workspace = workspaces.filter({ $0.id?.uuidString == selected.workspaceId }).first {
+                        if let document = (workspace.documents?.allObjects as? [Document])?.filter({ $0.id?.uuidString == selected.documentId }).first {
+                            document.title = newValue
+                            // Do this to trick SwiftUI into re-rendering the TreeView
+                            workspace.title = workspace.title
+                            try? moc.save()
+                            
+                            
+                        }
+                        
+                    }
+                }
             
         }.onAppear {
+
             if workspaces.count > 0 {
                 if let workspace = workspaces.first, let document = (workspace.documents!.allObjects as? [Document])?.first {
-                    selected = (workspaceId: workspace.id!.uuidString, document.id!.uuidString)
+                    selected = SelectedDocument(workspaceId: workspace.id!.uuidString, documentId: document.id!.uuidString)
                 }
-                
             }
         }
     }

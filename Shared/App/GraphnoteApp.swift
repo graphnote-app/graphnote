@@ -23,6 +23,7 @@ struct GraphnoteApp: App {
             ContentView(moc: dataController.container.viewContext)
                 .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(OrientationInfo())
+                .environmentObject(dataController)
         }.frame(
             minWidth: MacOSDimensions.windowMinWidth.rawValue,
             idealWidth: MacOSDimensions.windowMinWidth.rawValue,
@@ -34,6 +35,7 @@ struct GraphnoteApp: App {
             ContentView(moc: dataController.container.viewContext)
                 .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(OrientationInfo())
+                .environmentObject(dataController)
         }
         #endif
     }

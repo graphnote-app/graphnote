@@ -22,17 +22,16 @@ struct TreeView: View {
     let closure: (_ treeViewItemId: String, _ documentId: String) -> ()
     
     var body: some View {
-        ZStack {
+        ZStack() {
             EffectView()
             ScrollView(.vertical, showsIndicators: false) {
                 #if os(iOS)
                 Spacer()
                     .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
-                #endif
+               
                 VStack(alignment: .leading) {
                     ForEach(items) { item in
                         item.environmentObject(TreeViewModel(closure: closure))
-                            
                     }
                     TreeViewAddView()
                         .padding(.top, 20)
@@ -41,6 +40,19 @@ struct TreeView: View {
                         }
                 }
                 .padding()
+                #else
+                VStack(alignment: .leading) {
+                    ForEach(items) { item in
+                        item.environmentObject(TreeViewModel(closure: closure))
+                    }
+                    TreeViewAddView()
+                        .padding(.top, 20)
+                        .onTapGesture {
+                            addWorkspace()
+                        }
+                }
+                .padding([.top, .bottom])
+                #endif
             }
         }
     }
