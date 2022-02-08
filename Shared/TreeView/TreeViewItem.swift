@@ -15,18 +15,6 @@ enum TreeViewItemDimensions: CGFloat {
 
 fileprivate let color = Color.gray
 
-struct Title: Identifiable, Comparable {
-    
-    static func < (lhs: Title, rhs: Title) -> Bool {
-        return lhs.value < rhs.value
-    }
-    
-    let id: String
-    var value: String
-    let selected: Bool
-    let createdAt: Date
-}
-
 enum FocusField: Hashable {
    case field
 }
@@ -34,15 +22,26 @@ enum FocusField: Hashable {
 struct TreeViewItemCell: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var moc
-    let id: String
-    let workspaceId: String
-    var title: Binding<String>
+    let title: Binding<String>
+    let id: UUID
+    let workspaceId: UUID
     @State var selected: Bool
     @State var editable: Bool
     @FocusState private var focusedField: FocusField?
-    let deleteDocument: (_ workspaceId: String, _ documentId: String) -> ()
+    let deleteDocument: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     let clearNewIDCallback: () -> ()
-    let setSelectedDocument: (_ documentId: String, _ workspaceId: String) -> ()
+    let setSelectedDocument: (_ documentId: UUID, _ workspaceId: UUID) -> ()
+    
+    init(title: Binding<String>, id: UUID, workspaceId: UUID, selected: Bool, editable: Bool, deleteDocument: @escaping (_ workspaceId: UUID, _ documentId: UUID) -> (), clearNewIDCallback: @escaping () -> (), setSelectedDocument: @escaping (_ documentId: UUID, _ workspaceId: UUID) -> ()) {
+        self.title = title
+        self.id = id
+        self.workspaceId = workspaceId
+        self._selected = State(wrappedValue: selected)
+        self._editable = State(wrappedValue: editable)
+        self.deleteDocument = deleteDocument
+        self.clearNewIDCallback = clearNewIDCallback
+        self.setSelectedDocument = setSelectedDocument
+    }
     
     @ViewBuilder func textOrTextField() -> some View {
         HStack {
@@ -72,7 +71,7 @@ struct TreeViewItemCell: View {
                         let entity = NSEntityDescription.entity(forEntityName: "Document", in: moc)
                         let request = NSFetchRequest<NSFetchRequestResult>()
                         request.entity = entity
-                        let predicate = NSPredicate(format: "(id = %@)", id)
+                        let predicate = NSPredicate(format: "(id = %@)", id.uuidString)
                         request.predicate = predicate
                         if let results = try? moc.fetch(request), let objectUpdate = results.first as? NSManagedObject {
                             objectUpdate.setValue(title, forKey: "title")
@@ -94,6 +93,7 @@ struct TreeViewItemCell: View {
     var body: some View {
         ZStack(alignment: .leading) {
             EffectView()
+        
             if selected {
                 self.textOrTextField()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
@@ -133,12 +133,8 @@ struct TreeViewItemCell: View {
                         }
                     }
             }
-            
         }
-        
-        
     }
-    
 }
 
 struct TreeViewItem: View, Identifiable {
@@ -149,18 +145,36 @@ struct TreeViewItem: View, Identifiable {
     @State private var toggle = false
     @FocusState private var focusedField: FocusField?
     @State var editable: Bool
-    var newDocumentId: String
-    let id: String
+    @StateObject private var workspaces = WorkspacesModel()
+    var newDocumentId: UUID?
+    let id: UUID
     @State var title: String
-    let addDocument: (String) -> ()
-    let deleteDocument: (_ workspaceId: String, _ documentId: String) -> ()
-    let deleteWorkspace: (_ id: String) -> ()
-    let documents: [Title]
+    let addDocument: (UUID) -> ()
+    let deleteDocument: (_ workspaceId: UUID, _ documentId: UUID) -> ()
+    let deleteWorkspace: (_ id: UUID) -> ()
     let clearNewIDCallback: () -> ()
-    let setSelectedDocument: (_ documentId: String, _ workspaceId: String) -> ()
+    let setSelectedDocument: (_ documentId: UUID, _ workspaceId: UUID) -> ()
+    @State var selected: SelectedDocument
     
-    func innerCell(title: Title) -> some View {
-        TreeViewItemCell(id: title.id, workspaceId: id, title: .constant(title.value), selected: title.selected, editable: title.id == newDocumentId, deleteDocument: deleteDocument, clearNewIDCallback: clearNewIDCallback, setSelectedDocument: setSelectedDocument)
+    init(editable: Bool, newDocumentId: UUID?, id: UUID, title: String, addDocument: @escaping (UUID) -> (), deleteDocument: @escaping (_ workspaceId: UUID, _ documentId: UUID) -> (), deleteWorkspace: @escaping (_ id: UUID) -> (), clearNewIDCallback: @escaping () -> (), setSelectedDocument: @escaping (_ documentId: UUID, _ workspaceId: UUID) -> (), selected: SelectedDocument) {
+        self._editable = State(initialValue: editable)
+        self.newDocumentId = newDocumentId
+        self.id = id
+        self._title = State(initialValue: title)
+        self.addDocument = addDocument
+        self.deleteDocument = deleteDocument
+        self.deleteWorkspace = deleteWorkspace
+        self.clearNewIDCallback = clearNewIDCallback
+        self.setSelectedDocument = setSelectedDocument
+        self._selected = State(initialValue: selected)
+    }
+    
+    func innerCell(doc: DocumentModel) -> some View {
+        TreeViewItemCell(title: .constant(doc.title), id: doc.id, workspaceId: id, selected: false, editable: doc.id == newDocumentId, deleteDocument: deleteDocument, clearNewIDCallback: clearNewIDCallback, setSelectedDocument: setSelectedDocument)
+    }
+    
+    var documents: [DocumentModel]? {
+        return workspaces.items.filter({$0.id == id}).first?.documents.items
     }
         
     var body: some View {
@@ -192,7 +206,7 @@ struct TreeViewItem: View, Identifiable {
                                 focusedField = nil
                                 clearNewIDCallback()
                                 
-                                if let document = documents.first {
+                                if let document = documents?.first {
                                     setSelectedDocument(document.id, id)
                                 }
                             }
@@ -207,7 +221,7 @@ struct TreeViewItem: View, Identifiable {
                                 let entity = NSEntityDescription.entity(forEntityName: "Workspace", in: moc)
                                 let request = NSFetchRequest<NSFetchRequestResult>()
                                 request.entity = entity
-                                let predicate = NSPredicate(format: "(id = %@)", id)
+                                let predicate = NSPredicate(format: "(id = %@)", id.uuidString)
                                 request.predicate = predicate
                                 if let results = try? moc.fetch(request), let objectUpdate = results.first as? NSManagedObject {
                                     objectUpdate.setValue(title, forKey: "title")
@@ -243,32 +257,41 @@ struct TreeViewItem: View, Identifiable {
             .onTapGesture {
                 toggle = !toggle
             }
+            .task {
+                print(selected)
+            }
+            .onChange(of: selected) { newValue in
+                print(newValue)
+            }
         }
         
         
         if toggle {
-            VStack(alignment: .leading) {
-                ForEach(documents) { title in
-                    if title.selected {
-                        self.innerCell(title: title)
-
-                            .onTapGesture {
-                                treeViewModel.closure(self.id, title.id)
-                            }
-                    } else {
-                        self.innerCell(title: title)
-                            .onTapGesture {
-                                treeViewModel.closure(self.id, title.id)
-                            }
+           
+            if let documents = documents {
+                VStack(alignment: .leading) {
+                    ForEach(0..<documents.count) { index in
+                        if documents[index].id == selected.documentId {
+                            self.innerCell(doc: documents[index])
+                                .onTapGesture {
+                                    treeViewModel.closure(self.id, documents[index].id)
+                                }
+                        } else {
+                            self.innerCell(doc: documents[index])
+                                .onTapGesture {
+                                    treeViewModel.closure(self.id, documents[index].id)
+                                }
+                        }
                     }
+                    TreeViewAddView()
+                        .padding(.top, 10)
+                        .onTapGesture {
+                            addDocument(id)
+                        }
                 }
-                TreeViewAddView()
-                    .padding(.top, 10)
-                    .onTapGesture {
-                        addDocument(id)
-                    }
+                .padding([.leading], 40)
             }
-            .padding([.leading], 40)
+            
         }
 
     }

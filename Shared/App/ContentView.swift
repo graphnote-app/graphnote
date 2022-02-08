@@ -12,12 +12,9 @@ import SwiftyJSON
 fileprivate let documentWidth: CGFloat = 800
 fileprivate let treeLayourPriority: CGFloat = 100
 
-//let jsonString = "[{\"id\":\"123\", \"title\": \"Kanception\", \"documents\": [{\"id\": \"321\", \"title\": \"Design Doc\", \"selected\": false}]}, {\"id\":\"234\", \"title\": \"Graphnote\", \"documents\": [{\"id\": \"432\", \"title\": \"Project Kickoff\", \"selected\": false}]},{\"id\":\"345\", \"title\": \"SwiftBook\", \"documents\": [{\"id\": \"543\", \"title\": \"MVP\", \"selected\": false}]},{\"id\":\"456\", \"title\": \"DarkTorch\", \"documents\": [{\"id\": \"543\", \"title\": \"Design Doc\", \"selected\": false}]},]"
-//
-
 struct SelectedDocument: Equatable {
-    let workspaceId: String
-    let documentId: String
+    let workspaceId: UUID?
+    let documentId: UUID?
 }
 
 struct ContentView: View {
@@ -25,19 +22,29 @@ struct ContentView: View {
     let moc: NSManagedObjectContext
     
     @EnvironmentObject var dataController: DataController
-    @State private var newWorkspaceId = ""
-    @State private var newDocumentId = ""
-    @State private var selected = SelectedDocument(workspaceId: "", documentId: "")
+
+    @State private var newWorkspaceId: UUID?
+    @State private var newDocumentId: UUID?
+    @State private var selected = SelectedDocument(workspaceId: nil, documentId: nil)
     @State private var open: Bool = true
-    @FetchRequest var workspaces: FetchedResults<Workspace>
+//    @FetchRequest var workspaces: FetchedResults<Workspace>
+    @StateObject private var workspacesModel = WorkspacesModel()
+    @State private var document: DocumentModel?
     
     @State private var title: String = ""
     @State private var workspaceTitle: String = ""
+    
     
 //    @State private var titles: [String: String] = [:]
 
     init(moc: NSManagedObjectContext) {
         self.moc = moc
+//        self._workspaces = FetchRequest(
+//            entity: Workspace.entity(),
+//            sortDescriptors: [
+//                NSSortDescriptor(key: "createdAt", ascending: true)
+//            ]
+//        )
         
 //        if let dataFromString = jsonString.data(using: .utf8, allowLossyConversion: false) {
 //            if let json = try? JSON(data: dataFromString) {
@@ -51,12 +58,7 @@ struct ContentView: View {
 //        }
 //
         
-        self._workspaces = FetchRequest(
-            entity: Workspace.entity(),
-            sortDescriptors: [
-                NSSortDescriptor(key: "createdAt", ascending: true)
-            ]
-        )
+ 
         
 //        if let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
 //            let url = baseURL.appendingPathComponent("Graphnote/Graphnote.sqlite")
@@ -112,73 +114,69 @@ struct ContentView: View {
         workspace.createdAt = now
         workspace.modifiedAt = now
         
-        self.newWorkspaceId = workspace.id!.uuidString
+        self.newWorkspaceId = workspace.id!
         
         try? moc.save()
     }
     
-    func addDocument(workspaceId: String) {
-        if let workspace = workspaces.filter({ $0.id!.uuidString == workspaceId }).first {
-            let now = Date.now
-            let document = Document(context: moc)
-            document.id = UUID()
-            document.title = ""
-            document.workspace = workspace
-            document.createdAt = now
-            document.modifiedAt = now
-            
-            newDocumentId = document.id!.uuidString
-            
-            try? moc.save()
-        }
+    func addDocument(workspaceId: UUID) {
+//        if let workspace = workspaces.filter({ $0.id!.uuidString == workspaceId }).first {
+//            let now = Date.now
+//            let document = Document(context: moc)
+//            document.id = UUID()
+//            document.title = ""
+//            document.workspace = workspace
+//            document.createdAt = now
+//            document.modifiedAt = now
+//
+//            newDocumentId = document.id!.uuidString
+//
+//            try? moc.save()
+//        }
+    }
+
+    func deleteDocument(workspaceId: UUID, documentId: UUID) {
+//        if let workspace = workspaces.filter({ $0.id!.uuidString == workspaceId }).first {
+//            let items = workspace.mutableSetValue(forKey: "documents")
+//
+//            if let documents = items.allObjects as? [Document], let document = documents.filter({ $0.id!.uuidString == documentId }).first {
+//                let documentManagedObject = document as NSManagedObject
+//                moc.delete(documentManagedObject)
+//
+//                try? moc.save()
+//            }
+//        }
+    }
+
+    func deleteWorkspace(id: UUID) {
+//        if let workspace = workspaces.filter({ $0.id!.uuidString == id }).first {
+//            let workspaceManagedObject = workspace as NSManagedObject
+//            moc.delete(workspaceManagedObject)
+//
+//            try? moc.save()
+//        }
     }
     
-    func deleteDocument(workspaceId: String, documentId: String) {
-        if let workspace = workspaces.filter({ $0.id!.uuidString == workspaceId }).first {
-            let items = workspace.mutableSetValue(forKey: "documents")
-            
-            if let documents = items.allObjects as? [Document], let document = documents.filter({ $0.id!.uuidString == documentId }).first {
-                let documentManagedObject = document as NSManagedObject
-                moc.delete(documentManagedObject)
-                
-                try? moc.save()
-            }
-        }
-    }
-    
-    func deleteWorkspace(id: String) {
-        if let workspace = workspaces.filter({ $0.id!.uuidString == id }).first {
-            let workspaceManagedObject = workspace as NSManagedObject
-            moc.delete(workspaceManagedObject)
-            
-            try? moc.save()
-        }
-    }
-    
-    func setSelectedDocument(documentId: String, workspaceId: String) {
+    func setSelectedDocument(documentId: UUID, workspaceId: UUID) {
         selected = SelectedDocument(workspaceId: workspaceId, documentId: documentId)
     }
     
     var body: some View {
-        let items = workspaces.map { workspace in
+        let items = workspacesModel.items.map { workspace in
             TreeViewItem(
-                editable: workspace.id!.uuidString == self.newWorkspaceId,
+                editable: workspace.id == self.newWorkspaceId,
                 newDocumentId: newDocumentId,
-                id: workspace.id!.uuidString,
-                title: workspace.title!,
+                id: workspace.id,
+                title: workspace.title,
                 addDocument: addDocument,
                 deleteDocument: deleteDocument,
                 deleteWorkspace: deleteWorkspace,
-                documents: (workspace.documents?.allObjects as? [Document])?.map {
-                    Title(id: $0.id!.uuidString, value: $0.title!, selected: workspace.id!.uuidString == selected.workspaceId && $0.id!.uuidString == selected.documentId, createdAt: $0.createdAt!)
-                }.sorted {
-                    $0.createdAt > $1.createdAt
-                } ?? [],
                 clearNewIDCallback: {
-                    newDocumentId = ""
-                    newWorkspaceId = ""
+                    self.newDocumentId = nil
+                    self.newWorkspaceId = nil
                 },
-                setSelectedDocument: setSelectedDocument
+                setSelectedDocument: setSelectedDocument,
+                selected: selected
             )
             
         }
@@ -189,7 +187,7 @@ struct ContentView: View {
                 ZStack() {
                     EffectView()
                     TreeView(items: items, addWorkspace: addWorkspace) { treeViewItemId, documentId in
-                        selected = SelectedDocument(workspaceId: treeViewItemId, documentId: documentId)
+//                        selected = SelectedDocument(workspaceId: treeViewItemId, documentId: documentId)
                     }
                         .padding()
                        
@@ -200,7 +198,7 @@ struct ContentView: View {
                 ZStack() {
                     EffectView()
                     TreeView(items: items, addWorkspace: addWorkspace) { treeViewItemId, documentId in
-                        selected = SelectedDocument(workspaceId: treeViewItemId, documentId: documentId)
+//                        selected = SelectedDocument(workspaceId: treeViewItemId, documentId: documentId)
                     }
                         .layoutPriority(treeLayourPriority)
                         
@@ -209,38 +207,40 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea([.top, .bottom])
                 #endif
             }
-    
-            DocumentView(title: $title, workspaceTitle: $workspaceTitle, selected: selected, open: $open)
-                .onChange(of: selected, perform: { newValue in
-                    if let currentDatum = (workspaces.filter({ $0.id?.uuidString == newValue.workspaceId }).first?.documents?.allObjects as? [Document])?.filter({ doc in doc.id?.uuidString == newValue.documentId }).first {
-                    
-                        title = currentDatum.title!
-                        workspaceTitle = currentDatum.workspace!.title!
-                    }
-                    
-                    
-                })
-                .onChange(of: title) { newValue in
-                    if let workspace = workspaces.filter({ $0.id?.uuidString == selected.workspaceId }).first {
-                        if let document = (workspace.documents?.allObjects as? [Document])?.filter({ $0.id?.uuidString == selected.documentId }).first {
-                            document.title = newValue
-                            // Do this to trick SwiftUI into re-rendering the TreeView
-                            workspace.title = workspace.title
-                            try? moc.save()
-                            
-                            
-                        }
-                        
-                    }
-                }
+            if let docTitle = document?.title.publisher {
+                DocumentView(title: docTitle, workspaceTitle: $workspaceTitle, selected: selected, open: $open)
+                    .onChange(of: selected, perform: { newValue in
+//                        if let workspace = workspacesModel.items.filter({$0.id == newValue.workspaceId}).first, let document = workspacesModel.items.filter({$0.id == newValue.workspaceId}).first?.documents.items.filter({$0.id == newValue.documentId}).first {
+//                            title = document.title
+//                            workspaceTitle = workspace.title
+//                            self.document = document
+//                        }
+                    })
+            }
             
-        }.onAppear {
-
-            if workspaces.count > 0 {
-                if let workspace = workspaces.first, let document = (workspace.documents!.allObjects as? [Document])?.first {
-                    selected = SelectedDocument(workspaceId: workspace.id!.uuidString, documentId: document.id!.uuidString)
+//                .onChange(of: title) { newValue in
+//                    if let workspace = workspaces.filter({ $0.id?.uuidString == selected.workspaceId }).first {
+//                        if let document = (workspace.documents?.allObjects as? [Document])?.filter({ $0.id?.uuidString == selected.documentId }).first {
+//                            document.title = newValue
+//                            // Do this to trick SwiftUI into re-rendering the TreeView
+//                            workspace.title = workspace.title
+//                            try? moc.save()
+//
+//
+//                        }
+//
+//                    }
+//                }
+            
+        }.task {
+            if workspacesModel.items.count > 0 {
+                if let workspace = workspacesModel.items.first, let document = workspace.documents.items.first {
+                    selected = SelectedDocument(workspaceId: workspace.id, documentId: document.id)
+                    print(selected)
+                    self.document = document
                 }
             }
+            
         }
     }
 }

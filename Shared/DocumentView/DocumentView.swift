@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 fileprivate let scrollWidth: CGFloat = 16
 fileprivate let pageMinHeightMultiplier = 1.3
@@ -16,7 +17,8 @@ fileprivate let toolbarHeight: CGFloat = 28
 
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
-    var title: Binding<String>
+    var title: Publishers.Sequence<String, Never>
+    @State private var localTitle = ""
     var workspaceTitle: Binding<String>
     let selected: SelectedDocument
     
@@ -38,9 +40,12 @@ struct DocumentView: View {
                 VStack(alignment: .center, spacing: pad) {
                     HStack() {
                         VStack(alignment: .leading) {
-                            TextField("", text: title)
+                            TextField("", text: $localTitle)
                                 .font(.largeTitle)
                                 .textFieldStyle(.plain)
+                                .onChange(of: title) { newValue in
+                                    localTitle = title.sequence
+                                }
                             Spacer()
                                 .frame(height: 20)
                             TextField("", text: workspaceTitle)
