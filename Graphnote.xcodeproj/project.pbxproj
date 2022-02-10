@@ -21,14 +21,14 @@
 		F81CC939279E047100A1F693 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC937279E047100A1F693 /* DocumentView.swift */; };
 		F81CC93C279E24AD00A1F693 /* NavigationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */; };
 		F81CC93D279E24AD00A1F693 /* NavigationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */; };
-		F86C9F0A27B0B91C002DD87A /* WorkspaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F0927B0B91C002DD87A /* WorkspaceModel.swift */; };
-		F86C9F0B27B0B91C002DD87A /* WorkspaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F0927B0B91C002DD87A /* WorkspaceModel.swift */; };
-		F86C9F0D27B0B975002DD87A /* DocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F0C27B0B975002DD87A /* DocumentModel.swift */; };
-		F86C9F0E27B0B975002DD87A /* DocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F0C27B0B975002DD87A /* DocumentModel.swift */; };
-		F86C9F1027B0B9CB002DD87A /* WorkspacesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F0F27B0B9CB002DD87A /* WorkspacesModel.swift */; };
-		F86C9F1127B0B9CB002DD87A /* WorkspacesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F0F27B0B9CB002DD87A /* WorkspacesModel.swift */; };
-		F86C9F1327B0B9D5002DD87A /* DocumentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F1227B0B9D5002DD87A /* DocumentsModel.swift */; };
-		F86C9F1427B0B9D5002DD87A /* DocumentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86C9F1227B0B9D5002DD87A /* DocumentsModel.swift */; };
+		F875124927B4A11500E86D57 /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
+		F875124A27B4A11500E86D57 /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
+		F875124C27B4A89D00E86D57 /* Workspaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* Workspaces.swift */; };
+		F875124D27B4A89D00E86D57 /* Workspaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* Workspaces.swift */; };
+		F875124F27B4A92400E86D57 /* Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* Documents.swift */; };
+		F875125027B4A92400E86D57 /* Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* Documents.swift */; };
+		F875125227B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */; };
+		F875125327B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */; };
 		F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F899DFF4279E770F00305AFA /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
@@ -86,10 +86,10 @@
 		F81CC933279D0ECA00A1F693 /* FileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconView.swift; sourceTree = "<group>"; };
 		F81CC937279E047100A1F693 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonView.swift; sourceTree = "<group>"; };
-		F86C9F0927B0B91C002DD87A /* WorkspaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceModel.swift; sourceTree = "<group>"; };
-		F86C9F0C27B0B975002DD87A /* DocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentModel.swift; sourceTree = "<group>"; };
-		F86C9F0F27B0B9CB002DD87A /* WorkspacesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspacesModel.swift; sourceTree = "<group>"; };
-		F86C9F1227B0B9D5002DD87A /* DocumentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsModel.swift; sourceTree = "<group>"; };
+		F875124827B4A11500E86D57 /* DocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentIdentifier.swift; sourceTree = "<group>"; };
+		F875124B27B4A89D00E86D57 /* Workspaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspaces.swift; sourceTree = "<group>"; };
+		F875124E27B4A92400E86D57 /* Documents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documents.swift; sourceTree = "<group>"; };
+		F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentObjectModel.swift; sourceTree = "<group>"; };
 		F899DFEE279E2B3800305AFA /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		F8D92884279FCEB9009CC9B9 /* Graphnote.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Graphnote.xcdatamodel; sourceTree = "<group>"; };
@@ -174,10 +174,9 @@
 			isa = PBXGroup;
 			children = (
 				F8D92887279FD05B009CC9B9 /* DataController.swift */,
-				F86C9F0F27B0B9CB002DD87A /* WorkspacesModel.swift */,
-				F86C9F0927B0B91C002DD87A /* WorkspaceModel.swift */,
-				F86C9F1227B0B9D5002DD87A /* DocumentsModel.swift */,
-				F86C9F0C27B0B975002DD87A /* DocumentModel.swift */,
+				F875124B27B4A89D00E86D57 /* Workspaces.swift */,
+				F875124E27B4A92400E86D57 /* Documents.swift */,
+				F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -196,6 +195,7 @@
 			children = (
 				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
 				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
+				F875124827B4A11500E86D57 /* DocumentIdentifier.swift */,
 				F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */,
 				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
 				F8D9289027A23CE9009CC9B9 /* Constants.swift */,
@@ -441,27 +441,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				F899DFF4279E770F00305AFA /* OrientationInfo.swift in Sources */,
+				F875124F27B4A92400E86D57 /* Documents.swift in Sources */,
 				F81CC931279D0CF700A1F693 /* BulletView.swift in Sources */,
 				F81CC93C279E24AD00A1F693 /* NavigationButtonView.swift in Sources */,
 				F8E5A71027B1EC8D001A5C43 /* LoadingView.swift in Sources */,
 				F81CC92B279D078D00A1F693 /* TreeViewItem.swift in Sources */,
+				F875124C27B4A89D00E86D57 /* Workspaces.swift in Sources */,
 				F81CC928279D06B600A1F693 /* TreeView.swift in Sources */,
+				F875124927B4A11500E86D57 /* DocumentIdentifier.swift in Sources */,
 				F81CC934279D0ECA00A1F693 /* FileIconView.swift in Sources */,
 				F8D92885279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8D9289127A23CE9009CC9B9 /* Constants.swift in Sources */,
 				F8EA409B279CFF55001F74B5 /* ContentView.swift in Sources */,
+				F875125227B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */,
 				F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
-				F86C9F0D27B0B975002DD87A /* DocumentModel.swift in Sources */,
 				F8D9288B27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
-				F86C9F1327B0B9D5002DD87A /* DocumentsModel.swift in Sources */,
 				F8D9289427A24688009CC9B9 /* CheckmarkView.swift in Sources */,
 				F81CC925279D027000A1F693 /* Arrow.swift in Sources */,
 				F8D9288E27A23C3E009CC9B9 /* EffectView.swift in Sources */,
-				F86C9F0A27B0B91C002DD87A /* WorkspaceModel.swift in Sources */,
 				F8D92888279FD05B009CC9B9 /* DataController.swift in Sources */,
 				F81CC938279E047100A1F693 /* DocumentView.swift in Sources */,
-				F86C9F1027B0B9CB002DD87A /* WorkspacesModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,27 +470,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				F899DFF5279E770F00305AFA /* OrientationInfo.swift in Sources */,
+				F875125027B4A92400E86D57 /* Documents.swift in Sources */,
 				F81CC932279D0CF700A1F693 /* BulletView.swift in Sources */,
 				F81CC93D279E24AD00A1F693 /* NavigationButtonView.swift in Sources */,
 				F8E5A71127B1EC8D001A5C43 /* LoadingView.swift in Sources */,
 				F81CC92C279D078D00A1F693 /* TreeViewItem.swift in Sources */,
+				F875124D27B4A89D00E86D57 /* Workspaces.swift in Sources */,
 				F81CC929279D06B600A1F693 /* TreeView.swift in Sources */,
+				F875124A27B4A11500E86D57 /* DocumentIdentifier.swift in Sources */,
 				F81CC935279D0ECA00A1F693 /* FileIconView.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8D9289227A23CE9009CC9B9 /* Constants.swift in Sources */,
 				F8EA409C279CFF55001F74B5 /* ContentView.swift in Sources */,
+				F875125327B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */,
 				F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
-				F86C9F0E27B0B975002DD87A /* DocumentModel.swift in Sources */,
 				F8D9288C27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
-				F86C9F1427B0B9D5002DD87A /* DocumentsModel.swift in Sources */,
 				F8D9289527A24688009CC9B9 /* CheckmarkView.swift in Sources */,
 				F81CC926279D027000A1F693 /* Arrow.swift in Sources */,
 				F8D9288F27A23C3E009CC9B9 /* EffectView.swift in Sources */,
-				F86C9F0B27B0B91C002DD87A /* WorkspaceModel.swift in Sources */,
 				F8D92889279FD05B009CC9B9 /* DataController.swift in Sources */,
 				F81CC939279E047100A1F693 /* DocumentView.swift in Sources */,
-				F86C9F1127B0B9CB002DD87A /* WorkspacesModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

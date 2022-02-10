@@ -5,7 +5,7 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="workspace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workspace" inverseName="documents" inverseEntity="Workspace"/>
+        <relationship name="workspace" maxCount="1" deletionRule="Nullify" destinationEntity="Workspace" inverseName="documents" inverseEntity="Workspace"/>
     </entity>
     <entity name="Workspace" representedClassName="Workspace" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>

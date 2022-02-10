@@ -17,12 +17,15 @@ fileprivate let toolbarHeight: CGFloat = 28
 
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
-    var title: Publishers.Sequence<String, Never>
-    @State private var localTitle = ""
+    @Environment(\.managedObjectContext) var moc
+//    var title: Publishers.Sequence<String, Never>
+    var document: Document
+    @Binding var title: String
+//    var title: Binding<String>
     var workspaceTitle: Binding<String>
     let selected: SelectedDocument
     
-    var open: Binding<Bool>
+    @Binding var open: Bool
     
     func toolbar(size: CGSize, open: Binding<Bool>) -> some View {
         ToolbarView(size: size, open: open)
@@ -32,7 +35,7 @@ struct DocumentView: View {
     func documentBody(size: CGSize) -> some View {
         VStack {
             #if os(macOS)
-            self.toolbar(size: size, open: open)
+            self.toolbar(size: size, open: $open)
             #endif
             ScrollView(showsIndicators: true) {
                 #if os(macOS)
@@ -40,20 +43,28 @@ struct DocumentView: View {
                 VStack(alignment: .center, spacing: pad) {
                     HStack() {
                         VStack(alignment: .leading) {
-                            TextField("", text: $localTitle)
+                            TextField("", text: $title)
                                 .font(.largeTitle)
                                 .textFieldStyle(.plain)
-                                .onChange(of: title) { newValue in
-                                    localTitle = title.sequence
+//                                .onChange(of: title) { newValue in
+//                                    localTitle = title
+//                                }
+                                .task {
+//                                    let _ = title.sink { output in
+//                                        localTitle = output
+//                                    }
                                 }
+//                                .onChange(of: localTitle) { newValue in
+//                                    document.title = newValue
+//                                }
                             Spacer()
                                 .frame(height: 20)
                             TextField("", text: workspaceTitle)
                                 .font(.headline)
                                 .textFieldStyle(.plain)
                         }
-                            .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
-                            .padding(open.wrappedValue ? .top : [], pad)
+                            .padding($open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
+                            .padding($open.wrappedValue ? .top : [], pad)
                             .foregroundColor(.primary)
                     }.frame(width: maxBlockWidth)
                     HStack {
