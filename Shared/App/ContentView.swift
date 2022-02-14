@@ -15,20 +15,17 @@ fileprivate let treeLayourPriority: CGFloat = 100
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @EnvironmentObject private var dataController: DataController
-    
     @State private var menuOpen = true
     
-    @StateObject private var workspaces = Workspaces()
+    @ObservedObject private var viewModel: ContentViewViewModel
+    @State private var selectedWorkspace: UUID? = nil
+    @State private var selectedDocument: UUID? = nil
     
     let moc: NSManagedObjectContext
 
     init(moc: NSManagedObjectContext) {
         self.moc = moc
-
-//        dropDatabase()
-//        seed()
-
+        self.viewModel = ContentViewViewModel(moc: moc)
     }
     
     var body: some View {
@@ -37,21 +34,48 @@ struct ContentView: View {
                 #if os(macOS)
                 ZStack() {
                     EffectView()
-                    TreeView(workspaces: workspaces)
-                        .padding()
+                    if let selectedDocument = selectedDocument {
+                        TreeView(selectedDocument: selectedDocument, moc: moc) { workspaceId, documentId in
+                            self.selectedWorkspace = workspaceId
+                            self.selectedDocument = documentId
+                        }
+                            .padding()
+                    }
+                    
                 }
                 .frame(width: treeWidth)
                 .edgesIgnoringSafeArea([.bottom])
                 #else
                 ZStack() {
                     EffectView()
-                    TreeView(workspaces: workspaces)
+                    if let selectedDocument = selectedDocument {
+                        TreeView(selectedDocument: selectedDocument, moc: moc) { workspaceId, documentId in
+                            self.selectedWorkspace = workspaceId
+                            self.selectedDocument = documentId
+                        }
                         .layoutPriority(treeLayourPriority)
+                    }
                 }
                 .frame(width: mobileTreeWidth)
                 .edgesIgnoringSafeArea([.top, .bottom])
                 #endif
             }
+            if let selectedDocument = selectedDocument, let selectedWorkspace = selectedWorkspace {
+                DocumentView(moc: moc, id: selectedDocument, workspaceId: selectedWorkspace, open: $menuOpen)
+            }
+            
+        }.task {
+//            dropDatabase()
+//            seed()
+            
+            if let workspace = viewModel.items.sorted().first, let document = (workspace.documents?.allObjects as? [Document])?.first  {
+                selectedWorkspace = workspace.id
+                selectedDocument = document.id
+            }
+
+        }
+        .onChange(of: selectedWorkspace) { newValue in
+            viewModel.fetchWorkspaces()
         }
     }
     
@@ -59,6 +83,7 @@ struct ContentView: View {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Workspace.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         try! self.moc.execute(deleteRequest)
+        
     }
     
     func seed() {
@@ -75,7 +100,6 @@ struct ContentView: View {
             "Technical Specification",
         ]
 
-
         for title in workspaceTitles {
             let workspace = Workspace(context: moc)
             let createdAt = Date.now
@@ -83,18 +107,20 @@ struct ContentView: View {
             workspace.modifiedAt = createdAt
             workspace.id = UUID()
             workspace.title = title
-
+            
             for docTitle in documentTitles {
                 let document = Document(context: moc)
                 document.id = UUID()
+                let createdAt = Date.now
                 document.createdAt = createdAt
                 document.modifiedAt = createdAt
                 document.title = docTitle
                 document.workspace = workspace
             }
+            
         }
 
-        try? moc.save()
+        try! moc.save()
     }
     
 }

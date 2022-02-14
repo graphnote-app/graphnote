@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SelectedDocument: Equatable {
+struct DocumentIdentifier: Equatable {
     let workspaceId: UUID
     let documentId: UUID
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CoreData
 
 fileprivate let scrollWidth: CGFloat = 16
 fileprivate let pageMinHeightMultiplier = 1.3
@@ -18,14 +19,21 @@ fileprivate let toolbarHeight: CGFloat = 28
 struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var moc
-//    var title: Publishers.Sequence<String, Never>
-    var document: Document
-    @Binding var title: String
-//    var title: Binding<String>
-    var workspaceTitle: Binding<String>
-    let selected: SelectedDocument
     
-    @Binding var open: Bool
+    var open: Binding<Bool>
+    
+    let documentId: UUID
+    let workspaceId: UUID
+    
+    @ObservedObject private var viewModel: DocumentViewViewModel
+    
+    init(moc: NSManagedObjectContext, id: UUID, workspaceId: UUID, open: Binding<Bool>) {
+        self.documentId = id
+        self.workspaceId = workspaceId
+        self.open = open
+        
+        self.viewModel = DocumentViewViewModel(id: documentId, workspaceId: workspaceId, moc: moc)
+    }
     
     func toolbar(size: CGSize, open: Binding<Bool>) -> some View {
         ToolbarView(size: size, open: open)
@@ -35,7 +43,7 @@ struct DocumentView: View {
     func documentBody(size: CGSize) -> some View {
         VStack {
             #if os(macOS)
-            self.toolbar(size: size, open: $open)
+            self.toolbar(size: size, open: open)
             #endif
             ScrollView(showsIndicators: true) {
                 #if os(macOS)
@@ -43,28 +51,17 @@ struct DocumentView: View {
                 VStack(alignment: .center, spacing: pad) {
                     HStack() {
                         VStack(alignment: .leading) {
-                            TextField("", text: $title)
+                            TextField("", text: $viewModel.title)
                                 .font(.largeTitle)
                                 .textFieldStyle(.plain)
-//                                .onChange(of: title) { newValue in
-//                                    localTitle = title
-//                                }
-                                .task {
-//                                    let _ = title.sink { output in
-//                                        localTitle = output
-//                                    }
-                                }
-//                                .onChange(of: localTitle) { newValue in
-//                                    document.title = newValue
-//                                }
                             Spacer()
                                 .frame(height: 20)
-                            TextField("", text: workspaceTitle)
+                            TextField("", text: $viewModel.workspaceTitle)
                                 .font(.headline)
                                 .textFieldStyle(.plain)
                         }
-                            .padding($open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
-                            .padding($open.wrappedValue ? .top : [], pad)
+                            .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
+                            .padding(open.wrappedValue ? .top : [], pad)
                             .foregroundColor(.primary)
                     }.frame(width: maxBlockWidth)
                     HStack {
@@ -83,16 +80,16 @@ struct DocumentView: View {
                 VStack(alignment: .leading, spacing: pad) {
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(title.wrappedValue)
+                            Text(viewModel.title)
                                 .font(.largeTitle)
                             Spacer()
                                 .frame(height: 20)
-                            Text(workspaceTitle.wrappedValue)
+                            Text(viewModel.workspaceTitle)
                                 .font(.headline)
                         }
 //                            .padding(open.wrappedValue ? pad / 2 : pad)
                         .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], open.wrappedValue ? pad / 2 : pad)
-                            .padding(open.wrappedValue ? [.top, .bottom] : [], pad)
+                        .padding(open.wrappedValue ? [.top, .bottom] : [], pad)
                             .foregroundColor(.primary)
                         
                     }
@@ -132,7 +129,13 @@ struct DocumentView: View {
             .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
             .edgesIgnoringSafeArea(.trailing)
             #endif
-        }.background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-            
+        }
+        .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+        .onChange(of: viewModel.title) { newValue in
+            viewModel.setTitle(title: newValue)
+        }
+        .onChange(of: viewModel.workspaceTitle) { newValue in
+            viewModel.setWorkspaceTitle(title: newValue)
+        }
     }
 }

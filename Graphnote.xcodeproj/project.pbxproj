@@ -23,12 +23,10 @@
 		F81CC93D279E24AD00A1F693 /* NavigationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */; };
 		F875124927B4A11500E86D57 /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
 		F875124A27B4A11500E86D57 /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
-		F875124C27B4A89D00E86D57 /* Workspaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* Workspaces.swift */; };
-		F875124D27B4A89D00E86D57 /* Workspaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* Workspaces.swift */; };
-		F875124F27B4A92400E86D57 /* Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* Documents.swift */; };
-		F875125027B4A92400E86D57 /* Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* Documents.swift */; };
-		F875125227B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */; };
-		F875125327B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */; };
+		F875124C27B4A89D00E86D57 /* TreeViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */; };
+		F875124D27B4A89D00E86D57 /* TreeViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */; };
+		F875124F27B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */; };
+		F875125027B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */; };
 		F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F899DFF4279E770F00305AFA /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
@@ -59,6 +57,14 @@
 		F8EA409C279CFF55001F74B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4072279CFF54001F74B5 /* ContentView.swift */; };
 		F8EA409D279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
 		F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
+		F8F32C8027B9C986003B0DF9 /* ContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */; };
+		F8F32C8127B9C986003B0DF9 /* ContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */; };
+		F8F32C8327B9CDF6003B0DF9 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8227B9CDF6003B0DF9 /* Document.swift */; };
+		F8F32C8427B9CDF6003B0DF9 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8227B9CDF6003B0DF9 /* Document.swift */; };
+		F8F32C8627B9CDFB003B0DF9 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */; };
+		F8F32C8727B9CDFB003B0DF9 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */; };
+		F8F32C8927B9E546003B0DF9 /* TreeViewItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */; };
+		F8F32C8A27B9E546003B0DF9 /* TreeViewItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,9 +93,8 @@
 		F81CC937279E047100A1F693 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F81CC93B279E24AD00A1F693 /* NavigationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonView.swift; sourceTree = "<group>"; };
 		F875124827B4A11500E86D57 /* DocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentIdentifier.swift; sourceTree = "<group>"; };
-		F875124B27B4A89D00E86D57 /* Workspaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspaces.swift; sourceTree = "<group>"; };
-		F875124E27B4A92400E86D57 /* Documents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documents.swift; sourceTree = "<group>"; };
-		F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentObjectModel.swift; sourceTree = "<group>"; };
+		F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewViewModel.swift; sourceTree = "<group>"; };
+		F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewViewModel.swift; sourceTree = "<group>"; };
 		F899DFEE279E2B3800305AFA /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		F8D92884279FCEB9009CC9B9 /* Graphnote.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Graphnote.xcdatamodel; sourceTree = "<group>"; };
@@ -111,6 +116,10 @@
 		F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewViewModel.swift; sourceTree = "<group>"; };
+		F8F32C8227B9CDF6003B0DF9 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
+		F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItemViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,9 +183,12 @@
 			isa = PBXGroup;
 			children = (
 				F8D92887279FD05B009CC9B9 /* DataController.swift */,
-				F875124B27B4A89D00E86D57 /* Workspaces.swift */,
-				F875124E27B4A92400E86D57 /* Documents.swift */,
-				F875125127B4AC4400E86D57 /* DocumentObjectModel.swift */,
+				F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */,
+				F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */,
+				F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */,
+				F8F32C8227B9CDF6003B0DF9 /* Document.swift */,
+				F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */,
+				F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -440,20 +452,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8F32C8927B9E546003B0DF9 /* TreeViewItemViewModel.swift in Sources */,
 				F899DFF4279E770F00305AFA /* OrientationInfo.swift in Sources */,
-				F875124F27B4A92400E86D57 /* Documents.swift in Sources */,
+				F8F32C8027B9C986003B0DF9 /* ContentViewViewModel.swift in Sources */,
+				F875124F27B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */,
 				F81CC931279D0CF700A1F693 /* BulletView.swift in Sources */,
 				F81CC93C279E24AD00A1F693 /* NavigationButtonView.swift in Sources */,
 				F8E5A71027B1EC8D001A5C43 /* LoadingView.swift in Sources */,
 				F81CC92B279D078D00A1F693 /* TreeViewItem.swift in Sources */,
-				F875124C27B4A89D00E86D57 /* Workspaces.swift in Sources */,
+				F875124C27B4A89D00E86D57 /* TreeViewViewModel.swift in Sources */,
 				F81CC928279D06B600A1F693 /* TreeView.swift in Sources */,
+				F8F32C8627B9CDFB003B0DF9 /* Workspace.swift in Sources */,
 				F875124927B4A11500E86D57 /* DocumentIdentifier.swift in Sources */,
 				F81CC934279D0ECA00A1F693 /* FileIconView.swift in Sources */,
 				F8D92885279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
+				F8F32C8327B9CDF6003B0DF9 /* Document.swift in Sources */,
 				F8D9289127A23CE9009CC9B9 /* Constants.swift in Sources */,
 				F8EA409B279CFF55001F74B5 /* ContentView.swift in Sources */,
-				F875125227B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */,
 				F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F8D9288B27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
@@ -469,20 +484,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8F32C8A27B9E546003B0DF9 /* TreeViewItemViewModel.swift in Sources */,
 				F899DFF5279E770F00305AFA /* OrientationInfo.swift in Sources */,
-				F875125027B4A92400E86D57 /* Documents.swift in Sources */,
+				F8F32C8127B9C986003B0DF9 /* ContentViewViewModel.swift in Sources */,
+				F875125027B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */,
 				F81CC932279D0CF700A1F693 /* BulletView.swift in Sources */,
 				F81CC93D279E24AD00A1F693 /* NavigationButtonView.swift in Sources */,
 				F8E5A71127B1EC8D001A5C43 /* LoadingView.swift in Sources */,
 				F81CC92C279D078D00A1F693 /* TreeViewItem.swift in Sources */,
-				F875124D27B4A89D00E86D57 /* Workspaces.swift in Sources */,
+				F875124D27B4A89D00E86D57 /* TreeViewViewModel.swift in Sources */,
 				F81CC929279D06B600A1F693 /* TreeView.swift in Sources */,
+				F8F32C8727B9CDFB003B0DF9 /* Workspace.swift in Sources */,
 				F875124A27B4A11500E86D57 /* DocumentIdentifier.swift in Sources */,
 				F81CC935279D0ECA00A1F693 /* FileIconView.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
+				F8F32C8427B9CDF6003B0DF9 /* Document.swift in Sources */,
 				F8D9289227A23CE9009CC9B9 /* Constants.swift in Sources */,
 				F8EA409C279CFF55001F74B5 /* ContentView.swift in Sources */,
-				F875125327B4AC4400E86D57 /* DocumentObjectModel.swift in Sources */,
 				F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F8D9288C27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,

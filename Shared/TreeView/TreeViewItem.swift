@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import Combine
 
 enum TreeViewItemDimensions: CGFloat {
     case arrowWidthHeight = 12
@@ -25,6 +26,7 @@ struct TreeViewItemCell: View {
     let title: String
     let id: UUID
     let workspaceId: UUID
+    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
 //    @State var selected: Bool
 //    @State var editable: Bool
     @FocusState private var focusedField: FocusField?
@@ -88,8 +90,6 @@ struct TreeViewItemCell: View {
                     Spacer()
                 }.frame(width: 130)
 //            }
-        }.task {
-            
         }
     }
 
@@ -137,27 +137,35 @@ struct TreeViewItemCell: View {
                     }
 //            }
         }
+        .onTapGesture {
+        }
     }
 }
 
 struct TreeViewItem: View, Identifiable {
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.managedObjectContext) var moc
     
     @State private var toggle = false
+    @State private var editable = false
     @FocusState private var focusedField: FocusField?
-    @StateObject private var allDocuments = Documents()
-
+    let moc: NSManagedObjectContext
     let id: UUID
-    var title: Binding<String>
 
-    init(id: UUID, title: Binding<String>) {
-        self.id = id
-        self.title = title
-    }
+    let workspace: Binding<Workspace>
+    var selectedDocument: UUID
+    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     
-    var documents: [DocumentObjectModel] {
-        return allDocuments.items.filter({$0.workspaceId == self.id})
+    @ObservedObject private var viewModel: TreeViewItemViewModel
+    
+    init(moc: NSManagedObjectContext, id: UUID, workspace: Binding<Workspace>, selectedDocument: UUID, onSelectionChange: @escaping (_ workspaceId: UUID, _ documentId: UUID) -> ()) {
+        self.moc = moc
+        self.id = id
+
+        self.workspace = workspace
+        self.selectedDocument = selectedDocument
+        self.onSelectionChange = onSelectionChange
+        self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
+        
     }
 
     var body: some View {
@@ -177,48 +185,37 @@ struct TreeViewItem: View, Identifiable {
                     }
                     
                     
-//                    if editable {
-//                        CheckmarkView()
-//                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
-//                            .onTapGesture {
-//                                editable = false
-//                            }
-//                        TextField("", text: $title)
-//                            .onSubmit {
-//                                editable = false
-//                                focusedField = nil
+                    if editable {
+                        CheckmarkView()
+                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                            .onTapGesture {
+                                editable = false
+                            }
+                        TextField("", text: workspace.title)
+                            .onSubmit {
+                                editable = false
+                                focusedField = nil
 //                                clearNewIDCallback()
 //
 //                                if let document = documents?.first {
 //                                    setSelectedDocument(document.id, id)
 //                                }
-//                            }
-//                            .focused($focusedField, equals: .field)
-//                            .onAppear {
-//                                if editable {
-//                                    focusedField = .field
-//                                }
-//                            }
-//                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
-//                            .onChange(of: title) { newValue in
-//                                let entity = NSEntityDescription.entity(forEntityName: "Workspace", in: moc)
-//                                let request = NSFetchRequest<NSFetchRequestResult>()
-//                                request.entity = entity
-//                                let predicate = NSPredicate(format: "(id = %@)", id.uuidString)
-//                                request.predicate = predicate
-//                                if let results = try? moc.fetch(request), let objectUpdate = results.first as? NSManagedObject {
-//                                    objectUpdate.setValue(title, forKey: "title")
-//                                    print(objectUpdate)
-//                                    try? moc.save()
-//                                }
-//                            }
-//                    } else {
+                            }
+                            .focused($focusedField, equals: .field)
+                            .onAppear {
+                                if editable {
+                                    focusedField = .field
+                                }
+                            }
+                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                            
+                    } else {
                         FileIconView()
                             .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                        Text(title.wrappedValue)
+                        Text(workspace.title.wrappedValue)
                             .bold()
                             .padding(TreeViewItemDimensions.rowPadding.rawValue)
-//                    }
+                    }
                     
                 }
                 .padding(TreeViewItemDimensions.rowPadding.rawValue)
@@ -226,7 +223,7 @@ struct TreeViewItem: View, Identifiable {
             }
             .contextMenu {
                 Button {
-//                    editable = true
+                    editable = true
                 } label: {
                     Text("Rename workspace")
                 }
@@ -238,26 +235,26 @@ struct TreeViewItem: View, Identifiable {
                 }
             }
             .onTapGesture {
-                toggle = !toggle
+                toggle.toggle()
             }
             
 
-        }.task {
-            allDocuments.fetchDocuments(workspaceId: id)
         }
-        
         
         if toggle {
            
             
             VStack(alignment: .leading) {
-                ForEach(0..<documents.count) { index in
-//                        if documents[index].id == selected.documentId {
-//                            TreeViewItem(id: documents[index].id, title: documents[index].title)
-//                        } else {
-                    TreeViewItemCell(title: documents[index].title, id: documents[index].id, workspaceId: documents[index].workspaceId)
-//                        }
+                if let documents = viewModel.documents {
+                    ForEach(0..<documents.count) { index in
+    //                        if documents[index].id == selected.documentId {
+    //                            TreeViewItem(id: documents[index].id, title: documents[index].title)
+    //                        } else {
+                        TreeViewItemCell(title: documents[index].title, id: documents[index].id, workspaceId: documents[index].workspace.id, onSelectionChange: onSelectionChange)
+    //                        }
+                    }
                 }
+                
                 TreeViewAddView()
                     .padding(.top, 10)
                     .onTapGesture {

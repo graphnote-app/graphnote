@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
-
-//final class TreeViewModel: ObservableObject {
-//    @Published public var closure: (_ treeViewItemId: UUID, _ documentId: UUID) -> ()
-//    
-//    init(closure: @escaping (_ treeViewItemId: UUID, _ documentId: UUID) -> ()) {
-//        self.closure = closure
-//    }
-//}
+import CoreData
 
 struct TreeView: View {
+    @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var orientationInfo: OrientationInfo
-    var workspaces: Workspaces
+    @ObservedObject private var viewModel: TreeViewViewModel
+
+    var selectedDocument: UUID
+    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     
+    init(selectedDocument: UUID, moc: NSManagedObjectContext, onSelectionChange: @escaping (_ workspaceId: UUID, _ documentId: UUID) -> ()) {
+        self.selectedDocument = selectedDocument
+        self.onSelectionChange = onSelectionChange
+        self.viewModel = TreeViewViewModel(moc: moc)
+    }
+
     var body: some View {
         ZStack() {
             EffectView()
@@ -28,12 +31,8 @@ struct TreeView: View {
                     .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
                
                 VStack(alignment: .leading) {
-//                    ForEach(items) { item in
-//                        item.environmentObject(TreeViewModel(closure: closure))
-//                    }
-                    
-                    ForEach(0..<workspaces.count) { index in
-                        TreeViewItem(id: workspaces[index].id, title: workspaces[index].title)
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, onSelectionChange: onSelectionChange)}) { item in
+                        item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()
                         .padding(.top, 20)
@@ -44,11 +43,8 @@ struct TreeView: View {
                 .padding()
                 #else
                 VStack(alignment: .leading) {
-//                    ForEach(items) { item in
-//                        item.environmentObject(TreeViewModel(closure: closure))
-//                    }
-                    ForEach(0..<workspaces.items.count) { index in
-                        TreeViewItem(id: workspaces.items[index].id!, title: .constant(workspaces.items[index].title!))
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, onSelectionChange: onSelectionChange)}) { item in
+                        item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()
                         .padding(.top, 20)

@@ -1,27 +1,28 @@
 //
-//  Workspaces.swift
+//  ContentViewViewModel.swift
 //  Graphnote
 //
-//  Created by Hayden Pennington on 2/9/22.
+//  Created by Hayden Pennington on 2/13/22.
 //
 
 import Foundation
 import CoreData
 
-final class Workspaces: ObservableObject {
-    private let dataController = DataController()
+final class ContentViewViewModel: ObservableObject {
+    let moc: NSManagedObjectContext
 
     @Published var items: [Workspace] = []
     
-    init() {
+    init(moc: NSManagedObjectContext) {
+        self.moc = moc
         fetchWorkspaces()
     }
     
     func fetchWorkspaces() {
         let fetchRequest: NSFetchRequest<Workspace>
         fetchRequest = Workspace.fetchRequest()
-        let context = dataController.container.viewContext
-        if let workspaces = try? context.fetch(fetchRequest) {
+        
+        if let workspaces = try? moc.fetch(fetchRequest) {
             self.items = workspaces
         }
     }

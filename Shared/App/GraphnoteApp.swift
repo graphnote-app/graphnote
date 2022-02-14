@@ -13,9 +13,19 @@ fileprivate enum MacOSDimensions: CGFloat {
     case windowMinHeight = 600
 }
 
+extension Sequence {
+    func find(_ isIncluded: (Element) throws -> Bool) rethrows -> Element? {
+        do {
+            return try self.filter(isIncluded).first
+        } catch {
+            return nil
+        }
+    }
+}
+
 @main
 struct GraphnoteApp: App {
-    @StateObject private var dataController = DataController()
+    @StateObject private var dataController = DataController.shared
     
     func content() -> some View {
         #if os(macOS)

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Document" representedClassName="Document" syncable="YES" codeGenerationType="class">
+    <entity name="Document" representedClassName=".Document" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
         <relationship name="workspace" maxCount="1" deletionRule="Nullify" destinationEntity="Workspace" inverseName="documents" inverseEntity="Workspace"/>
     </entity>
-    <entity name="Workspace" representedClassName="Workspace" syncable="YES" codeGenerationType="class">
+    <entity name="Workspace" representedClassName=".Workspace" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="documents" toMany="YES" deletionRule="Cascade" destinationEntity="Document" inverseName="workspace" inverseEntity="Document"/>
+        <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Document" inverseName="workspace" inverseEntity="Document"/>
     </entity>
     <elements>
         <element name="Document" positionX="-54" positionY="9" width="128" height="104"/>
