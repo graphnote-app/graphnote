@@ -252,11 +252,16 @@ struct TreeViewItem: View, Identifiable {
             VStack(alignment: .leading) {
                 if let documents = viewModel.documents {
                     ForEach(0..<documents.count) { index in
-    //                        if documents[index].id == selected.documentId {
-    //                            TreeViewItem(id: documents[index].id, title: documents[index].title)
-    //                        } else {
-                        TreeViewItemCell(title: documents[index].title, documentId:documents[index].id, workspaceId: workspace.id.wrappedValue, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
-    //                        }
+                        if documents[index].id == selectedDocument.wrappedValue {
+                            TreeViewItemCell(title: documents[index].title, documentId:documents[index].id, workspaceId: workspace.id.wrappedValue, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
+                                .overlay {
+                                    Rectangle()
+                                        .foregroundColor(colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1) : Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
+                                        .cornerRadius(4)
+                                }
+                        } else {
+                            TreeViewItemCell(title: documents[index].title, documentId:documents[index].id, workspaceId: workspace.id.wrappedValue, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
+                        }
                     }
                 }
                 

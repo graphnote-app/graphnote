@@ -45,13 +45,9 @@ struct ContentView: View {
                 #else
                 ZStack() {
                     EffectView()
-                    if let selectedDocument = selectedDocument {
-                        TreeView(selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, moc: moc) { workspaceId, documentId in
-                            self.selectedWorkspace = workspaceId
-                            self.selectedDocument = documentId
-                        }
-                        .layoutPriority(treeLayourPriority)
-                    }
+                    TreeView(selectedDocument: $selectedDocument, selectedWorkspace: $selectedWorkspace, moc: moc)
+                    .layoutPriority(treeLayourPriority)
+                    
                 }
                 .frame(width: mobileTreeWidth)
                 .edgesIgnoringSafeArea([.top, .bottom])
@@ -64,7 +60,7 @@ struct ContentView: View {
         }.task {
 //            dropDatabase()
 //            seed()
-//            
+//
             if let workspace = viewModel.items.sorted().first, let document = (workspace.documents?.allObjects as? [Document])?.first  {
                 selectedWorkspace = workspace.id
                 selectedDocument = document.id

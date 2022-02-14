@@ -32,7 +32,7 @@ struct TreeView: View {
                     .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
                
                 VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, onSelectionChange: onSelectionChange)}) { item in
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)}) { item in
                         item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()

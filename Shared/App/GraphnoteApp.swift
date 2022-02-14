@@ -71,10 +71,12 @@ struct GraphnoteApp: App {
         )
         #else
         GeometryReader { geometry in
-            ContentView(moc: dataController.container.viewContext)
-                .environment(\.managedObjectContext, dataController.container.viewContext)
-                .environmentObject(OrientationInfo())
-                .environmentObject(dataController)
+            if let initialSelected = fetchInitialDocument() {
+                ContentView(moc: dataController.container.viewContext, initialSelectedDocument: initialSelected.1, initalSelectedWorkspace: initialSelected.0)
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .environmentObject(OrientationInfo())
+                    .environmentObject(dataController)
+            }
         }
         #endif
     }
