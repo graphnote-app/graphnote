@@ -27,13 +27,42 @@ extension Sequence {
 struct GraphnoteApp: App {
     @StateObject private var dataController = DataController.shared
     
+    private func fetchInitialDocument() -> (UUID, UUID)? {
+        let fetchRequest: NSFetchRequest<Workspace>
+        fetchRequest = Workspace.fetchRequest()
+        do {
+            let workspaces = try dataController.container.viewContext.fetch(fetchRequest)
+            
+            guard let workspace = workspaces.first else {
+                return nil
+            }
+            
+            let docsFetchRequest: NSFetchRequest<Document>
+            docsFetchRequest = Document.fetchRequest()
+            docsFetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id.uuidString)
+            
+            let documents = try dataController.container.viewContext.fetch(docsFetchRequest)
+            
+            guard let document = documents.first else {
+                return nil
+            }
+            
+            return (workspace.id, document.id)
+            
+        } catch {
+            return nil
+        }
+    }
+    
     func content() -> some View {
         #if os(macOS)
         GeometryReader { geometry in
-            ContentView(moc: dataController.container.viewContext)
-                .environment(\.managedObjectContext, dataController.container.viewContext)
-                .environmentObject(OrientationInfo())
-                .environmentObject(dataController)
+            if let initialSelected = fetchInitialDocument() {
+                ContentView(moc: dataController.container.viewContext, initialSelectedDocument: initialSelected.1, initalSelectedWorkspace: initialSelected.0)
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .environmentObject(OrientationInfo())
+                    .environmentObject(dataController)
+            }
         }.frame(
             minWidth: MacOSDimensions.windowMinWidth.rawValue,
             idealWidth: MacOSDimensions.windowMinWidth.rawValue,

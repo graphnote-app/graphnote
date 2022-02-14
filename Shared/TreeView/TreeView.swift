@@ -13,12 +13,13 @@ struct TreeView: View {
     @EnvironmentObject var orientationInfo: OrientationInfo
     @ObservedObject private var viewModel: TreeViewViewModel
 
-    var selectedDocument: UUID
-    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
+    var selectedDocument: Binding<UUID>
+    var selectedWorkspace: Binding<UUID>
+//    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     
-    init(selectedDocument: UUID, moc: NSManagedObjectContext, onSelectionChange: @escaping (_ workspaceId: UUID, _ documentId: UUID) -> ()) {
+    init(selectedDocument: Binding<UUID>, selectedWorkspace: Binding<UUID>, moc: NSManagedObjectContext) {
         self.selectedDocument = selectedDocument
-        self.onSelectionChange = onSelectionChange
+        self.selectedWorkspace = selectedWorkspace
         self.viewModel = TreeViewViewModel(moc: moc)
     }
 
@@ -31,7 +32,7 @@ struct TreeView: View {
                     .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
                
                 VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, onSelectionChange: onSelectionChange)}) { item in
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, onSelectionChange: onSelectionChange)}) { item in
                         item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()
@@ -43,7 +44,7 @@ struct TreeView: View {
                 .padding()
                 #else
                 VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, onSelectionChange: onSelectionChange)}) { item in
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)}) { item in
                         item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()

@@ -16,38 +16,59 @@ final class DocumentViewViewModel: ObservableObject {
     @Published var title: String = ""
     @Published var workspaceTitle: String = ""
     
-    private var document: Document?
+//    private var document: Document?
     
     init(id: UUID, workspaceId: UUID, moc: NSManagedObjectContext) {
         self.id = id
         self.workspaceId = workspaceId
         self.moc = moc
         
-        self.fetchDocument(workspaceId: workspaceId, documentId: id)
-    }
-    
-    private func fetchDocument(workspaceId: UUID, documentId: UUID) {
-        let fetchRequest: NSFetchRequest<Document>
-        fetchRequest = Document.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "workspace.id == %@ && id == %@", workspaceId.uuidString, id.uuidString)
-        
-        if let document = try? moc.fetch(fetchRequest).first {
+        if let document = self.fetchDocument(workspaceId: workspaceId, documentId: id) {
             self.title = document.title
             self.workspaceTitle = document.workspace.title
-            self.document = document
         }
     }
     
-    func setTitle(title: String) {
-        document?.title = title
-        document?.modifiedAt = Date.now
-        self.save()
+    private func fetchDocument(workspaceId: UUID, documentId: UUID) -> Document? {
+        let fetchRequest: NSFetchRequest<Document>
+        fetchRequest = Document.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "workspace.id == %@ && id == %@", workspaceId.uuidString, documentId.uuidString)
+        
+        if let document = try? moc.fetch(fetchRequest).first {
+            return document
+        }
+        
+        return nil
     }
     
-    func setWorkspaceTitle(title: String) {
-        document?.workspace.title = title
-        document?.workspace.modifiedAt = Date.now
-        self.save()
+    private func fetchWorkspace(workspaceId: UUID) -> Workspace? {
+        let fetchRequest: NSFetchRequest<Workspace>
+        fetchRequest = Workspace.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", workspaceId.uuidString)
+        
+        if let workspace = try? moc.fetch(fetchRequest).first {
+            return workspace
+        }
+        
+        return nil
+    }
+    
+    func setTitle(title: String, workspaceId: UUID, documentId: UUID) {
+        if let document = fetchDocument(workspaceId: workspaceId, documentId: documentId) {
+            document.title = title
+            document.modifiedAt = Date.now
+            self.save()
+        }
+
+    }
+    
+    func setWorkspaceTitle(title: String, workspaceId: UUID) {
+        if let workspace = fetchWorkspace(workspaceId: workspaceId) {
+            workspace.title = title
+            workspace.modifiedAt = Date.now
+            self.save()
+        }
+        
     }
     
     private func save() {

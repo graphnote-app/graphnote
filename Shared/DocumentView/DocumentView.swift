@@ -20,6 +20,9 @@ struct DocumentView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var moc
     
+    @State private var title = ""
+    @State private var workspaceTitle = ""
+    
     var open: Binding<Bool>
     
     let documentId: UUID
@@ -31,8 +34,10 @@ struct DocumentView: View {
         self.documentId = id
         self.workspaceId = workspaceId
         self.open = open
-        
+
         self.viewModel = DocumentViewViewModel(id: documentId, workspaceId: workspaceId, moc: moc)
+        self._title = State(initialValue: viewModel.title)
+        self._workspaceTitle = State(initialValue: viewModel.workspaceTitle)
     }
     
     func toolbar(size: CGSize, open: Binding<Bool>) -> some View {
@@ -51,15 +56,24 @@ struct DocumentView: View {
                 VStack(alignment: .center, spacing: pad) {
                     HStack() {
                         VStack(alignment: .leading) {
-                            TextField("", text: $viewModel.title)
+                            TextField("", text: $title)
                                 .font(.largeTitle)
                                 .textFieldStyle(.plain)
                             Spacer()
                                 .frame(height: 20)
-                            TextField("", text: $viewModel.workspaceTitle)
+                            TextField("", text: $workspaceTitle)
                                 .font(.headline)
                                 .textFieldStyle(.plain)
                         }
+                        
+     
+                            
+                            
+                        
+                            
+                    
+                        
+
                             .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
                             .padding(open.wrappedValue ? .top : [], pad)
                             .foregroundColor(.primary)
@@ -131,11 +145,22 @@ struct DocumentView: View {
             #endif
         }
         .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+        .onChange(of: title) { newValue in
+            viewModel.setTitle(title: newValue, workspaceId: workspaceId, documentId: documentId)
+        }
+        .onChange(of: workspaceTitle) { newValue in
+            viewModel.setWorkspaceTitle(title: newValue, workspaceId: workspaceId)
+        }
         .onChange(of: viewModel.title) { newValue in
-            viewModel.setTitle(title: newValue)
+            if title != newValue {
+                title = newValue
+            }
         }
         .onChange(of: viewModel.workspaceTitle) { newValue in
-            viewModel.setWorkspaceTitle(title: newValue)
+            if workspaceTitle != newValue {
+                workspaceTitle = newValue
+            }
         }
+
     }
 }

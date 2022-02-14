@@ -18,14 +18,17 @@ struct ContentView: View {
     @State private var menuOpen = true
     
     @ObservedObject private var viewModel: ContentViewViewModel
-    @State private var selectedWorkspace: UUID? = nil
-    @State private var selectedDocument: UUID? = nil
+    @State private var selectedWorkspace: UUID
+    @State private var selectedDocument: UUID
     
     let moc: NSManagedObjectContext
 
-    init(moc: NSManagedObjectContext) {
+    init(moc: NSManagedObjectContext, initialSelectedDocument: UUID, initalSelectedWorkspace: UUID) {
         self.moc = moc
+        self._selectedDocument = State(initialValue: initialSelectedDocument)
+        self._selectedWorkspace = State(initialValue: initalSelectedWorkspace)
         self.viewModel = ContentViewViewModel(moc: moc)
+        
     }
     
     var body: some View {
@@ -34,14 +37,8 @@ struct ContentView: View {
                 #if os(macOS)
                 ZStack() {
                     EffectView()
-                    if let selectedDocument = selectedDocument {
-                        TreeView(selectedDocument: selectedDocument, moc: moc) { workspaceId, documentId in
-                            self.selectedWorkspace = workspaceId
-                            self.selectedDocument = documentId
-                        }
-                            .padding()
-                    }
-                    
+                    TreeView(selectedDocument: $selectedDocument, selectedWorkspace: $selectedWorkspace, moc: moc)
+                        .padding()
                 }
                 .frame(width: treeWidth)
                 .edgesIgnoringSafeArea([.bottom])
@@ -49,7 +46,7 @@ struct ContentView: View {
                 ZStack() {
                     EffectView()
                     if let selectedDocument = selectedDocument {
-                        TreeView(selectedDocument: selectedDocument, moc: moc) { workspaceId, documentId in
+                        TreeView(selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, moc: moc) { workspaceId, documentId in
                             self.selectedWorkspace = workspaceId
                             self.selectedDocument = documentId
                         }
@@ -67,7 +64,7 @@ struct ContentView: View {
         }.task {
 //            dropDatabase()
 //            seed()
-            
+//            
             if let workspace = viewModel.items.sorted().first, let document = (workspace.documents?.allObjects as? [Document])?.first  {
                 selectedWorkspace = workspace.id
                 selectedDocument = document.id

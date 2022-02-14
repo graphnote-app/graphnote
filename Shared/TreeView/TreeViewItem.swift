@@ -24,9 +24,11 @@ struct TreeViewItemCell: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var moc
     let title: String
-    let id: UUID
+    let documentId: UUID
     let workspaceId: UUID
-    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
+    var selectedDocument: Binding<UUID>
+    var selectedWorkspace: Binding<UUID>
+//    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
 //    @State var selected: Bool
 //    @State var editable: Bool
     @FocusState private var focusedField: FocusField?
@@ -129,7 +131,7 @@ struct TreeViewItemCell: View {
                             Text("Rename")
                         }
                         Button {
-                            print("Delete document: \(id)")
+                            print("Delete document: \(documentId)")
 //                            deleteDocument(workspaceId, id)
                         } label: {
                             Text("Delete document")
@@ -138,6 +140,8 @@ struct TreeViewItemCell: View {
 //            }
         }
         .onTapGesture {
+            selectedWorkspace.wrappedValue = workspaceId
+            selectedDocument.wrappedValue = documentId
         }
     }
 }
@@ -152,18 +156,19 @@ struct TreeViewItem: View, Identifiable {
     let id: UUID
 
     let workspace: Binding<Workspace>
-    var selectedDocument: UUID
-    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
+    var selectedDocument: Binding<UUID>
+    var selectedWorkspace: Binding<UUID>
+//    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     
     @ObservedObject private var viewModel: TreeViewItemViewModel
     
-    init(moc: NSManagedObjectContext, id: UUID, workspace: Binding<Workspace>, selectedDocument: UUID, onSelectionChange: @escaping (_ workspaceId: UUID, _ documentId: UUID) -> ()) {
+    init(moc: NSManagedObjectContext, id: UUID, workspace: Binding<Workspace>, selectedDocument: Binding<UUID>, selectedWorkspace: Binding<UUID>) {
         self.moc = moc
         self.id = id
 
         self.workspace = workspace
         self.selectedDocument = selectedDocument
-        self.onSelectionChange = onSelectionChange
+        self.selectedWorkspace = selectedWorkspace
         self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
         
     }
@@ -250,7 +255,7 @@ struct TreeViewItem: View, Identifiable {
     //                        if documents[index].id == selected.documentId {
     //                            TreeViewItem(id: documents[index].id, title: documents[index].title)
     //                        } else {
-                        TreeViewItemCell(title: documents[index].title, id: documents[index].id, workspaceId: documents[index].workspace.id, onSelectionChange: onSelectionChange)
+                        TreeViewItemCell(title: documents[index].title, documentId:documents[index].id, workspaceId: workspace.id.wrappedValue, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
     //                        }
                     }
                 }
