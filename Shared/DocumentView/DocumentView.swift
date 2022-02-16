@@ -65,15 +65,6 @@ struct DocumentView: View {
                                 .font(.headline)
                                 .textFieldStyle(.plain)
                         }
-                        
-     
-                            
-                            
-                        
-                            
-                    
-                        
-
                             .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
                             .padding(open.wrappedValue ? .top : [], pad)
                             .foregroundColor(.primary)

@@ -24,10 +24,9 @@ class TreeViewItemViewModel: ObservableObject {
     func fetchDocuments(workspaceId: UUID) {
         let fetchRequest: NSFetchRequest<Document>
         fetchRequest = Document.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspaceId.uuidString)
         
         if let documents = try? moc.fetch(fetchRequest) {
-            self.documents = documents
+            self.documents = documents.filter({$0.workspace.id == workspaceId}).sorted()
         }
     }
     

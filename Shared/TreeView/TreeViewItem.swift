@@ -23,75 +23,47 @@ enum FocusField: Hashable {
 struct TreeViewItemCell: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var moc
-    let title: String
+    var title: Binding<String>
     let documentId: UUID
     let workspaceId: UUID
     var selectedDocument: Binding<UUID>
     var selectedWorkspace: Binding<UUID>
-//    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
-//    @State var selected: Bool
-//    @State var editable: Bool
+    @State var editable = false
     @FocusState private var focusedField: FocusField?
-//    let deleteDocument: (_ workspaceId: UUID, _ documentId: UUID) -> ()
-//    let clearNewIDCallback: () -> ()
-//    let setSelectedDocument: (_ documentId: UUID, _ workspaceId: UUID) -> ()
-//
-//    init(title: Binding<String>, id: UUID, workspaceId: UUID, selected: Bool, editable: Bool, deleteDocument: @escaping (_ workspaceId: UUID, _ documentId: UUID) -> (), clearNewIDCallback: @escaping () -> (), setSelectedDocument: @escaping (_ documentId: UUID, _ workspaceId: UUID) -> ()) {
-//        self.title = title
-//        self.id = id
-//        self.workspaceId = workspaceId
-//        self._selected = State(wrappedValue: selected)
-//        self._editable = State(wrappedValue: editable)
-//        self.deleteDocument = deleteDocument
-//        self.clearNewIDCallback = clearNewIDCallback
-//        self.setSelectedDocument = setSelectedDocument
-//    }
-    
+
     @ViewBuilder func textOrTextField() -> some View {
         HStack {
-//            if editable {
-//                CheckmarkView()
-//                    .onTapGesture {
-//                       editable = false
-//                    }
-//                TextField("", text: title)
-//                    .onSubmit {
-//                        editable = false
-//                        focusedField = nil
+            if editable {
+                CheckmarkView()
+                    .onTapGesture {
+                       editable = false
+                    }
+                TextField("", text: title)
+                    .onSubmit {
+                        editable = false
+                        focusedField = nil
+                        
 //                        clearNewIDCallback()
-//
+
 //                        setSelectedDocument(id, workspaceId)
-//
-//                    }
-//                    .focused($focusedField, equals: .field)
-//                    .onAppear {
-//                        print("onAppear")
-//                        if editable {
-//                            focusedField = .field
-//                        }
-//                    }
-//                    .onChange(of: title.wrappedValue) { newValue in
-//
-//                        let entity = NSEntityDescription.entity(forEntityName: "Document", in: moc)
-//                        let request = NSFetchRequest<NSFetchRequestResult>()
-//                        request.entity = entity
-//                        let predicate = NSPredicate(format: "(id = %@)", id.uuidString)
-//                        request.predicate = predicate
-//                        if let results = try? moc.fetch(request), let objectUpdate = results.first as? NSManagedObject {
-//                            objectUpdate.setValue(title, forKey: "title")
-//                            print(objectUpdate)
-//                            try? moc.save()
-//                        }
-//                    }
-//            } else {
+
+                    }
+                    .focused($focusedField, equals: .field)
+                    .onAppear {
+                        print("onAppear")
+                        if editable {
+                            focusedField = .field
+                        }
+                    }
+            } else {
                 BulletView()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
                 HStack {
-                    Text(title)
+                    Text(title.wrappedValue)
 
                     Spacer()
                 }.frame(width: 130)
-//            }
+            }
         }
     }
 
@@ -99,34 +71,17 @@ struct TreeViewItemCell: View {
         ZStack(alignment: .leading) {
             EffectView()
         
-//            if selected {
-//                self.textOrTextField()
-//                    .padding(TreeViewItemDimensions.rowPadding.rawValue)
-//                    .overlay {
-//                        Rectangle()
-//                            .foregroundColor(colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1) : Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
-//                            .cornerRadius(4)
-//                    }
-//                    .contextMenu {
-//                        Button {
-//                            editable = true
-//                            selected = false
-//                        } label: {
-//                            Text("Rename")
-//                        }
-//                        Button {
-//                            print("Delete document: \(id)")
-//                            deleteDocument(workspaceId, id)
-//                        } label: {
-//                            Text("Delete document")
-//                        }
-//                    }
-//            } else {
+            if selectedDocument.wrappedValue == self.documentId && selectedWorkspace.wrappedValue == self.workspaceId {
                 self.textOrTextField()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                    .overlay {
+                        Rectangle()
+                            .foregroundColor(colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1) : Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
+                            .cornerRadius(4)
+                    }
                     .contextMenu {
                         Button {
-//                            editable = true
+                            editable = true
                         } label: {
                             Text("Rename")
                         }
@@ -137,7 +92,24 @@ struct TreeViewItemCell: View {
                             Text("Delete document")
                         }
                     }
-//            }
+            } else {
+                self.textOrTextField()
+                    .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                    .contextMenu {
+                        Button {
+                            editable = true
+                        } label: {
+                            Text("Rename")
+                        }
+                        Button {
+                            print("Delete document: \(documentId)")
+//                            deleteDocument(workspaceId, id)
+                        } label: {
+                            Text("Delete document")
+                        }
+                    }
+                    
+            }
         }
         .onTapGesture {
             selectedWorkspace.wrappedValue = workspaceId
@@ -170,6 +142,8 @@ struct TreeViewItem: View, Identifiable {
         self.selectedDocument = selectedDocument
         self.selectedWorkspace = selectedWorkspace
         self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
+        
+        print(viewModel.documents.count)
         
     }
 
@@ -248,20 +222,10 @@ struct TreeViewItem: View, Identifiable {
         
         if toggle {
            
-            
             VStack(alignment: .leading) {
-                if let documents = viewModel.documents {
-                    ForEach(0..<documents.count) { index in
-                        if documents[index].id == selectedDocument.wrappedValue {
-                            TreeViewItemCell(title: documents[index].title, documentId:documents[index].id, workspaceId: workspace.id.wrappedValue, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
-                                .overlay {
-                                    Rectangle()
-                                        .foregroundColor(colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1) : Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
-                                        .cornerRadius(4)
-                                }
-                        } else {
-                            TreeViewItemCell(title: documents[index].title, documentId:documents[index].id, workspaceId: workspace.id.wrappedValue, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
-                        }
+                if let _ = viewModel.documents {
+                    ForEach(0..<viewModel.documents.count, id: \.self) { index in
+                        TreeViewItemCell(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
                     }
                 }
                 
@@ -272,9 +236,8 @@ struct TreeViewItem: View, Identifiable {
                     }
             }
             .padding([.leading], 40)
-            
-            
         }
 
     }
+    
 }
