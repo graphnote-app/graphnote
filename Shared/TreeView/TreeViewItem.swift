@@ -74,11 +74,10 @@ struct TreeViewItemCell: View {
             if selectedDocument.wrappedValue == self.documentId && selectedWorkspace.wrappedValue == self.workspaceId {
                 self.textOrTextField()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                    .overlay {
-                        Rectangle()
-                            .foregroundColor(colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1) : Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1))
-                            .cornerRadius(4)
-                    }
+                    .background (
+                        colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.1) : Color(red: 0.1, green: 0.1, blue: 0.1, opacity: 0.1)
+                    )
+                    .cornerRadius(4)
                     .contextMenu {
                         Button {
                             editable = true
