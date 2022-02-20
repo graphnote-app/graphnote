@@ -26,8 +26,7 @@ struct TreeViewItemCell: View {
     var title: Binding<String>
     let documentId: UUID
     let workspaceId: UUID
-    var selectedDocument: Binding<UUID>
-    var selectedWorkspace: Binding<UUID>
+    var selected: Binding<DocumentIdentifier>
     let deleteDocument: (UUID, UUID) -> ()
     let refresh: () -> ()
     @State var editable = false
@@ -68,7 +67,9 @@ struct TreeViewItemCell: View {
         ZStack(alignment: .leading) {
             EffectView()
         
-            if selectedDocument.wrappedValue == self.documentId && selectedWorkspace.wrappedValue == self.workspaceId {
+//            if selected.documentId == self.documentId && selected.workspaceId == self.workspaceId {
+            if selected.wrappedValue == DocumentIdentifier(workspaceId: self.workspaceId, documentId: self.documentId) {
+                
                 self.textOrTextField()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
                     .background (
@@ -110,8 +111,7 @@ struct TreeViewItemCell: View {
             }
         }
         .onTapGesture {
-            selectedWorkspace.wrappedValue = workspaceId
-            selectedDocument.wrappedValue = documentId
+            selected.wrappedValue = DocumentIdentifier(workspaceId: workspaceId, documentId: documentId)
         }
     }
 }
@@ -126,8 +126,7 @@ struct TreeViewItem: View, Identifiable {
     let id: UUID
 
     let workspace: Binding<Workspace>
-    var selectedDocument: Binding<UUID>
-    var selectedWorkspace: Binding<UUID>
+    var selected: Binding<DocumentIdentifier>
     let refresh: () -> ()
     
     @ObservedObject private var viewModel: TreeViewItemViewModel
@@ -135,16 +134,14 @@ struct TreeViewItem: View, Identifiable {
     init(moc: NSManagedObjectContext,
          id: UUID,
          workspace: Binding<Workspace>,
-         selectedDocument: Binding<UUID>,
-         selectedWorkspace: Binding<UUID>,
+         selected: Binding<DocumentIdentifier>,
          refresh: @escaping () -> ()
     ) {
         self.moc = moc
         self.id = id
 
         self.workspace = workspace
-        self.selectedDocument = selectedDocument
-        self.selectedWorkspace = selectedWorkspace
+        self.selected = selected
         self.refresh = refresh
         self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
     }
@@ -227,7 +224,7 @@ struct TreeViewItem: View, Identifiable {
             VStack(alignment: .leading) {
                 if let _ = viewModel.documents {
                     ForEach(0..<viewModel.documents.count, id: \.self) { index in
-                        TreeViewItemCell(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, deleteDocument: viewModel.deleteDocument, refresh: refreshDocuments)
+                        TreeViewItemCell(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selected: selected, deleteDocument: viewModel.deleteDocument, refresh: refreshDocuments)
                     }
                 }
                 
@@ -235,8 +232,7 @@ struct TreeViewItem: View, Identifiable {
                     .padding(.top, 10)
                     .onTapGesture {
                         if let newDocumentId = viewModel.addDocument(workspaceId: id) {
-                            selectedDocument.wrappedValue = newDocumentId
-                            selectedWorkspace.wrappedValue = workspace.id.wrappedValue
+                            selected.wrappedValue = DocumentIdentifier(workspaceId: workspace.id.wrappedValue, documentId: newDocumentId)
                         }
                     }
             }

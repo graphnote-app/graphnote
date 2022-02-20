@@ -18,15 +18,17 @@ struct ContentView: View {
     @State private var menuOpen = true
     
     @ObservedObject private var viewModel: ContentViewViewModel
-    @State private var selectedWorkspace: UUID
-    @State private var selectedDocument: UUID
+//    @State private var selectedWorkspace: UUID
+//    @State private var selectedDocument: UUID
+    @State private var selectedIdentifier: DocumentIdentifier
     
     let moc: NSManagedObjectContext
 
     init(moc: NSManagedObjectContext, initialSelectedDocument: UUID, initalSelectedWorkspace: UUID) {
         self.moc = moc
-        self._selectedDocument = State(initialValue: initialSelectedDocument)
-        self._selectedWorkspace = State(initialValue: initalSelectedWorkspace)
+//        self._selectedDocument = State(initialValue: initialSelectedDocument)
+//        self._selectedWorkspace = State(initialValue: initalSelectedWorkspace)
+        self._selectedIdentifier = State(initialValue: DocumentIdentifier(workspaceId: initalSelectedWorkspace, documentId: initialSelectedDocument))
         self.viewModel = ContentViewViewModel(moc: moc)
         
     }
@@ -37,7 +39,7 @@ struct ContentView: View {
                 #if os(macOS)
                 ZStack() {
                     EffectView()
-                    TreeView(selectedDocument: $selectedDocument, selectedWorkspace: $selectedWorkspace, moc: moc)
+                    TreeView(selected: $selectedIdentifier, moc: moc)
                         .padding()
                 }
                 .frame(width: treeWidth)
@@ -45,7 +47,7 @@ struct ContentView: View {
                 #else
                 ZStack() {
                     EffectView()
-                    TreeView(selectedDocument: $selectedDocument, selectedWorkspace: $selectedWorkspace, moc: moc)
+                    TreeView(selected: $selectedIdentifier, moc: moc)
                     .layoutPriority(treeLayourPriority)
                     
                 }
@@ -53,19 +55,18 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea([.top, .bottom])
                 #endif
             }
-            if let selectedDocument = selectedDocument, let selectedWorkspace = selectedWorkspace {
-                DocumentView(moc: moc, id: selectedDocument, workspaceId: selectedWorkspace, open: $menuOpen)
+            if let selectedIdentifier = selectedIdentifier {
+                DocumentView(moc: moc, id: selectedIdentifier.documentId, workspaceId: selectedIdentifier.workspaceId, open: $menuOpen)
             }
             
         }.task {
 
             if let workspace = viewModel.items.sorted().first, let document = (workspace.documents?.allObjects as? [Document])?.first  {
-                selectedWorkspace = workspace.id
-                selectedDocument = document.id
+                selectedIdentifier = DocumentIdentifier(workspaceId: workspace.id, documentId: document.id)
             }
 
         }
-        .onChange(of: selectedWorkspace) { newValue in
+        .onChange(of: selectedIdentifier) { newValue in
             viewModel.fetchWorkspaces()
         }
     }

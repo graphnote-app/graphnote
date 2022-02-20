@@ -13,12 +13,10 @@ struct TreeView: View {
     @EnvironmentObject var orientationInfo: OrientationInfo
     @ObservedObject private var viewModel: TreeViewViewModel
 
-    var selectedDocument: Binding<UUID>
-    var selectedWorkspace: Binding<UUID>
+    var selected: Binding<DocumentIdentifier>
     
-    init(selectedDocument: Binding<UUID>, selectedWorkspace: Binding<UUID>, moc: NSManagedObjectContext) {
-        self.selectedDocument = selectedDocument
-        self.selectedWorkspace = selectedWorkspace
+    init(selected: Binding<DocumentIdentifier>, moc: NSManagedObjectContext) {
+        self.selected = selected
         self.viewModel = TreeViewViewModel(moc: moc)
     }
     
@@ -35,7 +33,7 @@ struct TreeView: View {
                     .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
                
                 VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, refresh: refresh)}) { item in
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
                         item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()
@@ -47,7 +45,7 @@ struct TreeView: View {
                 .padding()
                 #else
                 VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, refresh: refresh)}) { item in
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
                         item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()
