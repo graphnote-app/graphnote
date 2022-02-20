@@ -85,12 +85,14 @@ struct DocumentView: View {
                 VStack(alignment: .leading, spacing: pad) {
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(viewModel.title)
+                            TextField("", text: $title)
                                 .font(.largeTitle)
+                                .textFieldStyle(.plain)
                             Spacer()
                                 .frame(height: 20)
-                            Text(viewModel.workspaceTitle)
+                            TextField("", text: $workspaceTitle)
                                 .font(.headline)
+                                .textFieldStyle(.plain)
                         }
 //                            .padding(open.wrappedValue ? pad / 2 : pad)
                         .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], open.wrappedValue ? pad / 2 : pad)
