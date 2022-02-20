@@ -43,6 +43,7 @@ struct TreeView: View {
                         .padding(.top, 20)
                         .onTapGesture {
 //                            addWorkspace()
+                            viewModel.addWorkspace()
                         }
                 }
                 .padding()
@@ -55,6 +56,7 @@ struct TreeView: View {
                         .padding(.top, 20)
                         .onTapGesture {
 //                            addWorkspace()
+                            viewModel.addWorkspace()
                         }
                 }
                 .padding([.top, .bottom])

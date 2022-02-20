@@ -37,4 +37,17 @@ final class TreeViewViewModel: ObservableObject {
             self.documents = documents
         }
     }
+    
+    func addWorkspace() {
+        let now = Date.now
+        let newWorkspace = Workspace(context: moc)
+        newWorkspace.id = UUID()
+        newWorkspace.createdAt = now
+        newWorkspace.modifiedAt = now
+        newWorkspace.title = "New Doc"
+        
+        try? moc.save()
+        
+        fetchWorkspaces()
+    }
 }
