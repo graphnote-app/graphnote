@@ -58,9 +58,7 @@ struct ContentView: View {
             }
             
         }.task {
-//            dropDatabase()
-//            seed()
-//
+
             if let workspace = viewModel.items.sorted().first, let document = (workspace.documents?.allObjects as? [Document])?.first  {
                 selectedWorkspace = workspace.id
                 selectedDocument = document.id
@@ -72,48 +70,6 @@ struct ContentView: View {
         }
     }
     
-    func dropDatabase() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Workspace.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        try! self.moc.execute(deleteRequest)
-        
-    }
     
-    func seed() {
-        let workspaceTitles = [
-            "SwiftBook",
-            "DarkTorch",
-            "NSSWitch",
-            "Kanception",
-        ]
-
-        let documentTitles = [
-            "Design Doc",
-            "Project Kickoff",
-            "Technical Specification",
-        ]
-
-        for title in workspaceTitles {
-            let workspace = Workspace(context: moc)
-            let createdAt = Date.now
-            workspace.createdAt = createdAt
-            workspace.modifiedAt = createdAt
-            workspace.id = UUID()
-            workspace.title = title
-            
-            for docTitle in documentTitles {
-                let document = Document(context: moc)
-                document.id = UUID()
-                let createdAt = Date.now
-                document.createdAt = createdAt
-                document.modifiedAt = createdAt
-                document.title = docTitle
-                document.workspace = workspace
-            }
-            
-        }
-
-        try! moc.save()
-    }
     
 }

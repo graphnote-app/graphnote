@@ -39,7 +39,7 @@ struct GraphnoteApp: App {
             
             let docsFetchRequest: NSFetchRequest<Document>
             docsFetchRequest = Document.fetchRequest()
-            docsFetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id.uuidString)
+//            docsFetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id.uuidString)
             
             let documents = try dataController.container.viewContext.fetch(docsFetchRequest)
             
@@ -69,6 +69,9 @@ struct GraphnoteApp: App {
             minHeight: MacOSDimensions.windowMinHeight.rawValue,
             idealHeight: MacOSDimensions.windowMinHeight.rawValue
         )
+            .task {
+                
+            }
         #else
         GeometryReader { geometry in
             if let initialSelected = fetchInitialDocument() {
@@ -85,6 +88,10 @@ struct GraphnoteApp: App {
         #if os(macOS)
         WindowGroup() {
             content()
+                .task {
+//                    dropDatabase()
+//                    seed()
+                }
                 
         }
         .windowToolbarStyle(.unifiedCompact)
@@ -93,8 +100,57 @@ struct GraphnoteApp: App {
         #else
         WindowGroup {
             content()
-                
+                .task {
+                    dropDatabase()
+                    seed()
+                }
         }
         #endif
+    }
+    
+    func dropDatabase() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Workspace.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        try! self.dataController.container.viewContext.execute(deleteRequest)
+        
+    }
+    
+    func seed() {
+        let workspaceTitles = [
+            "SwiftBook",
+            "DarkTorch",
+            "NSSWitch",
+            "Kanception",
+        ]
+
+        let documentTitles = [
+            "Design Doc",
+            "Project Kickoff",
+            "Technical Specification",
+        ]
+
+        let moc = self.dataController.container.viewContext
+        
+        for title in workspaceTitles {
+            let workspace = Workspace(context: moc)
+            let createdAt = Date.now
+            workspace.createdAt = createdAt
+            workspace.modifiedAt = createdAt
+            workspace.id = UUID()
+            workspace.title = title
+            
+            for docTitle in documentTitles {
+                let document = Document(context: moc)
+                document.id = UUID()
+                let createdAt = Date.now
+                document.createdAt = createdAt
+                document.modifiedAt = createdAt
+                document.title = docTitle
+                document.workspace = workspace
+            }
+            
+        }
+
+        try! moc.save()
     }
 }

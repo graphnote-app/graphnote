@@ -44,11 +44,6 @@ struct TreeViewItemCell: View {
                     .onSubmit {
                         editable = false
                         focusedField = nil
-                        
-//                        clearNewIDCallback()
-
-//                        setSelectedDocument(id, workspaceId)
-
                     }
                     .focused($focusedField, equals: .field)
                     .onAppear {
@@ -105,7 +100,8 @@ struct TreeViewItemCell: View {
                         }
                         Button {
                             print("Delete document: \(documentId)")
-//                            deleteDocument(workspaceId, id)
+                            deleteDocument(workspaceId, documentId)
+                            refresh()
                         } label: {
                             Text("Delete document")
                         }
@@ -133,7 +129,6 @@ struct TreeViewItem: View, Identifiable {
     var selectedDocument: Binding<UUID>
     var selectedWorkspace: Binding<UUID>
     let refresh: () -> ()
-//    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     
     @ObservedObject private var viewModel: TreeViewItemViewModel
     
@@ -185,11 +180,6 @@ struct TreeViewItem: View, Identifiable {
                             .onSubmit {
                                 editable = false
                                 focusedField = nil
-//                                clearNewIDCallback()
-//
-//                                if let document = documents?.first {
-//                                    setSelectedDocument(document.id, id)
-//                                }
                             }
                             .focused($focusedField, equals: .field)
                             .onAppear {

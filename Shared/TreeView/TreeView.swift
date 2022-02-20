@@ -15,7 +15,6 @@ struct TreeView: View {
 
     var selectedDocument: Binding<UUID>
     var selectedWorkspace: Binding<UUID>
-//    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     
     init(selectedDocument: Binding<UUID>, selectedWorkspace: Binding<UUID>, moc: NSManagedObjectContext) {
         self.selectedDocument = selectedDocument
@@ -42,7 +41,6 @@ struct TreeView: View {
                     TreeViewAddView()
                         .padding(.top, 20)
                         .onTapGesture {
-//                            addWorkspace()
                             viewModel.addWorkspace()
                         }
                 }
@@ -55,7 +53,6 @@ struct TreeView: View {
                     TreeViewAddView()
                         .padding(.top, 20)
                         .onTapGesture {
-//                            addWorkspace()
                             viewModel.addWorkspace()
                         }
                 }

@@ -74,8 +74,8 @@ final class DocumentViewViewModel: ObservableObject {
     private func save() {
         do {
             try self.moc.save()
-        } catch {
-            print("Error saving managed object context")
+        } catch let error {
+            print("Error saving managed object context. Error: \(error)")
         }
     }
 }

@@ -25,7 +25,7 @@ final class TreeViewViewModel: ObservableObject {
         fetchRequest = Workspace.fetchRequest()
         
         if let workspaces = try? moc.fetch(fetchRequest) {
-            self.workspaces = workspaces
+            self.workspaces = workspaces.sorted()
         }
     }
     
