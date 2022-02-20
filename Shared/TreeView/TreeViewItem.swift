@@ -66,8 +66,7 @@ struct TreeViewItemCell: View {
     var body: some View {
         ZStack(alignment: .leading) {
             EffectView()
-        
-//            if selected.documentId == self.documentId && selected.workspaceId == self.workspaceId {
+            
             if selected.wrappedValue == DocumentIdentifier(workspaceId: self.workspaceId, documentId: self.documentId) {
                 
                 self.textOrTextField()
