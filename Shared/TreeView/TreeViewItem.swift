@@ -28,6 +28,8 @@ struct TreeViewItemCell: View {
     let workspaceId: UUID
     var selectedDocument: Binding<UUID>
     var selectedWorkspace: Binding<UUID>
+    let deleteDocument: (UUID, UUID) -> ()
+    let refresh: () -> ()
     @State var editable = false
     @FocusState private var focusedField: FocusField?
 
@@ -86,7 +88,8 @@ struct TreeViewItemCell: View {
                         }
                         Button {
                             print("Delete document: \(documentId)")
-//                            deleteDocument(workspaceId, id)
+                            deleteDocument(workspaceId, documentId)
+                            refresh()
                         } label: {
                             Text("Delete document")
                         }
@@ -129,21 +132,30 @@ struct TreeViewItem: View, Identifiable {
     let workspace: Binding<Workspace>
     var selectedDocument: Binding<UUID>
     var selectedWorkspace: Binding<UUID>
+    let refresh: () -> ()
 //    let onSelectionChange: (_ workspaceId: UUID, _ documentId: UUID) -> ()
     
     @ObservedObject private var viewModel: TreeViewItemViewModel
     
-    init(moc: NSManagedObjectContext, id: UUID, workspace: Binding<Workspace>, selectedDocument: Binding<UUID>, selectedWorkspace: Binding<UUID>) {
+    init(moc: NSManagedObjectContext,
+         id: UUID,
+         workspace: Binding<Workspace>,
+         selectedDocument: Binding<UUID>,
+         selectedWorkspace: Binding<UUID>,
+         refresh: @escaping () -> ()
+    ) {
         self.moc = moc
         self.id = id
 
         self.workspace = workspace
         self.selectedDocument = selectedDocument
         self.selectedWorkspace = selectedWorkspace
+        self.refresh = refresh
         self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
-        
-        print(viewModel.documents.count)
-        
+    }
+    
+    func refreshDocuments() {
+        self.viewModel.fetchDocuments(workspaceId: self.workspace.id.wrappedValue)
     }
 
     var body: some View {
@@ -207,7 +219,8 @@ struct TreeViewItem: View, Identifiable {
                 }
                 Button {
                     print("Delete workspace \(id)")
-//                    deleteWorkspace(id)
+                    viewModel.deleteWorkspace(workspaceId: id)
+                    refresh()
                 } label: {
                     Text("Delete workspace")
                 }
@@ -224,7 +237,7 @@ struct TreeViewItem: View, Identifiable {
             VStack(alignment: .leading) {
                 if let _ = viewModel.documents {
                     ForEach(0..<viewModel.documents.count, id: \.self) { index in
-                        TreeViewItemCell(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)
+                        TreeViewItemCell(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, deleteDocument: viewModel.deleteDocument, refresh: refreshDocuments)
                     }
                 }
                 

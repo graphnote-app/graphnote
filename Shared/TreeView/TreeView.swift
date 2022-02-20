@@ -22,6 +22,10 @@ struct TreeView: View {
         self.selectedWorkspace = selectedWorkspace
         self.viewModel = TreeViewViewModel(moc: moc)
     }
+    
+    func refresh() -> () {
+        self.viewModel.fetchWorkspaces()
+    }
 
     var body: some View {
         ZStack() {
@@ -44,7 +48,7 @@ struct TreeView: View {
                 .padding()
                 #else
                 VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace)}) { item in
+                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selectedDocument: selectedDocument, selectedWorkspace: selectedWorkspace, refresh: refresh)}) { item in
                         item.environmentObject(TreeViewViewModel(moc: self.moc))
                     }
                     TreeViewAddView()

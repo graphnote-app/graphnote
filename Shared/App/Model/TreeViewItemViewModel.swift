@@ -30,6 +30,27 @@ class TreeViewItemViewModel: ObservableObject {
         }
     }
     
+    func deleteWorkspace(workspaceId: UUID) {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Workspace.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", workspaceId.uuidString)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try self.moc.execute(deleteRequest)
+        } catch {
+            print("Failed to execute delete request.")
+        }
+    }
+    
+    func deleteDocument(workspaceId: UUID, documentId: UUID) {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Document.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@ && workspace.id == %@", documentId.uuidString, workspaceId.uuidString)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try self.moc.execute(deleteRequest)
+        } catch {
+            print("Failed to execute delete request.")
+        }
+    }
     
     
 }
