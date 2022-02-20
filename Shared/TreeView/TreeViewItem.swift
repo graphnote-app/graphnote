@@ -244,7 +244,10 @@ struct TreeViewItem: View, Identifiable {
                 TreeViewAddView()
                     .padding(.top, 10)
                     .onTapGesture {
-//                            addDocument(id)
+                        if let newDocumentId = viewModel.addDocument(workspaceId: id) {
+                            selectedDocument.wrappedValue = newDocumentId
+                            selectedWorkspace.wrappedValue = workspace.id.wrappedValue
+                        }
                     }
             }
             .padding([.leading], 40)

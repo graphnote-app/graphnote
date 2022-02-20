@@ -52,5 +52,28 @@ class TreeViewItemViewModel: ObservableObject {
         }
     }
     
+    func addDocument(workspaceId: UUID) -> UUID? {
+        
+        let fetchRequest: NSFetchRequest<Workspace>
+        fetchRequest = Workspace.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", workspaceId.uuidString)
+        
+        if let workspace = try? moc.fetch(fetchRequest).first {
+            let now = Date.now
+            let newDocument = Document(context: moc)
+            newDocument.id = UUID()
+            newDocument.createdAt = now
+            newDocument.modifiedAt = now
+            newDocument.workspace = workspace
+            newDocument.title = "New Doc"
+            try? moc.save()
+            
+            fetchDocuments(workspaceId: workspaceId)
+            return newDocument.id
+        }
+        
+        return nil
+    }
+    
     
 }

@@ -44,7 +44,7 @@ final class TreeViewViewModel: ObservableObject {
         newWorkspace.id = UUID()
         newWorkspace.createdAt = now
         newWorkspace.modifiedAt = now
-        newWorkspace.title = "New Doc"
+        newWorkspace.title = "New Workspace"
         
         try? moc.save()
         
