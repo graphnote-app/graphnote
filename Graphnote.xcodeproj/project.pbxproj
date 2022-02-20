@@ -33,6 +33,8 @@
 		F899DFF5279E770F00305AFA /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
 		F899DFF8279E87D400305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFF7279E87D400305AFA /* SwiftyJSON */; };
 		F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFFA279E87E500305AFA /* SwiftyJSON */; };
+		F8AD578127C1D94400E07D82 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
+		F8AD578227C1D94400E07D82 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
 		F8D92885279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
 		F8D92888279FD05B009CC9B9 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D92887279FD05B009CC9B9 /* DataController.swift */; };
@@ -97,6 +99,7 @@
 		F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewViewModel.swift; sourceTree = "<group>"; };
 		F899DFEE279E2B3800305AFA /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
+		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		F8D92884279FCEB9009CC9B9 /* Graphnote.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Graphnote.xcdatamodel; sourceTree = "<group>"; };
 		F8D92887279FD05B009CC9B9 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewAddView.swift; sourceTree = "<group>"; };
@@ -160,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				F81CC924279D027000A1F693 /* Arrow.swift */,
+				F8AD578027C1D94400E07D82 /* ArrowView.swift */,
 				F81CC930279D0CF700A1F693 /* BulletView.swift */,
 				F81CC927279D06B600A1F693 /* TreeView.swift */,
 				F81CC92A279D078D00A1F693 /* TreeViewItem.swift */,
@@ -472,6 +476,7 @@
 				F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F8D9288B27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
+				F8AD578127C1D94400E07D82 /* ArrowView.swift in Sources */,
 				F8D9289427A24688009CC9B9 /* CheckmarkView.swift in Sources */,
 				F81CC925279D027000A1F693 /* Arrow.swift in Sources */,
 				F8D9288E27A23C3E009CC9B9 /* EffectView.swift in Sources */,
@@ -504,6 +509,7 @@
 				F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F8D9288C27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
+				F8AD578227C1D94400E07D82 /* ArrowView.swift in Sources */,
 				F8D9289527A24688009CC9B9 /* CheckmarkView.swift in Sources */,
 				F81CC926279D027000A1F693 /* Arrow.swift in Sources */,
 				F8D9288F27A23C3E009CC9B9 /* EffectView.swift in Sources */,

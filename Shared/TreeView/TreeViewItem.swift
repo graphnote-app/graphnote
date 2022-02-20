@@ -10,7 +10,7 @@ import CoreData
 import Combine
 
 enum TreeViewItemDimensions: CGFloat {
-    case arrowWidthHeight = 12
+    case arrowWidthHeight = 16
     case rowPadding = 4
 }
 
@@ -156,19 +156,25 @@ struct TreeViewItem: View, Identifiable {
                 EffectView()
                 HStack {
                     if toggle {
-                        Arrow()
+                        ArrowView(color: color)
                             .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
-                            .foregroundColor(color)
                             .rotationEffect(Angle(degrees: 90))
+                            .onTapGesture {
+                                toggle.toggle()
+                            }
+                    
                     } else {
-                        Arrow()
+                        ArrowView(color: color)
                             .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
-                            .foregroundColor(color)
+                            .onTapGesture {
+                                toggle.toggle()
+                            }
                     }
                     
                     
                     if editable {
                         CheckmarkView()
+                            .contentShape(Rectangle())
                             .padding(TreeViewItemDimensions.rowPadding.rawValue)
                             .onTapGesture {
                                 editable = false
@@ -212,9 +218,8 @@ struct TreeViewItem: View, Identifiable {
                     Text("Delete workspace")
                 }
             }
-            .onTapGesture {
-                toggle.toggle()
-            }
+            
+
             
 
         }

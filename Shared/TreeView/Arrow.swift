@@ -18,7 +18,7 @@ struct Arrow: Shape {
     }
 }
 
-struct ArrowView_Previews: PreviewProvider {
+struct Arrow_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
             Arrow()
