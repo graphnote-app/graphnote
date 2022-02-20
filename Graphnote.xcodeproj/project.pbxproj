@@ -35,6 +35,8 @@
 		F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFFA279E87E500305AFA /* SwiftyJSON */; };
 		F8AD578127C1D94400E07D82 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
 		F8AD578227C1D94400E07D82 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
+		F8AD579027C2C0D300E07D82 /* TreeViewSubItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */; };
+		F8AD579127C2C0D300E07D82 /* TreeViewSubItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */; };
 		F8D92885279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
 		F8D92888279FD05B009CC9B9 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D92887279FD05B009CC9B9 /* DataController.swift */; };
@@ -100,6 +102,7 @@
 		F899DFEE279E2B3800305AFA /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
+		F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubItem.swift; sourceTree = "<group>"; };
 		F8D92884279FCEB9009CC9B9 /* Graphnote.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Graphnote.xcdatamodel; sourceTree = "<group>"; };
 		F8D92887279FD05B009CC9B9 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewAddView.swift; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 				F81CC930279D0CF700A1F693 /* BulletView.swift */,
 				F81CC927279D06B600A1F693 /* TreeView.swift */,
 				F81CC92A279D078D00A1F693 /* TreeViewItem.swift */,
+				F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */,
 				F81CC933279D0ECA00A1F693 /* FileIconView.swift */,
 				F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */,
 				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
@@ -482,6 +486,7 @@
 				F8D9288E27A23C3E009CC9B9 /* EffectView.swift in Sources */,
 				F8D92888279FD05B009CC9B9 /* DataController.swift in Sources */,
 				F81CC938279E047100A1F693 /* DocumentView.swift in Sources */,
+				F8AD579027C2C0D300E07D82 /* TreeViewSubItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,6 +520,7 @@
 				F8D9288F27A23C3E009CC9B9 /* EffectView.swift in Sources */,
 				F8D92889279FD05B009CC9B9 /* DataController.swift in Sources */,
 				F81CC939279E047100A1F693 /* DocumentView.swift in Sources */,
+				F8AD579127C2C0D300E07D82 /* TreeViewSubItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
