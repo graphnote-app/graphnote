@@ -23,6 +23,8 @@ extension Sequence {
     }
 }
 
+let reseed = false
+
 @main
 struct GraphnoteApp: App {
     @StateObject private var dataController = DataController.shared
@@ -89,8 +91,11 @@ struct GraphnoteApp: App {
         WindowGroup() {
             content()
                 .task {
-//                    dropDatabase()
-//                    seed()
+                    if reseed {
+                        dropDatabase()
+                        seed()
+                    }
+
                 }
                 
         }
@@ -101,8 +106,10 @@ struct GraphnoteApp: App {
         WindowGroup {
             content()
                 .task {
-                    dropDatabase()
-                    seed()
+                    if reseed {
+                        dropDatabase()
+                        seed()
+                    }
                 }
         }
         #endif
