@@ -13,10 +13,18 @@ final class DocumentViewViewModel: ObservableObject {
     
     let id: UUID
     let workspaceId: UUID
-    @Published var title: String = ""
-    @Published var workspaceTitle: String = ""
     
-//    private var document: Document?
+    @Published var title: String = "" {
+        didSet {
+            setTitle(title: title, workspaceId: workspaceId, documentId: id)
+        }
+    }
+    
+    @Published var workspaceTitle: String = "" {
+        didSet {
+            setWorkspaceTitle(title: workspaceTitle, workspaceId: workspaceId)
+        }
+    }
     
     init(id: UUID, workspaceId: UUID, moc: NSManagedObjectContext) {
         self.id = id
@@ -53,7 +61,7 @@ final class DocumentViewViewModel: ObservableObject {
         return nil
     }
     
-    func setTitle(title: String, workspaceId: UUID, documentId: UUID) {
+    private func setTitle(title: String, workspaceId: UUID, documentId: UUID) {
         if let document = fetchDocument(workspaceId: workspaceId, documentId: documentId) {
             document.title = title
             document.modifiedAt = Date.now
@@ -62,7 +70,7 @@ final class DocumentViewViewModel: ObservableObject {
 
     }
     
-    func setWorkspaceTitle(title: String, workspaceId: UUID) {
+    private func setWorkspaceTitle(title: String, workspaceId: UUID) {
         if let workspace = fetchWorkspace(workspaceId: workspaceId) {
             workspace.title = title
             workspace.modifiedAt = Date.now
