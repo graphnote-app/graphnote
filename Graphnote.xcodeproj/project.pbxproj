@@ -49,6 +49,10 @@
 		F8D9289227A23CE9009CC9B9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289027A23CE9009CC9B9 /* Constants.swift */; };
 		F8D9289427A24688009CC9B9 /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289327A24688009CC9B9 /* CheckmarkView.swift */; };
 		F8D9289527A24688009CC9B9 /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289327A24688009CC9B9 /* CheckmarkView.swift */; };
+		F8E19E5729A8669000BD0BB9 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
+		F8E19E5829A8669000BD0BB9 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
+		F8E19E5A29A8695B00BD0BB9 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */; };
+		F8E19E5B29A8695B00BD0BB9 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */; };
 		F8E5A71027B1EC8D001A5C43 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */; };
 		F8E5A71127B1EC8D001A5C43 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */; };
 		F8EA408A279CFF55001F74B5 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4089279CFF55001F74B5 /* Tests_iOS.swift */; };
@@ -109,6 +113,8 @@
 		F8D9288D27A23C3E009CC9B9 /* EffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectView.swift; sourceTree = "<group>"; };
 		F8D9289027A23CE9009CC9B9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F8D9289327A24688009CC9B9 /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
+		F8E19E5629A8669000BD0BB9 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphnoteApp.swift; sourceTree = "<group>"; };
 		F8EA4072279CFF54001F74B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -220,6 +226,8 @@
 				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
 				F8D9289027A23CE9009CC9B9 /* Constants.swift */,
 				F86C9F1527B0C7A8002DD87A /* Model */,
+				F8E19E5629A8669000BD0BB9 /* Spacing.swift */,
+				F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -473,6 +481,7 @@
 				F8F32C8627B9CDFB003B0DF9 /* Workspace.swift in Sources */,
 				F875124927B4A11500E86D57 /* DocumentIdentifier.swift in Sources */,
 				F81CC934279D0ECA00A1F693 /* FileIconView.swift in Sources */,
+				F8E19E5729A8669000BD0BB9 /* Spacing.swift in Sources */,
 				F8D92885279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8F32C8327B9CDF6003B0DF9 /* Document.swift in Sources */,
 				F8D9289127A23CE9009CC9B9 /* Constants.swift in Sources */,
@@ -481,6 +490,7 @@
 				F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F8D9288B27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
 				F8AD578127C1D94400E07D82 /* ArrowView.swift in Sources */,
+				F8E19E5A29A8695B00BD0BB9 /* ColorPalette.swift in Sources */,
 				F8D9289427A24688009CC9B9 /* CheckmarkView.swift in Sources */,
 				F81CC925279D027000A1F693 /* Arrow.swift in Sources */,
 				F8D9288E27A23C3E009CC9B9 /* EffectView.swift in Sources */,
@@ -507,6 +517,7 @@
 				F8F32C8727B9CDFB003B0DF9 /* Workspace.swift in Sources */,
 				F875124A27B4A11500E86D57 /* DocumentIdentifier.swift in Sources */,
 				F81CC935279D0ECA00A1F693 /* FileIconView.swift in Sources */,
+				F8E19E5829A8669000BD0BB9 /* Spacing.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8F32C8427B9CDF6003B0DF9 /* Document.swift in Sources */,
 				F8D9289227A23CE9009CC9B9 /* Constants.swift in Sources */,
@@ -515,6 +526,7 @@
 				F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
 				F8D9288C27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
 				F8AD578227C1D94400E07D82 /* ArrowView.swift in Sources */,
+				F8E19E5B29A8695B00BD0BB9 /* ColorPalette.swift in Sources */,
 				F8D9289527A24688009CC9B9 /* CheckmarkView.swift in Sources */,
 				F81CC926279D027000A1F693 /* Arrow.swift in Sources */,
 				F8D9288F27A23C3E009CC9B9 /* EffectView.swift in Sources */,

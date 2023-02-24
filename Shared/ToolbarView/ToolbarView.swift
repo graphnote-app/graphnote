@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ToolbarView: View {
     @Environment(\.colorScheme) var colorScheme
-    let size: CGSize
     let open: Binding<Bool>
     
     var body: some View {
@@ -34,8 +33,8 @@ struct ToolbarView: View {
                 }
             Spacer()
             
-        }.zIndex(1)
-            .background(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
-            .frame(width: size.width)
+        }
+        .zIndex(1)
+        .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
     }
 }

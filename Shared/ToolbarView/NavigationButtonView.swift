@@ -16,14 +16,17 @@ struct NavigationButtonView: View {
         ZStack {
             Rectangle()
                 .frame(width: width, height: width)
-                .foregroundColor(colorScheme == .dark ? darkBackgroundColor : lightBackgroundColor)
+                .foregroundColor(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             VStack(spacing: 4) {
                 Rectangle()
                     .frame(width: width, height: barHeight)
+                    .cornerRadius(1)
                 Rectangle()
                     .frame(width: width, height: barHeight)
+                    .cornerRadius(1)
                 Rectangle()
                     .frame(width: width, height: barHeight)
+                    .cornerRadius(1)
             }
             .foregroundColor(.primary)
 
