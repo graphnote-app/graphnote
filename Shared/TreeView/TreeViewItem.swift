@@ -99,9 +99,6 @@ struct TreeViewItem: View, Identifiable {
                     }
                     
                 }
-                .onTapGesture {
-                    toggle.toggle()
-                }
                 .padding(TreeViewItemDimensions.rowPadding.rawValue)
   
             }
@@ -119,9 +116,9 @@ struct TreeViewItem: View, Identifiable {
                     Text("Delete workspace")
                 }
             }
-            
-
-            
+            .onTapGesture {
+                toggle.toggle()
+            }
 
         }
         
