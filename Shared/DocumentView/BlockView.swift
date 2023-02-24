@@ -11,6 +11,7 @@ struct BlockView: View {
     @State private var value = ""
     @State private var nTopSpacers = 0
     
+    #if os(macOS)
     private func keyDown(with event: NSEvent) {
         if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
             if value == "" && nTopSpacers > 0 {
@@ -18,6 +19,7 @@ struct BlockView: View {
             }
         }
     }
+    #endif
     
     var body: some View {
         VStack {
@@ -28,7 +30,7 @@ struct BlockView: View {
                 .disableAutocorrection(true)
                 .textFieldStyle(.plain)
                 .font(.title3)
-                .foregroundColor(ColorPalette.lightGray1)
+                .foregroundColor(ColorPalette.primaryText)
                 .onSubmit {
                     if value == "" {
                         nTopSpacers += 1
@@ -36,10 +38,12 @@ struct BlockView: View {
                 }
         }
         .onAppear {
+            #if os(macOS)
             NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
                 self.keyDown(with: $0)
                 return $0
             }
+            #endif
         }
     }
 }

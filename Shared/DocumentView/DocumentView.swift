@@ -46,7 +46,7 @@ struct DocumentView: View {
             NavigationButtonView()
                 .frame(width: 100, height: 100)
                 .zIndex(100)
-                .position(x: 20, y: size.height)
+                .position(x: 24, y: size.height)
                 .onTapGesture {
                     open.wrappedValue = !open.wrappedValue
                 }
@@ -77,7 +77,8 @@ struct DocumentView: View {
                             Spacer()
                         }.frame(width: maxBlockWidth)
                         HStack {
-                            Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+//                            Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+                            Text("")
                                 .font(.body)
                                 .lineSpacing(textSpacing)
                                 .padding(pad)
@@ -101,11 +102,15 @@ struct DocumentView: View {
                                     .font(.headline)
                                     .textFieldStyle(.plain)
                             }
-    //                            .padding(open.wrappedValue ? pad / 2 : pad)
                             .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], open.wrappedValue ? pad / 2 : pad)
                             .padding(open.wrappedValue ? [.top, .bottom] : [], pad)
                                 .foregroundColor(.primary)
                             
+                        }
+                        HStack() {
+                            BlockView()
+                                .padding([.leading, .trailing], pad)
+                            Spacer()
                         }
                         HStack {
                             Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
@@ -121,7 +126,9 @@ struct DocumentView: View {
                     .frame(minWidth: size.width, minHeight: size.height * pageMinHeightMultiplier)
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
                     #endif
-                }.background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                }
+                .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                .padding(Spacing.spacing6.rawValue)
                 #if os(iOS)
                 self.toolbar(open: open)
                 #endif

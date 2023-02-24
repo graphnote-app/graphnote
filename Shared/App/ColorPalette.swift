@@ -16,5 +16,5 @@ struct ColorPalette {
     
     static let lightBG1 = Color.white
     
-    static let lightGray1 = Color.gray
+    static let primaryText = Color.primary
 }
