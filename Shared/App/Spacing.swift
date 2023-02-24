@@ -5,7 +5,9 @@
 //  Created by Hayden Pennington on 2/23/23.
 //
 
-enum Spacing: Int {
+import Foundation
+
+enum Spacing: CGFloat {
     case spacing0 = 0
     case spacing1 = 4
     case spacing2 = 8

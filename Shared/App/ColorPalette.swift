@@ -15,4 +15,6 @@ struct ColorPalette {
     #endif
     
     static let lightBG1 = Color.white
+    
+    static let lightGray1 = Color.gray
 }
