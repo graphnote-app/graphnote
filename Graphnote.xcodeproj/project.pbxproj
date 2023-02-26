@@ -29,6 +29,8 @@
 		F875124D27B4A89D00E86D57 /* TreeViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */; };
 		F875124F27B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */; };
 		F875125027B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */; };
+		F880664429AB2EB3002A457D /* PromptField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880664329AB2EB3002A457D /* PromptField.swift */; };
+		F880664529AB2EB3002A457D /* PromptField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880664329AB2EB3002A457D /* PromptField.swift */; };
 		F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFEE279E2B3800305AFA /* ToolbarView.swift */; };
 		F899DFF4279E770F00305AFA /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
@@ -106,6 +108,7 @@
 		F875124827B4A11500E86D57 /* DocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentIdentifier.swift; sourceTree = "<group>"; };
 		F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewViewModel.swift; sourceTree = "<group>"; };
 		F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewViewModel.swift; sourceTree = "<group>"; };
+		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F899DFEE279E2B3800305AFA /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
@@ -193,6 +196,7 @@
 			children = (
 				F81CC937279E047100A1F693 /* DocumentView.swift */,
 				F86978C829A88398002D9570 /* BlockView.swift */,
+				F880664329AB2EB3002A457D /* PromptField.swift */,
 			);
 			path = DocumentView;
 			sourceTree = "<group>";
@@ -493,6 +497,7 @@
 				F8EA409B279CFF55001F74B5 /* ContentView.swift in Sources */,
 				F899DFEF279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA4099279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
+				F880664429AB2EB3002A457D /* PromptField.swift in Sources */,
 				F8D9288B27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
 				F8AD578127C1D94400E07D82 /* ArrowView.swift in Sources */,
 				F8E19E5A29A8695B00BD0BB9 /* ColorPalette.swift in Sources */,
@@ -530,6 +535,7 @@
 				F8EA409C279CFF55001F74B5 /* ContentView.swift in Sources */,
 				F899DFF0279E2B3800305AFA /* ToolbarView.swift in Sources */,
 				F8EA409A279CFF55001F74B5 /* GraphnoteApp.swift in Sources */,
+				F880664529AB2EB3002A457D /* PromptField.swift in Sources */,
 				F8D9288C27A23686009CC9B9 /* TreeViewAddView.swift in Sources */,
 				F8AD578227C1D94400E07D82 /* ArrowView.swift in Sources */,
 				F8E19E5B29A8695B00BD0BB9 /* ColorPalette.swift in Sources */,

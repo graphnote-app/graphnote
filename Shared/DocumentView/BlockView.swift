@@ -26,9 +26,8 @@ struct BlockView: View {
             ForEach(0..<nTopSpacers, id: \.self) { _ in
                 Spacer().frame(height: Spacing.spacing5.rawValue)
             }
-            TextField("Press '/' for commands...", text: $value)
-                .disableAutocorrection(true)
-                .textFieldStyle(.plain)
+            PromptField(placeholder: "Press '/' for commands...", text: $value)
+                .frame(height: Spacing.spacing7.rawValue)
                 .font(.title3)
                 .foregroundColor(ColorPalette.primaryText)
                 .onSubmit {
