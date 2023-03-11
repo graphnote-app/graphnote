@@ -79,6 +79,30 @@ final class DocumentViewViewModel: ObservableObject {
         
     }
     
+    func fetchBlocks(workspaceId: UUID, documentId: UUID) -> [Block]? {
+        let fetchRequest: NSFetchRequest<Block> = Block.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "document.workspace.id == %@ && document.id == %@", workspaceId.uuidString, documentId.uuidString)
+        
+        if let blocks = try? moc.fetch(fetchRequest) {
+            return blocks
+        }
+        
+        return nil
+    }
+    
+    func createBlock(workspaceId: UUID, documentId: UUID) {
+        let now = Date.now
+        let newBlock = Block(context: moc)
+        newBlock.id = UUID()
+        newBlock.createdAt = now
+        newBlock.modifiedAt = now
+        
+        if let document = fetchDocument(workspaceId: workspaceId, documentId: documentId) {
+            newBlock.document = document
+            try? moc.save()
+        }
+    }
+    
     private func save() {
         do {
             try self.moc.save()

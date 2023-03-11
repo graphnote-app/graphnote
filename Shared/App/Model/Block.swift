@@ -17,6 +17,7 @@ public class Block: NSManagedObject {
     @NSManaged public var content: String
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
+    @NSManaged public var document: Document
 }
 
 extension Block : Comparable {

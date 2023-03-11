@@ -27,6 +27,8 @@ struct DocumentView: View {
     
     @ObservedObject private var viewModel: DocumentViewViewModel
     
+    @State private var blocks: [Block] = []
+    
     init(moc: NSManagedObjectContext, id: UUID, workspaceId: UUID, open: Binding<Bool>) {
         self.documentId = id
         self.workspaceId = workspaceId
@@ -158,5 +160,11 @@ struct DocumentView: View {
             #endif
         }
         .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+        .onAppear {
+            let fetchedBlocks = viewModel.fetchBlocks(workspaceId: workspaceId, documentId: documentId)
+            if let fetchedBlocks {
+                self.blocks = fetchedBlocks
+            }
+        }
     }
 }
