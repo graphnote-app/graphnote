@@ -74,7 +74,10 @@ struct DocumentView: View {
                                 .foregroundColor(.primary)
                         }.frame(width: maxBlockWidth)
                         HStack() {
-                            BlockView()
+                            BlockView(blocks: blocks)
+                                .onSubmit {
+                                    print("Add new block to memory")
+                                }
 //                                .padding([.leading, .trailing], pad)
                             Spacer()
                         }.frame(width: maxBlockWidth)

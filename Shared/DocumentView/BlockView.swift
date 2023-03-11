@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct BlockView: View {
+    let blocks: [Block]
+    
     @State private var value = ""
     @State private var nTopSpacers = 0
-    
+    @State private var enterAction: (() -> Void)? = nil
+
     #if os(macOS)
     private func keyDown(with event: NSEvent) {
         if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
@@ -23,8 +26,8 @@ struct BlockView: View {
     
     var body: some View {
         VStack {
-            ForEach(0..<nTopSpacers, id: \.self) { _ in
-                Spacer().frame(height: Spacing.spacing5.rawValue)
+            ForEach(blocks, id: \.self) { block in
+                EmptyBlockView()
             }
             PromptField(placeholder: "Press '/' for commands...", text: $value)
                 .frame(height: Spacing.spacing7.rawValue)
@@ -32,17 +35,28 @@ struct BlockView: View {
                 .foregroundColor(ColorPalette.primaryText)
                 .onSubmit {
                     if value == "" {
-                        nTopSpacers += 1
+                        if let enterAction {
+                            enterAction()
+                        }
                     }
                 }
+                .onAppear {
+                    #if os(macOS)
+                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                        self.keyDown(with: $0)
+                        return $0
+                    }
+                    #endif
+                }
         }
-        .onAppear {
-            #if os(macOS)
-            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                self.keyDown(with: $0)
-                return $0
-            }
-            #endif
-        }
+        
     }
+}
+
+extension BlockView {
+
+    func onSubmit(perform action: @escaping () -> Void) -> Self {
+        self.enterAction = action
+        return self
+     }
 }
