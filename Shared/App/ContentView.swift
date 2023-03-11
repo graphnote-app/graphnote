@@ -53,6 +53,23 @@ struct ContentView: View {
                 }
                 .frame(width: mobileTreeWidth)
                 .edgesIgnoringSafeArea([.top, .bottom])
+                .overlay {
+                    GeometryReader { geometry in
+                        HStack {
+                            Spacer()
+                            VStack {
+                                Spacer()
+                                Rectangle()
+                                    .background(Color.gray)
+                                    .frame(width: 1, height: geometry.size.height * 0.95)
+                                Spacer()
+                            }
+                            
+                        }
+                    }
+                    
+
+                }
                 #endif
             }
             if let selectedIdentifier = selectedIdentifier {

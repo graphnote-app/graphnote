@@ -67,13 +67,13 @@ struct DocumentView: View {
                                     .font(.headline)
                                     .textFieldStyle(.plain)
                             }
-                                .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
+//                                .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
                                 .padding(open.wrappedValue ? .top : [], pad)
                                 .foregroundColor(.primary)
                         }.frame(width: maxBlockWidth)
                         HStack() {
                             BlockView()
-                                .padding([.leading, .trailing], pad)
+//                                .padding([.leading, .trailing], pad)
                             Spacer()
                         }.frame(width: maxBlockWidth)
                         HStack {
@@ -102,33 +102,38 @@ struct DocumentView: View {
                                     .font(.headline)
                                     .textFieldStyle(.plain)
                             }
-                            .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], open.wrappedValue ? pad / 2 : pad)
-                            .padding(open.wrappedValue ? [.top, .bottom] : [], pad)
+//                            .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], open.wrappedValue ? pad / 2 : pad)
+//                            .padding(open.wrappedValue ? [.top, .bottom] : [], pad)
                                 .foregroundColor(.primary)
                             
                         }
                         HStack() {
                             BlockView()
-                                .padding([.leading, .trailing], pad)
+//                                .padding([.leading, .trailing], pad)
                             Spacer()
                         }
                         HStack {
                             Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
                                 .font(.body)
                                 .lineSpacing(textSpacing)
-                                .padding(open.wrappedValue ? pad / 2 : pad)
+//                                .padding(open.wrappedValue ? pad / 2 : pad)
                                 .foregroundColor(.primary)
                             Spacer()
                         }
                         
                         Spacer(minLength: pad * 2)
                     }
+                    .padding(.leading, pad / 2)
+                    .padding(.trailing, pad)
                     .frame(minWidth: size.width, minHeight: size.height * pageMinHeightMultiplier)
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                    .padding(.top, pad * 2)
                     #endif
+                    
                 }
                 .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
                 .padding(Spacing.spacing6.rawValue)
+                .edgesIgnoringSafeArea(.top)
                 #if os(iOS)
                 self.toolbar(open: open)
                 #endif
