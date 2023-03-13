@@ -68,7 +68,8 @@ struct DocumentView: View {
                                 Text(viewModel.workspaceTitle)
                                     .font(.headline)
                                     .textFieldStyle(.plain)
-                                    .padding(Spacing.spacing2.rawValue)
+                                    .padding([.leading, .trailing], Spacing.spacing4.rawValue)
+                                    .padding([.top, .bottom], Spacing.spacing2.rawValue)
                                     .overlay {
                                         RoundedRectangle(cornerRadius: 8)
                                             .stroke(Color.accentColor, lineWidth: 2)
@@ -113,7 +114,8 @@ struct DocumentView: View {
                                 Text(viewModel.workspaceTitle)
                                     .font(.headline)
                                     .textFieldStyle(.plain)
-                                    .padding(Spacing.spacing2.rawValue)
+                                    .padding([.leading, .trailing], Spacing.spacing4.rawValue)
+                                    .padding([.top, .bottom], Spacing.spacing2.rawValue)
                                     .overlay {
                                         RoundedRectangle(cornerRadius: 8)
                                             .stroke(Color.accentColor, lineWidth: 2)
