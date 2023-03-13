@@ -65,19 +65,26 @@ struct DocumentView: View {
                                     .textFieldStyle(.plain)
                                 Spacer()
                                     .frame(height: 20)
-                                TextField("", text: $viewModel.workspaceTitle)
+                                Text(viewModel.workspaceTitle)
                                     .font(.headline)
                                     .textFieldStyle(.plain)
+                                    .padding(Spacing.spacing2.rawValue)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.accentColor, lineWidth: 2)
+                                            .foregroundColor(.clear)
+                                    }
                             }
 //                                .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], pad)
                                 .padding(open.wrappedValue ? .top : [], pad)
                                 .foregroundColor(.primary)
                         }.frame(width: maxBlockWidth)
                         HStack() {
-                            BlockView(blocks: blocks)
-                                .onSubmit {
-                                    print("Add new block to memory")
-                                }
+                            BlockView(blocks: blocks) {
+                                print("hello")
+                            }
+                                
+                                 
 //                                .padding([.leading, .trailing], pad)
                             Spacer()
                         }.frame(width: maxBlockWidth)
@@ -103,9 +110,16 @@ struct DocumentView: View {
                                     .textFieldStyle(.plain)
                                 Spacer()
                                     .frame(height: 20)
-                                TextField("", text: $viewModel.workspaceTitle)
+                                Text(viewModel.workspaceTitle)
                                     .font(.headline)
                                     .textFieldStyle(.plain)
+                                    .padding(Spacing.spacing2.rawValue)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.accentColor, lineWidth: 2)
+                                            .foregroundColor(.clear)
+                                    }
+                                    
                             }
 //                            .padding(open.wrappedValue ? .leading : [.leading, .trailing, .top], open.wrappedValue ? pad / 2 : pad)
 //                            .padding(open.wrappedValue ? [.top, .bottom] : [], pad)
@@ -113,7 +127,9 @@ struct DocumentView: View {
                             
                         }
                         HStack() {
-                            BlockView()
+                            BlockView(blocks: blocks) {
+                                
+                            }
 //                                .padding([.leading, .trailing], pad)
                             Spacer()
                         }
