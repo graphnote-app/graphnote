@@ -21,12 +21,11 @@ enum FocusField: Hashable {
 }
 
 struct TreeViewItem: View, Identifiable {
-    @Environment(\.colorScheme) var colorScheme
-    
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.managedObjectContext) private var moc
     @State private var toggle = false
     @State private var editable = false
     @FocusState private var focusedField: FocusField?
-    let moc: NSManagedObjectContext
     let id: UUID
 
     let document: Binding<Document>
@@ -35,15 +34,12 @@ struct TreeViewItem: View, Identifiable {
     
     @ObservedObject private var viewModel: TreeViewItemViewModel
     
-    init(moc: NSManagedObjectContext,
-         id: UUID,
+    init(id: UUID,
          document: Binding<Document>,
          selected: Binding<DocumentIdentifier>,
          refresh: @escaping () -> ()
     ) {
-        self.moc = moc
         self.id = id
-
         self.document = document
         self.selected = selected
         self.refresh = refresh
@@ -56,52 +52,48 @@ struct TreeViewItem: View, Identifiable {
 
     var body: some View {
         VStack(alignment: .leading) {
-            ZStack(alignment: .leading) {
-                EffectView()
-                HStack {
-                    if toggle {
-                        ArrowView(color: color)
-                            .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
-                            .rotationEffect(Angle(degrees: 90))
-                    
-                    } else {
-                        ArrowView(color: color)
-                            .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
-                    }
-                    
-                    
-                    if editable {
-                        CheckmarkView()
-                            .contentShape(Rectangle())
-                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                            .onTapGesture {
-                                editable = false
-                            }
-                        TextField("", text: document.title)
-                            .onSubmit {
-                                editable = false
-                                focusedField = nil
-                            }
-                            .focused($focusedField, equals: .field)
-                            .onAppear {
-                                if editable {
-                                    focusedField = .field
-                                }
-                            }
-                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                            
-                    } else {
-                        FileIconView()
-                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                        Text(document.title.wrappedValue)
-                            .bold()
-                            .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                    }
-                    
+            HStack {
+                if toggle {
+                    ArrowView(color: color)
+                        .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
+                        .rotationEffect(Angle(degrees: 90))
+                
+                } else {
+                    ArrowView(color: color)
+                        .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
                 }
-                .padding(TreeViewItemDimensions.rowPadding.rawValue)
-  
+                
+                
+                if editable {
+                    CheckmarkView()
+                        .contentShape(Rectangle())
+                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                        .onTapGesture {
+                            editable = false
+                        }
+                    TextField("", text: document.title)
+                        .onSubmit {
+                            editable = false
+                            focusedField = nil
+                        }
+                        .focused($focusedField, equals: .field)
+                        .onAppear {
+                            if editable {
+                                focusedField = .field
+                            }
+                        }
+                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                        
+                } else {
+                    FileIconView()
+                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                    Text(document.title.wrappedValue)
+                        .bold()
+                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                }
+                
             }
+            .padding(TreeViewItemDimensions.rowPadding.rawValue)
             .contextMenu {
                 Button {
                     editable = true

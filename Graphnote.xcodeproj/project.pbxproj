@@ -14,6 +14,22 @@
 		F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73B329C7EA2200BA826E /* ToolbarView.swift */; };
 		F8BF73B629C7EA5300BA826E /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */; };
 		F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73B729C7EB2700BA826E /* MenuCardView.swift */; };
+		F8BF73BC29C7F38300BA826E /* WorkspaceMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */; };
+		F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC924279D027000A1F693 /* Arrow.swift */; };
+		F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
+		F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC930279D0CF700A1F693 /* TreeBulletView.swift */; };
+		F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC933279D0ECA00A1F693 /* FileIconView.swift */; };
+		F8BF73C529C7F52500BA826E /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289327A24688009CC9B9 /* CheckmarkView.swift */; };
+		F8BF73C629C7F54900BA826E /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D92887279FD05B009CC9B9 /* DataController.swift */; };
+		F8BF73C729C7F54900BA826E /* TreeViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */; };
+		F8BF73C829C7F54900BA826E /* DocumentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */; };
+		F8BF73C929C7F54900BA826E /* ContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */; };
+		F8BF73CA29C7F54900BA826E /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8227B9CDF6003B0DF9 /* Document.swift */; };
+		F8BF73CB29C7F54900BA826E /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066929BD1CFD0023F833 /* Block.swift */; };
+		F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */; };
+		F8BF73CD29C7F54900BA826E /* TreeViewItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */; };
+		F8BF73CE29C7F56600BA826E /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
+		F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
 		F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */; };
 		F8EA4098279CFF55001F74B5 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */; };
@@ -160,12 +176,8 @@
 			children = (
 				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
 				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
-				F875124827B4A11500E86D57 /* DocumentIdentifier.swift */,
 				F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */,
-				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
 				F8D9289027A23CE9009CC9B9 /* Constants.swift */,
-				F86C9F1527B0C7A8002DD87A /* Model */,
-				F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -198,6 +210,8 @@
 		F8BF73AD29C7E65900BA826E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F81CC936279D108400A1F693 /* TreeView */,
+				F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */,
 				F8BF73B729C7EB2700BA826E /* MenuCardView.swift */,
 			);
 			path = Components;
@@ -222,6 +236,9 @@
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
+				F899DFF2279E425B00305AFA /* App */,
+				F899DFF1279E2BC700305AFA /* ToolbarView */,
+				F81CC93A279E06D300A1F693 /* DocumentView */,
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F8EA407F279CFF55001F74B5 /* macOS */,
 				F8EA4094279CFF55001F74B5 /* Tests macOS */,
@@ -233,14 +250,13 @@
 		F8EA4070279CFF54001F74B5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F86C9F1527B0C7A8002DD87A /* Model */,
 				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
+				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
+				F875124827B4A11500E86D57 /* DocumentIdentifier.swift */,
 				F8E19E5629A8669000BD0BB9 /* Spacing.swift */,
 				F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */,
 				F8BF73AD29C7E65900BA826E /* Components */,
-				F899DFF2279E425B00305AFA /* App */,
-				F899DFF1279E2BC700305AFA /* ToolbarView */,
-				F81CC93A279E06D300A1F693 /* DocumentView */,
-				F81CC936279D108400A1F693 /* TreeView */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
 				F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */,
 			);
@@ -379,10 +395,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8BF73C629C7F54900BA826E /* DataController.swift in Sources */,
+				F8BF73C729C7F54900BA826E /* TreeViewViewModel.swift in Sources */,
+				F8BF73C829C7F54900BA826E /* DocumentViewViewModel.swift in Sources */,
+				F8BF73C929C7F54900BA826E /* ContentViewViewModel.swift in Sources */,
+				F8BF73CA29C7F54900BA826E /* Document.swift in Sources */,
+				F8BF73CB29C7F54900BA826E /* Block.swift in Sources */,
+				F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */,
+				F8BF73CD29C7F54900BA826E /* TreeViewItemViewModel.swift in Sources */,
+				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,
+				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,
+				F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */,
+				F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */,
+				F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */,
+				F8BF73C529C7F52500BA826E /* CheckmarkView.swift in Sources */,
 				F8BF73B629C7EA5300BA826E /* ColorPalette.swift in Sources */,
 				F8BF73AB29C7E52200BA826E /* App.swift in Sources */,
+				F8BF73BC29C7F38300BA826E /* WorkspaceMenu.swift in Sources */,
 				F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */,
 				F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */,
+				F8BF73CE29C7F56600BA826E /* OrientationInfo.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */,
 				F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */,
