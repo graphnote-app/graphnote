@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class ContentViewVM: ObservableObject {
-    @Published var selectedDocument: String = "Testing"
+    @Published var selectedDocumentTitle: String = "Testing"
     @Published var selectedDocumentLabels: [String] = ["WIP", "4.20"]
+    @Published var selectedDocument = DocumentIdentifier(workspaceId: UUID(), documentId: UUID())
 }

@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct SidebarView: View {
+    @Binding var selectedDocument: DocumentIdentifier
+    
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            Spacer()
+                .frame(height: Spacing.spacing7.rawValue)
+            TreeView(selectedDocument: $selectedDocument)
+                .padding()
             Spacer()
             WorkspaceMenu()
                 .padding(Spacing.spacing3.rawValue)
@@ -19,6 +25,6 @@ struct SidebarView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView()
+        SidebarView(selectedDocument: .constant(DocumentIdentifier(workspaceId: UUID(), documentId: UUID())))
     }
 }

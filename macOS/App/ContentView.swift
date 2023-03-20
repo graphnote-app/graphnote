@@ -12,10 +12,10 @@ struct ContentView: View {
     
     var body: some View {
         SplitView {
-            SidebarView()
+            SidebarView(selectedDocument: $vm.selectedDocument)
                 .frame(width: GlobalDimension.treeWidth)
         } detail: {
-            DocumentView(title: $vm.selectedDocument, labels: $vm.selectedDocumentLabels)
+            DocumentView(title: $vm.selectedDocumentTitle, labels: $vm.selectedDocumentLabels)
         }
     }
 }

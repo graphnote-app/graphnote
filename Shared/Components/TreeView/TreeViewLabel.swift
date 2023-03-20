@@ -1,5 +1,5 @@
 //
-//  TreeViewItem.swift
+//  TreeViewLabel.swift
 //  Graphnote
 //
 //  Created by Hayden Pennington on 1/22/22.
@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 import Combine
 
-enum TreeViewItemDimensions: CGFloat {
+enum TreeViewLabelDimensions: CGFloat {
     case arrowWidthHeight = 16
     case rowPadding = 4
 }
@@ -20,34 +20,35 @@ enum FocusField: Hashable {
    case field
 }
 
-struct TreeViewItem: View, Identifiable {
+struct TreeViewLabel: View, Identifiable {
     @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.managedObjectContext) private var moc
+//    @Environment(\.managedObjectContext) private var moc
+    
     @State private var toggle = false
     @State private var editable = false
     @FocusState private var focusedField: FocusField?
+    
     let id: UUID
-
-    let document: Binding<Document>
+//    let document: Binding<Document>
     var selected: Binding<DocumentIdentifier>
     let refresh: () -> ()
     
-    @ObservedObject private var viewModel: TreeViewItemViewModel
+//    @ObservedObject private var viewModel: TreeViewItemViewModel
     
     init(id: UUID,
-         document: Binding<Document>,
+//         document: Binding<Document>,
          selected: Binding<DocumentIdentifier>,
          refresh: @escaping () -> ()
     ) {
         self.id = id
-        self.document = document
+//        self.document = document
         self.selected = selected
         self.refresh = refresh
-        self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
+//        self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
     }
     
     func refreshDocuments() {
-        self.viewModel.fetchDocuments(workspaceId: self.document.workspace.id.wrappedValue)
+//        self.viewModel.fetchDocuments(workspaceId: self.document.workspace.id.wrappedValue)
     }
 
     var body: some View {
@@ -55,23 +56,23 @@ struct TreeViewItem: View, Identifiable {
             HStack {
                 if toggle {
                     ArrowView(color: color)
-                        .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
+                        .frame(width: TreeViewLabelDimensions.arrowWidthHeight.rawValue, height: TreeViewLabelDimensions.arrowWidthHeight.rawValue)
                         .rotationEffect(Angle(degrees: 90))
                 
                 } else {
                     ArrowView(color: color)
-                        .frame(width: TreeViewItemDimensions.arrowWidthHeight.rawValue, height: TreeViewItemDimensions.arrowWidthHeight.rawValue)
+                        .frame(width: TreeViewLabelDimensions.arrowWidthHeight.rawValue, height: TreeViewLabelDimensions.arrowWidthHeight.rawValue)
                 }
                 
                 
                 if editable {
                     CheckmarkView()
                         .contentShape(Rectangle())
-                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                        .padding(TreeViewLabelDimensions.rowPadding.rawValue)
                         .onTapGesture {
                             editable = false
                         }
-                    TextField("", text: document.title)
+                    TextField("", text: .constant("TESTING"))
                         .onSubmit {
                             editable = false
                             focusedField = nil
@@ -82,18 +83,18 @@ struct TreeViewItem: View, Identifiable {
                                 focusedField = .field
                             }
                         }
-                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                        .padding(TreeViewLabelDimensions.rowPadding.rawValue)
                         
                 } else {
                     FileIconView()
-                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                    Text(document.title.wrappedValue)
+                        .padding(TreeViewLabelDimensions.rowPadding.rawValue)
+                    Text("Testing")
                         .bold()
-                        .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                        .padding(TreeViewLabelDimensions.rowPadding.rawValue)
                 }
                 
             }
-            .padding(TreeViewItemDimensions.rowPadding.rawValue)
+            .padding(TreeViewLabelDimensions.rowPadding.rawValue)
             .contextMenu {
                 Button {
                     editable = true
@@ -102,7 +103,7 @@ struct TreeViewItem: View, Identifiable {
                 }
                 Button {
                     print("Delete workspace \(id)")
-                    viewModel.deleteWorkspace(workspaceId: id)
+//                    viewModel.deleteWorkspace(workspaceId: id)
                     refresh()
                 } label: {
                     Text("Delete workspace")
@@ -114,25 +115,25 @@ struct TreeViewItem: View, Identifiable {
 
         }
         
-        if toggle {
-           
-            VStack(alignment: .leading) {
-                if let _ = viewModel.documents {
-                    ForEach(0..<viewModel.documents.count, id: \.self) { index in
-                        TreeViewSubItem(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selected: selected, deleteDocument: viewModel.deleteDocument, refresh: refreshDocuments)
-                    }
-                }
-                
-                TreeViewAddView()
-                    .padding(.top, 10)
-                    .onTapGesture {
-                        if let newDocumentId = viewModel.addDocument(workspaceId: id) {
-                            selected.wrappedValue = DocumentIdentifier(workspaceId: document.workspace.id.wrappedValue, documentId: newDocumentId)
-                        }
-                    }
-            }
-            .padding([.leading], 40)
-        }
+//        if toggle {
+//
+//            VStack(alignment: .leading) {
+//                if let _ = viewModel.documents {
+//                    ForEach(0..<viewModel.documents.count, id: \.self) { index in
+//                        TreeViewSubItem(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selected: selected, deleteDocument: viewModel.deleteDocument, refresh: refreshDocuments)
+//                    }
+//                }
+//
+//                TreeViewAddView()
+//                    .padding(.top, 10)
+//                    .onTapGesture {
+//                        if let newDocumentId = viewModel.addDocument(workspaceId: id) {
+//                            selected.wrappedValue = DocumentIdentifier(workspaceId: document.workspace.id.wrappedValue, documentId: newDocumentId)
+//                        }
+//                    }
+//            }
+//            .padding([.leading], 40)
+//        }
 
     }
     
