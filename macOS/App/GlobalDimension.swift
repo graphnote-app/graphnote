@@ -15,4 +15,5 @@ struct GlobalDimension {
     static let minDocumentContentHeight = 300.0
     static let windowDefaultWidth = 1038.0
     static let windowDefaultHeight = 600.0
+    static let iconSmall = 16.0
 }

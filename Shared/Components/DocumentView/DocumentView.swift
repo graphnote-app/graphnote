@@ -38,20 +38,7 @@ struct DocumentView: View {
                                 .textFieldStyle(.plain)
                             Spacer()
                                 .frame(height: 20)
-                            HStack {
-                                ForEach(labels, id: \.self) { label in
-                                    Text(label)
-                                        .font(.headline)
-                                        .textFieldStyle(.plain)
-                                        .padding([.leading, .trailing], Spacing.spacing4.rawValue)
-                                        .padding([.top, .bottom], Spacing.spacing2.rawValue)
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.accentColor, lineWidth: 2)
-                                                .foregroundColor(.clear)
-                                        }
-                                }
-                            }
+                            LabelField(labels: $labels)
                         }
                         .foregroundColor(.primary)
                     }
