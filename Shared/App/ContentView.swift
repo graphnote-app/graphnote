@@ -41,6 +41,7 @@ struct ContentView: View {
                     EffectView()
                     TreeView(selected: $selectedIdentifier, moc: moc)
                         .padding()
+                    
                 }
                 .frame(width: treeWidth)
                 .edgesIgnoringSafeArea([.bottom])

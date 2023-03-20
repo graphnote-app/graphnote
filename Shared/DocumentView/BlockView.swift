@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct BlockView: View {
+    let blocks: [Block]
+    let onEnter: (() -> Void)
+    
     @State private var value = ""
     @State private var nTopSpacers = 0
-    
+
     #if os(macOS)
     private func keyDown(with event: NSEvent) {
         if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
@@ -22,27 +25,51 @@ struct BlockView: View {
     #endif
     
     var body: some View {
-        VStack {
-            ForEach(0..<nTopSpacers, id: \.self) { _ in
-                Spacer().frame(height: Spacing.spacing5.rawValue)
+        VStack(alignment: .leading) {
+//            ForEach(blocks, id: \.self) { block in
+//                switch BlockType(rawValue: block.type) {
+//                case .body:
+//                    BodyView(text: block.content)
+//                case .heading:
+//                    HeadingView(size: .heading1, text: block.content)
+//                case .empty:
+//                    EmptyBlockView()
+//                case .bullet:
+//                    BulletView(text: block.content)
+//                case .none:
+//                    EmptyView()
+//                }
+//            }
+            HeadingView(size: .heading2, text: "Technical Specification")
+            BlockSpacer()
+            BodyView(text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
+            BlockSpacer()
+            HeadingView(size: .heading4, text: "Bullets")
+            Group {
+                BulletView(text: "Bullet point number one")
+                BulletView(text: "Bullet point number two")
+                BulletView(text: "Bullet point number three")
+                BulletView(text: "Bullet point number four")
             }
+            BlockSpacer()
             PromptField(placeholder: "Press '/' for commands...", text: $value)
                 .frame(height: Spacing.spacing7.rawValue)
                 .font(.title3)
                 .foregroundColor(ColorPalette.primaryText)
                 .onSubmit {
                     if value == "" {
-                        nTopSpacers += 1
+                        print("on submit")
+                        onEnter()
                     }
                 }
-        }
-        .onAppear {
-            #if os(macOS)
-            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                self.keyDown(with: $0)
-                return $0
-            }
-            #endif
-        }
+                .onAppear {
+                    #if os(macOS)
+                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                        self.keyDown(with: $0)
+                        return $0
+                    }
+                    #endif
+                }
+        }.submitScope()
     }
 }

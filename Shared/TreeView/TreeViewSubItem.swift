@@ -39,7 +39,7 @@ struct TreeViewSubItem: View {
                         }
                     }
             } else {
-                BulletView()
+                TreeBulletView()
                     .padding(TreeViewItemDimensions.rowPadding.rawValue)
                 HStack {
                     Text(title.wrappedValue)
