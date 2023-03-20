@@ -24,7 +24,8 @@ struct SplitView: View {
             }
             
             AnyView(detail())
-        }.edgesIgnoringSafeArea(.all)
+        }
+        .edgesIgnoringSafeArea(.all)
     }
 }
 

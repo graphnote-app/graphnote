@@ -10,8 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         SplitView {
-            Rectangle()
-                .fill(.clear)
+            SidebarView()
                 .frame(width: GlobalDimension.treeWidth)
         } detail: {
             ScrollView {
