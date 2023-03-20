@@ -11,15 +11,20 @@ struct SplitView: View {
     let sidebar: () -> any View
     let detail: () -> any View
     
-    let width = Spacing.spacing4.rawValue + (Spacing.spacing2.rawValue * 2)
+    @State private var menuOpen = true
     
     var body: some View {
         HStack(spacing: Spacing.spacing0.rawValue) {
-            AnyView(sidebar())
-            ToolbarView()
+            if menuOpen {
+                AnyView(sidebar())
+            }
+            
+            ToolbarView {
+                self.menuOpen.toggle()
+            }
+            
             AnyView(detail())
-            Spacer(minLength: width)
-        }
+        }.edgesIgnoringSafeArea(.all)
     }
 }
 

@@ -8,17 +8,23 @@
 import SwiftUI
 
 struct ToolbarView: View {
+    let action: () -> Void
+    
     var body: some View {
         VStack {
             Spacer()
             MenuCardView()
-                .padding(Spacing.spacing2.rawValue)
+                .padding(Spacing.spacing3.rawValue)
+                .onTapGesture(perform: action)
         }
+        .background(ColorPalette.darkBG1)
     }
 }
 
 struct ToolbarView_Previews: PreviewProvider {
     static var previews: some View {
-        ToolbarView()
+        ToolbarView {
+            print("toggle toolbar")
+        }
     }
 }
