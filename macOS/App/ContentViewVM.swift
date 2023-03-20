@@ -9,6 +9,6 @@ import Foundation
 import SwiftUI
 
 class ContentViewVM: ObservableObject {
-    @Published var selectedDocument: String = ""
+    @Published var selectedDocument: String = "Testing"
     @Published var selectedDocumentLabels: [String] = ["WIP", "4.20"]
 }
