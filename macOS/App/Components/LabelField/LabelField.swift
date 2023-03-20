@@ -12,22 +12,13 @@ struct LabelField: View {
     
     @Binding var labels: [String]
     
-    private let allColors: [Color] = [
-        LabelPalette.orangeLight,
-        LabelPalette.primary,
-        LabelPalette.pink,
-        LabelPalette.orangeDark,
-        LabelPalette.yellow,
-        LabelPalette.purple
-    ]
-    
     var body: some View {
         if editing {
             HStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: Spacing.spacing8.rawValue) {
-                        ForEach(0..<allColors.count, id: \.self) { i in
-                            Label(stroke: allColors[i], text: labels[i])
+                        ForEach(0..<LabelPalette.allColors.count, id: \.self) { i in
+                            Label(stroke: LabelPalette.allColors[i], text: labels[i])
                         }
                         
                         
@@ -50,8 +41,8 @@ struct LabelField: View {
             HStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(0..<allColors.count, id: \.self) { i in
-                            Label(stroke: allColors[i], text: labels[i])
+                        ForEach(0..<LabelPalette.allColors.count, id: \.self) { i in
+                            Label(stroke: LabelPalette.allColors[i], text: labels[i])
                         }
                     }
                 }

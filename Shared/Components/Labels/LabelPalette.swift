@@ -15,4 +15,13 @@ struct LabelPalette {
     static let orangeDark = Color(red: 255.0 / 255.0, green: 152.0 / 255.0, blue: 129.0 / 255.0)
     static let orangeLight = Color(red: 255.0 / 255.0, green: 201.0 / 255.0, blue: 98.0 / 255.0)
     static let yellow = Color(red: 249.0 / 255.0, green: 248.0 / 255.0, blue: 113.0 / 255.0)
+    
+    static let allColors: [Color] = [
+        LabelPalette.orangeLight,
+        LabelPalette.primary,
+        LabelPalette.pink,
+        LabelPalette.orangeDark,
+        LabelPalette.yellow,
+        LabelPalette.purple
+    ]
 }
