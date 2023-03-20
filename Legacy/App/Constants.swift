@@ -8,5 +8,4 @@
 import Foundation
 import SwiftUI
 
-let treeWidth: CGFloat = 250
 let mobileTreeWidth: CGFloat = 275
