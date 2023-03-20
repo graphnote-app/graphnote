@@ -24,7 +24,6 @@
 		F8BF73CA29C7F54900BA826E /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8227B9CDF6003B0DF9 /* Document.swift */; };
 		F8BF73CB29C7F54900BA826E /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066929BD1CFD0023F833 /* Block.swift */; };
 		F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */; };
-		F8BF73CE29C7F56600BA826E /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
 		F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
 		F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */; };
@@ -232,6 +231,8 @@
 				F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */,
 				F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */,
 				F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */,
+				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
+				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
 				F899DFF2279E425B00305AFA /* App */,
 				F899DFF1279E2BC700305AFA /* ToolbarView */,
 				F81CC93A279E06D300A1F693 /* DocumentView */,
@@ -247,8 +248,6 @@
 			isa = PBXGroup;
 			children = (
 				F86C9F1527B0C7A8002DD87A /* Model */,
-				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
-				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
 				F875124827B4A11500E86D57 /* DocumentIdentifier.swift */,
 				F8E19E5629A8669000BD0BB9 /* Spacing.swift */,
 				F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */,
@@ -406,7 +405,6 @@
 				F8BF73BC29C7F38300BA826E /* WorkspaceMenu.swift in Sources */,
 				F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */,
 				F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */,
-				F8BF73CE29C7F56600BA826E /* OrientationInfo.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */,
 				F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */,
