@@ -224,18 +224,26 @@
 			path = Toolbar;
 			sourceTree = "<group>";
 		};
-		F8EA406B279CFF54001F74B5 = {
+		F8BF73D129C7F86900BA826E /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
+				F899DFF2279E425B00305AFA /* App */,
+				F899DFF1279E2BC700305AFA /* ToolbarView */,
+				F81CC93A279E06D300A1F693 /* DocumentView */,
+				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
 				F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */,
 				F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */,
 				F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */,
 				F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */,
 				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
-				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
-				F899DFF2279E425B00305AFA /* App */,
-				F899DFF1279E2BC700305AFA /* ToolbarView */,
-				F81CC93A279E06D300A1F693 /* DocumentView */,
+			);
+			path = Legacy;
+			sourceTree = "<group>";
+		};
+		F8EA406B279CFF54001F74B5 = {
+			isa = PBXGroup;
+			children = (
+				F8BF73D129C7F86900BA826E /* Legacy */,
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F8EA407F279CFF55001F74B5 /* macOS */,
 				F8EA4094279CFF55001F74B5 /* Tests macOS */,
