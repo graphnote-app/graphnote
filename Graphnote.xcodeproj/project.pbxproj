@@ -136,9 +136,6 @@
 				F81CC924279D027000A1F693 /* Arrow.swift */,
 				F8AD578027C1D94400E07D82 /* ArrowView.swift */,
 				F81CC930279D0CF700A1F693 /* TreeBulletView.swift */,
-				F81CC927279D06B600A1F693 /* TreeView.swift */,
-				F81CC92A279D078D00A1F693 /* TreeViewItem.swift */,
-				F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */,
 				F81CC933279D0ECA00A1F693 /* FileIconView.swift */,
 				F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */,
 				F8D9289327A24688009CC9B9 /* CheckmarkView.swift */,
@@ -259,6 +256,9 @@
 		F8BF73D129C7F86900BA826E /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
+				F81CC927279D06B600A1F693 /* TreeView.swift */,
+				F81CC92A279D078D00A1F693 /* TreeViewItem.swift */,
+				F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */,
 				F899DFF2279E425B00305AFA /* App */,
 				F899DFF1279E2BC700305AFA /* ToolbarView */,
 				F81CC93A279E06D300A1F693 /* DocumentView */,
