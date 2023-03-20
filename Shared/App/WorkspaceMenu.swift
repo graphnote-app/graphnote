@@ -10,7 +10,7 @@ import SwiftUI
 struct WorkspaceMenu: View {
     @State private var selectedIndex = 0
     
-    let workspaceTitles = ["Mercury", "Comcast", "Personal"]
+    let workspaceTitles = ["Work", "Client", "Personal"]
     
     var body: some View {
         Menu(workspaceTitles[selectedIndex]) {
