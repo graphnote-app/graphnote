@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F8158FCF29C7D348004E56C1 /* WorkspaceMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */; };
+		F8158FD029C7D348004E56C1 /* WorkspaceMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */; };
 		F81CC925279D027000A1F693 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC924279D027000A1F693 /* Arrow.swift */; };
 		F81CC926279D027000A1F693 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC924279D027000A1F693 /* Arrow.swift */; };
 		F81CC928279D06B600A1F693 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC927279D06B600A1F693 /* TreeView.swift */; };
@@ -111,6 +113,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceMenu.swift; sourceTree = "<group>"; };
 		F81CC924279D027000A1F693 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		F81CC927279D06B600A1F693 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		F81CC92A279D078D00A1F693 /* TreeViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItem.swift; sourceTree = "<group>"; };
@@ -264,6 +267,7 @@
 				F86C9F1527B0C7A8002DD87A /* Model */,
 				F8E19E5629A8669000BD0BB9 /* Spacing.swift */,
 				F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */,
+				F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -508,6 +512,7 @@
 				F899DFF4279E770F00305AFA /* OrientationInfo.swift in Sources */,
 				F8F32C8027B9C986003B0DF9 /* ContentViewViewModel.swift in Sources */,
 				F8E8AF6D29BECE560019E6CF /* BulletView.swift in Sources */,
+				F8158FCF29C7D348004E56C1 /* WorkspaceMenu.swift in Sources */,
 				F875124F27B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */,
 				F81CC931279D0CF700A1F693 /* TreeBulletView.swift in Sources */,
 				F81CC93C279E24AD00A1F693 /* NavigationButtonView.swift in Sources */,
@@ -553,6 +558,7 @@
 				F899DFF5279E770F00305AFA /* OrientationInfo.swift in Sources */,
 				F8F32C8127B9C986003B0DF9 /* ContentViewViewModel.swift in Sources */,
 				F8E8AF6E29BECE560019E6CF /* BulletView.swift in Sources */,
+				F8158FD029C7D348004E56C1 /* WorkspaceMenu.swift in Sources */,
 				F875125027B4A92400E86D57 /* DocumentViewViewModel.swift in Sources */,
 				F81CC932279D0CF700A1F693 /* TreeBulletView.swift in Sources */,
 				F81CC93D279E24AD00A1F693 /* NavigationButtonView.swift in Sources */,

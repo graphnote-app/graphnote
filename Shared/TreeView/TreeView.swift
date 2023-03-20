@@ -25,38 +25,42 @@ struct TreeView: View {
     }
 
     var body: some View {
-        ZStack() {
-            EffectView()
-            ScrollView(.vertical, showsIndicators: false) {
-                #if os(iOS)
-                Spacer()
-                    .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
-               
-                VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
-                        item.environmentObject(TreeViewViewModel(moc: self.moc))
-                    }
-                    TreeViewAddView()
-                        .padding(.top, 20)
-                        .onTapGesture {
-                            viewModel.addWorkspace()
+        VStack(alignment: .leading) {
+            ZStack {
+                EffectView()
+                ScrollView(.vertical, showsIndicators: false) {
+                    #if os(iOS)
+                    Spacer()
+                        .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
+                   
+                    VStack(alignment: .leading) {
+                        ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
+                            item.environmentObject(TreeViewViewModel(moc: self.moc))
                         }
-                }
-                .padding()
-                #else
-                VStack(alignment: .leading) {
-                    ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
-                        item.environmentObject(TreeViewViewModel(moc: self.moc))
+                        TreeViewAddView()
+                            .padding(.top, 20)
+                            .onTapGesture {
+                                viewModel.addWorkspace()
+                            }
                     }
-                    TreeViewAddView()
-                        .padding(.top, 20)
-                        .onTapGesture {
-                            viewModel.addWorkspace()
+                    .padding()
+                    #else
+                    VStack(alignment: .leading) {
+                        ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
+                            item.environmentObject(TreeViewViewModel(moc: self.moc))
                         }
+                        TreeViewAddView()
+                            .padding(.top, 20)
+                            .onTapGesture {
+                                viewModel.addWorkspace()
+                            }
+                    }
+                    .padding([.top, .bottom])
+                    #endif
                 }
-                .padding([.top, .bottom])
-                #endif
             }
+            Spacer()
+            WorkspaceMenu()
         }
     }
 }
