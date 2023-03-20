@@ -15,17 +15,16 @@ struct Label: View {
         let height = 30.0
         let minWidth = 100.0
         
-        ZStack {
-            RoundedRectangle(cornerRadius: height)
-                .stroke(fill, lineWidth: 2)
-                .border(.clear)
-                .frame(minWidth: minWidth)
-                .frame(height: height)
-                .fixedSize()
-            Text(text)
-                .bold()
-                .lineLimit(1)
-        }
+        Text(text)
+            .bold()
+            .lineLimit(1)
+            .padding(Spacing.spacing2.rawValue)
+            .frame(minWidth: minWidth)
+            .overlay {
+                RoundedRectangle(cornerRadius: height)
+                    .stroke(fill, lineWidth: 2)
+            }
+            .padding(Spacing.spacing2.rawValue)
     }
 }
 
