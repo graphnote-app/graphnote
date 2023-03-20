@@ -214,7 +214,6 @@
 				F8BF73D529C7FDF100BA826E /* Sidebar */,
 				F8BF73B229C7E9F600BA826E /* Toolbar */,
 				F8BF73AE29C7E7B100BA826E /* SplitView */,
-				F84D087829C808B500410C10 /* DocumentView */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -223,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */,
+				F84D087829C808B500410C10 /* DocumentView */,
 				F81CC936279D108400A1F693 /* TreeView */,
 				F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */,
 				F8BF73B729C7EB2700BA826E /* MenuCardView.swift */,
