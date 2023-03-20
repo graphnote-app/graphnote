@@ -11,7 +11,8 @@ import SwiftUI
 
 struct NSEffectView: NSViewRepresentable {
     func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView(frame: CGRect(x: 0, y: 0, width: treeWidth, height: TreeViewItemDimensions.arrowWidthHeight.rawValue))
+//        let view = NSVisualEffectView(frame: CGRect(x: 0, y: 0, width: treeWidth, height: TreeViewItemDimensions.arrowWidthHeight.rawValue))
+        let view = NSVisualEffectView(frame: .init(x: 0, y: 0, width: 200, height: 400))
         view.material = .windowBackground
         view.blendingMode = .withinWindow
         return view

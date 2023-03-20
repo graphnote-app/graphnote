@@ -29,7 +29,7 @@ struct TreeViewItem: View, Identifiable {
     let moc: NSManagedObjectContext
     let id: UUID
 
-    let workspace: Binding<Workspace>
+    let document: Binding<Document>
     var selected: Binding<DocumentIdentifier>
     let refresh: () -> ()
     
@@ -37,21 +37,21 @@ struct TreeViewItem: View, Identifiable {
     
     init(moc: NSManagedObjectContext,
          id: UUID,
-         workspace: Binding<Workspace>,
+         document: Binding<Document>,
          selected: Binding<DocumentIdentifier>,
          refresh: @escaping () -> ()
     ) {
         self.moc = moc
         self.id = id
 
-        self.workspace = workspace
+        self.document = document
         self.selected = selected
         self.refresh = refresh
         self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
     }
     
     func refreshDocuments() {
-        self.viewModel.fetchDocuments(workspaceId: self.workspace.id.wrappedValue)
+        self.viewModel.fetchDocuments(workspaceId: self.document.workspace.id.wrappedValue)
     }
 
     var body: some View {
@@ -77,7 +77,7 @@ struct TreeViewItem: View, Identifiable {
                             .onTapGesture {
                                 editable = false
                             }
-                        TextField("", text: workspace.title)
+                        TextField("", text: document.title)
                             .onSubmit {
                                 editable = false
                                 focusedField = nil
@@ -93,7 +93,7 @@ struct TreeViewItem: View, Identifiable {
                     } else {
                         FileIconView()
                             .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                        Text(workspace.title.wrappedValue)
+                        Text(document.title.wrappedValue)
                             .bold()
                             .padding(TreeViewItemDimensions.rowPadding.rawValue)
                     }
@@ -135,7 +135,7 @@ struct TreeViewItem: View, Identifiable {
                     .padding(.top, 10)
                     .onTapGesture {
                         if let newDocumentId = viewModel.addDocument(workspaceId: id) {
-                            selected.wrappedValue = DocumentIdentifier(workspaceId: workspace.id.wrappedValue, documentId: newDocumentId)
+                            selected.wrappedValue = DocumentIdentifier(workspaceId: document.workspace.id.wrappedValue, documentId: newDocumentId)
                         }
                     }
             }

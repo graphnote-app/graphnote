@@ -34,7 +34,7 @@ struct TreeView: View {
                         .frame(height: orientationInfo.orientation == .landscape ? 10 : 60)
                    
                     VStack(alignment: .leading) {
-                        ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
+                        ForEach($viewModel.documents.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0.workspace, selected: selected, refresh: refresh)}) { item in
                             item.environmentObject(TreeViewViewModel(moc: self.moc))
                         }
                         TreeViewAddView()
@@ -46,7 +46,7 @@ struct TreeView: View {
                     .padding()
                     #else
                     VStack(alignment: .leading) {
-                        ForEach($viewModel.workspaces.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, workspace: $0, selected: selected, refresh: refresh)}) { item in
+                        ForEach($viewModel.documents.map {TreeViewItem(moc: moc, id: $0.id.wrappedValue, document: $0, selected: selected, refresh: refresh)}) { item in
                             item.environmentObject(TreeViewViewModel(moc: self.moc))
                         }
                         TreeViewAddView()
