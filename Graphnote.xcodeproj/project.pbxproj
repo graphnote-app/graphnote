@@ -21,13 +21,9 @@
 		F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC933279D0ECA00A1F693 /* FileIconView.swift */; };
 		F8BF73C529C7F52500BA826E /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289327A24688009CC9B9 /* CheckmarkView.swift */; };
 		F8BF73C629C7F54900BA826E /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D92887279FD05B009CC9B9 /* DataController.swift */; };
-		F8BF73C729C7F54900BA826E /* TreeViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */; };
-		F8BF73C829C7F54900BA826E /* DocumentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */; };
-		F8BF73C929C7F54900BA826E /* ContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */; };
 		F8BF73CA29C7F54900BA826E /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8227B9CDF6003B0DF9 /* Document.swift */; };
 		F8BF73CB29C7F54900BA826E /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066929BD1CFD0023F833 /* Block.swift */; };
 		F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */; };
-		F8BF73CD29C7F54900BA826E /* TreeViewItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */; };
 		F8BF73CE29C7F56600BA826E /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899DFF3279E770F00305AFA /* OrientationInfo.swift */; };
 		F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
@@ -152,13 +148,9 @@
 			isa = PBXGroup;
 			children = (
 				F8D92887279FD05B009CC9B9 /* DataController.swift */,
-				F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */,
-				F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */,
-				F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */,
 				F8F32C8227B9CDF6003B0DF9 /* Document.swift */,
 				F8EA066929BD1CFD0023F833 /* Block.swift */,
 				F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */,
-				F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -236,6 +228,10 @@
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
+				F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */,
+				F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */,
+				F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */,
+				F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */,
 				F899DFF2279E425B00305AFA /* App */,
 				F899DFF1279E2BC700305AFA /* ToolbarView */,
 				F81CC93A279E06D300A1F693 /* DocumentView */,
@@ -396,13 +392,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8BF73C629C7F54900BA826E /* DataController.swift in Sources */,
-				F8BF73C729C7F54900BA826E /* TreeViewViewModel.swift in Sources */,
-				F8BF73C829C7F54900BA826E /* DocumentViewViewModel.swift in Sources */,
-				F8BF73C929C7F54900BA826E /* ContentViewViewModel.swift in Sources */,
 				F8BF73CA29C7F54900BA826E /* Document.swift in Sources */,
 				F8BF73CB29C7F54900BA826E /* Block.swift in Sources */,
 				F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */,
-				F8BF73CD29C7F54900BA826E /* TreeViewItemViewModel.swift in Sources */,
 				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,
 				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,
 				F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */,
