@@ -26,6 +26,7 @@
 		F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */; };
 		F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
 		F8BF73D229C7F8C100BA826E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */; };
+		F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D329C7FD1C00BA826E /* ContentView.swift */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
 		F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */; };
 		F8EA4098279CFF55001F74B5 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */; };
@@ -63,6 +64,7 @@
 		F8BF73AF29C7E7BD00BA826E /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		F8BF73B329C7EA2200BA826E /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F8BF73B729C7EB2700BA826E /* MenuCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCardView.swift; sourceTree = "<group>"; };
+		F8BF73D329C7FD1C00BA826E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F8D92884279FCEB9009CC9B9 /* Graphnote.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Graphnote.xcdatamodel; sourceTree = "<group>"; };
 		F8D92887279FD05B009CC9B9 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewAddView.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 			children = (
 				F8BF73AC29C7E64800BA826E /* Components */,
 				F8BF73AA29C7E52200BA826E /* App.swift */,
+				F8BF73D329C7FD1C00BA826E /* ContentView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */,
 				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,
 				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,
+				F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */,
 				F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */,
 				F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */,
 				F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */,
