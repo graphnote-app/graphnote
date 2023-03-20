@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Label: View {
-    let fill: Color
+    let stroke: Color
     let text: String
     
     var body: some View {
@@ -22,7 +22,7 @@ struct Label: View {
             .frame(minWidth: minWidth)
             .overlay {
                 RoundedRectangle(cornerRadius: height)
-                    .stroke(fill, lineWidth: 2)
+                    .stroke(stroke, lineWidth: 2)
             }
             .padding(Spacing.spacing2.rawValue)
     }
@@ -30,6 +30,6 @@ struct Label: View {
 
 struct Label_Previews: PreviewProvider {
     static var previews: some View {
-        Label(fill: .red, text: "WIP")
+        Label(stroke: .red, text: "WIP")
     }
 }
