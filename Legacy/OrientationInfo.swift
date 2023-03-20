@@ -5,19 +5,15 @@
 //  Created by Hayden Pennington on 1/23/22.
 //
 
-
-
 import Foundation
-#if os(iOS)
 import UIKit
-#endif
+
 /// Excellent way to find the orientation in SwiftUI from Apple forums https://developer.apple.com/forums/thread/126878
 final class OrientationInfo: ObservableObject {
     enum Orientation {
         case portrait
         case landscape
     }
-    #if os(iOS)
     
     @Published var orientation: Orientation
     
@@ -52,5 +48,4 @@ final class OrientationInfo: ObservableObject {
             NotificationCenter.default.removeObserver(observer)
         }
     }
-    #endif
 }

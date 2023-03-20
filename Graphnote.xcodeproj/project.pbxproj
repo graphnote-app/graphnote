@@ -63,7 +63,6 @@
 		F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLabel.swift; sourceTree = "<group>"; };
 		F81CC930279D0CF700A1F693 /* TreeBulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBulletView.swift; sourceTree = "<group>"; };
 		F81CC933279D0ECA00A1F693 /* FileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconView.swift; sourceTree = "<group>"; };
-		F81CC937279E047100A1F693 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F84D087629C808B100410C10 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F84D088129C80CE600410C10 /* ContentViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewVM.swift; sourceTree = "<group>"; };
 		F84D088329C817E900410C10 /* GlobalDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimension.swift; sourceTree = "<group>"; };
@@ -73,7 +72,6 @@
 		F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewViewModel.swift; sourceTree = "<group>"; };
 		F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewViewModel.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
-		F899DFEE279E2B3800305AFA /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubItem.swift; sourceTree = "<group>"; };
@@ -147,14 +145,6 @@
 			path = TreeView;
 			sourceTree = "<group>";
 		};
-		F81CC93A279E06D300A1F693 /* DocumentView */ = {
-			isa = PBXGroup;
-			children = (
-				F81CC937279E047100A1F693 /* DocumentView.swift */,
-			);
-			path = DocumentView;
-			sourceTree = "<group>";
-		};
 		F84D087829C808B500410C10 /* DocumentView */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,6 +161,13 @@
 			path = DocumentView;
 			sourceTree = "<group>";
 		};
+		F84D088A29C81DA100410C10 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
 		F86C9F1527B0C7A8002DD87A /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,14 +177,6 @@
 				F8F32C8527B9CDFB003B0DF9 /* Workspace.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		F899DFF1279E2BC700305AFA /* ToolbarView */ = {
-			isa = PBXGroup;
-			children = (
-				F899DFEE279E2B3800305AFA /* ToolbarView.swift */,
-			);
-			path = ToolbarView;
 			sourceTree = "<group>";
 		};
 		F899DFF2279E425B00305AFA /* App */ = {
@@ -260,16 +249,14 @@
 		F8BF73D129C7F86900BA826E /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
-				F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */,
 				F899DFF2279E425B00305AFA /* App */,
-				F899DFF1279E2BC700305AFA /* ToolbarView */,
-				F81CC93A279E06D300A1F693 /* DocumentView */,
 				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
+				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
+				F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */,
 				F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */,
 				F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */,
 				F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */,
 				F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */,
-				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
 			);
 			path = Legacy;
 			sourceTree = "<group>";
@@ -285,6 +272,7 @@
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
+				F84D088A29C81DA100410C10 /* iOS */,
 				F8BF73D129C7F86900BA826E /* Legacy */,
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F8EA407F279CFF55001F74B5 /* macOS */,
