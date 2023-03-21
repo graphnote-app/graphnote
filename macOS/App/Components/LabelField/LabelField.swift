@@ -18,7 +18,7 @@ struct LabelField: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: Spacing.spacing8.rawValue) {
                         ForEach(0..<LabelPalette.allColors.count, id: \.self) { i in
-                            Label(stroke: LabelPalette.allColors[i], text: labels[i])
+                            Label(color: LabelPalette.allColors[i], text: labels[i], fill: true)
                         }
                         
                         
@@ -42,7 +42,7 @@ struct LabelField: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(0..<LabelPalette.allColors.count, id: \.self) { i in
-                            Label(stroke: LabelPalette.allColors[i], text: labels[i])
+                            Label(color: LabelPalette.allColors[i], text: labels[i])
                         }
                     }
                 }
