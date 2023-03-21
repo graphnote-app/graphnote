@@ -11,16 +11,18 @@ struct TreeView: View {
     var items: [TreeViewItem]
     
     var body: some View {
-        VStack(alignment: .leading) {
-            ForEach(0..<items.count, id: \.self) { i in
-                TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
-                    ForEach(items[i].subItems, id: \.id) { subItem in
-                        TreeViewSubline(title: subItem.title)
+        ScrollView {
+            HStack(spacing: Spacing.spacing0.rawValue) {
+                VStack(alignment: .leading) {
+                    ForEach(0..<items.count, id: \.self) { i in
+                        TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
+                            ForEach(items[i].subItems, id: \.id) { subItem in
+                                TreeViewSubline(title: subItem.title)
+                            }
+                        }
                     }
                 }
-            }
-            TreeViewLabel(id: UUID(), label: .constant("ALL"), color: .gray) {
-                EmptyView()
+                Spacer()
             }
         }
         .padding([.top, .bottom])

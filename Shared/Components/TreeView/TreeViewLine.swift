@@ -32,6 +32,7 @@ struct TreeViewLine: View {
                 .bold()
                 .padding(TreeViewLabelDimensions.rowPadding.rawValue)
         }
+        .contentShape(Rectangle())
     }
 }
 

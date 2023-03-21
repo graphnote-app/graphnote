@@ -49,7 +49,6 @@ struct TreeViewLabel: View, Identifiable {
             .onTapGesture {
                 toggle.toggle()
             }
-
         }
         
         if toggle {
