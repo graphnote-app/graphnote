@@ -20,10 +20,7 @@ struct LabelField: View {
                         ForEach(0..<LabelPalette.allColors.count, id: \.self) { i in
                             Label(color: LabelPalette.allColors[i], text: labels[i], fill: true)
                         }
-                        
-                        
                     }
-
                     
                 }.padding(Spacing.spacing2.rawValue)
                     .border(.gray)
