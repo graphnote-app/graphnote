@@ -24,6 +24,7 @@ struct Label: View {
         
         if fill {
             Text(text)
+                .font(.title3)
                 .foregroundColor(Color.black)
                 .lineLimit(1)
                 .bold()
@@ -34,6 +35,7 @@ struct Label: View {
                 .background(RoundedRectangle(cornerRadius: height).fill(color))
         } else {
             Text(text)
+                .font(.title3)
                 .bold()
                 .lineLimit(1)
                 .padding([.leading, .trailing], Spacing.spacing2.rawValue)
