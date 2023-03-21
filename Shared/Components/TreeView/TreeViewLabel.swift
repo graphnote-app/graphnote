@@ -32,6 +32,7 @@ struct TreeViewLabel: View, Identifiable {
     @Binding var label: String
     let color: Color
     let refresh: () -> ()
+    let content: () -> any View
     
 //    @ObservedObject private var viewModel: TreeViewItemViewModel
 //
@@ -116,9 +117,10 @@ struct TreeViewLabel: View, Identifiable {
 
         }
         
-//        if toggle {
-//
-//            VStack(alignment: .leading) {
+        if toggle {
+
+            VStack(alignment: .leading) {
+                AnyView(content())
 //                if let _ = viewModel.documents {
 //                    ForEach(0..<viewModel.documents.count, id: \.self) { index in
 //                        TreeViewSubItem(title: $viewModel.documents[index].title, documentId: viewModel.documents[index].id, workspaceId: viewModel.documents[index].workspace.id, selected: selected, deleteDocument: viewModel.deleteDocument, refresh: refreshDocuments)
@@ -132,9 +134,9 @@ struct TreeViewLabel: View, Identifiable {
 //                            selected.wrappedValue = DocumentIdentifier(workspaceId: document.workspace.id.wrappedValue, documentId: newDocumentId)
 //                        }
 //                    }
-//            }
-//            .padding([.leading], 40)
-//        }
+            }
+            .padding([.leading], 40)
+        }
 
     }
     

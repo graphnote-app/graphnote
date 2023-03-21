@@ -11,11 +11,45 @@ struct TreeView: View {
     @Binding var labels: [String]
     let labelColors: [Color]
     
+    @ViewBuilder func textOrTextField(title: String) -> some View {
+        HStack {
+//            if editable {
+//                CheckmarkView()
+//                    .onTapGesture {
+//                       editable = false
+//                    }
+//                TextField("", text: title)
+//                    .onSubmit {
+//                        editable = false
+//                        focusedField = nil
+//                    }
+//                    .focused($focusedField, equals: .field)
+//                    .onAppear {
+//                        print("onAppear")
+//                        if editable {
+//                            focusedField = .field
+//                        }
+//                    }
+//            } else {
+                TreeBulletView()
+//                    .padding(TreeViewItemDimensions.rowPadding.rawValue)
+                HStack {
+                    Text(title)
+
+                    Spacer()
+                }.frame(width: 130)
+//            }
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             ForEach(0..<labels.count, id: \.self) { i in
                 TreeViewLabel(id: UUID(), label: $labels[i], color: labelColors[i]) {
-                    
+                } content: {
+                    VStack {
+                        textOrTextField(title: "Testing")
+                    }
                 }
             }
         }
