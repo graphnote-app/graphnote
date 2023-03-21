@@ -10,7 +10,6 @@ import SwiftUI
 struct FileIconView: View {
     var body: some View {
         Image(systemName: "doc.plaintext")
-            .foregroundColor(Color.accentColor)
     }
 }
 

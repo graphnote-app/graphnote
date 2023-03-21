@@ -14,8 +14,6 @@ enum TreeViewLabelDimensions: CGFloat {
     case rowPadding = 4
 }
 
-fileprivate let color = Color.gray
-
 enum FocusField: Hashable {
    case field
 }
@@ -30,22 +28,24 @@ struct TreeViewLabel: View, Identifiable {
     
     let id: UUID
 //    let document: Binding<Document>
-    var selected: Binding<DocumentIdentifier>
+//    var selected: Binding<DocumentIdentifier>
+    @Binding var label: String
+    let color: Color
     let refresh: () -> ()
     
 //    @ObservedObject private var viewModel: TreeViewItemViewModel
-    
-    init(id: UUID,
-//         document: Binding<Document>,
-         selected: Binding<DocumentIdentifier>,
-         refresh: @escaping () -> ()
-    ) {
-        self.id = id
-//        self.document = document
-        self.selected = selected
-        self.refresh = refresh
-//        self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
-    }
+//
+//    init(id: UUID,
+////         document: Binding<Document>,
+//         label: Binding<String>,
+//         refresh: @escaping () -> ()
+//    ) {
+//        self.id = id
+////        self.document = document
+//        self.label =
+//        self.refresh = refresh
+////        self.viewModel = TreeViewItemViewModel(moc: moc, workspaceId: id)
+//    }
     
     func refreshDocuments() {
 //        self.viewModel.fetchDocuments(workspaceId: self.document.workspace.id.wrappedValue)
@@ -72,7 +72,7 @@ struct TreeViewLabel: View, Identifiable {
                         .onTapGesture {
                             editable = false
                         }
-                    TextField("", text: .constant("TESTING"))
+                    TextField("", text: $label)
                         .onSubmit {
                             editable = false
                             focusedField = nil
@@ -87,8 +87,9 @@ struct TreeViewLabel: View, Identifiable {
                         
                 } else {
                     FileIconView()
+                        .foregroundColor(color)
                         .padding(TreeViewLabelDimensions.rowPadding.rawValue)
-                    Text("Testing")
+                    Text(label)
                         .bold()
                         .padding(TreeViewLabelDimensions.rowPadding.rawValue)
                 }

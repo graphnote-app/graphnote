@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct TreeView: View {
-    @Binding var selectedDocument: DocumentIdentifier
+    @Binding var labels: [String]
+    let labelColors: [Color]
     
     var body: some View {
         VStack(alignment: .leading) {
-            TreeViewLabel(id: UUID(), selected: $selectedDocument) {
-                
+            ForEach(0..<labels.count, id: \.self) { i in
+                TreeViewLabel(id: UUID(), label: $labels[i], color: labelColors[i]) {
+                    
+                }
             }
         }
         .padding([.top, .bottom])
@@ -22,6 +25,6 @@ struct TreeView: View {
 
 struct TreeView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeView(selectedDocument: .constant(DocumentIdentifier(workspaceId: UUID(), documentId: UUID())))
+        TreeView(labels: .constant(["Test"]), labelColors: [Color.accentColor])
     }
 }

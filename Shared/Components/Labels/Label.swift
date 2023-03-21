@@ -19,23 +19,27 @@ struct Label: View {
     }
     
     var body: some View {
-        let height = 30.0
-        let minWidth = 100.0
+        let height = 24.0
+        let minWidth = 60.0
         
         if fill {
             Text(text)
                 .foregroundColor(Color.black)
                 .lineLimit(1)
                 .bold()
-                .padding(Spacing.spacing2.rawValue)
+                .padding([.leading, .trailing], Spacing.spacing2.rawValue)
+                .padding([.top, .bottom], Spacing.spacing0.rawValue)
                 .frame(minWidth: minWidth)
+                .frame(height: height)
                 .background(RoundedRectangle(cornerRadius: height).fill(color))
         } else {
             Text(text)
                 .bold()
                 .lineLimit(1)
-                .padding(Spacing.spacing2.rawValue)
+                .padding([.leading, .trailing], Spacing.spacing2.rawValue)
+                .padding([.top, .bottom], Spacing.spacing0.rawValue)
                 .frame(minWidth: minWidth)
+                .frame(height: height)
                 .overlay {
                     RoundedRectangle(cornerRadius: height)
                         .stroke(color, lineWidth: 2)

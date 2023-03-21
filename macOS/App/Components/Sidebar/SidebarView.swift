@@ -9,12 +9,13 @@ import SwiftUI
 
 struct SidebarView: View {
     @Binding var selectedDocument: DocumentIdentifier
+    @Binding var labels: [String]
     
     var body: some View {
         VStack(alignment: .leading) {
             Spacer()
                 .frame(height: Spacing.spacing7.rawValue)
-            TreeView(selectedDocument: $selectedDocument)
+            TreeView(labels: $labels, labelColors: LabelPalette.allColors)
                 .padding()
             Spacer()
             WorkspaceMenu()
@@ -23,8 +24,8 @@ struct SidebarView: View {
     }
 }
 
-struct SidebarView_Previews: PreviewProvider {
-    static var previews: some View {
-        SidebarView(selectedDocument: .constant(DocumentIdentifier(workspaceId: UUID(), documentId: UUID())))
-    }
-}
+//struct SidebarView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SidebarView(selectedDocument: .constant(DocumentIdentifier(workspaceId: UUID(), documentId: UUID())))
+//    }
+//}
