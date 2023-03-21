@@ -1,5 +1,5 @@
 //
-//  Label.swift
+//  LabelView.swift
 //  Graphnote (macOS)
 //
 //  Created by Hayden Pennington on 3/20/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Label: View {
+struct LabelView: View {
     let color: Color
     let text: String
     let fill: Bool
@@ -53,6 +53,6 @@ struct Label: View {
 
 struct Label_Previews: PreviewProvider {
     static var previews: some View {
-        Label(color: .red, text: "WIP")
+        LabelView(color: .red, text: "WIP")
     }
 }

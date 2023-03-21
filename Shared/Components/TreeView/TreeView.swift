@@ -8,49 +8,19 @@
 import SwiftUI
 
 struct TreeView: View {
-    @Binding var labels: [String]
-    let labelColors: [Color]
-    
-    @ViewBuilder func textOrTextField(title: String) -> some View {
-        HStack {
-//            if editable {
-//                CheckmarkView()
-//                    .onTapGesture {
-//                       editable = false
-//                    }
-//                TextField("", text: title)
-//                    .onSubmit {
-//                        editable = false
-//                        focusedField = nil
-//                    }
-//                    .focused($focusedField, equals: .field)
-//                    .onAppear {
-//                        print("onAppear")
-//                        if editable {
-//                            focusedField = .field
-//                        }
-//                    }
-//            } else {
-                TreeBulletView()
-//                    .padding(TreeViewItemDimensions.rowPadding.rawValue)
-                HStack {
-                    Text(title)
-
-                    Spacer()
-                }.frame(width: 130)
-//            }
-        }
-    }
+    var items: [TreeViewItem]
     
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(0..<labels.count, id: \.self) { i in
-                TreeViewLabel(id: UUID(), label: $labels[i], color: labelColors[i]) {
-                } content: {
-                    VStack {
-                        textOrTextField(title: "Testing")
+            ForEach(0..<items.count, id: \.self) { i in
+                TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
+                    ForEach(items[i].subItems, id: \.id) { subItem in
+                        TreeViewSubline(title: subItem.title)
                     }
                 }
+            }
+            TreeViewLabel(id: UUID(), label: .constant("ALL"), color: .gray) {
+                EmptyView()
             }
         }
         .padding([.top, .bottom])
@@ -59,6 +29,6 @@ struct TreeView: View {
 
 struct TreeView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeView(labels: .constant(["Test"]), labelColors: [Color.accentColor])
+        TreeView(items: [])
     }
 }

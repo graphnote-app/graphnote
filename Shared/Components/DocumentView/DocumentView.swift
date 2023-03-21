@@ -15,7 +15,7 @@ struct DocumentView: View {
     @State private var blocks: [Block] = []
     
     @Binding var title: String
-    @Binding var labels: [String]
+    @Binding var labels: [Label]
     
     private func contentFlex(v: some View) -> some View {
         HStack {

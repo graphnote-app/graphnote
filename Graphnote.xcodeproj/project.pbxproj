@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F807C8BE29C9132600B7B239 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8BD29C9132600B7B239 /* Label.swift */; };
+		F807C8BE29C9132600B7B239 /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8BD29C9132600B7B239 /* LabelView.swift */; };
 		F807C8C129C9144500B7B239 /* LabelField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C029C9144500B7B239 /* LabelField.swift */; };
 		F807C8C329C9161B00B7B239 /* EditIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C229C9161B00B7B239 /* EditIconView.swift */; };
 		F807C8C529C9170500B7B239 /* CheckmarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C429C9170500B7B239 /* CheckmarkIconView.swift */; };
 		F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C629C9172200B7B239 /* XMarkIconView.swift */; };
 		F807C8C929C919A100B7B239 /* LabelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C829C919A100B7B239 /* LabelPalette.swift */; };
+		F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */; };
+		F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */; };
+		F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */; };
 		F84D087729C808B100410C10 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
 		F84D087929C809ED00410C10 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
 		F84D087A29C809FE00410C10 /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */; };
@@ -64,7 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F807C8BD29C9132600B7B239 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		F807C8BD29C9132600B7B239 /* LabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
 		F807C8C029C9144500B7B239 /* LabelField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelField.swift; sourceTree = "<group>"; };
 		F807C8C229C9161B00B7B239 /* EditIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIconView.swift; sourceTree = "<group>"; };
 		F807C8C429C9170500B7B239 /* CheckmarkIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkIconView.swift; sourceTree = "<group>"; };
@@ -75,6 +78,9 @@
 		F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLabel.swift; sourceTree = "<group>"; };
 		F81CC930279D0CF700A1F693 /* TreeBulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBulletView.swift; sourceTree = "<group>"; };
 		F81CC933279D0ECA00A1F693 /* FileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconView.swift; sourceTree = "<group>"; };
+		F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLine.swift; sourceTree = "<group>"; };
+		F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubline.swift; sourceTree = "<group>"; };
+		F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItem.swift; sourceTree = "<group>"; };
 		F84D087629C808B100410C10 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F84D088129C80CE600410C10 /* ContentViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewVM.swift; sourceTree = "<group>"; };
 		F84D088329C817E900410C10 /* GlobalDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimension.swift; sourceTree = "<group>"; };
@@ -145,7 +151,7 @@
 		F807C8BC29C9131A00B7B239 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
-				F807C8BD29C9132600B7B239 /* Label.swift */,
+				F807C8BD29C9132600B7B239 /* LabelView.swift */,
 				F807C8C829C919A100B7B239 /* LabelPalette.swift */,
 			);
 			path = Labels;
@@ -172,7 +178,10 @@
 				F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */,
 				F8D9289327A24688009CC9B9 /* CheckmarkView.swift */,
 				F84D088529C81AAA00410C10 /* TreeView.swift */,
+				F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */,
 				F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */,
+				F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */,
+				F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */,
 			);
 			path = TreeView;
 			sourceTree = "<group>";
@@ -463,6 +472,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8BF73C629C7F54900BA826E /* DataController.swift in Sources */,
+				F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */,
 				F807C8C529C9170500B7B239 /* CheckmarkIconView.swift in Sources */,
 				F84D088029C809FE00410C10 /* HeadingView.swift in Sources */,
 				F8BF73CA29C7F54900BA826E /* Document.swift in Sources */,
@@ -480,7 +490,9 @@
 				F84D088229C80CE600410C10 /* ContentViewVM.swift in Sources */,
 				F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */,
 				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,
+				F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */,
 				F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */,
+				F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */,
 				F84D087D29C809FE00410C10 /* EmptyBlockView.swift in Sources */,
 				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,
 				F84D087729C808B100410C10 /* DocumentView.swift in Sources */,
@@ -500,7 +512,7 @@
 				F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */,
 				F8BF73D229C7F8C100BA826E /* LoadingView.swift in Sources */,
 				F84D087F29C809FE00410C10 /* BlockSpacer.swift in Sources */,
-				F807C8BE29C9132600B7B239 /* Label.swift in Sources */,
+				F807C8BE29C9132600B7B239 /* LabelView.swift in Sources */,
 				F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

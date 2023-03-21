@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct SidebarView: View {
-    @Binding var selectedDocument: DocumentIdentifier
-    @Binding var labels: [String]
+    @Binding var items: [TreeViewItem]
     
     var body: some View {
         VStack(alignment: .leading) {
             Spacer()
                 .frame(height: Spacing.spacing7.rawValue)
-            TreeView(labels: $labels, labelColors: LabelPalette.allColors)
+            TreeView(items: items)
                 .padding()
             Spacer()
             WorkspaceMenu()

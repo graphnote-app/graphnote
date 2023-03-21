@@ -10,15 +10,15 @@ import SwiftUI
 struct LabelField: View {
     @State private var editing = false
     
-    @Binding var labels: [String]
+    @Binding var labels: [Label]
     
     var body: some View {
         if editing {
             HStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: Spacing.spacing8.rawValue) {
-                        ForEach(0..<labels.count, id: \.self) { i in
-                            Label(color: LabelPalette.allColors[i], text: labels[i], fill: true)
+                        ForEach(labels, id: \.self) { label in
+                            LabelView(color: label.color, text: label.title, fill: true)
                         }
                     }
                     
@@ -40,8 +40,8 @@ struct LabelField: View {
             HStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(0..<labels.count, id: \.self) { i in
-                            Label(color: LabelPalette.allColors[i], text: labels[i], fill: true)
+                        ForEach(labels, id: \.self) { label in
+                            LabelView(color: label.color, text: label.title, fill: true)
                         }
                     }
                 }
