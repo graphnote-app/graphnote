@@ -27,15 +27,17 @@ struct LabelField: View {
                     
                 }.padding(Spacing.spacing2.rawValue)
                     .border(.gray)
-                Spacer()
-                XMarkIconView()
-                    .onTapGesture {
-                        editing = false
-                    }
-                CheckmarkIconView()
-                    .onTapGesture {
-                        editing = false
-                    }
+                Spacer(minLength: Spacing.spacing4.rawValue)
+                VStack(spacing: Spacing.spacing4.rawValue) {
+                    XMarkIconView()
+                        .onTapGesture {
+                            editing = false
+                        }
+                    CheckmarkIconView()
+                        .onTapGesture {
+                            editing = false
+                        }
+                }
             }
         } else {
             HStack {
@@ -47,7 +49,7 @@ struct LabelField: View {
                     }
                 }
                 
-                Spacer()
+                Spacer(minLength: Spacing.spacing4.rawValue)
                 EditIconView()
                     .onTapGesture {
                         editing = true
