@@ -9,23 +9,18 @@ import SwiftUI
 
 struct ArrowView: View {
     let color: Color
+    let down: Bool
     
     var body: some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(.clear)
-                .contentShape(Rectangle())
-                
-            Arrow()
-                .padding(2)
-                .foregroundColor(color)
-        }
-        
+        Image(systemName: down ? "arrowtriangle.down.fill" : "arrowtriangle.right.fill")
+            .renderingMode(.template)
+            .padding()
+            .foregroundColor(color)
     }
 }
 
 struct ArrowView_Previews: PreviewProvider {
     static var previews: some View {
-        ArrowView(color: .blue)
+        ArrowView(color: .blue, down: false)
     }
 }

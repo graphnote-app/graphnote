@@ -15,16 +15,9 @@ struct TreeViewLine: View {
     
     var body: some View {
         HStack {
-            if toggle {
-                ArrowView(color: color)
-                    .frame(width: TreeViewLabelDimensions.arrowWidthHeight.rawValue, height: TreeViewLabelDimensions.arrowWidthHeight.rawValue)
-                    .rotationEffect(Angle(degrees: 90))
-                
-            } else {
-                ArrowView(color: color)
-                    .frame(width: TreeViewLabelDimensions.arrowWidthHeight.rawValue, height: TreeViewLabelDimensions.arrowWidthHeight.rawValue)
-            }
-            
+            ArrowView(color: color, down: toggle)
+                .frame(width: TreeViewLabelDimensions.arrowWidthHeight.rawValue, height: TreeViewLabelDimensions.arrowWidthHeight.rawValue)
+                        
             FileIconView()
                 .foregroundColor(color)
                 .padding(TreeViewLabelDimensions.rowPadding.rawValue)
