@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SidebarView: View {
     @Binding var items: [TreeViewItem]
+    @Binding var settingsOpen: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -16,7 +17,6 @@ struct SidebarView: View {
                 .frame(height: Spacing.spacing7.rawValue)
             VStack(alignment: .leading) {
                 TreeView(items: items)
-                
                 Button {
                     
                 } label: {
@@ -25,12 +25,16 @@ struct SidebarView: View {
                         Text("New Document")
                     }
                 }.buttonStyle(.plain)
-
             }
-            .padding()
+            .padding(Spacing.spacing3.rawValue)
             Spacer()
-            WorkspaceMenu()
-                .padding(Spacing.spacing3.rawValue)
+            HStack {
+                GearIconVIew {
+                    settingsOpen = true
+                }
+                WorkspaceMenu()
+                    
+            }.padding(Spacing.spacing3.rawValue)
         }
     }
 }

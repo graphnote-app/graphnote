@@ -16,6 +16,8 @@
 		F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */; };
 		F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */; };
 		F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */; };
+		F832C8F129CAA34E00ECA57B /* GearIconVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8F029CAA34E00ECA57B /* GearIconVIew.swift */; };
+		F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8F229CAA43400ECA57B /* SettingsView.swift */; };
 		F84D087729C808B100410C10 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
 		F84D087929C809ED00410C10 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
 		F84D087A29C809FE00410C10 /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */; };
@@ -81,6 +83,8 @@
 		F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLine.swift; sourceTree = "<group>"; };
 		F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubline.swift; sourceTree = "<group>"; };
 		F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItem.swift; sourceTree = "<group>"; };
+		F832C8F029CAA34E00ECA57B /* GearIconVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearIconVIew.swift; sourceTree = "<group>"; };
+		F832C8F229CAA43400ECA57B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F84D087629C808B100410C10 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F84D088129C80CE600410C10 /* ContentViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewVM.swift; sourceTree = "<group>"; };
 		F84D088329C817E900410C10 /* GlobalDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimension.swift; sourceTree = "<group>"; };
@@ -308,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				F8BF73D629C7FDFD00BA826E /* SidebarView.swift */,
+				F832C8F029CAA34E00ECA57B /* GearIconVIew.swift */,
 			);
 			path = Sidebar;
 			sourceTree = "<group>";
@@ -328,6 +333,7 @@
 		F8EA4070279CFF54001F74B5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F832C8F229CAA43400ECA57B /* SettingsView.swift */,
 				F86C9F1527B0C7A8002DD87A /* Model */,
 				F875124827B4A11500E86D57 /* DocumentIdentifier.swift */,
 				F8E19E5629A8669000BD0BB9 /* Spacing.swift */,
@@ -491,6 +497,7 @@
 				F8BF73CC29C7F54900BA826E /* Workspace.swift in Sources */,
 				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,
 				F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */,
+				F832C8F129CAA34E00ECA57B /* GearIconVIew.swift in Sources */,
 				F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */,
 				F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */,
 				F84D087D29C809FE00410C10 /* EmptyBlockView.swift in Sources */,
@@ -500,6 +507,7 @@
 				F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */,
 				F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */,
 				F84D087E29C809FE00410C10 /* BlockType.swift in Sources */,
+				F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */,
 				F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */,
 				F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */,
 				F8BF73C529C7F52500BA826E /* CheckmarkView.swift in Sources */,

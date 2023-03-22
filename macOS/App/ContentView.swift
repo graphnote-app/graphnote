@@ -8,14 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var vm = ContentViewVM()
+    @State private var settings = false
+    
+    private func contentFlex(v: some View) -> some View {
+        HStack {
+            Spacer()
+            v.frame(minWidth: GlobalDimension.minDocumentContentWidth)
+             .frame(maxWidth: GlobalDimension.maxDocumentContentWidth)
+            Spacer()
+        }
+        .padding([.top, .bottom])
+    }
     
     var body: some View {
         SplitView {
-            SidebarView(items: $vm.treeItems)
+            SidebarView(items: $vm.treeItems, settingsOpen: $settings)
                 .frame(width: GlobalDimension.treeWidth)
         } detail: {
-            DocumentView(title: .constant("Testing"), labels: $vm.selectedPage.labels)
+            if settings {
+                return SettingsView()
+                    .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                
+            } else {
+                return DocumentView(title: .constant("Testing"), labels: $vm.selectedPage.labels)
+                    .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+            }
         }
     }
 }

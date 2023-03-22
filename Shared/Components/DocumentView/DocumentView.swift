@@ -28,9 +28,10 @@ struct DocumentView: View {
     }
     
     var body: some View {
+        contentFlex(v:
         ScrollView {
             Group {
-                contentFlex(v: VStack(alignment: .center, spacing: pad) {
+                VStack(alignment: .center, spacing: pad) {
                     HStack() {
                         VStack(alignment: .leading) {
                             TextField("", text: $title)
@@ -50,13 +51,13 @@ struct DocumentView: View {
                         Spacer()
                     }
                     Spacer()
-                })
+                }
                 
             }
             .padding(.trailing, GlobalDimension.toolbarWidth)
             .padding(GlobalDimension.toolbarWidth + Spacing.spacing1.rawValue)
-            
-        }.frame(minHeight: GlobalDimension.minDocumentContentHeight)
+        })
+        .frame(minHeight: GlobalDimension.minDocumentContentHeight)
         .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
     }
 }
