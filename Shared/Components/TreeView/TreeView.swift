@@ -18,7 +18,7 @@ struct TreeView: View {
                         TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
                             ForEach(items[i].subItems, id: \.id) { subItem in
                                 TreeViewSubline(title: subItem.title)
-                                    .padding(Spacing.spacing2.rawValue)
+                                    .padding(Spacing.spacing1.rawValue)
                             }
                         }
                     }
