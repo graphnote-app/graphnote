@@ -14,17 +14,23 @@ struct SidebarView: View {
         VStack(alignment: .leading) {
             Spacer()
                 .frame(height: Spacing.spacing7.rawValue)
-            TreeView(items: items)
-                .padding()
+            VStack(alignment: .leading) {
+                TreeView(items: items)
+                
+                Button {
+                    
+                } label: {
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("New Document")
+                    }
+                }.buttonStyle(.plain)
+
+            }
+            .padding()
             Spacer()
             WorkspaceMenu()
                 .padding(Spacing.spacing3.rawValue)
         }
     }
 }
-
-//struct SidebarView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SidebarView(selectedDocument: .constant(DocumentIdentifier(workspaceId: UUID(), documentId: UUID())))
-//    }
-//}
