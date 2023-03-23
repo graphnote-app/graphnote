@@ -25,12 +25,22 @@ let page2 = UUID()
 let page3 = UUID()
 let page4 = UUID()
 
-let wip = Label(id: UUID(), title: "WIP", color: LabelPalette.pink)
-let monday = Label(id: UUID(), title: "Monday", color: LabelPalette.purple)
-let client = Label(id: UUID(), title: "Client", color: LabelPalette.orangeLight)
-let date = Label(id: UUID(), title: "3/24", color: LabelPalette.orangeDark)
-let stuff = Label(id: UUID(), title: "Stuff", color: LabelPalette.primary)
-let web = Label(id: UUID(), title: "Web", color: LabelPalette.yellow)
+// A variable to control the label colors.
+let STATIC_COLORS = false
+
+let color1 = STATIC_COLORS ? LabelPalette.pink : LabelPalette.allColors.randomElement()!
+let color2 = STATIC_COLORS ? LabelPalette.purple :LabelPalette.allColors.randomElement()!
+let color3 = STATIC_COLORS ? LabelPalette.orangeLight :LabelPalette.allColors.randomElement()!
+let color4 = STATIC_COLORS ? LabelPalette.orangeDark :LabelPalette.allColors.randomElement()!
+let color5 = STATIC_COLORS ? LabelPalette.primary :LabelPalette.allColors.randomElement()!
+let color6 = STATIC_COLORS ? LabelPalette.yellow :LabelPalette.allColors.randomElement()!
+
+let wip = Label(id: UUID(), title: "WIP", color: color1)
+let monday = Label(id: UUID(), title: "Monday", color: color2)
+let client = Label(id: UUID(), title: "Client", color: color3)
+let date = Label(id: UUID(), title: "3/24", color: color4)
+let stuff = Label(id: UUID(), title: "Stuff", color: color5)
+let web = Label(id: UUID(), title: "Web", color: color6)
 
 let pages = [
     Page(id: page1, title: "New thing", labels: [
