@@ -21,33 +21,41 @@ struct LabelView: View {
     var body: some View {
         let height = 24.0
         let minWidth = 60.0
-        
-        if fill {
-            Text(text)
-                .font(.title3)
-                .foregroundColor(Color.black)
-                .lineLimit(1)
-                .bold()
-                .padding([.leading, .trailing], Spacing.spacing2.rawValue)
-                .padding([.top, .bottom], Spacing.spacing0.rawValue)
-                .frame(minWidth: minWidth)
-                .frame(height: height)
-                .background(RoundedRectangle(cornerRadius: height).fill(color))
-        } else {
-            Text(text)
-                .font(.title3)
-                .bold()
-                .lineLimit(1)
-                .padding([.leading, .trailing], Spacing.spacing2.rawValue)
-                .padding([.top, .bottom], Spacing.spacing0.rawValue)
-                .frame(minWidth: minWidth)
-                .frame(height: height)
-                .overlay {
-                    RoundedRectangle(cornerRadius: height)
-                        .stroke(color, lineWidth: 2)
-                }
-                .padding(Spacing.spacing2.rawValue)
+        Group {
+            if fill {
+                Text(text)
+                    .font(.title3)
+                    .foregroundColor(Color.black)
+                    .lineLimit(1)
+                    .bold()
+                    .padding([.leading, .trailing], Spacing.spacing2.rawValue)
+                    .padding([.top, .bottom], Spacing.spacing0.rawValue)
+                    .frame(minWidth: minWidth)
+                    .frame(height: height)
+                    .background(RoundedRectangle(cornerRadius: height).fill(color))
+                    .contextMenu {
+                        LabelContextMenu()
+                    }
+            } else {
+                Text(text)
+                    .font(.title3)
+                    .bold()
+                    .lineLimit(1)
+                    .padding([.leading, .trailing], Spacing.spacing2.rawValue)
+                    .padding([.top, .bottom], Spacing.spacing0.rawValue)
+                    .frame(minWidth: minWidth)
+                    .frame(height: height)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: height)
+                            .stroke(color, lineWidth: 2)
+                    }
+                    .padding(Spacing.spacing2.rawValue)
+                    .contextMenu {
+                        LabelContextMenu()
+                    }
+            }
         }
+        .contentShape(RoundedRectangle(cornerRadius: height))
     }
 }
 
