@@ -26,7 +26,6 @@ struct LabelView: View {
         self.rename = rename
         
         // Set the content to label.title initially and when we get updates from init
-        print(label.title)
         self.content = label.title
     }
     
