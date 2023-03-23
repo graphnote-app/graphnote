@@ -9,51 +9,31 @@ import SwiftUI
 
 struct LabelField: View {
     @State private var editing = false
+    @State private var selectedLabel: Label?
     
     @Binding var labels: [Label]
     
     var body: some View {
-        if editing {
-            HStack {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: Spacing.spacing8.rawValue) {
-                        ForEach(labels, id: \.self) { label in
-                            LabelView(color: label.color, text: label.title, fill: true)
-                        }
-                    }
-                    
-                }.padding(Spacing.spacing2.rawValue)
-                    .border(.gray)
-                Spacer(minLength: Spacing.spacing4.rawValue)
-                VStack(spacing: Spacing.spacing4.rawValue) {
-                    XMarkIconView()
-                        .onTapGesture {
-                            editing = false
-                        }
-                    CheckmarkIconView()
-                        .onTapGesture {
-                            editing = false
-                        }
-                }
-            }
-        } else {
-            HStack {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(labels, id: \.self) { label in
-                            LabelView(color: label.color, text: label.title, fill: true)
+        HStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(labels, id: \.self) { label in
+                        LabelView(label: label) { newName in
+                            
                         }
                     }
                 }
-                
-                Spacer(minLength: Spacing.spacing4.rawValue)
-                EditIconView()
-                    .onTapGesture {
-                        editing = true
-                    }
             }
+            Spacer()
+                .frame(width: Spacing.spacing1.rawValue)
+            AddIconView()
+                .onTapGesture {
+                    let newLabel = Label(id: UUID(), title: "New label", color: LabelPalette.allColors.randomElement()!)
+                    labels.append(newLabel)
+                    selectedLabel = newLabel
+                }
+            Spacer(minLength: Spacing.spacing4.rawValue)
         }
-        
     }
 }
 

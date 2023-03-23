@@ -1,5 +1,5 @@
 //
-//  EditIconView.swift
+//  AddIconView.swift
 //  Graphnote (macOS)
 //
 //  Created by Hayden Pennington on 3/20/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EditIconView: View {
+struct AddIconView: View {
     var body: some View {
         Image(systemName: "pencil")
             .renderingMode(.template)
@@ -16,8 +16,8 @@ struct EditIconView: View {
     }
 }
 
-struct EditIconView_Previews: PreviewProvider {
+struct AddIconView_Previews: PreviewProvider {
     static var previews: some View {
-        EditIconView()
+        AddIconView()
     }
 }

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct LabelContextMenu: View {
+    let rename: () -> Void
+    let delete: () -> Void
+    
     var body: some View {
         Group {
             Menu("Set Color") {
@@ -31,10 +34,10 @@ struct LabelContextMenu: View {
                 }
             }
             Button("Rename") {
-                
+                rename()
             }
             Button("Drop") {
-                
+                delete()
             }
         }
     }
@@ -42,6 +45,11 @@ struct LabelContextMenu: View {
 
 struct LabelContextMenu_Previews: PreviewProvider {
     static var previews: some View {
-        LabelContextMenu()
+        LabelContextMenu {
+            
+        } delete: {
+            
+        }
+
     }
 }
