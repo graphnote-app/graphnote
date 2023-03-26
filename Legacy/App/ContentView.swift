@@ -61,7 +61,7 @@ struct ContentView: View {
                             VStack {
                                 Spacer()
                                 Rectangle()
-                                    .background(Color.gray)
+                                    .background(GNColor.gray)
                                     .frame(width: 1, height: geometry.size.height * 0.95)
                                 Spacer()
                             }

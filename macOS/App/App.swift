@@ -21,18 +21,3 @@ struct GNApp: App {
         .windowStyle(.hiddenTitleBar)
     }
 }
-
-struct DataSeeder: EnvironmentKey {
-    static let defaultValue: Bool = false
-}
-
-extension EnvironmentValues {
-    var isSeeding: Bool {
-        get {
-            self[DataSeeder.self]
-        }
-        set {
-            self[DataSeeder.self] = newValue
-        }
-    }
-}

@@ -10,7 +10,7 @@ import CoreData
 
 public class WorkspaceEntity: NSManagedObject {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<WorkspaceEntity> {
-        return NSFetchRequest<WorkspaceEntity>(entityName: "Workspace")
+        return NSFetchRequest<WorkspaceEntity>(entityName: "WorkspaceEntity")
     }
     
     @NSManaged public var id: UUID

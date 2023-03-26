@@ -44,7 +44,7 @@ struct LabelView: View {
                     .padding([.top, .bottom], Spacing.spacing0.rawValue)
                     .frame(minWidth: minWidth)
                     .frame(height: height)
-                    .background(RoundedRectangle(cornerRadius: height).fill(label.color))
+                    .background(RoundedRectangle(cornerRadius: height).fill(label.color.getSwiftUIColor()))
                     .contentShape(RoundedRectangle(cornerRadius: height))
                     .focused($focusedField, equals: .title)
                     .focused($isFocused)
@@ -70,7 +70,7 @@ struct LabelView: View {
                     .padding([.top, .bottom], Spacing.spacing0.rawValue)
                     .frame(minWidth: minWidth)
                     .frame(height: height)
-                    .background(RoundedRectangle(cornerRadius: height).fill(label.color))
+                    .background(RoundedRectangle(cornerRadius: height).fill(label.color.getSwiftUIColor()))
                     .contextMenu {
                         LabelContextMenu {
                             editing = true
@@ -89,7 +89,7 @@ struct LabelView: View {
 
 struct Label_Previews: PreviewProvider {
     static var previews: some View {
-        LabelView(label: Label(id: UUID(), title: "Testing", color: .red)) { newName in
+        LabelView(label: Label(id: UUID(), title: "Testing", color: GNColor(id: UUID(), name: "test_color", createdAt: .now, modifiedAt: .now, r: 0.5, g: 0.75, b: 0.35), createdAt: .now, modifiedAt: .now)) { newName in
             
         }
     }

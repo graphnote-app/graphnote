@@ -28,9 +28,9 @@ struct LabelField: View {
                 .frame(width: Spacing.spacing1.rawValue)
             AddIconView()
                 .onTapGesture {
-                    let newLabel = Label(id: UUID(), title: "New label", color: LabelPalette.allColors.randomElement()!)
-                    labels.append(newLabel)
-                    selectedLabel = newLabel
+//                    let newLabel = Label(id: UUID(), title: "New label", color: )
+//                    labels.append(newLabel)
+//                    selectedLabel = newLabel
                 }
             Spacer(minLength: Spacing.spacing4.rawValue)
         }

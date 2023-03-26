@@ -10,7 +10,7 @@ import CoreData
 
 public class BlockEntity: NSManagedObject {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<BlockEntity> {
-        return NSFetchRequest<BlockEntity>(entityName: "Block")
+        return NSFetchRequest<BlockEntity>(entityName: "BlockEntity")
     }
     
     @NSManaged public var id: UUID

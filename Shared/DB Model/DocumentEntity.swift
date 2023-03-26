@@ -10,7 +10,7 @@ import CoreData
 
 public class DocumentEntity: NSManagedObject {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<DocumentEntity> {
-        return NSFetchRequest<DocumentEntity>(entityName: "Document")
+        return NSFetchRequest<DocumentEntity>(entityName: "DocumentEntity")
     }
     
     @NSManaged public var id: UUID
