@@ -12,7 +12,7 @@ fileprivate let pad: Double = 40
 struct DocumentView: View {
     @Environment(\.colorScheme) private var colorScheme
     
-    @State private var blocks: [Block] = []
+    @State private var blocks: [BlockEntity] = []
     
     @Binding var title: String
     @Binding var labels: [Label]
@@ -46,6 +46,7 @@ struct DocumentView: View {
                     HStack() {
                         BlockView(blocks: blocks) {
                             print("hello")
+                            
                         }
                             
                         Spacer()

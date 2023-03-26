@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A5342f" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Block" representedClassName=".Block" syncable="YES">
+    <entity name="BlockEntity" representedClassName=".BlockEntity" syncable="YES">
         <attribute name="content" attributeType="String"/>
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="type" attributeType="String"/>
-        <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="blocks" inverseEntity="Document"/>
+        <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DocumentEntity" inverseName="blocks" inverseEntity="DocumentEntity"/>
     </entity>
-    <entity name="Document" representedClassName=".Document" syncable="YES">
+    <entity name="DocumentEntity" representedClassName=".DocumentEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="blocks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Block" inverseName="document" inverseEntity="Block"/>
-        <relationship name="workspace" maxCount="1" deletionRule="Nullify" destinationEntity="Workspace" inverseName="documents" inverseEntity="Workspace"/>
+        <relationship name="blocks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BlockEntity" inverseName="document" inverseEntity="BlockEntity"/>
+        <relationship name="workspace" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="documents" inverseEntity="WorkspaceEntity"/>
     </entity>
-    <entity name="Workspace" representedClassName=".Workspace" syncable="YES">
+    <entity name="WorkspaceEntity" representedClassName=".WorkspaceEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Document" inverseName="workspace" inverseEntity="Document"/>
+        <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DocumentEntity" inverseName="workspace" inverseEntity="DocumentEntity"/>
     </entity>
 </model>

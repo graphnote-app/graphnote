@@ -1,29 +1,17 @@
 //
 //  Block.swift
-//  Graphnote
+//  Graphnote (macOS)
 //
-//  Created by Hayden Pennington on 3/11/23.
+//  Created by Hayden Pennington on 3/26/23.
 //
 
 import Foundation
-import CoreData
 
-public class Block: NSManagedObject {
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Block> {
-        return NSFetchRequest<Block>(entityName: "Block")
-    }
-    
-    @NSManaged public var id: UUID
-    @NSManaged public var type: String
-    @NSManaged public var content: String
-    @NSManaged public var createdAt: Date
-    @NSManaged public var modifiedAt: Date
-    @NSManaged public var document: Document
+struct Block {
+    let id: UUID
+    let type: String
+    let content: String
+    let createdAt: Date
+    let modifiedAt: Date
+    let document: Document
 }
-
-extension Block : Comparable {
-    public static func < (lhs: Block, rhs: Block) -> Bool {
-        lhs.createdAt < rhs.createdAt
-    }
-}
-

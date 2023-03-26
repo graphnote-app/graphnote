@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BlockView: View {
-    let blocks: [Block]
+    let blocks: [BlockEntity]
     let onEnter: (() -> Void)
     
     @State private var value = ""
@@ -40,18 +40,21 @@ struct BlockView: View {
 //                    EmptyView()
 //                }
 //            }
-            HeadingView(size: .heading2, text: "Technical Specification")
-            BlockSpacer()
-            BodyView(text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
-            BlockSpacer()
-            HeadingView(size: .heading4, text: "Bullets")
-            Group {
-                BulletView(text: "Bullet point number one")
-                BulletView(text: "Bullet point number two")
-                BulletView(text: "Bullet point number three")
-                BulletView(text: "Bullet point number four")
+//            HeadingView(size: .heading2, text: "Technical Specification")
+//            BlockSpacer()
+            
+            ForEach(blocks, id: \.self) { block in
+                BodyView(text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
             }
             BlockSpacer()
+//            HeadingView(size: .heading4, text: "Bullets")
+//            Group {
+//                BulletView(text: "Bullet point number one")
+//                BulletView(text: "Bullet point number two")
+//                BulletView(text: "Bullet point number three")
+//                BulletView(text: "Bullet point number four")
+//            }
+//            BlockSpacer()
             PromptField(placeholder: "Press '/' for commands...", text: $value)
                 .frame(height: Spacing.spacing7.rawValue)
                 .font(.title3)
