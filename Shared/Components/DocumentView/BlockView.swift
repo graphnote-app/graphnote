@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BlockView: View {
-    let blocks: [BlockEntity]
+    let blocks: [Block]
     let onEnter: (() -> Void)
     
     @State private var value = ""
@@ -43,7 +43,7 @@ struct BlockView: View {
 //            HeadingView(size: .heading2, text: "Technical Specification")
 //            BlockSpacer()
             
-            ForEach(blocks, id: \.self) { block in
+            ForEach(blocks, id: \.id) { block in
                 BodyView(text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
             }
             BlockSpacer()

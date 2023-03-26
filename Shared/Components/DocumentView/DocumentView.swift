@@ -12,10 +12,9 @@ fileprivate let pad: Double = 40
 struct DocumentView: View {
     @Environment(\.colorScheme) private var colorScheme
     
-    @State private var blocks: [BlockEntity] = []
-    
     @Binding var title: String
     @Binding var labels: [Label]
+    @State private var blocks: [Block] = []
     
     private func contentFlex(v: some View) -> some View {
         HStack {
