@@ -6,23 +6,30 @@
 //
 
 import Foundation
+import CoreData
 
 struct WorkspaceRepo {
     
-    static func createWorkspace() throws {
-        let moc = DataController.shared.container.viewContext
-        let workspace = WorkspaceEntity(entity:  WorkspaceEntity.entity(), insertInto: moc)
-        let now = Date.now
-        workspace.createdAt = now
-        workspace.modifiedAt = now
-        workspace.id = UUID()
-        workspace.title = "New workspace"
+    static private let moc = DataController.shared.container.viewContext
+    static private let fetchRequest = WorkspaceEntity.fetchRequest()
+    
+    static func create(workspace: Workspace) throws {
+        let workspaceEntity = WorkspaceEntity(entity: WorkspaceEntity.entity(), insertInto: moc)
+        
+        workspaceEntity.id = workspace.id
+        workspaceEntity.createdAt = workspace.createdAt
+        workspaceEntity.modifiedAt = workspace.modifiedAt
+        workspaceEntity.title = workspace.title
+        
+        do {
+            try moc.save()
+        } catch let error {
+            print(error)
+            throw error
+        }
     }
     
-    static func fetchWorkspaces() throws -> [Workspace] {
-        let moc = DataController.shared.container.viewContext
-        let fetchRequest = WorkspaceEntity.fetchRequest()
-        
+    static func read() throws -> [Workspace] {
         do {
             let workspaces = try moc.fetch(fetchRequest)
             return workspaces.map {
@@ -30,6 +37,52 @@ struct WorkspaceRepo {
             }
             
         } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    static func update(workspace: Workspace) throws {
+        do {
+            guard let workspaceEntity = try getEntity(id: workspace.id) else {
+                return
+            }
+            
+            workspaceEntity.title = workspace.title
+            workspaceEntity.createdAt = workspace.createdAt
+            workspaceEntity.modifiedAt = workspace.modifiedAt
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    static func delete(workspace: Workspace) throws {
+        do {
+            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id.uuidString)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
+            
+            try moc.execute(deleteRequest)
+            try moc.save()
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+        
+    }
+    
+    static private func getEntity(id: UUID) throws -> WorkspaceEntity? {
+        do {
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            guard let workspace = try moc.fetch(fetchRequest).first else {
+                return nil
+            }
+            
+            return workspace
+            
+        } catch let error {
+            print(error)
             throw error
         }
     }

@@ -42,6 +42,9 @@
 		F8A6B6E929D0EAFD00140A53 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6E829D0EAFD00140A53 /* Label.swift */; };
 		F8A6B6EB29D0EB0700140A53 /* GNColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6EA29D0EB0700140A53 /* GNColor.swift */; };
 		F8A6B6EE29D0F0D300140A53 /* WorkspaceRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6ED29D0F0D300140A53 /* WorkspaceRepo.swift */; };
+		F8A6B6F029D0FB8B00140A53 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6EF29D0FB8B00140A53 /* User.swift */; };
+		F8A6B6F229D1008200140A53 /* UserRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F129D1008200140A53 /* UserRepo.swift */; };
+		F8A6B6F429D1028000140A53 /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F329D1028000140A53 /* UserEntity.swift */; };
 		F8BF73AB29C7E52200BA826E /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AA29C7E52200BA826E /* App.swift */; };
 		F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AF29C7E7BD00BA826E /* SplitView.swift */; };
 		F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
@@ -115,6 +118,9 @@
 		F8A6B6E829D0EAFD00140A53 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		F8A6B6EA29D0EB0700140A53 /* GNColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNColor.swift; sourceTree = "<group>"; };
 		F8A6B6ED29D0F0D300140A53 /* WorkspaceRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceRepo.swift; sourceTree = "<group>"; };
+		F8A6B6EF29D0FB8B00140A53 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F8A6B6F129D1008200140A53 /* UserRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepo.swift; sourceTree = "<group>"; };
+		F8A6B6F329D1028000140A53 /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubItem.swift; sourceTree = "<group>"; };
 		F8BF73AA29C7E52200BA826E /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -244,6 +250,7 @@
 				F8EA066929BD1CFD0023F833 /* BlockEntity.swift */,
 				F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */,
 				F8A6B6E229D0E8DD00140A53 /* ColorEntity.swift */,
+				F8A6B6F329D1028000140A53 /* UserEntity.swift */,
 			);
 			path = "DB Model";
 			sourceTree = "<group>";
@@ -273,6 +280,7 @@
 				F8A6B6DB29D0E39A00140A53 /* Block.swift */,
 				F8A6B6E829D0EAFD00140A53 /* Label.swift */,
 				F8A6B6EA29D0EB0700140A53 /* GNColor.swift */,
+				F8A6B6EF29D0FB8B00140A53 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -281,6 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				F8A6B6ED29D0F0D300140A53 /* WorkspaceRepo.swift */,
+				F8A6B6F129D1008200140A53 /* UserRepo.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -534,15 +543,18 @@
 				F84D087A29C809FE00410C10 /* BodyView.swift in Sources */,
 				F84D087B29C809FE00410C10 /* BulletView.swift in Sources */,
 				F8A6B6DF29D0E3D800140A53 /* Document.swift in Sources */,
+				F8A6B6F429D1028000140A53 /* UserEntity.swift in Sources */,
 				F807C8C329C9161B00B7B239 /* EditIconView.swift in Sources */,
 				F84D087929C809ED00410C10 /* BlockView.swift in Sources */,
 				F807C8C129C9144500B7B239 /* LabelField.swift in Sources */,
 				F84D088429C817E900410C10 /* GlobalDimension.swift in Sources */,
 				F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */,
 				F8A6B6EE29D0F0D300140A53 /* WorkspaceRepo.swift in Sources */,
+				F8A6B6F229D1008200140A53 /* UserRepo.swift in Sources */,
 				F807C8C929C919A100B7B239 /* LabelPalette.swift in Sources */,
 				F8A6B6EB29D0EB0700140A53 /* GNColor.swift in Sources */,
 				F8A6B6E529D0E94E00140A53 /* LabelEntity.swift in Sources */,
+				F8A6B6F029D0FB8B00140A53 /* User.swift in Sources */,
 				F84D088629C81AAA00410C10 /* TreeView.swift in Sources */,
 				F8BF73CB29C7F54900BA826E /* BlockEntity.swift in Sources */,
 				F84D088229C80CE600410C10 /* ContentViewVM.swift in Sources */,
