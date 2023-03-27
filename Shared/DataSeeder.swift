@@ -50,7 +50,7 @@ struct DataSeeder{
             }
             
             let labelRepo = LabelRepo(user: user, workspace: workspace)
-            if try !labelRepo.create(label: label) {
+            if !labelRepo.create(label: label) {
                 print("Failed to create the label: \(label)")
                 return false
             }
