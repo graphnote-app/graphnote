@@ -11,11 +11,7 @@ import CoreData
 struct UserRepo {
     
     private let moc = DataController.shared.container.viewContext
-    
-    func save() throws {
-        try? moc.save()
-    }
-    
+
     func create(workspace: Workspace, for user: User) throws -> Bool {
         do {
             guard let userEntity = try getUserEntity(id: user.id) else {
@@ -28,6 +24,8 @@ struct UserRepo {
             workspaceEntity.createdAt = workspace.createdAt
             workspaceEntity.modifiedAt = workspace.modifiedAt
             workspaceEntity.title = workspace.title
+            
+            try? moc.save()
             
             return true
             
@@ -68,6 +66,7 @@ struct UserRepo {
             
             try moc.execute(deleteRequest)
             
+            try? moc.save()
         } catch let error {
             print(error)
             throw error

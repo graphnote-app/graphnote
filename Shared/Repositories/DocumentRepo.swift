@@ -14,10 +14,6 @@ struct DocumentRepo {
     
     private let moc = DataController.shared.container.viewContext
     
-    func save() throws {
-        try? moc.save()
-    }
-    
     func create(block: Block, in document: Document, for user: User) throws -> Bool {
         do {
             guard let documentEntity = try DocumentEntity.getEntity(id: document.id, moc: moc) else {
@@ -32,6 +28,8 @@ struct DocumentRepo {
             blockEntity.modifiedAt = block.modifiedAt
             blockEntity.document = documentEntity
             
+            try? moc.save()
+            
             return true
 
         } catch let error {
@@ -40,16 +38,11 @@ struct DocumentRepo {
         }
     }
 
-    func attach(label: Label, document: Document) -> Bool {
-        if let documentEntity = try? DocumentEntity.getEntity(id: document.id, moc: moc), let labelEntity = try? LabelEntity.getEntity(id: label.id, moc: moc) {
-            let labelLink = LabelLink(entity: LabelLink.entity(), insertInto: moc)
-            labelLink.label = labelEntity
-            labelLink.document = documentEntity
-            
-            return true
-        } else {
-            print("Failed to attach")
-            return false
-        }
+    func attach(label: Label, document: Document) {
+        let labelLink = LabelLink(entity: LabelLink.entity(), insertInto: moc)
+        labelLink.label = label.id
+        labelLink.document = document.id
+        
+        try? moc.save()
     }
 }

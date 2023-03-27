@@ -14,8 +14,8 @@ public class LabelLink: NSManagedObject {
     }
     
     @NSManaged public var id: UUID
-    @NSManaged public var document: DocumentEntity
-    @NSManaged public var label: LabelEntity
+    @NSManaged public var document: UUID
+    @NSManaged public var label: UUID
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
 }

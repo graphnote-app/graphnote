@@ -18,7 +18,7 @@ struct DataSeeder{
         
         let user = User(id: userId, createdAt: now, modifiedAt: now)
         let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user)
-        let labelColor = NSColor(LabelPalette.pink)
+        let workspace2 = Workspace(id: UUID(), title: "Work", createdAt: now, modifiedAt: now, user: user)
         let label = Label(id: UUID(), title: "Web", color: Color(red: 12.0, green: 12.0, blue: 12.0), createdAt: now, modifiedAt: now)
         let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, workspace: workspace, labels: [label])
         let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string!", createdAt: now, modifiedAt: now, document: document)
@@ -32,7 +32,10 @@ struct DataSeeder{
                 return false
             }
             
-            try userRepo.save()
+            if try !userRepo.create(workspace: workspace2, for: user) {
+                print("failed to return success from workspace2 creation: \(workspace2)")
+                return false
+            }
             
             let workspaceRepo = WorkspaceRepo(user: user)
             if try !workspaceRepo.create(document: document, in: workspace, for: user) {
@@ -40,15 +43,11 @@ struct DataSeeder{
                 return false
             }
             
-            try workspaceRepo.save()
-            
             let documentRepo = DocumentRepo(workspace: workspace)
             if try !documentRepo.create(block: block, in: document, for: user) {
                 print("failed to create block: \(block)")
                 return false
             }
-            
-            try documentRepo.save()
             
             let labelRepo = LabelRepo(user: user, workspace: workspace)
             if try !labelRepo.create(label: label) {
@@ -56,14 +55,7 @@ struct DataSeeder{
                 return false
             }
             
-            try labelRepo.save()
-            
-            if documentRepo.attach(label: label, document: document) {
-                try documentRepo.save()
-            } else {
-                print("failed to attach label: \(label) to document: \(document)")
-                return false
-            }
+            documentRepo.attach(label: label, document: document)
             
             return true
         
@@ -71,5 +63,6 @@ struct DataSeeder{
             print(error)
             return false
         }
+
     }
 }
