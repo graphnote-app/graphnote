@@ -12,4 +12,5 @@ struct Workspace {
     let title: String
     let createdAt: Date
     let modifiedAt: Date
+    let user: User
 }

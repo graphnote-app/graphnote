@@ -11,6 +11,7 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var vm = ContentViewVM()
     @State private var settings = false
+    @State private var workspaceSelectedIndex = 0
     
     private func contentFlex(v: some View) -> some View {
         HStack {
@@ -24,7 +25,7 @@ struct ContentView: View {
     
     var body: some View {
         SplitView {
-            SidebarView(items: $vm.treeItems, settingsOpen: $settings)
+            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaceTitles, selectedWorkspaceTitleIndex: $workspaceSelectedIndex)
                 .frame(width: GlobalDimension.treeWidth)
         } detail: {
             if settings {
@@ -34,6 +35,15 @@ struct ContentView: View {
             } else {
                 return DocumentView(title: .constant("Testing"), labels: $vm.selectedPage.labels)
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+            }
+        }
+        .onAppear {
+            if seed {
+                if DataSeeder.seed() {
+                    vm.fetch()
+                } else {
+                    print("seed failed")
+                }
             }
         }
     }

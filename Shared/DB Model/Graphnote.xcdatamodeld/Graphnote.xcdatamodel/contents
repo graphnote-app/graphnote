@@ -8,37 +8,39 @@
         <attribute name="type" attributeType="String"/>
         <relationship name="document" maxCount="1" deletionRule="Nullify" destinationEntity="DocumentEntity" inverseName="blocks" inverseEntity="DocumentEntity"/>
     </entity>
-    <entity name="ColorEntity" representedClassName=".ColorEntity" syncable="YES">
-        <attribute name="b" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="g" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="r" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-    </entity>
     <entity name="DocumentEntity" representedClassName=".DocumentEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
         <relationship name="blocks" toMany="YES" deletionRule="Cascade" destinationEntity="BlockEntity" inverseName="document" inverseEntity="BlockEntity"/>
-        <relationship name="labels" toMany="YES" deletionRule="Nullify" destinationEntity="LabelEntity"/>
+        <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="documents" inverseEntity="UserEntity"/>
         <relationship name="workspace" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="documents" inverseEntity="WorkspaceEntity"/>
     </entity>
     <entity name="LabelEntity" representedClassName=".LabelEntity" syncable="YES">
+        <attribute name="colorBlue" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="colorGreen" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="colorRed" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="color" maxCount="1" deletionRule="Nullify" destinationEntity="ColorEntity"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="documents" toMany="YES" deletionRule="Nullify" destinationEntity="LabelEntity" inverseName="documents" inverseEntity="LabelEntity"/>
+        <relationship name="workspace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="labels" inverseEntity="WorkspaceEntity"/>
+    </entity>
+    <entity name="LabelLink" representedClassName=".LabelLink" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="document" maxCount="1" deletionRule="Nullify" destinationEntity="DocumentEntity"/>
+        <relationship name="label" maxCount="1" deletionRule="Nullify" destinationEntity="LabelEntity"/>
     </entity>
     <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="workspaces" toMany="YES" deletionRule="Cascade" destinationEntity="WorkspaceEntity"/>
+        <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DocumentEntity" inverseName="user" inverseEntity="DocumentEntity"/>
+        <relationship name="workspaces" toMany="YES" deletionRule="Cascade" destinationEntity="WorkspaceEntity" inverseName="user" inverseEntity="WorkspaceEntity"/>
     </entity>
     <entity name="WorkspaceEntity" representedClassName=".WorkspaceEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
@@ -46,6 +48,7 @@
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
         <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DocumentEntity" inverseName="workspace" inverseEntity="DocumentEntity"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="user" inverseEntity="WorkspaceEntity"/>
+        <relationship name="labels" toMany="YES" deletionRule="Cascade" destinationEntity="LabelEntity" inverseName="workspace" inverseEntity="LabelEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="workspaces" inverseEntity="UserEntity"/>
     </entity>
 </model>

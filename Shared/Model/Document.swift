@@ -13,5 +13,5 @@ struct Document {
     let createdAt: Date
     let modifiedAt: Date
     let workspace: Workspace
-    let labels: [UUID]
+    let labels: [Label]
 }

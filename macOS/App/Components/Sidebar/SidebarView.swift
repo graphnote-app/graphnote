@@ -10,6 +10,8 @@ import SwiftUI
 struct SidebarView: View {
     @Binding var items: [TreeViewItem]
     @Binding var settingsOpen: Bool
+    let workspaceTitles: [String]
+    @Binding var selectedWorkspaceTitleIndex: Int
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -32,7 +34,7 @@ struct SidebarView: View {
                 GearIconVIew {
                     settingsOpen = true
                 }
-                WorkspaceMenu()
+                WorkspaceMenu(selectedIndex: $selectedWorkspaceTitleIndex, workspaceTitles: workspaceTitles)
                     
             }.padding(Spacing.spacing3.rawValue)
         }

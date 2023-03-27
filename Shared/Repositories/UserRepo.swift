@@ -10,14 +10,26 @@ import CoreData
 
 struct UserRepo {
     
-    static private let moc = DataController.shared.container.viewContext
-    static private let fetchRequest = UserEntity.fetchRequest()
+    private let moc = DataController.shared.container.viewContext
     
-    static func create(user: User) throws {
+    func save() throws {
+        try? moc.save()
+    }
+    
+    func create(workspace: Workspace, for user: User) throws -> Bool {
         do {
-            let userEntity = UserEntity(entity: UserEntity.entity(), insertInto: moc)
-            userEntity.id = user.id
-            try moc.save()
+            guard let userEntity = try getUserEntity(id: user.id) else {
+                return false
+            }
+            
+            let workspaceEntity = WorkspaceEntity(entity: WorkspaceEntity.entity(), insertInto: moc)
+            workspaceEntity.id = workspace.id
+            workspaceEntity.user = userEntity
+            workspaceEntity.createdAt = workspace.createdAt
+            workspaceEntity.modifiedAt = workspace.modifiedAt
+            workspaceEntity.title = workspace.title
+            
+            return true
             
         } catch let error {
             print(error)
@@ -25,7 +37,7 @@ struct UserRepo {
         }
     }
     
-    static func read(id: UUID) throws -> User? {
+    func read(id: UUID) throws -> User? {
         do {
             guard let userEntity = try getEntity(id: id) else {
                 return nil
@@ -40,7 +52,7 @@ struct UserRepo {
         }
     }
     
-    static func readAll() throws -> [User]? {
+    func readAll() throws -> [User]? {
         let entities = try self.getEntities()
         
         return entities.map {
@@ -48,13 +60,13 @@ struct UserRepo {
         }
     }
     
-    static func delete(user: User) throws {
+    func delete(user: User) throws {
         do {
+            let fetchRequest = UserEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", user.id.uuidString)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
             
             try moc.execute(deleteRequest)
-            try moc.save()
             
         } catch let error {
             print(error)
@@ -62,8 +74,9 @@ struct UserRepo {
         }
     }
     
-    static private func getEntity(id: UUID) throws -> UserEntity? {
+    private func getEntity(id: UUID) throws -> UserEntity? {
         do {
+            let fetchRequest = UserEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
             guard let user = try moc.fetch(fetchRequest).first else {
                 return nil
@@ -77,11 +90,28 @@ struct UserRepo {
         }
     }
     
-    static private func getEntities() throws -> [UserEntity] {
+    private func getEntities() throws -> [UserEntity] {
         do {
             
+            let fetchRequest = UserEntity.fetchRequest()
             let users = try moc.fetch(fetchRequest)
             return users
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    private func getUserEntity(id: UUID) throws -> UserEntity? {
+        do {
+            let fetchRequest = UserEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            guard let user = try moc.fetch(fetchRequest).first else {
+                return nil
+            }
+            
+            return user
             
         } catch let error {
             print(error)

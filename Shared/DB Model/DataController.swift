@@ -21,4 +21,11 @@ class DataController: ObservableObject {
             }
         }
     }
+    
+    func dropDatabase() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = UserEntity.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        try! self.container.viewContext.execute(deleteRequest)
+        try! self.container.viewContext.save()
+    }
 }

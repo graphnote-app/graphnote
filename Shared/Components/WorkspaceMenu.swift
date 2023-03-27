@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct WorkspaceMenu: View {
-    @State private var selectedIndex = 0
+    @Binding var selectedIndex: Int
     
-    let workspaceTitles = ["Work", "Client", "Personal"]
+    let workspaceTitles: [String]
     
     var body: some View {
-        Menu(workspaceTitles[selectedIndex]) {
-            ForEach(0..<workspaceTitles.count, id: \.self) { index in
-                Button(workspaceTitles[index]) {
-                    selectedIndex = index
+        if workspaceTitles.count > selectedIndex {
+            Menu(workspaceTitles[selectedIndex]) {
+                ForEach(0..<workspaceTitles.count, id: \.self) { index in
+                    Button(workspaceTitles[index]) {
+                        selectedIndex = index
+                    }
                 }
-            }
-        }.menuStyle(.borderlessButton)
+            }.menuStyle(.borderlessButton)
+        }
     }
 }
 
 struct AvatarView_Previews: PreviewProvider {
     static var previews: some View {
-        WorkspaceMenu()
+        WorkspaceMenu(selectedIndex: .constant(0), workspaceTitles: ["test"])
     }
 }

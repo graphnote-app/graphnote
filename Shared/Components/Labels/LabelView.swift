@@ -44,7 +44,7 @@ struct LabelView: View {
                     .padding([.top, .bottom], Spacing.spacing0.rawValue)
                     .frame(minWidth: minWidth)
                     .frame(height: height)
-                    .background(RoundedRectangle(cornerRadius: height).fill(label.color.getSwiftUIColor()))
+                    .background(RoundedRectangle(cornerRadius: height).fill(label.color))
                     .contentShape(RoundedRectangle(cornerRadius: height))
                     .focused($focusedField, equals: .title)
                     .focused($isFocused)
@@ -59,7 +59,7 @@ struct LabelView: View {
                     .onExitCommand {
                         editing = false
                     }
-                
+
             } else {
                 Text(label.title)
                     .font(.title3)
@@ -70,14 +70,17 @@ struct LabelView: View {
                     .padding([.top, .bottom], Spacing.spacing0.rawValue)
                     .frame(minWidth: minWidth)
                     .frame(height: height)
-                    .background(RoundedRectangle(cornerRadius: height).fill(label.color.getSwiftUIColor()))
+                    .background(
+                        RoundedRectangle(cornerRadius: height)
+                            .fill(label.color)
+                    )
                     .contextMenu {
                         LabelContextMenu {
                             editing = true
                             focusedField = .title
                             content = label.title
                         } delete: {
-                            
+
                         }
 
                     }
@@ -87,10 +90,10 @@ struct LabelView: View {
     }
 }
 
-struct Label_Previews: PreviewProvider {
-    static var previews: some View {
-        LabelView(label: Label(id: UUID(), title: "Testing", color: GNColor(id: UUID(), name: "test_color", createdAt: .now, modifiedAt: .now, r: 0.5, g: 0.75, b: 0.35), createdAt: .now, modifiedAt: .now)) { newName in
-            
-        }
-    }
-}
+//struct Label_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LabelView(label: Label(id: UUID(), title: "Test", colorRed: 0.12, colorGreen: 0.5, colorBlue: 0.8, createdAt: .now, modifiedAt: .now)) { newLabel in
+//
+//        }
+//    }
+//}

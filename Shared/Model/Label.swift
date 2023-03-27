@@ -15,7 +15,7 @@ struct Label: Equatable, Hashable {
     
     let id: UUID
     let title: String
-    let color: GNColor
+    let color: Color
     let createdAt: Date
     let modifiedAt: Date
     

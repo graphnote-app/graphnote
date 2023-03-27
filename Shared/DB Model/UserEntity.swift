@@ -21,4 +21,22 @@ extension UserEntity : Comparable {
     public static func < (lhs: UserEntity, rhs: UserEntity) -> Bool {
         lhs.createdAt < rhs.createdAt
     }
+    
+    static public func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> UserEntity? {
+        do {
+            let fetchRequest = UserEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            guard let entity = try moc.fetch(fetchRequest).first else {
+                return nil
+            }
+            
+            return entity
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
 }
+
+

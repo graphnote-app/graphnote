@@ -9,7 +9,7 @@ import Foundation
 
 struct Block {
     let id: UUID
-    let type: String
+    let type: BlockType
     let content: String
     let createdAt: Date
     let modifiedAt: Date

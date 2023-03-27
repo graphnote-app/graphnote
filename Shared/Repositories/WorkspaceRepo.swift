@@ -10,30 +10,44 @@ import CoreData
 
 struct WorkspaceRepo {
     
-    static private let moc = DataController.shared.container.viewContext
-    static private let fetchRequest = WorkspaceEntity.fetchRequest()
+    let user: User
     
-    static func create(workspace: Workspace) throws {
-        let workspaceEntity = WorkspaceEntity(entity: WorkspaceEntity.entity(), insertInto: moc)
-        
-        workspaceEntity.id = workspace.id
-        workspaceEntity.createdAt = workspace.createdAt
-        workspaceEntity.modifiedAt = workspace.modifiedAt
-        workspaceEntity.title = workspace.title
-        
+    private let moc = DataController.shared.container.viewContext
+    
+    func save() throws {
+        try? moc.save()
+    }
+    
+    func create(document: Document, in workspace: Workspace, for user: User) throws -> Bool {
         do {
-            try moc.save()
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc),
+                  let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
+                return false
+            }
+            
+            let documentEntity = DocumentEntity(entity: DocumentEntity.entity(), insertInto: moc)
+            documentEntity.id = document.id
+            documentEntity.createdAt = document.createdAt
+            documentEntity.modifiedAt = document.modifiedAt
+            documentEntity.title = document.title
+            documentEntity.workspace = workspaceEntity
+            documentEntity.user = userEntity
+            
+            return true
+
         } catch let error {
             print(error)
             throw error
         }
     }
     
-    static func read() throws -> [Workspace] {
+    func readAll() throws -> [Workspace] {
         do {
+            let fetchRequest = WorkspaceEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "user.id == %@", user.id.uuidString)
             let workspaces = try moc.fetch(fetchRequest)
             return workspaces.map {
-                Workspace(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
+                Workspace(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, user: User(id: $0.user.id, createdAt: $0.user.createdAt, modifiedAt: $0.user.modifiedAt))
             }
             
         } catch let error {
@@ -42,7 +56,7 @@ struct WorkspaceRepo {
         }
     }
     
-    static func update(workspace: Workspace) throws {
+    func update(workspace: Workspace) throws {
         do {
             guard let workspaceEntity = try getEntity(id: workspace.id) else {
                 return
@@ -57,13 +71,13 @@ struct WorkspaceRepo {
         }
     }
     
-    static func delete(workspace: Workspace) throws {
+    func delete(workspace: Workspace) throws {
         do {
+            let fetchRequest = WorkspaceEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id.uuidString)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
             
             try moc.execute(deleteRequest)
-            try moc.save()
             
         } catch let error {
             print(error)
@@ -72,8 +86,25 @@ struct WorkspaceRepo {
         
     }
     
-    static private func getEntity(id: UUID) throws -> WorkspaceEntity? {
+    private func getUserEntity(id: UUID) throws -> UserEntity? {
         do {
+            let fetchRequest = UserEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            guard let user = try moc.fetch(fetchRequest).first else {
+                return nil
+            }
+            
+            return user
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    private func getEntity(id: UUID) throws -> WorkspaceEntity? {
+        do {
+            let fetchRequest = WorkspaceEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
             guard let workspace = try moc.fetch(fetchRequest).first else {
                 return nil
@@ -86,4 +117,5 @@ struct WorkspaceRepo {
             throw error
         }
     }
+    
 }

@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-let reseed = false
+let seed = true
 
 @main
 struct GNApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.isSeeding, reseed)
         }
         .defaultSize(width: GlobalDimension.windowDefaultWidth, height: GlobalDimension.windowDefaultHeight)
         .windowToolbarStyle(.unifiedCompact)
