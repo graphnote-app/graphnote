@@ -107,8 +107,6 @@
 		F84D857C29CBEA35006538EA /* LabelContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContextMenu.swift; sourceTree = "<group>"; };
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		F875124827B4A11500E86D57 /* DocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentIdentifier.swift; sourceTree = "<group>"; };
-		F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewViewModel.swift; sourceTree = "<group>"; };
-		F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewViewModel.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		F8A6B6DB29D0E39A00140A53 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 		F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelRepo.swift; sourceTree = "<group>"; };
 		F8A6B6FB29D1279300140A53 /* LabelLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLink.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
-		F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubItem.swift; sourceTree = "<group>"; };
 		F8BF73AA29C7E52200BA826E /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		F8BF73AF29C7E7BD00BA826E /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		F8BF73B329C7EA2200BA826E /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
@@ -137,7 +134,6 @@
 		F8D92887279FD05B009CC9B9 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewAddView.swift; sourceTree = "<group>"; };
 		F8D9288D27A23C3E009CC9B9 /* EffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectView.swift; sourceTree = "<group>"; };
-		F8D9289027A23CE9009CC9B9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F8D9289327A24688009CC9B9 /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 		F8E19E5629A8669000BD0BB9 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
@@ -149,18 +145,14 @@
 		F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSpacer.swift; sourceTree = "<group>"; };
 		F8EA066929BD1CFD0023F833 /* BlockEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEntity.swift; sourceTree = "<group>"; };
 		F8EA066F29BD35960023F833 /* EmptyBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBlockView.swift; sourceTree = "<group>"; };
-		F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphnoteApp.swift; sourceTree = "<group>"; };
-		F8EA4072279CFF54001F74B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F8EA4073279CFF54001F74B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F8EA407E279CFF55001F74B5 /* Graphnote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphnote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EA4080279CFF55001F74B5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
-		F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewViewModel.swift; sourceTree = "<group>"; };
 		F8F32C8227B9CDF6003B0DF9 /* DocumentEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentEntity.swift; sourceTree = "<group>"; };
 		F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEntity.swift; sourceTree = "<group>"; };
-		F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItemViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,16 +251,6 @@
 			path = "DB Model";
 			sourceTree = "<group>";
 		};
-		F899DFF2279E425B00305AFA /* App */ = {
-			isa = PBXGroup;
-			children = (
-				F8EA4071279CFF54001F74B5 /* GraphnoteApp.swift */,
-				F8EA4072279CFF54001F74B5 /* ContentView.swift */,
-				F8D9289027A23CE9009CC9B9 /* Constants.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
 		F899DFF9279E87E500305AFA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,14 +337,8 @@
 		F8BF73D129C7F86900BA826E /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
-				F899DFF2279E425B00305AFA /* App */,
 				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
 				F899DFF3279E770F00305AFA /* OrientationInfo.swift */,
-				F8AD578F27C2C0D300E07D82 /* TreeViewSubItem.swift */,
-				F875124B27B4A89D00E86D57 /* TreeViewViewModel.swift */,
-				F875124E27B4A92400E86D57 /* DocumentViewViewModel.swift */,
-				F8F32C7F27B9C986003B0DF9 /* ContentViewViewModel.swift */,
-				F8F32C8827B9E546003B0DF9 /* TreeViewItemViewModel.swift */,
 			);
 			path = Legacy;
 			sourceTree = "<group>";
