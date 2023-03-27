@@ -17,10 +17,11 @@ struct DataSeeder{
         let now = Date.now
         
         let user = User(id: userId, createdAt: now, modifiedAt: now)
-        let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user)
-        let workspace2 = Workspace(id: UUID(), title: "Work", createdAt: now, modifiedAt: now, user: user)
-        let label = Label(id: UUID(), title: "Web", color: Color(red: 12.0, green: 12.0, blue: 12.0), createdAt: now, modifiedAt: now)
-        let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, workspace: workspace, labels: [label])
+        
+        let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [])
+        let label = Label(id: UUID(), title: "Web", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
+        
+        let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, workspace: workspace, labels: [])
         let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string!", createdAt: now, modifiedAt: now, document: document)
         
         do {
@@ -31,15 +32,15 @@ struct DataSeeder{
                 print("failed to return success from workspace creation: \(workspace)")
                 return false
             }
-            
-            if try !userRepo.create(workspace: workspace2, for: user) {
-                print("failed to return success from workspace2 creation: \(workspace2)")
-                return false
-            }
-            
+
             let workspaceRepo = WorkspaceRepo(user: user)
             if try !workspaceRepo.create(document: document, in: workspace, for: user) {
                 print("failed to create document :\(document) in workspace: \(workspace)")
+                return false
+            }
+            
+            if try !workspaceRepo.create(label: label, in: workspace, for: user) {
+                print("failed to create label :\(label) in workspace: \(workspace)")
                 return false
             }
             

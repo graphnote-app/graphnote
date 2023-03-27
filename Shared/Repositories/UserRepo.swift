@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import Cocoa
 
 struct UserRepo {
     
@@ -24,6 +25,18 @@ struct UserRepo {
             workspaceEntity.createdAt = workspace.createdAt
             workspaceEntity.modifiedAt = workspace.modifiedAt
             workspaceEntity.title = workspace.title
+            workspaceEntity.labels = NSSet(array: workspace.labels.map {
+                let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
+                labelEntity.id = $0.id
+                labelEntity.title = $0.title
+                labelEntity.createdAt = $0.createdAt
+                labelEntity.modifiedAt = $0.modifiedAt
+                labelEntity.colorRed = Float(NSColor($0.color).redComponent)
+                labelEntity.colorGreen = Float(NSColor($0.color).greenComponent)
+                labelEntity.colorBlue = Float(NSColor($0.color).blueComponent)
+                labelEntity.workspace = workspaceEntity
+                return labelEntity
+            })
             
             try? moc.save()
             

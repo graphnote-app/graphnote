@@ -18,6 +18,7 @@ public class LabelEntity: NSManagedObject {
     @NSManaged public var colorRed: Float
     @NSManaged public var colorGreen: Float
     @NSManaged public var colorBlue: Float
+    @NSManaged public var workspace: WorkspaceEntity
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
 }

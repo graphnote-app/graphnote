@@ -13,4 +13,5 @@ struct Workspace {
     let createdAt: Date
     let modifiedAt: Date
     let user: User
+    let labels: [Label]
 }

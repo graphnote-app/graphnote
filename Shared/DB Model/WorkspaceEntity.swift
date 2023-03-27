@@ -19,6 +19,7 @@ public class WorkspaceEntity: NSManagedObject {
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
     @NSManaged public var user: UserEntity
+    @NSManaged public var labels: NSSet
 }
 
 extension WorkspaceEntity : Comparable {

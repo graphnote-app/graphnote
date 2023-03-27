@@ -12,7 +12,7 @@
 		F807C8C329C9161B00B7B239 /* EditIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C229C9161B00B7B239 /* EditIconView.swift */; };
 		F807C8C529C9170500B7B239 /* CheckmarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C429C9170500B7B239 /* CheckmarkIconView.swift */; };
 		F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C629C9172200B7B239 /* XMarkIconView.swift */; };
-		F807C8C929C919A100B7B239 /* LabelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C829C919A100B7B239 /* LabelPalette.swift */; };
+		F807C8C929C919A100B7B239 /* LabelColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C829C919A100B7B239 /* LabelColor.swift */; };
 		F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */; };
 		F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */; };
 		F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */; };
@@ -47,6 +47,7 @@
 		F8A6B6F829D1140400140A53 /* DocumentRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F729D1140400140A53 /* DocumentRepo.swift */; };
 		F8A6B6FA29D11D5B00140A53 /* LabelRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */; };
 		F8A6B6FC29D1279300140A53 /* LabelLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FB29D1279300140A53 /* LabelLink.swift */; };
+		F8A6B6FE29D2043300140A53 /* LabelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FD29D2043300140A53 /* LabelPalette.swift */; };
 		F8BF73AB29C7E52200BA826E /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AA29C7E52200BA826E /* App.swift */; };
 		F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AF29C7E7BD00BA826E /* SplitView.swift */; };
 		F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
@@ -89,7 +90,7 @@
 		F807C8C229C9161B00B7B239 /* EditIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIconView.swift; sourceTree = "<group>"; };
 		F807C8C429C9170500B7B239 /* CheckmarkIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkIconView.swift; sourceTree = "<group>"; };
 		F807C8C629C9172200B7B239 /* XMarkIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkIconView.swift; sourceTree = "<group>"; };
-		F807C8C829C919A100B7B239 /* LabelPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPalette.swift; sourceTree = "<group>"; };
+		F807C8C829C919A100B7B239 /* LabelColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelColor.swift; sourceTree = "<group>"; };
 		F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceMenu.swift; sourceTree = "<group>"; };
 		F81CC924279D027000A1F693 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLabel.swift; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		F8A6B6F729D1140400140A53 /* DocumentRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRepo.swift; sourceTree = "<group>"; };
 		F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelRepo.swift; sourceTree = "<group>"; };
 		F8A6B6FB29D1279300140A53 /* LabelLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLink.swift; sourceTree = "<group>"; };
+		F8A6B6FD29D2043300140A53 /* LabelPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPalette.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		F8BF73AA29C7E52200BA826E /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		F8BF73AF29C7E7BD00BA826E /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
@@ -178,7 +180,8 @@
 			isa = PBXGroup;
 			children = (
 				F807C8BD29C9132600B7B239 /* LabelView.swift */,
-				F807C8C829C919A100B7B239 /* LabelPalette.swift */,
+				F807C8C829C919A100B7B239 /* LabelColor.swift */,
+				F8A6B6FD29D2043300140A53 /* LabelPalette.swift */,
 				F84D857C29CBEA35006538EA /* LabelContextMenu.swift */,
 			);
 			path = Labels;
@@ -534,7 +537,7 @@
 				F8A6B6F629D10C6400140A53 /* UserBuilder.swift in Sources */,
 				F8A6B6EE29D0F0D300140A53 /* WorkspaceRepo.swift in Sources */,
 				F8A6B6F229D1008200140A53 /* UserRepo.swift in Sources */,
-				F807C8C929C919A100B7B239 /* LabelPalette.swift in Sources */,
+				F807C8C929C919A100B7B239 /* LabelColor.swift in Sources */,
 				F8A6B6FA29D11D5B00140A53 /* LabelRepo.swift in Sources */,
 				F8A6B6E529D0E94E00140A53 /* LabelEntity.swift in Sources */,
 				F8A6B6F029D0FB8B00140A53 /* User.swift in Sources */,
@@ -556,6 +559,7 @@
 				F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */,
 				F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */,
 				F84D087E29C809FE00410C10 /* BlockType.swift in Sources */,
+				F8A6B6FE29D2043300140A53 /* LabelPalette.swift in Sources */,
 				F8A6B6F829D1140400140A53 /* DocumentRepo.swift in Sources */,
 				F8A6B6DC29D0E39A00140A53 /* Block.swift in Sources */,
 				F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */,

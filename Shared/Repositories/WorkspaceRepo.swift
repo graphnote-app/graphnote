@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import CoreData
 
 struct WorkspaceRepo {
@@ -39,13 +40,40 @@ struct WorkspaceRepo {
         }
     }
     
+    func create(label: Label, in workspace: Workspace, for user: User) throws -> Bool {
+        do {
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc) else {
+                return false
+            }
+            
+            let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
+            labelEntity.id = label.id
+            labelEntity.createdAt = label.createdAt
+            labelEntity.modifiedAt = label.modifiedAt
+            labelEntity.title = label.title
+            labelEntity.workspace = workspaceEntity
+            
+            try? moc.save()
+            
+            return true
+
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     func readAll() throws -> [Workspace] {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "user.id == %@", user.id.uuidString)
             let workspaces = try moc.fetch(fetchRequest)
-            return workspaces.map {
-                Workspace(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, user: User(id: $0.user.id, createdAt: $0.user.createdAt, modifiedAt: $0.user.modifiedAt))
+            return workspaces.map { workspaceEntity in
+                let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
+                    return Label(id: labelEntity.id, title: labelEntity.title, color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)), workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                }
+                
+                return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels)
             }
             
         } catch let error {

@@ -16,11 +16,17 @@ struct LabelRepo {
     private let moc = DataController.shared.container.viewContext
     
     func create(label: Label) -> Bool {
+        guard let workspaceEntity = try? getWorkspaceEntity(workspace: workspace) else {
+            print("Failed to get workspaceEntity: \(workspace)")
+            return false
+        }
+        
         let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
         labelEntity.title = label.title
         labelEntity.id = label.id
         labelEntity.modifiedAt = label.modifiedAt
         labelEntity.createdAt = label.createdAt
+        labelEntity.workspace = workspaceEntity
         
         let rgb = NSColor(label.color).cgColor.components
         labelEntity.colorRed = Float(rgb![0])
@@ -29,6 +35,22 @@ struct LabelRepo {
         
         try? moc.save()
         return true
+    }
+    
+    private func getWorkspaceEntity(workspace: Workspace) throws -> WorkspaceEntity? {
+        do {
+            let fetchRequest = WorkspaceEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id.uuidString)
+            guard let user = try moc.fetch(fetchRequest).first else {
+                return nil
+            }
+            
+            return user
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
     }
 
 }

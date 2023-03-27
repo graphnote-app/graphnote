@@ -48,6 +48,10 @@ class ContentViewVM: ObservableObject {
                 print(workspaces)
                 workspaceTitles = workspaces.map {$0.title}
                 print(workspaceTitles)
+                
+                if let workspace = workspaces.first {
+                    print(workspace.labels)
+                }
             }
         }
         

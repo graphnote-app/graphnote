@@ -16,11 +16,13 @@ struct Label: Equatable, Hashable {
     let id: UUID
     let title: String
     let color: Color
+    let workspaceId: UUID
     let createdAt: Date
     let modifiedAt: Date
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(workspaceId)
         hasher.combine(title)
     }
     
