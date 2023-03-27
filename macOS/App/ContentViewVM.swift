@@ -50,15 +50,21 @@ class ContentViewVM: ObservableObject {
                 print(workspaceTitles)
                 
                 if let workspace = workspaces.first {
-                    print(workspace.labels)
+            
+                    treeItems = workspace.labels.map {
+                        TreeViewItem(id: $0.id, title: $0.title, color: $0.color, subItems: [])
+                    }
+                    
+                    treeItems.append(
+                        TreeViewItem(id: UUID(), title: "ALL", color: Color.gray, subItems: workspace.documents.map {
+                            TreeViewSubItem(id: $0.id, title: $0.title)
+                        })
+                    )
                 }
             }
+            
         }
         
-        treeItems.append(
-            TreeViewItem(id: UUID(), title: "ALL", color: Color.gray, subItems: pages.map({ page in
-                TreeViewSubItem(id: page.id, title: page.title)
-            }))
-        )
+        
     }
 }

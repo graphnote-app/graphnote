@@ -18,10 +18,10 @@ struct DataSeeder{
         
         let user = User(id: userId, createdAt: now, modifiedAt: now)
         
-        let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [])
+        let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
         let label = Label(id: UUID(), title: "Web", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         
-        let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, workspace: workspace, labels: [])
+        let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, labels: [])
         let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string!", createdAt: now, modifiedAt: now, document: document)
         
         do {
@@ -47,12 +47,6 @@ struct DataSeeder{
             let documentRepo = DocumentRepo(workspace: workspace)
             if try !documentRepo.create(block: block, in: document, for: user) {
                 print("failed to create block: \(block)")
-                return false
-            }
-            
-            let labelRepo = LabelRepo(user: user, workspace: workspace)
-            if !labelRepo.create(label: label) {
-                print("Failed to create the label: \(label)")
                 return false
             }
             

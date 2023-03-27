@@ -51,6 +51,9 @@ struct WorkspaceRepo {
             labelEntity.createdAt = label.createdAt
             labelEntity.modifiedAt = label.modifiedAt
             labelEntity.title = label.title
+            labelEntity.colorRed = Float(NSColor(label.color).redComponent)
+            labelEntity.colorGreen = Float(NSColor(label.color).greenComponent)
+            labelEntity.colorBlue = Float(NSColor(label.color).blueComponent)
             labelEntity.workspace = workspaceEntity
             
             try? moc.save()
@@ -73,7 +76,9 @@ struct WorkspaceRepo {
                     return Label(id: labelEntity.id, title: labelEntity.title, color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)), workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
                 }
                 
-                return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels)
+                return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
+                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, labels: labels)
+                })
             }
             
         } catch let error {
