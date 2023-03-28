@@ -24,7 +24,7 @@ struct ContentView: View {
     
     var body: some View {
         SplitView {
-            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem, allLabelId: vm.ALL_ID)
+            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
                 .frame(width: GlobalDimension.treeWidth)
         } detail: {
             if settings {

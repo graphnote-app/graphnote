@@ -13,14 +13,13 @@ struct SidebarView: View {
     let workspaceTitles: [String]
     @Binding var selectedWorkspaceTitleIndex: Int
     @Binding var selectedSubItem: TreeDocumentIdentifier?
-    let allLabelId: UUID
     
     var body: some View {
         VStack(alignment: .leading) {
             Spacer()
                 .frame(height: Spacing.spacing7.rawValue)
             VStack(alignment: .leading) {
-                TreeView(selectedSubItem: $selectedSubItem, items: items, allLabelId: allLabelId)
+                TreeView(selectedSubItem: $selectedSubItem, items: items)
                 Button {
                     
                 } label: {

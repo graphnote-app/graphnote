@@ -10,7 +10,7 @@ import SwiftUI
 import Cocoa
 
 class ContentViewVM: ObservableObject {
-    let ALL_ID = UUID()
+    private let ALL_ID = UUID()
     
     @Published var treeItems: [TreeViewItem] = []
     @Published var selectedDocument: Document? = nil
