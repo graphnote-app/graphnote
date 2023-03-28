@@ -32,7 +32,7 @@ struct ContentView: View {
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
                 
             } else {
-                return DocumentView(title: $vm.selectedDocumentTitle, labels: .constant([]))
+                return DocumentView(title: $vm.selectedDocumentTitle, labels: $vm.selectedDocumentLabels)
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             }
         }

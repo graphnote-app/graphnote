@@ -18,6 +18,7 @@
 		F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */; };
 		F832C8F129CAA34E00ECA57B /* GearIconVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8F029CAA34E00ECA57B /* GearIconVIew.swift */; };
 		F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8F229CAA43400ECA57B /* SettingsView.swift */; };
+		F8403DD529D3B1440027A196 /* LabelLinkRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DD429D3B1440027A196 /* LabelLinkRepo.swift */; };
 		F84D087729C808B100410C10 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
 		F84D087929C809ED00410C10 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
 		F84D087A29C809FE00410C10 /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */; };
@@ -102,6 +103,7 @@
 		F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItem.swift; sourceTree = "<group>"; };
 		F832C8F029CAA34E00ECA57B /* GearIconVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearIconVIew.swift; sourceTree = "<group>"; };
 		F832C8F229CAA43400ECA57B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F8403DD429D3B1440027A196 /* LabelLinkRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLinkRepo.swift; sourceTree = "<group>"; };
 		F84D087629C808B100410C10 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F84D088129C80CE600410C10 /* ContentViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewVM.swift; sourceTree = "<group>"; };
 		F84D088329C817E900410C10 /* GlobalDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimension.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 				F8A6B6ED29D0F0D300140A53 /* WorkspaceRepo.swift */,
 				F8A6B6F729D1140400140A53 /* DocumentRepo.swift */,
 				F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */,
+				F8403DD429D3B1440027A196 /* LabelLinkRepo.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,
 				F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */,
 				F832C8F129CAA34E00ECA57B /* GearIconVIew.swift in Sources */,
+				F8403DD529D3B1440027A196 /* LabelLinkRepo.swift in Sources */,
 				F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */,
 				F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */,
 				F84D087D29C809FE00410C10 /* EmptyBlockView.swift in Sources */,

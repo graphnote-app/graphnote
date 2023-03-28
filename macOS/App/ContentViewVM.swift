@@ -13,7 +13,19 @@ class ContentViewVM: ObservableObject {
     private let ALL_ID = UUID()
     
     @Published var treeItems: [TreeViewItem] = []
-    @Published var selectedDocument: Document? = nil
+    @Published var selectedDocument: Document? = nil {
+        didSet {
+            if let selectedWorkspace, let selectedDocument, let user {
+                let documentRepo = DocumentRepo(user: user, workspace: selectedWorkspace)
+                if let labels = documentRepo.readLabels(document: selectedDocument) {
+                    self.selectedDocumentLabels = labels
+                }
+                    
+            }
+        }
+    }
+    
+    @Published var selectedDocumentLabels: [Label] = []
     
     @Published var selectedDocumentTitle: String = "" {
         didSet {
@@ -59,7 +71,7 @@ class ContentViewVM: ObservableObject {
                 self.selectedWorkspaceIndex = 0
                 self.workspaces = workspaces
                 
-                let documentRepo = DocumentRepo(workspace: workspace)
+                let documentRepo = DocumentRepo(user: user, workspace: workspace)
                 if let documents = try? documentRepo.readAll(), let document = documents.first {
                     selectedDocument = document
                     selectedDocumentTitle = document.title
@@ -69,8 +81,8 @@ class ContentViewVM: ObservableObject {
     }
     
     func updateDocumentTitle(_ title: String) {
-        if let selectedWorkspace, let selectedDocument {
-            let documentRepo = DocumentRepo(workspace: selectedWorkspace)
+        if let selectedWorkspace, let selectedDocument, let user {
+            let documentRepo = DocumentRepo(user: user, workspace: selectedWorkspace)
             documentRepo.update(document: selectedDocument, title: title)
         }
     }

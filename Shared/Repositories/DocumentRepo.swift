@@ -7,9 +7,10 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 struct DocumentRepo {
-    
+    let user: User
     let workspace: Workspace
     
     private let moc = DataController.shared.container.viewContext
@@ -70,5 +71,31 @@ struct DocumentRepo {
         labelLink.modifiedAt = .now
         
         try? moc.save()
+    }
+    
+    func readLabels(document: Document) -> [Label]? {
+        let labelLinkRepo = LabelLinkRepo(user: user, workspace: workspace)
+        
+        guard let labelLinks = try? labelLinkRepo.readAll(document: document) else {
+            return nil
+        }
+        
+        let labels = labelLinks.compactMap {
+            if let labelEntity = try? LabelEntity.getEntity(id: $0.label, moc: moc) {
+                return Label(
+                    id: labelEntity.id,
+                    title: labelEntity.title,
+                    color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)),
+                    workspaceId: labelEntity.workspace.id,
+                    createdAt: labelEntity.createdAt,
+                    modifiedAt: labelEntity.modifiedAt
+                )
+            } else {
+                return nil
+            }
+            
+        }
+        
+        return labels
     }
 }

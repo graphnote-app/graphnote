@@ -78,7 +78,7 @@ struct DataSeeder{
                 return false
             }
             
-            let documentRepo = DocumentRepo(workspace: workspace)
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
             if try !documentRepo.create(block: block, in: document, for: user) {
                 print("failed to create block: \(block)")
                 return false
