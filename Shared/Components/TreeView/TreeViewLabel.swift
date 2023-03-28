@@ -52,9 +52,7 @@ struct TreeViewLabel: View, Identifiable {
             
             if toggle {
                 VStack(alignment: .leading) {
-                    
                     AnyView(content())
-                    
                 }
                 .padding([.leading], 40)
             }
