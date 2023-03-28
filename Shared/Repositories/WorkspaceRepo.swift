@@ -104,7 +104,7 @@ struct WorkspaceRepo {
     
     func update(workspace: Workspace) throws {
         do {
-            guard let workspaceEntity = try getEntity(id: workspace.id) else {
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc) else {
                 return
             }
             
@@ -134,22 +134,6 @@ struct WorkspaceRepo {
         
     }
     
-    private func getUserEntity(id: UUID) throws -> UserEntity? {
-        do {
-            let fetchRequest = UserEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
-            guard let user = try moc.fetch(fetchRequest).first else {
-                return nil
-            }
-            
-            return user
-            
-        } catch let error {
-            print(error)
-            throw error
-        }
-    }
-    
     func readLabelLinks(workspace: Workspace) throws -> [LabelLink] {
         do {
             let fetchRequest = LabelLinkEntity.fetchRequest()
@@ -158,22 +142,6 @@ struct WorkspaceRepo {
             return labelLinksEntities.map {
                 LabelLink(id: $0.id, label: $0.label, document: $0.document, workspace: $0.workspace, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
             }
-            
-        } catch let error {
-            print(error)
-            throw error
-        }
-    }
-    
-    private func getEntity(id: UUID) throws -> WorkspaceEntity? {
-        do {
-            let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
-            guard let workspace = try moc.fetch(fetchRequest).first else {
-                return nil
-            }
-            
-            return workspace
             
         } catch let error {
             print(error)

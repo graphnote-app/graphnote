@@ -42,10 +42,10 @@ struct DocumentRepo {
         let labelLink = LabelLinkEntity(entity: LabelLinkEntity.entity(), insertInto: moc)
         labelLink.label = label.id
         labelLink.document = document.id
+        labelLink.workspace = workspace.id
         labelLink.id = UUID()
         labelLink.createdAt = .now
         labelLink.modifiedAt = .now
-        labelLink.workspace = workspace.id
         
         try? moc.save()
     }

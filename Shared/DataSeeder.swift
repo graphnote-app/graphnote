@@ -19,6 +19,7 @@ struct DataSeeder{
         let user = User(id: userId, createdAt: now, modifiedAt: now)
         
         let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
+        let workspace2 = Workspace(id: UUID(), title: "Client X", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
         let label = Label(id: UUID(), title: "Web", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label3 = Label(id: UUID(), title: "Kanception", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
@@ -38,6 +39,11 @@ struct DataSeeder{
             let userRepo = UserRepo()
             if try !userRepo.create(workspace: workspace, for: user) {
                 print("failed to return success from workspace creation: \(workspace)")
+                return false
+            }
+            
+            if try !userRepo.create(workspace: workspace2, for: user) {
+                print("failed to return success from workspace creation: \(workspace2)")
                 return false
             }
 
