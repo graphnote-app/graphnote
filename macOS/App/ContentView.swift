@@ -33,7 +33,7 @@ struct ContentView: View {
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
                 
             } else {
-                return DocumentView(title: .constant("Testing"), labels: $vm.selectedPage.labels)
+                return DocumentView(title: .constant("Testing"), labels: .constant([]))
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             }
         }
