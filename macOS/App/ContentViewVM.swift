@@ -48,11 +48,9 @@ class ContentViewVM: ObservableObject {
                         $0.label == label.id
                     }
                     
-                    print(labelLinks)
-
                     let subItems = labelLinks?.compactMap { labelLink in
                         do {
-                            if let document = try? workspaceRepo.read(document: labelLink.document) {
+                            if let document = try workspaceRepo.read(document: labelLink.document) {
                                 return TreeViewSubItem(id: document.id, title: document.title)
                             }
                         } catch let error {
@@ -61,8 +59,6 @@ class ContentViewVM: ObservableObject {
                         
                         return nil
                     }
-                    
-                    print(subItems)
                     
                     return TreeViewItem(id: label.id, title: label.title, color: label.color, subItems: subItems)
                 })
