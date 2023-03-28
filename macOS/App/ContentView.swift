@@ -33,7 +33,7 @@ struct ContentView: View {
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
                 
             } else {
-                return DocumentView(title: .constant("Testing"), labels: .constant([]))
+                return DocumentView(title: $vm.selectedDocumentTitle, labels: .constant([]))
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             }
         }
@@ -45,6 +45,9 @@ struct ContentView: View {
                 } else {
                     print("seed failed")
                 }
+            } else {
+                vm.initialize()
+                vm.fetch()
             }
         }
     }

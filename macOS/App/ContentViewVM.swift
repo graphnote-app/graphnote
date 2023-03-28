@@ -11,8 +11,17 @@ import Cocoa
 
 class ContentViewVM: ObservableObject {
     @Published var treeItems: [TreeViewItem] = []
+    @Published var selectedDocument: Document? = nil
+    @Published var selectedDocumentIndex: Int = 0
+    @Published var selectedDocumentTitle: String = "" {
+        didSet {
+            updateDocumentTitle()
+            fetch()
+        }
+    }
     @Published var workspaces: [Workspace] = []
     @Published var selectedWorkspace: Workspace? = nil
+    
     @Published var selectedWorkspaceIndex: Int = 0 {
         didSet {
             if workspaces.count > selectedWorkspaceIndex {
@@ -34,13 +43,31 @@ class ContentViewVM: ObservableObject {
                 selectedWorkspace = workspace
                 self.selectedWorkspaceIndex = 0
                 self.workspaces = workspaces
+                
+                let documentRepo = DocumentRepo(workspace: workspace)
+                if let documents = try? documentRepo.readAll(), let document = documents.first {
+                    selectedDocument = document
+                    selectedDocumentTitle = document.title
+                }
             }
+        }
+    }
+    
+    func updateDocumentTitle() {
+        if let selectedWorkspace, let selectedDocument {
+            let documentRepo = DocumentRepo(workspace: selectedWorkspace)
+            documentRepo.update(document: selectedDocument, title: selectedDocumentTitle)
         }
     }
     
     func fetch() {
         if let user {
-            if let workspace = selectedWorkspace {
+            
+            let workspaceRepo = WorkspaceRepo(user: user)
+            
+            if let workspaces = try? workspaceRepo.readAll() {
+                let workspace = workspaces[selectedWorkspaceIndex]
+                selectedWorkspace = workspace
                 treeItems = workspace.labels.map({ label in
                     
                     let workspaceRepo = WorkspaceRepo(user: user)
