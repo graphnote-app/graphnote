@@ -65,7 +65,7 @@
 		F8BF73CA29C7F54900BA826E /* DocumentEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8227B9CDF6003B0DF9 /* DocumentEntity.swift */; };
 		F8BF73CB29C7F54900BA826E /* BlockEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066929BD1CFD0023F833 /* BlockEntity.swift */; };
 		F8BF73CC29C7F54900BA826E /* WorkspaceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */; };
-		F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* DocumentIdentifier.swift */; };
+		F8BF73CF29C7F57400BA826E /* TreeDocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */; };
 		F8BF73D229C7F8C100BA826E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */; };
 		F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D329C7FD1C00BA826E /* ContentView.swift */; };
 		F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D629C7FDFD00BA826E /* SidebarView.swift */; };
@@ -108,7 +108,7 @@
 		F84D088529C81AAA00410C10 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		F84D857C29CBEA35006538EA /* LabelContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContextMenu.swift; sourceTree = "<group>"; };
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
-		F875124827B4A11500E86D57 /* DocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentIdentifier.swift; sourceTree = "<group>"; };
+		F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocumentIdentifier.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		F8A6B6DB29D0E39A00140A53 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
@@ -380,7 +380,7 @@
 				F8A6B6EC29D0F0A000140A53 /* Repositories */,
 				F8A6B6E629D0EAA900140A53 /* DataSeeder.swift */,
 				F832C8F229CAA43400ECA57B /* SettingsView.swift */,
-				F875124827B4A11500E86D57 /* DocumentIdentifier.swift */,
+				F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */,
 				F8E19E5629A8669000BD0BB9 /* Spacing.swift */,
 				F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
@@ -567,7 +567,7 @@
 				F8A6B6F829D1140400140A53 /* DocumentRepo.swift in Sources */,
 				F8A6B6DC29D0E39A00140A53 /* Block.swift in Sources */,
 				F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */,
-				F8BF73CF29C7F57400BA826E /* DocumentIdentifier.swift in Sources */,
+				F8BF73CF29C7F57400BA826E /* TreeDocumentIdentifier.swift in Sources */,
 				F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */,
 				F8BF73C529C7F52500BA826E /* CheckmarkView.swift in Sources */,
 				F8BF73B629C7EA5300BA826E /* ColorPalette.swift in Sources */,

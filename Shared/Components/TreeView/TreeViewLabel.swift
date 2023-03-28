@@ -33,23 +33,25 @@ struct TreeViewLabel: View, Identifiable {
     var body: some View {
         VStack(alignment: .leading) {
             TreeViewLine(id: UUID(), color: color, toggle: toggle, label: label)
-            .padding(TreeViewLabelDimensions.rowPadding.rawValue)
-            .contextMenu {
-                Button {
-                    editable = true
-                } label: {
-                    Text("Rename workspace")
+                .padding(TreeViewLabelDimensions.rowPadding.rawValue)
+                .frame(minWidth: 200, alignment: .leading)
+                .contentShape(RoundedRectangle(cornerRadius: Spacing.spacing2.rawValue))
+                .contextMenu {
+                    Button {
+                        editable = true
+                    } label: {
+                        Text("Rename workspace")
+                    }
+                    Button {
+                        print("Delete workspace \(id)")
+                    } label: {
+                        Text("Delete workspace")
+                    }
                 }
-                Button {
-                    print("Delete workspace \(id)")
-                } label: {
-                    Text("Delete workspace")
+                .onTapGesture {
+                    toggle.toggle()
                 }
-            }
-            .onTapGesture {
-                toggle.toggle()
-            }
-            
+                
             if toggle {
                 VStack(alignment: .leading) {
                     AnyView(content())

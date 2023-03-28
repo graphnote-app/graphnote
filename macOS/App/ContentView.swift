@@ -12,7 +12,6 @@ struct ContentView: View {
     @StateObject private var vm = ContentViewVM()
     @State private var settings = false
     
-    
     private func contentFlex(v: some View) -> some View {
         HStack {
             Spacer()
@@ -25,7 +24,7 @@ struct ContentView: View {
     
     var body: some View {
         SplitView {
-            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex)
+            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem, allLabelId: vm.ALL_ID)
                 .frame(width: GlobalDimension.treeWidth)
         } detail: {
             if settings {

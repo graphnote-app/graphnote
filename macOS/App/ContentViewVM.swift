@@ -10,12 +10,14 @@ import SwiftUI
 import Cocoa
 
 class ContentViewVM: ObservableObject {
+    let ALL_ID = UUID()
+    
     @Published var treeItems: [TreeViewItem] = []
     @Published var selectedDocument: Document? = nil
-    @Published var selectedDocumentIndex: Int = 0
+    
     @Published var selectedDocumentTitle: String = "" {
         didSet {
-            updateDocumentTitle()
+            updateDocumentTitle(selectedDocumentTitle)
             fetch()
         }
     }
@@ -30,6 +32,19 @@ class ContentViewVM: ObservableObject {
             }
         }
     }
+    @Published var selectedSubItem: TreeDocumentIdentifier? = nil {
+        didSet {
+            if let selectedSubItem, let user {
+                let workspaceRepo = WorkspaceRepo(user: user)
+                if let document = try? workspaceRepo.read(document: selectedSubItem.document) {
+                    selectedDocument = document
+                    selectedDocumentTitle = document.title
+                }
+                
+            }
+        }
+    }
+    
     @Published var user: User? = nil
 
     func initialize() {
@@ -53,10 +68,10 @@ class ContentViewVM: ObservableObject {
         }
     }
     
-    func updateDocumentTitle() {
+    func updateDocumentTitle(_ title: String) {
         if let selectedWorkspace, let selectedDocument {
             let documentRepo = DocumentRepo(workspace: selectedWorkspace)
-            documentRepo.update(document: selectedDocument, title: selectedDocumentTitle)
+            documentRepo.update(document: selectedDocument, title: title)
         }
     }
     
@@ -91,7 +106,7 @@ class ContentViewVM: ObservableObject {
                 })
                 
                 treeItems.append(
-                    TreeViewItem(id: UUID(), title: "ALL", color: Color.gray, subItems: workspace.documents.map {
+                    TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: workspace.documents.map {
                         TreeViewSubItem(id: $0.id, title: $0.title)
                     })
                 )

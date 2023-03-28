@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct TreeView: View {
+    @Binding var selectedSubItem: TreeDocumentIdentifier?
     var items: [TreeViewItem]
+    let allLabelId: UUID
     
     var body: some View {
         ScrollView {
@@ -17,8 +19,11 @@ struct TreeView: View {
                     ForEach(0..<items.count, id: \.self) { i in
                         TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
                             ForEach(items[i].subItems!, id: \.id) { subItem in
-                                TreeViewSubline(title: subItem.title)
+                                TreeViewSubline(title: subItem.title, selected: selectedSubItem?.document == subItem.id && (selectedSubItem?.label == items[i].id || allLabelId == items[i].id))
                                     .padding(Spacing.spacing1.rawValue)
+                                    .onTapGesture {
+                                        selectedSubItem = TreeDocumentIdentifier(label: items[i].id, document: subItem.id)
+                                    }
                             }
                         }
                     }
@@ -32,6 +37,6 @@ struct TreeView: View {
 
 struct TreeView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeView(items: [])
+        TreeView(selectedSubItem: .constant(nil), items: [], allLabelId: UUID())
     }
 }
