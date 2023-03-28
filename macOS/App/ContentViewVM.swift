@@ -75,6 +75,9 @@ class ContentViewVM: ObservableObject {
                 if let documents = try? documentRepo.readAll(), let document = documents.first {
                     selectedDocument = document
                     selectedDocumentTitle = document.title
+                    if let selectedDocument {
+                        selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id)
+                    }
                 }
             }
         }
