@@ -20,7 +20,6 @@ struct TreeView: View {
                         TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
                             ForEach(items[i].subItems!, id: \.id) { subItem in
                                 TreeViewSubline(title: subItem.title, selected: selectedSubItem?.document == subItem.id && (selectedSubItem?.label == items[i].id || allLabelId == items[i].id))
-                                    .padding(Spacing.spacing1.rawValue)
                                     .onTapGesture {
                                         selectedSubItem = TreeDocumentIdentifier(label: items[i].id, document: subItem.id)
                                     }

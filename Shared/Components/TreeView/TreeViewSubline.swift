@@ -19,7 +19,7 @@ struct TreeViewSubline: View {
                 Spacer()
             }.frame(width: 130)
         }
-        .padding(Spacing.spacing1.rawValue)
+        .padding(Spacing.spacing2.rawValue)
         .background(selected ? Color.gray.opacity(0.25) : .clear)
         .cornerRadius(Spacing.spacing2.rawValue)
         .contentShape(RoundedRectangle(cornerRadius: Spacing.spacing2.rawValue))
