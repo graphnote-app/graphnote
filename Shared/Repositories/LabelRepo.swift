@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import Cocoa
+import SwiftUI
 
 struct LabelRepo {
     let user: User
@@ -35,6 +36,21 @@ struct LabelRepo {
         
         try? moc.save()
         return true
+    }
+    
+    func read(id: UUID) throws -> Label? {
+        do {
+            guard let labelEntity = try LabelEntity.getEntity(id: id, moc: moc) else {
+                return nil
+            }
+            
+            let label = Label(id: labelEntity.id, title: labelEntity.title, color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)), workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+            return label
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
     }
     
     private func getWorkspaceEntity(workspace: Workspace) throws -> WorkspaceEntity? {

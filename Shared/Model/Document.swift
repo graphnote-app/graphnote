@@ -12,6 +12,4 @@ struct Document {
     let title: String
     let createdAt: Date
     let modifiedAt: Date
-//    let workspace: Workspace
-    let labels: [Label]
 }

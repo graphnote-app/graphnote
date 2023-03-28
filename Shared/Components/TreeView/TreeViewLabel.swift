@@ -49,13 +49,17 @@ struct TreeViewLabel: View, Identifiable {
             .onTapGesture {
                 toggle.toggle()
             }
+            
+            if toggle {
+                VStack(alignment: .leading) {
+                    
+                    AnyView(content())
+                    
+                }
+                .padding([.leading], 40)
+            }
         }
         
-        if toggle {
-            VStack(alignment: .leading) {
-                AnyView(content())
-            }
-            .padding([.leading], 40)
-        }
+        
     }
 }

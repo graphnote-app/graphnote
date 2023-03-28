@@ -77,9 +77,24 @@ struct WorkspaceRepo {
                 }
                 
                 return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, labels: labels)
+                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
                 })
             }
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func read(document: UUID) throws -> Document? {
+        do {
+            guard let documentEntity = try DocumentEntity.getEntity(id: document, moc: moc) else {
+                return nil
+            }
+            
+            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt)
+            return document
             
         } catch let error {
             print(error)
@@ -135,6 +150,21 @@ struct WorkspaceRepo {
         }
     }
     
+    func readLabelLinks(workspace: Workspace) throws -> [LabelLink] {
+        do {
+            let fetchRequest = LabelLinkEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "workspace == %@", workspace.id.uuidString)
+            let labelLinksEntities = try moc.fetch(fetchRequest)
+            return labelLinksEntities.map {
+                LabelLink(id: $0.id, label: $0.label, document: $0.document, workspace: $0.workspace, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
+            }
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     private func getEntity(id: UUID) throws -> WorkspaceEntity? {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
@@ -150,5 +180,4 @@ struct WorkspaceRepo {
             throw error
         }
     }
-    
 }

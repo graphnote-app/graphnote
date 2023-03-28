@@ -42,18 +42,27 @@ class ContentViewVM: ObservableObject {
     
     func fetch() {
         if let user = try? UserRepo().readAll()?.first {
-            print(user)
+            
             let workspaceRepo = WorkspaceRepo(user: user)
             if let workspaces = try? workspaceRepo.readAll() {
-                print(workspaces)
                 workspaceTitles = workspaces.map {$0.title}
-                print(workspaceTitles)
-                
-                if let workspace = workspaces.first {
             
-                    treeItems = workspace.labels.map {
-                        TreeViewItem(id: $0.id, title: $0.title, color: $0.color, subItems: [])
-                    }
+                if let workspace = workspaces.first {
+                    treeItems = workspace.labels.map({ label in
+                        let documents = try? workspaceRepo.readLabelLinks(workspace: workspace).filter {
+                            $0.label == label.id
+                        }
+                        
+                        let subItems = documents?.compactMap {
+                            if let document = try? workspaceRepo.read(document: $0.document) {
+                                return TreeViewSubItem(id: document.id, title: document.title)
+                            } else {
+                                return nil
+                            }
+                        }
+                        
+                        return TreeViewItem(id: label.id, title: label.title, color: label.color, subItems: subItems)
+                    })
                     
                     treeItems.append(
                         TreeViewItem(id: UUID(), title: "ALL", color: Color.gray, subItems: workspace.documents.map {

@@ -27,12 +27,13 @@
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="workspace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="labels" inverseEntity="WorkspaceEntity"/>
     </entity>
-    <entity name="LabelLink" representedClassName=".LabelLink" syncable="YES">
+    <entity name="LabelLinkEntity" representedClassName=".LabelLinkEntity" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="document" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="label" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="workspace" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
     <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>

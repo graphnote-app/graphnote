@@ -46,8 +46,9 @@
 		F8A6B6F629D10C6400140A53 /* UserBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F529D10C6400140A53 /* UserBuilder.swift */; };
 		F8A6B6F829D1140400140A53 /* DocumentRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F729D1140400140A53 /* DocumentRepo.swift */; };
 		F8A6B6FA29D11D5B00140A53 /* LabelRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */; };
-		F8A6B6FC29D1279300140A53 /* LabelLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FB29D1279300140A53 /* LabelLink.swift */; };
+		F8A6B6FC29D1279300140A53 /* LabelLinkEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */; };
 		F8A6B6FE29D2043300140A53 /* LabelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FD29D2043300140A53 /* LabelPalette.swift */; };
+		F8A6B70229D2740600140A53 /* LabelLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B70129D2740600140A53 /* LabelLink.swift */; };
 		F8BF73AB29C7E52200BA826E /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AA29C7E52200BA826E /* App.swift */; };
 		F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AF29C7E7BD00BA826E /* SplitView.swift */; };
 		F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
@@ -123,8 +124,9 @@
 		F8A6B6F529D10C6400140A53 /* UserBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBuilder.swift; sourceTree = "<group>"; };
 		F8A6B6F729D1140400140A53 /* DocumentRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRepo.swift; sourceTree = "<group>"; };
 		F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelRepo.swift; sourceTree = "<group>"; };
-		F8A6B6FB29D1279300140A53 /* LabelLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLink.swift; sourceTree = "<group>"; };
+		F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLinkEntity.swift; sourceTree = "<group>"; };
 		F8A6B6FD29D2043300140A53 /* LabelPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPalette.swift; sourceTree = "<group>"; };
+		F8A6B70129D2740600140A53 /* LabelLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLink.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		F8BF73AA29C7E52200BA826E /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		F8BF73AF29C7E7BD00BA826E /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
@@ -245,7 +247,7 @@
 				F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */,
 				F8D92887279FD05B009CC9B9 /* DataController.swift */,
 				F8A6B6E429D0E94E00140A53 /* LabelEntity.swift */,
-				F8A6B6FB29D1279300140A53 /* LabelLink.swift */,
+				F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */,
 				F8F32C8227B9CDF6003B0DF9 /* DocumentEntity.swift */,
 				F8EA066929BD1CFD0023F833 /* BlockEntity.swift */,
 				F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */,
@@ -268,6 +270,7 @@
 				F8A6B6DE29D0E3D800140A53 /* Document.swift */,
 				F8A6B6DB29D0E39A00140A53 /* Block.swift */,
 				F8A6B6E829D0EAFD00140A53 /* Label.swift */,
+				F8A6B70129D2740600140A53 /* LabelLink.swift */,
 				F8A6B6EF29D0FB8B00140A53 /* User.swift */,
 			);
 			path = Model;
@@ -525,7 +528,7 @@
 				F8BF73CA29C7F54900BA826E /* DocumentEntity.swift in Sources */,
 				F84D087C29C809FE00410C10 /* PromptField.swift in Sources */,
 				F84D087A29C809FE00410C10 /* BodyView.swift in Sources */,
-				F8A6B6FC29D1279300140A53 /* LabelLink.swift in Sources */,
+				F8A6B6FC29D1279300140A53 /* LabelLinkEntity.swift in Sources */,
 				F84D087B29C809FE00410C10 /* BulletView.swift in Sources */,
 				F8A6B6DF29D0E3D800140A53 /* Document.swift in Sources */,
 				F8A6B6F429D1028000140A53 /* UserEntity.swift in Sources */,
@@ -545,6 +548,7 @@
 				F8BF73CB29C7F54900BA826E /* BlockEntity.swift in Sources */,
 				F84D088229C80CE600410C10 /* ContentViewVM.swift in Sources */,
 				F8A6B6E729D0EAA900140A53 /* DataSeeder.swift in Sources */,
+				F8A6B70229D2740600140A53 /* LabelLink.swift in Sources */,
 				F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */,
 				F8BF73CC29C7F54900BA826E /* WorkspaceEntity.swift in Sources */,
 				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,

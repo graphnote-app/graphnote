@@ -12,7 +12,7 @@ struct TreeViewItem {
     let id: UUID
     let title: String
     let color: Color
-    let subItems: [TreeViewSubItem]
+    let subItems: [TreeViewSubItem]?
 }
 
 struct TreeViewSubItem {

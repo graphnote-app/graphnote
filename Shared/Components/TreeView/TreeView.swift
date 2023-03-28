@@ -16,7 +16,7 @@ struct TreeView: View {
                 VStack(alignment: .leading) {
                     ForEach(0..<items.count, id: \.self) { i in
                         TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
-                            ForEach(items[i].subItems, id: \.id) { subItem in
+                            ForEach(items[i].subItems!, id: \.id) { subItem in
                                 TreeViewSubline(title: subItem.title)
                                     .padding(Spacing.spacing1.rawValue)
                             }

@@ -1,5 +1,5 @@
 //
-//  LabelLink.swift
+//  LabelLinkEntity.swift
 //  Graphnote (macOS)
 //
 //  Created by Hayden Pennington on 3/26/23.
@@ -8,26 +8,27 @@
 import Foundation
 import CoreData
 
-public class LabelLink: NSManagedObject {
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<LabelLink> {
-        return NSFetchRequest<LabelLink>(entityName: "LabelLink")
+public class LabelLinkEntity: NSManagedObject {
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<LabelLinkEntity> {
+        return NSFetchRequest<LabelLinkEntity>(entityName: "LabelLinkEntity")
     }
     
     @NSManaged public var id: UUID
     @NSManaged public var document: UUID
+    @NSManaged public var workspace: UUID
     @NSManaged public var label: UUID
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
 }
 
-extension LabelLink : Comparable {
-    public static func < (lhs: LabelLink, rhs: LabelLink) -> Bool {
+extension LabelLinkEntity : Comparable {
+    public static func < (lhs: LabelLinkEntity, rhs: LabelLinkEntity) -> Bool {
         lhs.createdAt < rhs.createdAt
     }
     
-    static public func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> LabelLink? {
+    static public func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> LabelLinkEntity? {
         do {
-            let fetchRequest = LabelLink.fetchRequest()
+            let fetchRequest = LabelLinkEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
             guard let entity = try moc.fetch(fetchRequest).first else {
                 return nil
