@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let seed = false
+let seed = true
 
 @main
 struct GNApp: App {

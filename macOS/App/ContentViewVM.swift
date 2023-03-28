@@ -110,7 +110,15 @@ class ContentViewVM: ObservableObject {
                         TreeViewSubItem(id: $0.id, title: $0.title)
                     })
                 )
+            } else {
+                treeItems.append(
+                    TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: nil)
+                )
             }
+        } else {
+            treeItems.append(
+                TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: nil)
+            )
         }
     }
 }

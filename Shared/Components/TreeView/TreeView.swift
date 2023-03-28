@@ -15,13 +15,17 @@ struct TreeView: View {
         ScrollView {
             HStack(spacing: Spacing.spacing0.rawValue) {
                 VStack(alignment: .leading) {
-                    ForEach(0..<items.count, id: \.self) { i in
-                        TreeViewLabel(id: UUID(), label: .constant(items[i].title), color: items[i].color) {
-                            ForEach(items[i].subItems!, id: \.id) { subItem in
-                                TreeViewSubline(title: subItem.title, selected: selectedSubItem?.document == subItem.id && selectedSubItem?.label == items[i].id)
-                                    .onTapGesture {
-                                        selectedSubItem = TreeDocumentIdentifier(label: items[i].id, document: subItem.id)
-                                    }
+                    ForEach(items, id: \.id) { item in
+                        TreeViewLabel(id: UUID(), label: .constant(item.title), color: item.color) {
+                            if let subItems = item.subItems {
+                                return ForEach(subItems, id: \.id) { subItem in
+                                    TreeViewSubline(title: subItem.title, selected: selectedSubItem?.document == subItem.id && selectedSubItem?.label == item.id)
+                                        .onTapGesture {
+                                            selectedSubItem = TreeDocumentIdentifier(label: item.id, document: subItem.id)
+                                        }
+                                }
+                            } else {
+                                return EmptyView()
                             }
                         }
                     }
