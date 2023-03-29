@@ -8,6 +8,7 @@
 import SwiftUI
 
 #if os(macOS)
+fileprivate let bodyFontSize: CGFloat = 18.0
 
 struct PromptField: View {
     let placeholder: String
@@ -15,6 +16,7 @@ struct PromptField: View {
     
     var body: some View {
         TextField(placeholder, text: $text, axis: .vertical)
+            .font(.system(size: bodyFontSize))
             .disableAutocorrection(true)
             .textFieldStyle(.plain)
             .multilineTextAlignment(.leading)

@@ -26,72 +26,55 @@ struct DataSeeder{
         
         let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now)
         let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document)
+        let block2 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 2", createdAt: now, modifiedAt: now, document: document)
         
         let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now)
-        let block2 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 2", createdAt: now, modifiedAt: now, document: document2)
+        let block3 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 3", createdAt: now, modifiedAt: now, document: document2)
+        let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
         
         let document3 = Document(id: UUID(), title: "Revamp", createdAt: now, modifiedAt: now)
-        let block3 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 3", createdAt: now, modifiedAt: now, document: document3)
+        let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 5", createdAt: now, modifiedAt: now, document: document3)
+        let block6 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 6", createdAt: now, modifiedAt: now, document: document3)
+        
+        let workspaces = [workspace, workspace2]
+        let labels = [label, label2, label3]
+        let documents = [document, document2, document3]
+        let blocks = [block, block2, block3, block4, block5, block6]
         
         do {
 
             try UserBuilder.create(user: user)
             let userRepo = UserRepo()
-            if try !userRepo.create(workspace: workspace, for: user) {
-                print("failed to return success from workspace creation: \(workspace)")
-                return false
-            }
-            
-            if try !userRepo.create(workspace: workspace2, for: user) {
-                print("failed to return success from workspace creation: \(workspace2)")
-                return false
-            }
-
             let workspaceRepo = WorkspaceRepo(user: user)
-            if try !workspaceRepo.create(document: document, in: workspace, for: user) {
-                print("failed to create document :\(document) in workspace: \(workspace)")
-                return false
-            }
-            
-            if try !workspaceRepo.create(document: document2, in: workspace, for: user) {
-                print("failed to create document :\(document2) in workspace: \(workspace)")
-                return false
-            }
-            
-            if try !workspaceRepo.create(document: document3, in: workspace, for: user) {
-                print("failed to create document :\(document3) in workspace: \(workspace)")
-                return false
-            }
-            
-            if try !workspaceRepo.create(label: label, in: workspace, for: user) {
-                print("failed to create label :\(label) in workspace: \(workspace)")
-                return false
-            }
-            
-            if try !workspaceRepo.create(label: label2, in: workspace, for: user) {
-                print("failed to create label :\(label2) in workspace: \(workspace)")
-                return false
-            }
-            
-            if try !workspaceRepo.create(label: label3, in: workspace, for: user) {
-                print("failed to create label :\(label3) in workspace: \(workspace)")
-                return false
-            }
-            
             let documentRepo = DocumentRepo(user: user, workspace: workspace)
-            if try !documentRepo.create(block: block, in: document, for: user) {
-                print("failed to create block: \(block)")
-                return false
+            
+            for workspace in workspaces {
+                if try !userRepo.create(workspace: workspace, for: user) {
+                    print("failed to return success from workspace creation: \(workspace)")
+                    return false
+                }
             }
             
-            if try !documentRepo.create(block: block2, in: document2, for: user) {
-                print("failed to create block: \(block2)")
-                return false
+            for document in documents {
+                if try !workspaceRepo.create(document: document, in: workspace, for: user) {
+                    print("failed to create document :\(document) in workspace: \(workspace)")
+                    return false
+                }
             }
             
-            if try !documentRepo.create(block: block3, in: document3, for: user) {
-                print("failed to create block: \(block3)")
-                return false
+            for label in labels {
+                if try !workspaceRepo.create(label: label, in: workspace, for: user) {
+                    print("failed to create label :\(label) in workspace: \(workspace)")
+                    return false
+                }
+            }
+            
+            for i in 0..<blocks.count {
+                let block = blocks[i]
+                if try !documentRepo.create(block: block, in: documents[Int(i / 2)], for: user) {
+                    print("failed to create block: \(block)")
+                    return false
+                }
             }
             
             documentRepo.attach(label: label, document: document)

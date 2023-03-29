@@ -45,8 +45,8 @@ struct BlockView: View {
             
             ForEach(blocks, id: \.id) { block in
                 BodyView(text: block.content)
+                BlockSpacer()
             }
-            BlockSpacer()
 //            HeadingView(size: .heading4, text: "Bullets")
 //            Group {
 //                BulletView(text: "Bullet point number one")
@@ -56,7 +56,6 @@ struct BlockView: View {
 //            }
 //            BlockSpacer()
             PromptField(placeholder: "Press '/' for commands...", text: $value)
-                .frame(minHeight: Spacing.spacing7.rawValue)
                 .font(.title3)
                 .foregroundColor(ColorPalette.primaryText)
                 .onSubmit {

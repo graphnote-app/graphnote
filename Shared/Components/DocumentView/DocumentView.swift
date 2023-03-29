@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-fileprivate let pad: Double = 40
+fileprivate let pad: Double = 30
 
 struct DocumentView: View {
     @Environment(\.colorScheme) private var colorScheme
