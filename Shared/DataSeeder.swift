@@ -26,15 +26,16 @@ struct DataSeeder{
         
         let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now)
         let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document)
-        let block2 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 2", createdAt: now, modifiedAt: now, document: document)
+        let block2 = Block(id: UUID(), type: BlockType.body, content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", createdAt: now, modifiedAt: now, document: document)
         
         let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now)
-        let block3 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 3", createdAt: now, modifiedAt: now, document: document2)
+        let block3 = Block(id: UUID(), type: BlockType.body, content: "The minimal viable product?", createdAt: now, modifiedAt: now, document: document2)
         let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
         
         let document3 = Document(id: UUID(), title: "Revamp", createdAt: now, modifiedAt: now)
         let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 5", createdAt: now, modifiedAt: now, document: document3)
         let block6 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 6", createdAt: now, modifiedAt: now, document: document3)
+        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
         
         let workspaces = [workspace, workspace2]
         let labels = [label, label2, label3]
@@ -75,6 +76,11 @@ struct DataSeeder{
                     print("failed to create block: \(block)")
                     return false
                 }
+            }
+            
+            if try !documentRepo.create(block: blockEmpty, in: documents[2], for: user) {
+                print("failed to create block: \(blockEmpty)")
+                return false
             }
             
             documentRepo.attach(label: label, document: document)
