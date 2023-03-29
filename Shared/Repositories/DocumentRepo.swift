@@ -32,7 +32,7 @@ struct DocumentRepo {
             try? moc.save()
             
             return true
-
+            
         } catch let error {
             print(error)
             throw error
@@ -46,6 +46,21 @@ struct DocumentRepo {
             let documentEntities = try moc.fetch(fetchRequest)
             return documentEntities.map { documentEntity in
                 Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt)
+            }
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func readBlocks(document: Document) throws -> [Block]? {
+        do {
+            let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "document.id == %@", document.id.uuidString)
+            let blockEntities = try moc.fetch(fetchRequest)
+            return blockEntities.map { blockEntity in
+                Block(id: blockEntity.id, type: BlockType(rawValue: blockEntity.type)!, content: blockEntity.content, createdAt: blockEntity.createdAt, modifiedAt: blockEntity.modifiedAt, document: document)
             }
             
         } catch let error {

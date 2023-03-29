@@ -44,9 +44,9 @@ struct BlockView: View {
 //            BlockSpacer()
             
             ForEach(blocks, id: \.id) { block in
-                BodyView(text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
+                BodyView(text: block.content)
             }
-//            BlockSpacer()
+            BlockSpacer()
 //            HeadingView(size: .heading4, text: "Bullets")
 //            Group {
 //                BulletView(text: "Bullet point number one")

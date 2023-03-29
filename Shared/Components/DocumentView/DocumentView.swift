@@ -14,7 +14,7 @@ struct DocumentView: View {
     
     @Binding var title: String
     @Binding var labels: [Label]
-    @State private var blocks: [Block] = []
+    @Binding var blocks: [Block]
     
     private func contentFlex(v: some View) -> some View {
         HStack {
@@ -64,6 +64,6 @@ struct DocumentView: View {
 
 struct DocumentView_Previews: PreviewProvider {
     static var previews: some View {
-        DocumentView(title: .constant("Test"), labels: .constant([]))
+        DocumentView(title: .constant("Test"), labels: .constant([]), blocks: .constant([]))
     }
 }

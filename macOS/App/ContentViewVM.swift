@@ -20,7 +20,10 @@ class ContentViewVM: ObservableObject {
                 if let labels = documentRepo.readLabels(document: selectedDocument) {
                     self.selectedDocumentLabels = labels
                 }
-                    
+                
+                if let blocks = try? documentRepo.readBlocks(document: selectedDocument) {
+                    self.selectedDocumentBlocks = blocks
+                }
             }
         }
     }
@@ -33,6 +36,8 @@ class ContentViewVM: ObservableObject {
             fetch()
         }
     }
+    
+    @Published var selectedDocumentBlocks: [Block] = []
     @Published var workspaces: [Workspace] = []
     @Published var selectedWorkspace: Workspace? = nil
     

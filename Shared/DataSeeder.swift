@@ -25,13 +25,13 @@ struct DataSeeder{
         let label3 = Label(id: UUID(), title: "Kanception", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         
         let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now)
-        let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string!", createdAt: now, modifiedAt: now, document: document)
+        let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document)
         
         let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now)
-        let block2 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string!", createdAt: now, modifiedAt: now, document: document2)
+        let block2 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 2", createdAt: now, modifiedAt: now, document: document2)
         
         let document3 = Document(id: UUID(), title: "Revamp", createdAt: now, modifiedAt: now)
-        let block3 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string!", createdAt: now, modifiedAt: now, document: document3)
+        let block3 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 3", createdAt: now, modifiedAt: now, document: document3)
         
         do {
 

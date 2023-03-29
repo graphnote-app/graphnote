@@ -32,8 +32,12 @@ struct ContentView: View {
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
                 
             } else {
-                return DocumentView(title: $vm.selectedDocumentTitle, labels: $vm.selectedDocumentLabels)
-                    .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                return DocumentView(
+                    title: $vm.selectedDocumentTitle,
+                    labels: $vm.selectedDocumentLabels,
+                    blocks: $vm.selectedDocumentBlocks
+                )
+                .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             }
         }
         .onAppear {
