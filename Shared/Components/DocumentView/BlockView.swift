@@ -46,7 +46,7 @@ struct BlockView: View {
             ForEach(blocks, id: \.id) { block in
                 BodyView(text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
             }
-            BlockSpacer()
+//            BlockSpacer()
 //            HeadingView(size: .heading4, text: "Bullets")
 //            Group {
 //                BulletView(text: "Bullet point number one")
@@ -56,7 +56,7 @@ struct BlockView: View {
 //            }
 //            BlockSpacer()
             PromptField(placeholder: "Press '/' for commands...", text: $value)
-                .frame(height: Spacing.spacing7.rawValue)
+                .frame(minHeight: Spacing.spacing7.rawValue)
                 .font(.title3)
                 .foregroundColor(ColorPalette.primaryText)
                 .onSubmit {

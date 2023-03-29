@@ -14,9 +14,10 @@ struct PromptField: View {
     @Binding var text: String
     
     var body: some View {
-        TextField(placeholder, text: $text)
+        TextField(placeholder, text: $text, axis: .vertical)
             .disableAutocorrection(true)
             .textFieldStyle(.plain)
+            .multilineTextAlignment(.leading)
     }
 }
 
