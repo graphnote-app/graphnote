@@ -59,7 +59,6 @@
 		F8BF73B629C7EA5300BA826E /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */; };
 		F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73B729C7EB2700BA826E /* MenuCardView.swift */; };
 		F8BF73BC29C7F38300BA826E /* WorkspaceMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */; };
-		F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC924279D027000A1F693 /* Arrow.swift */; };
 		F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
 		F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC930279D0CF700A1F693 /* TreeBulletView.swift */; };
 		F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC933279D0ECA00A1F693 /* FileIconView.swift */; };
@@ -96,7 +95,6 @@
 		F807C8C629C9172200B7B239 /* XMarkIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkIconView.swift; sourceTree = "<group>"; };
 		F807C8C829C919A100B7B239 /* LabelColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelColor.swift; sourceTree = "<group>"; };
 		F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceMenu.swift; sourceTree = "<group>"; };
-		F81CC924279D027000A1F693 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLabel.swift; sourceTree = "<group>"; };
 		F81CC930279D0CF700A1F693 /* TreeBulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBulletView.swift; sourceTree = "<group>"; };
 		F81CC933279D0ECA00A1F693 /* FileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconView.swift; sourceTree = "<group>"; };
@@ -209,7 +207,6 @@
 		F81CC936279D108400A1F693 /* TreeView */ = {
 			isa = PBXGroup;
 			children = (
-				F81CC924279D027000A1F693 /* Arrow.swift */,
 				F8AD578027C1D94400E07D82 /* ArrowView.swift */,
 				F81CC930279D0CF700A1F693 /* TreeBulletView.swift */,
 				F81CC933279D0ECA00A1F693 /* FileIconView.swift */,
@@ -568,7 +565,6 @@
 				F8A6B70229D2740600140A53 /* LabelLink.swift in Sources */,
 				F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */,
 				F8BF73CC29C7F54900BA826E /* WorkspaceEntity.swift in Sources */,
-				F8BF73BD29C7F52500BA826E /* Arrow.swift in Sources */,
 				F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */,
 				F832C8F129CAA34E00ECA57B /* GearIconVIew.swift in Sources */,
 				F8403DD529D3B1440027A196 /* LabelLinkRepo.swift in Sources */,
