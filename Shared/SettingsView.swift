@@ -11,8 +11,8 @@ struct SettingsView: View {
     private func contentFlex(v: some View) -> some View {
         HStack {
             Spacer()
-            v.frame(minWidth: GlobalDimension.minDocumentContentWidth)
-             .frame(maxWidth: GlobalDimension.maxDocumentContentWidth)
+            v.frame(minWidth: GlobalDimensionIOS.minDocumentContentWidth)
+             .frame(maxWidth: GlobalDimensionIOS.maxDocumentContentWidth)
             Spacer()
         }
         .padding([.top, .bottom])

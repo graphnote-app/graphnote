@@ -12,7 +12,7 @@ struct AddIconView: View {
         Image(systemName: "pencil")
             .renderingMode(.template)
             .resizable()
-            .frame(width: GlobalDimension.iconSmall, height: GlobalDimension.iconSmall)
+            .frame(width: GlobalDimensionIOS.iconSmall, height: GlobalDimensionIOS.iconSmall)
     }
 }
 

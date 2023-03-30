@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-import Cocoa
 
 struct UserRepo {
     
@@ -31,9 +30,9 @@ struct UserRepo {
                 labelEntity.title = $0.title
                 labelEntity.createdAt = $0.createdAt
                 labelEntity.modifiedAt = $0.modifiedAt
-                labelEntity.colorRed = Float(NSColor($0.color).redComponent)
-                labelEntity.colorGreen = Float(NSColor($0.color).greenComponent)
-                labelEntity.colorBlue = Float(NSColor($0.color).blueComponent)
+                labelEntity.colorRed = Float(GNColor($0.color).getColorComponents().red)
+                labelEntity.colorGreen = Float(GNColor($0.color).getColorComponents().green)
+                labelEntity.colorBlue = Float(GNColor($0.color).getColorComponents().blue)
                 labelEntity.workspace = workspaceEntity
                 return labelEntity
             })

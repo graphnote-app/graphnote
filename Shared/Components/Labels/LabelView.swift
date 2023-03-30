@@ -29,36 +29,44 @@ struct LabelView: View {
         self.content = label.title
     }
     
+    private let height = 24.0
+    private let minWidth = 60.0
+    
+    var editingTextField: some View {
+        TextField("", text: $content)
+            .font(.title3)
+            .foregroundColor(Color.black)
+            .lineLimit(1)
+            .bold()
+            .padding([.leading, .trailing], Spacing.spacing3.rawValue)
+            .padding([.top, .bottom], Spacing.spacing0.rawValue)
+            .frame(minWidth: minWidth)
+            .frame(height: height)
+            .background(RoundedRectangle(cornerRadius: height).fill(label.color))
+            .contentShape(RoundedRectangle(cornerRadius: height))
+            .focused($focusedField, equals: .title)
+            .focused($isFocused)
+            .onChange(of: isFocused, perform: { newValue in
+                if newValue == false {
+                    editing = newValue
+                }
+            })
+            .onSubmit {
+                editing = false
+            }
+    }
+    
     var body: some View {
-        let height = 24.0
-        let minWidth = 60.0
-        
         Form {
             if editing {
-                TextField("", text: $content)
-                    .font(.title3)
-                    .foregroundColor(Color.black)
-                    .lineLimit(1)
-                    .bold()
-                    .padding([.leading, .trailing], Spacing.spacing3.rawValue)
-                    .padding([.top, .bottom], Spacing.spacing0.rawValue)
-                    .frame(minWidth: minWidth)
-                    .frame(height: height)
-                    .background(RoundedRectangle(cornerRadius: height).fill(label.color))
-                    .contentShape(RoundedRectangle(cornerRadius: height))
-                    .focused($focusedField, equals: .title)
-                    .focused($isFocused)
-                    .onChange(of: isFocused, perform: { newValue in
-                        if newValue == false {
-                            editing = newValue
-                        }
-                    })
-                    .onSubmit {
-                        editing = false
-                    }
+                #if os(macOS)
+                editingTextField
                     .onExitCommand {
                         editing = false
                     }
+                #else
+                editingTextField
+                #endif
 
             } else {
                 Text(label.title)

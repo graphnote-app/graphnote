@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Cocoa
 
 class ContentViewVM: ObservableObject {
     private let ALL_ID = UUID()

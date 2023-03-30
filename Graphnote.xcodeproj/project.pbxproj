@@ -13,6 +13,75 @@
 		F807C8C529C9170500B7B239 /* CheckmarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C429C9170500B7B239 /* CheckmarkIconView.swift */; };
 		F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C629C9172200B7B239 /* XMarkIconView.swift */; };
 		F807C8C929C919A100B7B239 /* LabelColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C829C919A100B7B239 /* LabelColor.swift */; };
+		F82EC63C29D54B62009C46BE /* DocumentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DD729D521610027A196 /* DocumentContainer.swift */; };
+		F82EC63D29D54B62009C46BE /* DocumentContainerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DD929D521830027A196 /* DocumentContainerVM.swift */; };
+		F82EC63E29D54B62009C46BE /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D629C7FDFD00BA826E /* SidebarView.swift */; };
+		F82EC63F29D54B62009C46BE /* GearIconVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8F029CAA34E00ECA57B /* GearIconVIew.swift */; };
+		F82EC64029D54B62009C46BE /* LabelField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C029C9144500B7B239 /* LabelField.swift */; };
+		F82EC64129D54B62009C46BE /* EditIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C229C9161B00B7B239 /* EditIconView.swift */; };
+		F82EC64229D54B62009C46BE /* CheckmarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C429C9170500B7B239 /* CheckmarkIconView.swift */; };
+		F82EC64329D54B62009C46BE /* XMarkIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C629C9172200B7B239 /* XMarkIconView.swift */; };
+		F82EC64429D54B62009C46BE /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8BD29C9132600B7B239 /* LabelView.swift */; };
+		F82EC64529D54B62009C46BE /* LabelColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807C8C829C919A100B7B239 /* LabelColor.swift */; };
+		F82EC64629D54B62009C46BE /* LabelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FD29D2043300140A53 /* LabelPalette.swift */; };
+		F82EC64729D54B62009C46BE /* LabelContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D857C29CBEA35006538EA /* LabelContextMenu.swift */; };
+		F82EC64829D54B62009C46BE /* BlockSpacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */; };
+		F82EC64929D54B62009C46BE /* BulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6C29BECE560019E6CF /* BulletView.swift */; };
+		F82EC64A29D54B62009C46BE /* BlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6629BEC5760019E6CF /* BlockType.swift */; };
+		F82EC64B29D54B62009C46BE /* EmptyBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066F29BD35960023F833 /* EmptyBlockView.swift */; };
+		F82EC64C29D54B62009C46BE /* PromptField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880664329AB2EB3002A457D /* PromptField.swift */; };
+		F82EC64D29D54B62009C46BE /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */; };
+		F82EC64E29D54B62009C46BE /* HeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6329BEC3D90019E6CF /* HeadingView.swift */; };
+		F82EC64F29D54B62009C46BE /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
+		F82EC65029D54B62009C46BE /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
+		F82EC65129D54B62009C46BE /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
+		F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC930279D0CF700A1F693 /* TreeBulletView.swift */; };
+		F82EC65329D54B62009C46BE /* FileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC933279D0ECA00A1F693 /* FileIconView.swift */; };
+		F82EC65429D54B62009C46BE /* TreeViewAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */; };
+		F82EC65529D54B62009C46BE /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289327A24688009CC9B9 /* CheckmarkView.swift */; };
+		F82EC65629D54B62009C46BE /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088529C81AAA00410C10 /* TreeView.swift */; };
+		F82EC65729D54B62009C46BE /* TreeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */; };
+		F82EC65829D54B62009C46BE /* TreeViewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */; };
+		F82EC65929D54B62009C46BE /* TreeViewLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */; };
+		F82EC65A29D54B62009C46BE /* TreeViewSubline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */; };
+		F82EC65B29D54B62009C46BE /* WorkspaceMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */; };
+		F82EC65C29D54B62009C46BE /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */; };
+		F82EC65D29D54B62009C46BE /* MenuCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73B729C7EB2700BA826E /* MenuCardView.swift */; };
+		F82EC65E29D54B62009C46BE /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6E029D0E40200140A53 /* Workspace.swift */; };
+		F82EC65F29D54B62009C46BE /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DE29D0E3D800140A53 /* Document.swift */; };
+		F82EC66029D54B62009C46BE /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DB29D0E39A00140A53 /* Block.swift */; };
+		F82EC66129D54B62009C46BE /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6E829D0EAFD00140A53 /* Label.swift */; };
+		F82EC66229D54B62009C46BE /* LabelLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B70129D2740600140A53 /* LabelLink.swift */; };
+		F82EC66329D54B62009C46BE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6EF29D0FB8B00140A53 /* User.swift */; };
+		F82EC66429D54B62009C46BE /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
+		F82EC66529D54B62009C46BE /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D92887279FD05B009CC9B9 /* DataController.swift */; };
+		F82EC66629D54B62009C46BE /* LabelEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6E429D0E94E00140A53 /* LabelEntity.swift */; };
+		F82EC66729D54B62009C46BE /* LabelLinkEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */; };
+		F82EC66829D54B62009C46BE /* DocumentEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8227B9CDF6003B0DF9 /* DocumentEntity.swift */; };
+		F82EC66929D54B62009C46BE /* BlockEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066929BD1CFD0023F833 /* BlockEntity.swift */; };
+		F82EC66A29D54B62009C46BE /* WorkspaceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */; };
+		F82EC66B29D54B62009C46BE /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F329D1028000140A53 /* UserEntity.swift */; };
+		F82EC66C29D54B62009C46BE /* UserBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F529D10C6400140A53 /* UserBuilder.swift */; };
+		F82EC66D29D54B62009C46BE /* UserRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F129D1008200140A53 /* UserRepo.swift */; };
+		F82EC66E29D54B62009C46BE /* WorkspaceRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6ED29D0F0D300140A53 /* WorkspaceRepo.swift */; };
+		F82EC66F29D54B62009C46BE /* DocumentRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F729D1140400140A53 /* DocumentRepo.swift */; };
+		F82EC67029D54B62009C46BE /* LabelRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */; };
+		F82EC67129D54B62009C46BE /* LabelLinkRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DD429D3B1440027A196 /* LabelLinkRepo.swift */; };
+		F82EC67229D54B62009C46BE /* DataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6E629D0EAA900140A53 /* DataSeeder.swift */; };
+		F82EC67329D54B62009C46BE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8F229CAA43400ECA57B /* SettingsView.swift */; };
+		F82EC67429D54B62009C46BE /* TreeDocumentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */; };
+		F82EC67529D54B62009C46BE /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
+		F82EC67629D54B62009C46BE /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */; };
+		F82EC67929D54BB6009C46BE /* GNColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC67829D54BB6009C46BE /* GNColor.swift */; };
+		F82EC67A29D54C26009C46BE /* GNColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC67829D54BB6009C46BE /* GNColor.swift */; };
+		F82EC67C29D54C61009C46BE /* GlobalDimensionIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */; };
+		F82EC67D29D54CD5009C46BE /* GlobalDimensionIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */; };
+		F82EC67F29D54D03009C46BE /* GlobalDimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC67E29D54D03009C46BE /* GlobalDimension.swift */; };
+		F82EC68029D54EC1009C46BE /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AF29C7E7BD00BA826E /* SplitView.swift */; };
+		F82EC68129D54EDC009C46BE /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73B329C7EA2200BA826E /* ToolbarView.swift */; };
+		F82EC68229D54EEE009C46BE /* GlobalDimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC67E29D54D03009C46BE /* GlobalDimension.swift */; };
+		F82EC68329D54F24009C46BE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D329C7FD1C00BA826E /* ContentView.swift */; };
+		F82EC68429D54F24009C46BE /* ContentViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088129C80CE600410C10 /* ContentViewVM.swift */; };
 		F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */; };
 		F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */; };
 		F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */; };
@@ -21,6 +90,7 @@
 		F8403DD529D3B1440027A196 /* LabelLinkRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DD429D3B1440027A196 /* LabelLinkRepo.swift */; };
 		F8403DD829D521610027A196 /* DocumentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DD729D521610027A196 /* DocumentContainer.swift */; };
 		F8403DDA29D521830027A196 /* DocumentContainerVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DD929D521830027A196 /* DocumentContainerVM.swift */; };
+		F8403DE629D54A5A0027A196 /* AppIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8403DE529D54A5A0027A196 /* AppIOS.swift */; };
 		F84D087729C808B100410C10 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
 		F84D087929C809ED00410C10 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
 		F84D087A29C809FE00410C10 /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */; };
@@ -31,7 +101,7 @@
 		F84D087F29C809FE00410C10 /* BlockSpacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */; };
 		F84D088029C809FE00410C10 /* HeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6329BEC3D90019E6CF /* HeadingView.swift */; };
 		F84D088229C80CE600410C10 /* ContentViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088129C80CE600410C10 /* ContentViewVM.swift */; };
-		F84D088429C817E900410C10 /* GlobalDimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088329C817E900410C10 /* GlobalDimension.swift */; };
+		F84D088429C817E900410C10 /* GlobalDimensionMacOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088329C817E900410C10 /* GlobalDimensionMacOS.swift */; };
 		F84D088629C81AAA00410C10 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088529C81AAA00410C10 /* TreeView.swift */; };
 		F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */; };
 		F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D857C29CBEA35006538EA /* LabelContextMenu.swift */; };
@@ -52,7 +122,7 @@
 		F8A6B6FC29D1279300140A53 /* LabelLinkEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */; };
 		F8A6B6FE29D2043300140A53 /* LabelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FD29D2043300140A53 /* LabelPalette.swift */; };
 		F8A6B70229D2740600140A53 /* LabelLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B70129D2740600140A53 /* LabelLink.swift */; };
-		F8BF73AB29C7E52200BA826E /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AA29C7E52200BA826E /* App.swift */; };
+		F8BF73AB29C7E52200BA826E /* AppMacOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AA29C7E52200BA826E /* AppMacOS.swift */; };
 		F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AF29C7E7BD00BA826E /* SplitView.swift */; };
 		F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
 		F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73B329C7EA2200BA826E /* ToolbarView.swift */; };
@@ -98,6 +168,9 @@
 		F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLabel.swift; sourceTree = "<group>"; };
 		F81CC930279D0CF700A1F693 /* TreeBulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBulletView.swift; sourceTree = "<group>"; };
 		F81CC933279D0ECA00A1F693 /* FileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconView.swift; sourceTree = "<group>"; };
+		F82EC67829D54BB6009C46BE /* GNColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNColor.swift; sourceTree = "<group>"; };
+		F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimensionIOS.swift; sourceTree = "<group>"; };
+		F82EC67E29D54D03009C46BE /* GlobalDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimension.swift; sourceTree = "<group>"; };
 		F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLine.swift; sourceTree = "<group>"; };
 		F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubline.swift; sourceTree = "<group>"; };
 		F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItem.swift; sourceTree = "<group>"; };
@@ -106,9 +179,11 @@
 		F8403DD429D3B1440027A196 /* LabelLinkRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLinkRepo.swift; sourceTree = "<group>"; };
 		F8403DD729D521610027A196 /* DocumentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentContainer.swift; sourceTree = "<group>"; };
 		F8403DD929D521830027A196 /* DocumentContainerVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentContainerVM.swift; sourceTree = "<group>"; };
+		F8403DE329D54A5A0027A196 /* Graphnote (iOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Graphnote (iOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8403DE529D54A5A0027A196 /* AppIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIOS.swift; sourceTree = "<group>"; };
 		F84D087629C808B100410C10 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		F84D088129C80CE600410C10 /* ContentViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewVM.swift; sourceTree = "<group>"; };
-		F84D088329C817E900410C10 /* GlobalDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimension.swift; sourceTree = "<group>"; };
+		F84D088329C817E900410C10 /* GlobalDimensionMacOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimensionMacOS.swift; sourceTree = "<group>"; };
 		F84D088529C81AAA00410C10 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		F84D857C29CBEA35006538EA /* LabelContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContextMenu.swift; sourceTree = "<group>"; };
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
@@ -132,7 +207,7 @@
 		F8A6B6FD29D2043300140A53 /* LabelPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPalette.swift; sourceTree = "<group>"; };
 		F8A6B70129D2740600140A53 /* LabelLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLink.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
-		F8BF73AA29C7E52200BA826E /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		F8BF73AA29C7E52200BA826E /* AppMacOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMacOS.swift; sourceTree = "<group>"; };
 		F8BF73AF29C7E7BD00BA826E /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		F8BF73B329C7EA2200BA826E /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		F8BF73B729C7EB2700BA826E /* MenuCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCardView.swift; sourceTree = "<group>"; };
@@ -164,6 +239,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F8403DE029D54A5A0027A196 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8EA407B279CFF55001F74B5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -230,6 +312,13 @@
 			path = Containers;
 			sourceTree = "<group>";
 		};
+		F8403DE429D54A5A0027A196 /* Graphnote (iOS) */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Graphnote (iOS)";
+			sourceTree = "<group>";
+		};
 		F84D087829C808B500410C10 /* DocumentView */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +338,8 @@
 		F84D088A29C81DA100410C10 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				F8403DE529D54A5A0027A196 /* AppIOS.swift */,
+				F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -304,29 +395,19 @@
 		F8BF73A929C7E51400BA826E /* App */ = {
 			isa = PBXGroup;
 			children = (
-				F8BF73AC29C7E64800BA826E /* Components */,
-				F8BF73AA29C7E52200BA826E /* App.swift */,
-				F84D088329C817E900410C10 /* GlobalDimension.swift */,
-				F8BF73D329C7FD1C00BA826E /* ContentView.swift */,
-				F84D088129C80CE600410C10 /* ContentViewVM.swift */,
+				F8BF73AA29C7E52200BA826E /* AppMacOS.swift */,
+				F84D088329C817E900410C10 /* GlobalDimensionMacOS.swift */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		F8BF73AC29C7E64800BA826E /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				F807C8BF29C9142E00B7B239 /* LabelField */,
-				F8BF73D529C7FDF100BA826E /* Sidebar */,
-				F8BF73B229C7E9F600BA826E /* Toolbar */,
-				F8BF73AE29C7E7B100BA826E /* SplitView */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		F8BF73AD29C7E65900BA826E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F807C8BF29C9142E00B7B239 /* LabelField */,
+				F8BF73B229C7E9F600BA826E /* Toolbar */,
+				F8BF73AE29C7E7B100BA826E /* SplitView */,
+				F8BF73D529C7FDF100BA826E /* Sidebar */,
 				F807C8BC29C9131A00B7B239 /* Labels */,
 				F84D087829C808B500410C10 /* DocumentView */,
 				F81CC936279D108400A1F693 /* TreeView */,
@@ -374,11 +455,12 @@
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
-				F84D088A29C81DA100410C10 /* iOS */,
-				F8BF73D129C7F86900BA826E /* Legacy */,
 				F8EA4070279CFF54001F74B5 /* Shared */,
+				F84D088A29C81DA100410C10 /* iOS */,
 				F8EA407F279CFF55001F74B5 /* macOS */,
+				F8BF73D129C7F86900BA826E /* Legacy */,
 				F8EA4094279CFF55001F74B5 /* Tests macOS */,
+				F8403DE429D54A5A0027A196 /* Graphnote (iOS) */,
 				F8EA4079279CFF55001F74B5 /* Products */,
 				F899DFF9279E87E500305AFA /* Frameworks */,
 			);
@@ -387,6 +469,8 @@
 		F8EA4070279CFF54001F74B5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F8BF73D329C7FD1C00BA826E /* ContentView.swift */,
+				F84D088129C80CE600410C10 /* ContentViewVM.swift */,
 				F8403DD629D521510027A196 /* Containers */,
 				F8BF73AD29C7E65900BA826E /* Components */,
 				F8A6B6DD29D0E39F00140A53 /* Model */,
@@ -397,6 +481,8 @@
 				F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */,
 				F8E19E5629A8669000BD0BB9 /* Spacing.swift */,
 				F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */,
+				F82EC67829D54BB6009C46BE /* GNColor.swift */,
+				F82EC67E29D54D03009C46BE /* GlobalDimension.swift */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -407,6 +493,7 @@
 			children = (
 				F8EA407E279CFF55001F74B5 /* Graphnote.app */,
 				F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */,
+				F8403DE329D54A5A0027A196 /* Graphnote (iOS).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -432,6 +519,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F8403DE229D54A5A0027A196 /* Graphnote (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8403DF029D54A5B0027A196 /* Build configuration list for PBXNativeTarget "Graphnote (iOS)" */;
+			buildPhases = (
+				F8403DDF29D54A5A0027A196 /* Sources */,
+				F8403DE029D54A5A0027A196 /* Frameworks */,
+				F8403DE129D54A5A0027A196 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Graphnote (iOS)";
+			productName = "Graphnote (iOS)";
+			productReference = F8403DE329D54A5A0027A196 /* Graphnote (iOS).app */;
+			productType = "com.apple.product-type.application";
+		};
 		F8EA407D279CFF55001F74B5 /* Graphnote (macOS) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8EA40A4279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Graphnote (macOS)" */;
@@ -477,9 +581,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
+					F8403DE229D54A5A0027A196 = {
+						CreatedOnToolsVersion = 14.1;
+					};
 					F8EA407D279CFF55001F74B5 = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
@@ -506,12 +613,20 @@
 			projectRoot = "";
 			targets = (
 				F8EA407D279CFF55001F74B5 /* Graphnote (macOS) */,
+				F8403DE229D54A5A0027A196 /* Graphnote (iOS) */,
 				F8EA4090279CFF55001F74B5 /* Tests macOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F8403DE129D54A5A0027A196 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8EA407C279CFF55001F74B5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -530,6 +645,80 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F8403DDF29D54A5A0027A196 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F82EC68329D54F24009C46BE /* ContentView.swift in Sources */,
+				F82EC68429D54F24009C46BE /* ContentViewVM.swift in Sources */,
+				F82EC68229D54EEE009C46BE /* GlobalDimension.swift in Sources */,
+				F82EC68129D54EDC009C46BE /* ToolbarView.swift in Sources */,
+				F82EC68029D54EC1009C46BE /* SplitView.swift in Sources */,
+				F82EC67D29D54CD5009C46BE /* GlobalDimensionIOS.swift in Sources */,
+				F82EC67A29D54C26009C46BE /* GNColor.swift in Sources */,
+				F82EC63C29D54B62009C46BE /* DocumentContainer.swift in Sources */,
+				F82EC63D29D54B62009C46BE /* DocumentContainerVM.swift in Sources */,
+				F82EC63E29D54B62009C46BE /* SidebarView.swift in Sources */,
+				F82EC63F29D54B62009C46BE /* GearIconVIew.swift in Sources */,
+				F82EC64029D54B62009C46BE /* LabelField.swift in Sources */,
+				F82EC64129D54B62009C46BE /* EditIconView.swift in Sources */,
+				F82EC64229D54B62009C46BE /* CheckmarkIconView.swift in Sources */,
+				F82EC64329D54B62009C46BE /* XMarkIconView.swift in Sources */,
+				F82EC64429D54B62009C46BE /* LabelView.swift in Sources */,
+				F82EC64529D54B62009C46BE /* LabelColor.swift in Sources */,
+				F82EC64629D54B62009C46BE /* LabelPalette.swift in Sources */,
+				F82EC64729D54B62009C46BE /* LabelContextMenu.swift in Sources */,
+				F82EC64829D54B62009C46BE /* BlockSpacer.swift in Sources */,
+				F82EC64929D54B62009C46BE /* BulletView.swift in Sources */,
+				F82EC64A29D54B62009C46BE /* BlockType.swift in Sources */,
+				F82EC64B29D54B62009C46BE /* EmptyBlockView.swift in Sources */,
+				F82EC64C29D54B62009C46BE /* PromptField.swift in Sources */,
+				F82EC64D29D54B62009C46BE /* BodyView.swift in Sources */,
+				F82EC64E29D54B62009C46BE /* HeadingView.swift in Sources */,
+				F82EC64F29D54B62009C46BE /* BlockView.swift in Sources */,
+				F82EC65029D54B62009C46BE /* DocumentView.swift in Sources */,
+				F82EC65129D54B62009C46BE /* ArrowView.swift in Sources */,
+				F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */,
+				F82EC65329D54B62009C46BE /* FileIconView.swift in Sources */,
+				F82EC65429D54B62009C46BE /* TreeViewAddView.swift in Sources */,
+				F82EC65529D54B62009C46BE /* CheckmarkView.swift in Sources */,
+				F82EC65629D54B62009C46BE /* TreeView.swift in Sources */,
+				F82EC65729D54B62009C46BE /* TreeViewItem.swift in Sources */,
+				F82EC65829D54B62009C46BE /* TreeViewLabel.swift in Sources */,
+				F82EC65929D54B62009C46BE /* TreeViewLine.swift in Sources */,
+				F82EC65A29D54B62009C46BE /* TreeViewSubline.swift in Sources */,
+				F82EC65B29D54B62009C46BE /* WorkspaceMenu.swift in Sources */,
+				F82EC65C29D54B62009C46BE /* LoadingView.swift in Sources */,
+				F82EC65D29D54B62009C46BE /* MenuCardView.swift in Sources */,
+				F82EC65E29D54B62009C46BE /* Workspace.swift in Sources */,
+				F82EC65F29D54B62009C46BE /* Document.swift in Sources */,
+				F82EC66029D54B62009C46BE /* Block.swift in Sources */,
+				F82EC66129D54B62009C46BE /* Label.swift in Sources */,
+				F82EC66229D54B62009C46BE /* LabelLink.swift in Sources */,
+				F82EC66329D54B62009C46BE /* User.swift in Sources */,
+				F82EC66429D54B62009C46BE /* Graphnote.xcdatamodeld in Sources */,
+				F82EC66529D54B62009C46BE /* DataController.swift in Sources */,
+				F82EC66629D54B62009C46BE /* LabelEntity.swift in Sources */,
+				F82EC66729D54B62009C46BE /* LabelLinkEntity.swift in Sources */,
+				F82EC66829D54B62009C46BE /* DocumentEntity.swift in Sources */,
+				F82EC66929D54B62009C46BE /* BlockEntity.swift in Sources */,
+				F82EC66A29D54B62009C46BE /* WorkspaceEntity.swift in Sources */,
+				F82EC66B29D54B62009C46BE /* UserEntity.swift in Sources */,
+				F82EC66C29D54B62009C46BE /* UserBuilder.swift in Sources */,
+				F82EC66D29D54B62009C46BE /* UserRepo.swift in Sources */,
+				F82EC66E29D54B62009C46BE /* WorkspaceRepo.swift in Sources */,
+				F82EC66F29D54B62009C46BE /* DocumentRepo.swift in Sources */,
+				F82EC67029D54B62009C46BE /* LabelRepo.swift in Sources */,
+				F82EC67129D54B62009C46BE /* LabelLinkRepo.swift in Sources */,
+				F82EC67229D54B62009C46BE /* DataSeeder.swift in Sources */,
+				F82EC67329D54B62009C46BE /* SettingsView.swift in Sources */,
+				F82EC67429D54B62009C46BE /* TreeDocumentIdentifier.swift in Sources */,
+				F82EC67529D54B62009C46BE /* Spacing.swift in Sources */,
+				F82EC67629D54B62009C46BE /* ColorPalette.swift in Sources */,
+				F8403DE629D54A5A0027A196 /* AppIOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8EA407A279CFF55001F74B5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -549,7 +738,7 @@
 				F807C8C329C9161B00B7B239 /* EditIconView.swift in Sources */,
 				F84D087929C809ED00410C10 /* BlockView.swift in Sources */,
 				F807C8C129C9144500B7B239 /* LabelField.swift in Sources */,
-				F84D088429C817E900410C10 /* GlobalDimension.swift in Sources */,
+				F84D088429C817E900410C10 /* GlobalDimensionMacOS.swift in Sources */,
 				F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */,
 				F8A6B6F629D10C6400140A53 /* UserBuilder.swift in Sources */,
 				F8A6B6EE29D0F0D300140A53 /* WorkspaceRepo.swift in Sources */,
@@ -559,9 +748,11 @@
 				F8A6B6E529D0E94E00140A53 /* LabelEntity.swift in Sources */,
 				F8A6B6F029D0FB8B00140A53 /* User.swift in Sources */,
 				F84D088629C81AAA00410C10 /* TreeView.swift in Sources */,
+				F82EC67929D54BB6009C46BE /* GNColor.swift in Sources */,
 				F8BF73CB29C7F54900BA826E /* BlockEntity.swift in Sources */,
 				F84D088229C80CE600410C10 /* ContentViewVM.swift in Sources */,
 				F8A6B6E729D0EAA900140A53 /* DataSeeder.swift in Sources */,
+				F82EC67C29D54C61009C46BE /* GlobalDimensionIOS.swift in Sources */,
 				F8A6B70229D2740600140A53 /* LabelLink.swift in Sources */,
 				F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */,
 				F8BF73CC29C7F54900BA826E /* WorkspaceEntity.swift in Sources */,
@@ -580,6 +771,7 @@
 				F8A6B6FE29D2043300140A53 /* LabelPalette.swift in Sources */,
 				F8A6B6F829D1140400140A53 /* DocumentRepo.swift in Sources */,
 				F8A6B6DC29D0E39A00140A53 /* Block.swift in Sources */,
+				F82EC67F29D54D03009C46BE /* GlobalDimension.swift in Sources */,
 				F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */,
 				F8BF73CF29C7F57400BA826E /* TreeDocumentIdentifier.swift in Sources */,
 				F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */,
@@ -587,7 +779,7 @@
 				F8403DD829D521610027A196 /* DocumentContainer.swift in Sources */,
 				F8BF73B629C7EA5300BA826E /* ColorPalette.swift in Sources */,
 				F8A6B6E929D0EAFD00140A53 /* Label.swift in Sources */,
-				F8BF73AB29C7E52200BA826E /* App.swift in Sources */,
+				F8BF73AB29C7E52200BA826E /* AppMacOS.swift in Sources */,
 				F8BF73BC29C7F38300BA826E /* WorkspaceMenu.swift in Sources */,
 				F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */,
 				F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */,
@@ -621,6 +813,77 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		F8403DEE29D54A5B0027A196 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Graphnote--iOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F8403DEF29D54A5B0027A196 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Graphnote--iOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		F8EA409F279CFF55001F74B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -839,6 +1102,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F8403DF029D54A5B0027A196 /* Build configuration list for PBXNativeTarget "Graphnote (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8403DEE29D54A5B0027A196 /* Debug */,
+				F8403DEF29D54A5B0027A196 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F8EA406F279CFF54001F74B5 /* Build configuration list for PBXProject "Graphnote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

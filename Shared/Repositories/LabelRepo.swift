@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-import Cocoa
 import SwiftUI
 
 struct LabelRepo {
@@ -29,7 +28,7 @@ struct LabelRepo {
         labelEntity.createdAt = label.createdAt
         labelEntity.workspace = workspaceEntity
         
-        let rgb = NSColor(label.color).cgColor.components
+        let rgb = GNColor(label.color).cgColor.components
         labelEntity.colorRed = Float(rgb![0])
         labelEntity.colorGreen = Float(rgb![1])
         labelEntity.colorBlue = Float(rgb![2])

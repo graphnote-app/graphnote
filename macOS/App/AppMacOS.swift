@@ -1,5 +1,5 @@
 //
-//  App.swift
+//  AppMacOS.swift
 //  Graphnote (macOS)
 //
 //  Created by Hayden Pennington on 3/19/23.
@@ -10,7 +10,7 @@ import SwiftUI
 let seed = true
 
 @main
-struct GNApp: App {
+struct AppMacOS: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

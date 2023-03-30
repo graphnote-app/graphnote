@@ -51,9 +51,9 @@ struct WorkspaceRepo {
             labelEntity.createdAt = label.createdAt
             labelEntity.modifiedAt = label.modifiedAt
             labelEntity.title = label.title
-            labelEntity.colorRed = Float(NSColor(label.color).redComponent)
-            labelEntity.colorGreen = Float(NSColor(label.color).greenComponent)
-            labelEntity.colorBlue = Float(NSColor(label.color).blueComponent)
+            labelEntity.colorRed = Float(GNColor(label.color).getColorComponents().red)
+            labelEntity.colorGreen = Float(GNColor(label.color).getColorComponents().green)
+            labelEntity.colorBlue = Float(GNColor(label.color).getColorComponents().blue)
             labelEntity.workspace = workspaceEntity
             
             try? moc.save()

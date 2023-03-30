@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-import Cocoa
 import SwiftUI
 
 struct LabelLinkRepo {
