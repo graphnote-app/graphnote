@@ -21,14 +21,16 @@ struct SplitView: View {
                     .frame(width: !menuOpen ? .zero : nil)
                 #else
                 
-                let orientationInfo = OrientationInfo()
-                let sidebarSizeMultiplier = orientationInfo.orientation == .portrait ? 0.75 : 0.35
+                let portrait = OrientationInfo().orientation == .portrait
+                let width = geometry.size.width
+                let sidebarSizeMultiplier = portrait && width < 600 ? 0.75 : 0.35
                 
                 ZStack {
                     ColorPalette.lightSidebarMobile
                         .ignoresSafeArea()
                     AnyView(sidebar())
-                }.frame(width: !menuOpen ? .zero : geometry.size.width * sidebarSizeMultiplier)
+                }
+                .frame(width: !menuOpen ? .zero : width * sidebarSizeMultiplier)
                 
                 #endif
                 

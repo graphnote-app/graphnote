@@ -20,7 +20,9 @@ struct WorkspaceMenu: View {
                         selectedIndex = index
                     }
                 }
-            }.menuStyle(.borderlessButton)
+            }
+            .menuStyle(.borderlessButton)
+            .accentColor(ColorPalette.primaryText)
         }
     }
 }
