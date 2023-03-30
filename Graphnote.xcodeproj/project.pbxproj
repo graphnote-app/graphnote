@@ -220,7 +220,6 @@
 		F8D92884279FCEB9009CC9B9 /* Graphnote.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Graphnote.xcdatamodel; sourceTree = "<group>"; };
 		F8D92887279FD05B009CC9B9 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewAddView.swift; sourceTree = "<group>"; };
-		F8D9288D27A23C3E009CC9B9 /* EffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectView.swift; sourceTree = "<group>"; };
 		F8D9289327A24688009CC9B9 /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 		F8E19E5629A8669000BD0BB9 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
@@ -439,14 +438,6 @@
 			path = Toolbar;
 			sourceTree = "<group>";
 		};
-		F8BF73D129C7F86900BA826E /* Legacy */ = {
-			isa = PBXGroup;
-			children = (
-				F8D9288D27A23C3E009CC9B9 /* EffectView.swift */,
-			);
-			path = Legacy;
-			sourceTree = "<group>";
-		};
 		F8BF73D529C7FDF100BA826E /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,7 +453,6 @@
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F84D088A29C81DA100410C10 /* iOS */,
 				F8EA407F279CFF55001F74B5 /* macOS */,
-				F8BF73D129C7F86900BA826E /* Legacy */,
 				F8EA4094279CFF55001F74B5 /* Tests macOS */,
 				F8403DE429D54A5A0027A196 /* Graphnote (iOS) */,
 				F8EA4079279CFF55001F74B5 /* Products */,
