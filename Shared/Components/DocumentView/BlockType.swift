@@ -13,5 +13,6 @@ enum BlockType: String {
     case heading4
     case empty
     case bullet
+    case prompt
 }
 

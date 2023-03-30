@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Document {
+struct Document: Equatable {
     let id: UUID
     let title: String
     let createdAt: Date

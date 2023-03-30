@@ -26,18 +26,18 @@ struct ContentView: View {
         SplitView {
             SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
                 .frame(width: GlobalDimension.treeWidth)
+                .onChange(of: vm.selectedSubItem) { _ in
+                    settings = false
+                }
         } detail: {
             if settings {
                 return SettingsView()
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
-                
+            } else if let user = vm.user, let workspace = vm.selectedWorkspace, let document = vm.selectedDocument {
+                return DocumentContainer(user: user, workspace: workspace, document: document)
+                    .id(document.id)
             } else {
-                return DocumentView(
-                    title: $vm.selectedDocumentTitle,
-                    labels: $vm.selectedDocumentLabels,
-                    blocks: $vm.selectedDocumentBlocks
-                )
-                .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                return EmptyView()
             }
         }
         .onAppear {

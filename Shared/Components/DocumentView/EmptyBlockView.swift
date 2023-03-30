@@ -14,5 +14,6 @@ struct EmptyBlockView: View {
         Rectangle()
             .foregroundColor(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             .frame(height: Spacing.spacing7.rawValue)
+            .contentShape(Rectangle())
     }
 }

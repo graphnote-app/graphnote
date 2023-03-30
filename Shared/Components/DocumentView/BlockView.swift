@@ -13,6 +13,21 @@ struct BlockView: View {
     
     @State private var value = ""
     @State private var nTopSpacers = 0
+    @FocusState var isFocused: Bool
+    @State private var postContentEmptiesSelectedStatus = [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ]
+    
+    private let PROMPT_ID = UUID()
 
     #if os(macOS)
     private func keyDown(with event: NSEvent) {
@@ -52,10 +67,63 @@ struct BlockView: View {
                     EmptyBlockView()
                 case .bullet:
                     BulletView(text: block.content)
+                case .prompt:
+                    PromptField(placeholder: "Press '/' for commands...", text: $value)
+                        .font(.title3)
+                        .foregroundColor(ColorPalette.primaryText)
+                        .onSubmit {
+                            if value == "" {
+                                print("on submit")
+                                onEnter()
+                            }
+                        }
+                        .onAppear {
+                            #if os(macOS)
+                            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                                self.keyDown(with: $0)
+                                return $0
+                            }
+                            #endif
+                        }
                 case .none:
                     EmptyView()
                 }
                 BlockSpacer()
+            }
+            ForEach(0..<postContentEmptiesSelectedStatus.count, id: \.self) { index in
+                let status = postContentEmptiesSelectedStatus[index]
+                
+                if status == true {
+                    PromptField(placeholder: "Press '/' for commands...", text: $value)
+                           .font(.title3)
+                           .focused($isFocused)
+                           .foregroundColor(ColorPalette.primaryText)
+                           .onSubmit {
+                               if value == "" {
+                                   print("on submit")
+                                   onEnter()
+                               }
+                           }
+                           .onAppear {
+                               #if os(macOS)
+                               NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                                   self.keyDown(with: $0)
+                                   return $0
+                               }
+                               #endif
+                           }
+                } else {
+                    EmptyBlockView()
+                        .onTapGesture {
+                            for localIndex in 0..<postContentEmptiesSelectedStatus.count {
+                                postContentEmptiesSelectedStatus[localIndex] = false
+                            }
+                            
+                            postContentEmptiesSelectedStatus[index] = true
+                            isFocused = true
+                        }
+                }
+
             }
 //            HeadingView(size: .heading2, text: "Technical Specification")
 //            BlockSpacer()
@@ -75,23 +143,23 @@ struct BlockView: View {
 //                BulletView(text: "Bullet point number four")
 //            }
 //            BlockSpacer()
-            PromptField(placeholder: "Press '/' for commands...", text: $value)
-                .font(.title3)
-                .foregroundColor(ColorPalette.primaryText)
-                .onSubmit {
-                    if value == "" {
-                        print("on submit")
-                        onEnter()
-                    }
-                }
-                .onAppear {
-                    #if os(macOS)
-                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                        self.keyDown(with: $0)
-                        return $0
-                    }
-                    #endif
-                }
+//            PromptField(placeholder: "Press '/' for commands...", text: $value)
+//                .font(.title3)
+//                .foregroundColor(ColorPalette.primaryText)
+//                .onSubmit {
+//                    if value == "" {
+//                        print("on submit")
+//                        onEnter()
+//                    }
+//                }
+//                .onAppear {
+//                    #if os(macOS)
+//                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+//                        self.keyDown(with: $0)
+//                        return $0
+//                    }
+//                    #endif
+//                }
         }.submitScope()
     }
 }

@@ -13,31 +13,7 @@ class ContentViewVM: ObservableObject {
     private let ALL_ID = UUID()
     
     @Published var treeItems: [TreeViewItem] = []
-    @Published var selectedDocument: Document? = nil {
-        didSet {
-            if let selectedWorkspace, let selectedDocument, let user {
-                let documentRepo = DocumentRepo(user: user, workspace: selectedWorkspace)
-                if let labels = documentRepo.readLabels(document: selectedDocument) {
-                    self.selectedDocumentLabels = labels
-                }
-                
-                if let blocks = try? documentRepo.readBlocks(document: selectedDocument) {
-                    self.selectedDocumentBlocks = blocks
-                }
-            }
-        }
-    }
-    
-    @Published var selectedDocumentLabels: [Label] = []
-    
-    @Published var selectedDocumentTitle: String = "" {
-        didSet {
-            updateDocumentTitle(selectedDocumentTitle)
-            fetch()
-        }
-    }
-    
-    @Published var selectedDocumentBlocks: [Block] = []
+    @Published var selectedDocument: Document? = nil
     @Published var workspaces: [Workspace] = []
     @Published var selectedWorkspace: Workspace? = nil
     
@@ -55,7 +31,6 @@ class ContentViewVM: ObservableObject {
                 let workspaceRepo = WorkspaceRepo(user: user)
                 if let document = try? workspaceRepo.read(document: selectedSubItem.document) {
                     selectedDocument = document
-                    selectedDocumentTitle = document.title
                 }
                 
             }
@@ -79,7 +54,6 @@ class ContentViewVM: ObservableObject {
                 let documentRepo = DocumentRepo(user: user, workspace: workspace)
                 if let documents = try? documentRepo.readAll(), let document = documents.first {
                     selectedDocument = document
-                    selectedDocumentTitle = document.title
                     if let selectedDocument {
                         selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id)
                     }

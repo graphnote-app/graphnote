@@ -16,6 +16,8 @@ struct DocumentView: View {
     @Binding var labels: [Label]
     @Binding var blocks: [Block]
     
+    @State private var forceUpdate = false
+    
     private func contentFlex(v: some View) -> some View {
         HStack {
             Spacer()
@@ -57,6 +59,11 @@ struct DocumentView: View {
             .padding(.trailing, GlobalDimension.toolbarWidth)
             .padding(GlobalDimension.toolbarWidth + Spacing.spacing1.rawValue))
         }
+        .onChange(of: title, perform: { newValue in
+            print(newValue)
+            print("Title changed")
+            forceUpdate.toggle()
+        })
         .frame(minHeight: GlobalDimension.minDocumentContentHeight)
         .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
     }
