@@ -37,7 +37,9 @@ struct ContentView: View {
                 return DocumentContainer(user: user, workspace: workspace, document: document)
                     .id(document.id)
             } else {
-                return EmptyView()
+                return contentFlex(v: Spacer())
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             }
         }
         .onAppear {

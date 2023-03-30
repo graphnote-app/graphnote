@@ -15,12 +15,28 @@ class ContentViewVM: ObservableObject {
     @Published var treeItems: [TreeViewItem] = []
     @Published var selectedDocument: Document? = nil
     @Published var workspaces: [Workspace] = []
-    @Published var selectedWorkspace: Workspace? = nil
+    @Published var selectedWorkspace: Workspace? = nil {
+        didSet {
+            print("selecteworkspace changed")
+            if let user = user {
+                if let workspace = selectedWorkspace {
+                    let documentRepo = DocumentRepo(user: user, workspace: workspace)
+                    if let documents = try? documentRepo.readAll(), let document = documents.first {
+                        selectedDocument = document
+                        if let selectedDocument {
+                            selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id)
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     @Published var selectedWorkspaceIndex: Int = 0 {
         didSet {
             if workspaces.count > selectedWorkspaceIndex {
                 selectedWorkspace = workspaces[selectedWorkspaceIndex]
+                selectedDocument = nil
                 fetch()
             }
         }
@@ -50,14 +66,6 @@ class ContentViewVM: ObservableObject {
                 selectedWorkspace = workspace
                 self.selectedWorkspaceIndex = 0
                 self.workspaces = workspaces
-                
-                let documentRepo = DocumentRepo(user: user, workspace: workspace)
-                if let documents = try? documentRepo.readAll(), let document = documents.first {
-                    selectedDocument = document
-                    if let selectedDocument {
-                        selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id)
-                    }
-                }
             }
         }
     }
