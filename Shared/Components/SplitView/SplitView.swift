@@ -21,14 +21,8 @@ struct SplitView: View {
                     .frame(width: !menuOpen ? .zero : nil)
                 #else
                 
-                var sidebarSizeMultiplier: Double {
-                    let orientationInfo = OrientationInfo()
-                    if orientationInfo.orientation == .portrait {
-                        return 0.75
-                    } else {
-                        return 0.35
-                    }
-                }
+                let orientationInfo = OrientationInfo()
+                let sidebarSizeMultiplier = orientationInfo.orientation == .portrait ? 0.75 : 0.35
                 
                 ZStack {
                     ColorPalette.lightSidebar
