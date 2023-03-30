@@ -15,12 +15,13 @@ struct SplitView: View {
     
     var body: some View {
         HStack(spacing: Spacing.spacing0.rawValue) {
-            if menuOpen {
-                AnyView(sidebar())
-            }
+            AnyView(sidebar())
+                .frame(width: !menuOpen ? .zero : nil)
             
             ToolbarView {
-                self.menuOpen.toggle()
+                withAnimation {
+                    self.menuOpen.toggle()
+                }
             }
             
             AnyView(detail())
