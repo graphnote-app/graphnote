@@ -48,6 +48,29 @@ extension GNTextField: UITextFieldDelegate {
     }
 }
 
+struct GNTextFieldView: UIViewRepresentable {
+    typealias UIViewType = UITextField
+    
+    let placeholder: String
+    @Binding var text: String
+    
+    init(_ placeholder: String, text: Binding<String>) {
+        self.placeholder = placeholder
+        self._text = text
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        uiView.text = text
+    }
+    
+    func makeUIView(context: Context) ->  UIViewType {
+        let textField = UITextField(frame: .zero)
+        textField.placeholder = placeholder
+        textField.text = text
+        return textField
+    }
+}
+
 struct PromptField: UIViewRepresentable {
     let placeholder: String
     @Binding var text: String

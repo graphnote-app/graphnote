@@ -22,7 +22,9 @@ struct BodyView: View {
     }
     
     var body: some View {
+        #if os(macOS)
         TextField("", text: $content, axis: .vertical)
+            .frame(maxWidth: .infinity)
             .textFieldStyle(.plain)
             .font(.system(size: bodyFontSize))
             .onAppear {
@@ -31,6 +33,18 @@ struct BodyView: View {
             .onChange(of: content) { newValue in
                 textDidChange(newValue)
             }
+        #else
+        
+            TextField("placholder", text: $content, axis: .vertical)
+                .onAppear {
+                    content = text
+                }
+                .onChange(of: content) { newValue in
+                    textDidChange(newValue)
+                }
+        
+        
+        #endif
     }
 }
 

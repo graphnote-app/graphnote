@@ -34,7 +34,9 @@ struct SettingsView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            contentFlex(v: content)
+            HorizontalFlexView {
+                content
+            }
                 .frame(minHeight: geometry.size.height)
         }
     }

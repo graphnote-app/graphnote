@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ToolbarView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     let action: () -> Void
     
     var body: some View {
@@ -17,7 +19,7 @@ struct ToolbarView: View {
                 .padding(Spacing.spacing3.rawValue)
                 .onTapGesture(perform: action)
         }
-        .background(ColorPalette.darkBG1)
+        .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
     }
 }
 

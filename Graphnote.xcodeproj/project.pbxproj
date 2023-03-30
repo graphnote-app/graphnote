@@ -82,6 +82,8 @@
 		F82EC68229D54EEE009C46BE /* GlobalDimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC67E29D54D03009C46BE /* GlobalDimension.swift */; };
 		F82EC68329D54F24009C46BE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D329C7FD1C00BA826E /* ContentView.swift */; };
 		F82EC68429D54F24009C46BE /* ContentViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088129C80CE600410C10 /* ContentViewVM.swift */; };
+		F82EC68629D5580F009C46BE /* HorizontalFlexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC68529D5580F009C46BE /* HorizontalFlexView.swift */; };
+		F82EC68729D55846009C46BE /* HorizontalFlexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82EC68529D5580F009C46BE /* HorizontalFlexView.swift */; };
 		F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */; };
 		F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */; };
 		F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */; };
@@ -171,6 +173,7 @@
 		F82EC67829D54BB6009C46BE /* GNColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNColor.swift; sourceTree = "<group>"; };
 		F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimensionIOS.swift; sourceTree = "<group>"; };
 		F82EC67E29D54D03009C46BE /* GlobalDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimension.swift; sourceTree = "<group>"; };
+		F82EC68529D5580F009C46BE /* HorizontalFlexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalFlexView.swift; sourceTree = "<group>"; };
 		F832C8EA29CA5FDD00ECA57B /* TreeViewLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLine.swift; sourceTree = "<group>"; };
 		F832C8EC29CA5FE600ECA57B /* TreeViewSubline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewSubline.swift; sourceTree = "<group>"; };
 		F832C8EE29CA61EF00ECA57B /* TreeViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewItem.swift; sourceTree = "<group>"; };
@@ -483,6 +486,7 @@
 				F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */,
 				F82EC67829D54BB6009C46BE /* GNColor.swift */,
 				F82EC67E29D54D03009C46BE /* GlobalDimension.swift */,
+				F82EC68529D5580F009C46BE /* HorizontalFlexView.swift */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -649,6 +653,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F82EC68729D55846009C46BE /* HorizontalFlexView.swift in Sources */,
 				F82EC68329D54F24009C46BE /* ContentView.swift in Sources */,
 				F82EC68429D54F24009C46BE /* ContentViewVM.swift in Sources */,
 				F82EC68229D54EEE009C46BE /* GlobalDimension.swift in Sources */,
@@ -750,6 +755,7 @@
 				F84D088629C81AAA00410C10 /* TreeView.swift in Sources */,
 				F82EC67929D54BB6009C46BE /* GNColor.swift in Sources */,
 				F8BF73CB29C7F54900BA826E /* BlockEntity.swift in Sources */,
+				F82EC68629D5580F009C46BE /* HorizontalFlexView.swift in Sources */,
 				F84D088229C80CE600410C10 /* ContentViewVM.swift in Sources */,
 				F8A6B6E729D0EAA900140A53 /* DataSeeder.swift in Sources */,
 				F82EC67C29D54C61009C46BE /* GlobalDimensionIOS.swift in Sources */,

@@ -25,6 +25,7 @@ struct ContentView: View {
     var body: some View {
         SplitView {
             SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
+                .background(colorScheme == .light ? ColorPalette.lightSidebar : nil)
                 .frame(width: GlobalDimension.treeWidth)
                 .onChange(of: vm.selectedSubItem) { _ in
                     settings = false
@@ -37,9 +38,12 @@ struct ContentView: View {
                 return DocumentContainer(user: user, workspace: workspace, document: document)
                     .id(document.id)
             } else {
-                return contentFlex(v: Spacer())
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                return HorizontalFlexView {
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                    
             }
         }
         .onAppear {
