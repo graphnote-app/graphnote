@@ -13,15 +13,6 @@ struct SplitView: View {
     
     @State private var menuOpen = true
     
-    var sidebarSizeMultiplier: Double {
-        let orientationInfo = OrientationInfo()
-        if orientationInfo.orientation == .portrait {
-            return 0.75
-        } else {
-            return 0.35
-        }
-    }
-    
     var content: some View {
         GeometryReader { geometry in
             HStack(spacing: Spacing.spacing0.rawValue) {
@@ -29,6 +20,16 @@ struct SplitView: View {
                 AnyView(sidebar())
                     .frame(width: !menuOpen ? .zero : nil)
                 #else
+                
+                var sidebarSizeMultiplier: Double {
+                    let orientationInfo = OrientationInfo()
+                    if orientationInfo.orientation == .portrait {
+                        return 0.75
+                    } else {
+                        return 0.35
+                    }
+                }
+                
                 ZStack {
                     ColorPalette.lightSidebar
                         .ignoresSafeArea()

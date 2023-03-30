@@ -148,16 +148,6 @@
 		F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		F8EA4092279CFF55001F74B5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8EA406C279CFF54001F74B5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F8EA407D279CFF55001F74B5;
-			remoteInfo = "Graphnote (macOS)";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		F807C8BD29C9132600B7B239 /* LabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
 		F807C8C029C9144500B7B239 /* LabelField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelField.swift; sourceTree = "<group>"; };
@@ -232,7 +222,6 @@
 		F8EA4073279CFF54001F74B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F8EA407E279CFF55001F74B5 /* Graphnote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphnote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EA4080279CFF55001F74B5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
-		F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8F32C8227B9CDF6003B0DF9 /* DocumentEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentEntity.swift; sourceTree = "<group>"; };
 		F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -250,13 +239,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F8EA408E279CFF55001F74B5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +456,6 @@
 			isa = PBXGroup;
 			children = (
 				F8EA407E279CFF55001F74B5 /* Graphnote.app */,
-				F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */,
 				F8403DE329D54A5A0027A196 /* Graphnote (iOS).app */,
 			);
 			name = Products;
@@ -529,24 +510,6 @@
 			productReference = F8EA407E279CFF55001F74B5 /* Graphnote.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F8EA4090279CFF55001F74B5 /* Tests macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F8EA40AA279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Tests macOS" */;
-			buildPhases = (
-				F8EA408D279CFF55001F74B5 /* Sources */,
-				F8EA408E279CFF55001F74B5 /* Frameworks */,
-				F8EA408F279CFF55001F74B5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				F8EA4093279CFF55001F74B5 /* PBXTargetDependency */,
-			);
-			name = "Tests macOS";
-			productName = "Tests macOS";
-			productReference = F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -562,10 +525,6 @@
 					};
 					F8EA407D279CFF55001F74B5 = {
 						CreatedOnToolsVersion = 13.2.1;
-					};
-					F8EA4090279CFF55001F74B5 = {
-						CreatedOnToolsVersion = 13.2.1;
-						TestTargetID = F8EA407D279CFF55001F74B5;
 					};
 				};
 			};
@@ -587,7 +546,6 @@
 			targets = (
 				F8EA407D279CFF55001F74B5 /* Graphnote (macOS) */,
 				F8403DE229D54A5A0027A196 /* Graphnote (iOS) */,
-				F8EA4090279CFF55001F74B5 /* Tests macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -605,13 +563,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F8EA408F279CFF55001F74B5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,22 +720,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F8EA408D279CFF55001F74B5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		F8EA4093279CFF55001F74B5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F8EA407D279CFF55001F74B5 /* Graphnote (macOS) */;
-			targetProxy = F8EA4092279CFF55001F74B5 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F8403DEE29D54A5B0027A196 /* Debug */ = {
@@ -1033,46 +969,6 @@
 			};
 			name = Release;
 		};
-		F8EA40AB279CFF55001F74B5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
-				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Tests-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Graphnote (macOS)";
-			};
-			name = Debug;
-		};
-		F8EA40AC279CFF55001F74B5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
-				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Tests-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "Graphnote (macOS)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1099,15 +995,6 @@
 			buildConfigurations = (
 				F8EA40A5279CFF55001F74B5 /* Debug */,
 				F8EA40A6279CFF55001F74B5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F8EA40AA279CFF55001F74B5 /* Build configuration list for PBXNativeTarget "Tests macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F8EA40AB279CFF55001F74B5 /* Debug */,
-				F8EA40AC279CFF55001F74B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
