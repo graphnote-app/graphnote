@@ -44,7 +44,10 @@ struct BlockView: View {
 //            BlockSpacer()
             
             ForEach(blocks, id: \.id) { block in
-                BodyView(text: block.content)
+                BodyView(text: block.content) { newValue in
+                    print("Update block: \(block.id) with newValue: \(newValue)")
+                }
+                
                 BlockSpacer()
             }
 //            HeadingView(size: .heading4, text: "Bullets")
