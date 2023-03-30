@@ -7,7 +7,10 @@
 
 enum BlockType: String {
     case body
-    case heading
+    case heading1
+    case heading2
+    case heading3
+    case heading4
     case empty
     case bullet
 }

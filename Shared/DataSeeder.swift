@@ -25,22 +25,25 @@ struct DataSeeder{
         let label3 = Label(id: UUID(), title: "Kanception", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         
         let document = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now)
-        let block = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document)
+        let block0 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document)
+        let block1 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document)
         let block2 = Block(id: UUID(), type: BlockType.body, content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", createdAt: now, modifiedAt: now, document: document)
         
         let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now)
         let block3 = Block(id: UUID(), type: BlockType.body, content: "The minimal viable product?", createdAt: now, modifiedAt: now, document: document2)
         let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
+        let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
         
         let document3 = Document(id: UUID(), title: "Revamp", createdAt: now, modifiedAt: now)
-        let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 5", createdAt: now, modifiedAt: now, document: document3)
+        let block7 = Block(id: UUID(), type: BlockType.heading1, content: "Hello my first string! 5", createdAt: now, modifiedAt: now, document: document3)
         let block6 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 6", createdAt: now, modifiedAt: now, document: document3)
+        let block8 = Block(id: UUID(), type: BlockType.heading3, content: "Hello my first string! 6", createdAt: now, modifiedAt: now, document: document3)
         let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
         
         let workspaces = [workspace, workspace2]
         let labels = [label, label2, label3]
         let documents = [document, document2, document3]
-        let blocks = [block, block2, block3, block4, block5, block6]
+        let blocks = [block0, block1, block2, block3, block4, block5, block6, block7, block8]
         
         do {
 
@@ -72,7 +75,7 @@ struct DataSeeder{
             
             for i in 0..<blocks.count {
                 let block = blocks[i]
-                if try !documentRepo.create(block: block, in: documents[Int(i / 2)], for: user) {
+                if try !documentRepo.create(block: block, in: documents[Int(i / 3)], for: user) {
                     print("failed to create block: \(block)")
                     return false
                 }

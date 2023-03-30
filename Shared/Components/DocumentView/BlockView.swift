@@ -26,30 +26,47 @@ struct BlockView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-//            ForEach(blocks, id: \.self) { block in
-//                switch BlockType(rawValue: block.type) {
-//                case .body:
-//                    BodyView(text: block.content)
-//                case .heading:
-//                    HeadingView(size: .heading1, text: block.content)
-//                case .empty:
-//                    EmptyBlockView()
-//                case .bullet:
-//                    BulletView(text: block.content)
-//                case .none:
-//                    EmptyView()
-//                }
-//            }
+            ForEach(blocks, id: \.id) { block in
+                switch BlockType(rawValue: block.type.rawValue) {
+                case .body:
+                    BodyView(text: block.content) { newValue in
+                        print("Update block: \(block.id) with newValue: \(newValue)")
+                    }
+                case .heading1:
+                    HeadingView(size: .heading1, text: block.content) { newValue in
+                        print("Update block: \(block.id) with newValue: \(newValue)")
+                    }
+                case .heading2:
+                    HeadingView(size: .heading2, text: block.content) { newValue in
+                        print("Update block: \(block.id) with newValue: \(newValue)")
+                    }
+                case .heading3:
+                    HeadingView(size: .heading3, text: block.content) { newValue in
+                        print("Update block: \(block.id) with newValue: \(newValue)")
+                    }
+                case .heading4:
+                    HeadingView(size: .heading4, text: block.content) { newValue in
+                        print("Update block: \(block.id) with newValue: \(newValue)")
+                    }
+                case .empty:
+                    EmptyBlockView()
+                case .bullet:
+                    BulletView(text: block.content)
+                case .none:
+                    EmptyView()
+                }
+                BlockSpacer()
+            }
 //            HeadingView(size: .heading2, text: "Technical Specification")
 //            BlockSpacer()
             
-            ForEach(blocks, id: \.id) { block in
-                BodyView(text: block.content) { newValue in
-                    print("Update block: \(block.id) with newValue: \(newValue)")
-                }
-                
-                BlockSpacer()
-            }
+//            ForEach(blocks, id: \.id) { block in
+//                BodyView(text: block.content) { newValue in
+//                    print("Update block: \(block.id) with newValue: \(newValue)")
+//                }
+//
+//                BlockSpacer()
+//            }
 //            HeadingView(size: .heading4, text: "Bullets")
 //            Group {
 //                BulletView(text: "Bullet point number one")
