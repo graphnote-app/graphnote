@@ -13,20 +13,48 @@ struct SplitView: View {
     
     @State private var menuOpen = true
     
-    var body: some View {
-        HStack(spacing: Spacing.spacing0.rawValue) {
-            AnyView(sidebar())
-                .frame(width: !menuOpen ? .zero : nil)
-            
-            ToolbarView {
-                withAnimation {
-                    self.menuOpen.toggle()
-                }
-            }
-            
-            AnyView(detail())
+    var sidebarSizeMultiplier: Double {
+        let orientationInfo = OrientationInfo()
+        if orientationInfo.orientation == .portrait {
+            return 0.75
+        } else {
+            return 0.35
         }
-        .edgesIgnoringSafeArea(.all)
+    }
+    
+    var content: some View {
+        GeometryReader { geometry in
+            HStack(spacing: Spacing.spacing0.rawValue) {
+                #if os(macOS)
+                AnyView(sidebar())
+                    .frame(width: !menuOpen ? .zero : nil)
+                #else
+                ZStack {
+                    ColorPalette.lightSidebar
+                        .ignoresSafeArea()
+                    AnyView(sidebar())
+                }.frame(width: !menuOpen ? .zero : geometry.size.width * sidebarSizeMultiplier)
+                
+                #endif
+                
+                ToolbarView {
+                    withAnimation {
+                        self.menuOpen.toggle()
+                    }
+                }
+                
+                AnyView(detail())
+            }
+        }
+    }
+    
+    var body: some View {
+        #if os(macOS)
+        content
+            .edgesIgnoringSafeArea(.all)
+        #else
+        content
+        #endif
     }
 }
 

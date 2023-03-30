@@ -13,9 +13,13 @@ struct HorizontalFlexView: View {
     var body: some View {
         HStack {
             Spacer()
+            #if os(macOS)
             AnyView(content())
                 .frame(minWidth: GlobalDimension.minDocumentContentWidth)
                 .frame(maxWidth: GlobalDimension.maxDocumentContentWidth)
+            #else
+            AnyView(content())
+            #endif
             Spacer()
         }
         .padding([.top, .bottom])

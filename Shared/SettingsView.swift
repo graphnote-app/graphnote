@@ -8,16 +8,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-    private func contentFlex(v: some View) -> some View {
-        HStack {
-            Spacer()
-            v.frame(minWidth: GlobalDimensionIOS.minDocumentContentWidth)
-             .frame(maxWidth: GlobalDimensionIOS.maxDocumentContentWidth)
-            Spacer()
-        }
-        .padding([.top, .bottom])
-    }
-    
     var content: some View {
         VStack(alignment: .leading) {
             Spacer()

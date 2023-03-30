@@ -12,20 +12,9 @@ struct ContentView: View {
     @StateObject private var vm = ContentViewVM()
     @State private var settings = false
     
-    private func contentFlex(v: some View) -> some View {
-        HStack {
-            Spacer()
-            v.frame(minWidth: GlobalDimension.minDocumentContentWidth)
-             .frame(maxWidth: GlobalDimension.maxDocumentContentWidth)
-            Spacer()
-        }
-        .padding([.top, .bottom])
-    }
-    
     var body: some View {
         SplitView {
             SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
-                .background(colorScheme == .light ? ColorPalette.lightSidebar : nil)
                 .frame(width: GlobalDimension.treeWidth)
                 .onChange(of: vm.selectedSubItem) { _ in
                     settings = false

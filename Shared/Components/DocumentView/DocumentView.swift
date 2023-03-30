@@ -15,50 +15,41 @@ struct DocumentView: View {
     @Binding var title: String
     @Binding var labels: [Label]
     @Binding var blocks: [Block]
-    
-    private func contentFlex(v: some View) -> some View {
-        HStack {
-            Spacer()
-            v.frame(minWidth: GlobalDimension.minDocumentContentWidth)
-             .frame(maxWidth: GlobalDimension.maxDocumentContentWidth)
-            Spacer()
-        }
-        .padding([.top, .bottom])
-    }
-    
+
     var body: some View {
         ScrollView {
-        contentFlex(v:
-            Group {
-                VStack(alignment: .center, spacing: pad) {
-                    HStack() {
-                        VStack(alignment: .leading) {
-                            TextField("", text: $title)
-                                .font(.largeTitle)
-                                .textFieldStyle(.plain)
+            HorizontalFlexView {
+                Group {
+                    VStack(alignment: .center, spacing: pad) {
+                        HStack() {
+                            VStack(alignment: .leading) {
+                                TextField("", text: $title)
+                                    .font(.largeTitle)
+                                    .textFieldStyle(.plain)
+                                Spacer()
+                                    .frame(height: 20)
+                                LabelField(labels: $labels)
+                            }
+                            .foregroundColor(.primary)
+                        }
+                        HStack() {
+                            BlockView(blocks: blocks) {
+                                print("hello")
+                                
+                            }
+                            
                             Spacer()
-                                .frame(height: 20)
-                            LabelField(labels: $labels)
                         }
-                        .foregroundColor(.primary)
-                    }
-                    HStack() {
-                        BlockView(blocks: blocks) {
-                            print("hello")
-                            
-                        }
-                            
                         Spacer()
                     }
-                    Spacer()
+                    
                 }
-                
+                .padding(.trailing, GlobalDimension.toolbarWidth)
+                .padding(GlobalDimension.toolbarWidth + Spacing.spacing1.rawValue)
             }
-            .padding(.trailing, GlobalDimension.toolbarWidth)
-            .padding(GlobalDimension.toolbarWidth + Spacing.spacing1.rawValue))
+            .frame(minHeight: GlobalDimension.minDocumentContentHeight)
+            .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         }
-        .frame(minHeight: GlobalDimension.minDocumentContentHeight)
-        .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
     }
 }
 

@@ -11,6 +11,8 @@ let seed = true
 
 @main
 struct AppIOS: App {
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
