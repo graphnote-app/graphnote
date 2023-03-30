@@ -14,11 +14,19 @@ struct ContentView: View {
     
     var body: some View {
         SplitView {
+            #if os(macOS)
             SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
                 .frame(width: GlobalDimension.treeWidth)
                 .onChange(of: vm.selectedSubItem) { _ in
                     settings = false
                 }
+            #else
+            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
+                .background(colorScheme == .dark ? ColorPalette.darkSidebarMobile : ColorPalette.lightSidebarMobile)
+                .onChange(of: vm.selectedSubItem) { _ in
+                    settings = false
+                }
+            #endif
         } detail: {
             if settings {
                 return SettingsView()
