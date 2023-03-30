@@ -145,8 +145,6 @@
 		F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D329C7FD1C00BA826E /* ContentView.swift */; };
 		F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D629C7FDFD00BA826E /* SidebarView.swift */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
-		F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */; };
-		F8EA4098279CFF55001F74B5 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */; };
 		F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -235,8 +233,6 @@
 		F8EA407E279CFF55001F74B5 /* Graphnote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphnote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EA4080279CFF55001F74B5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		F8EA4091279CFF55001F74B5 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
-		F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		F8F32C8227B9CDF6003B0DF9 /* DocumentEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentEntity.swift; sourceTree = "<group>"; };
 		F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -313,13 +309,6 @@
 				F8403DD929D521830027A196 /* DocumentContainerVM.swift */,
 			);
 			path = Containers;
-			sourceTree = "<group>";
-		};
-		F8403DE429D54A5A0027A196 /* Graphnote (iOS) */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Graphnote (iOS)";
 			sourceTree = "<group>";
 		};
 		F84D087829C808B500410C10 /* DocumentView */ = {
@@ -453,8 +442,6 @@
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F84D088A29C81DA100410C10 /* iOS */,
 				F8EA407F279CFF55001F74B5 /* macOS */,
-				F8EA4094279CFF55001F74B5 /* Tests macOS */,
-				F8403DE429D54A5A0027A196 /* Graphnote (iOS) */,
 				F8EA4079279CFF55001F74B5 /* Products */,
 				F899DFF9279E87E500305AFA /* Frameworks */,
 			);
@@ -500,15 +487,6 @@
 				F8EA4080279CFF55001F74B5 /* macOS.entitlements */,
 			);
 			path = macOS;
-			sourceTree = "<group>";
-		};
-		F8EA4094279CFF55001F74B5 /* Tests macOS */ = {
-			isa = PBXGroup;
-			children = (
-				F8EA4095279CFF55001F74B5 /* Tests_macOS.swift */,
-				F8EA4097279CFF55001F74B5 /* Tests_macOSLaunchTests.swift */,
-			);
-			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -795,8 +773,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8EA4098279CFF55001F74B5 /* Tests_macOSLaunchTests.swift in Sources */,
-				F8EA4096279CFF55001F74B5 /* Tests_macOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
