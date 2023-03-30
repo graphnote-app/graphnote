@@ -22,9 +22,7 @@ struct DocumentContainer: View {
             .onAppear {
                 vm.fetch(user: user, workspace: workspace, document: document)
             }
-            .onChange(of: document) { newValue in
-                print("change document")
-                print(newValue)
+            .onChange(of: document) { _ in
                 vm.fetch(user: user, workspace: workspace, document: document)
             }
     }
