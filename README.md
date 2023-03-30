@@ -14,23 +14,18 @@ Graphnote Client for iOS and macOS
 
 ### Roadmap 🗺️
 
-- [x] Workspaces
-- [x] Documents
+- [ ] Workspaces
+- [ ] Documents
 - [ ] Blocks
   - [ ] Text
   - [ ] Image
   - [ ] Table
   - [ ] Todo
+  - [ ] Bullet Point
   - [ ] Bidirectional Link
+- [ ] Offline Support
+- [ ] Undo / Redo
+- [ ] Search / Filter
 - [ ] Apple Pencil Support
   - [ ] Handwritten to print conversion
   - [ ] Vector sketches
-- [ ] Offline Support
-- [ ] Boards
-- [ ] Teams
-- [ ] Comments
-- [ ] Realtime team sync
-- [ ] Permissions
-- [ ] History
-- [ ] Graph Viewer
-- [ ] Search
