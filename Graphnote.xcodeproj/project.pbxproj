@@ -307,7 +307,6 @@
 		F8BF73A929C7E51400BA826E /* App */ = {
 			isa = PBXGroup;
 			children = (
-				F8403DD629D521510027A196 /* Containers */,
 				F8BF73AC29C7E64800BA826E /* Components */,
 				F8BF73AA29C7E52200BA826E /* App.swift */,
 				F84D088329C817E900410C10 /* GlobalDimension.swift */,
@@ -391,6 +390,7 @@
 		F8EA4070279CFF54001F74B5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F8403DD629D521510027A196 /* Containers */,
 				F8BF73AD29C7E65900BA826E /* Components */,
 				F8A6B6DD29D0E39F00140A53 /* Model */,
 				F86C9F1527B0C7A8002DD87A /* DB Model */,

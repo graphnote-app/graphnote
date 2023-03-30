@@ -125,41 +125,12 @@ struct BlockView: View {
                 }
 
             }
-//            HeadingView(size: .heading2, text: "Technical Specification")
-//            BlockSpacer()
-            
-//            ForEach(blocks, id: \.id) { block in
-//                BodyView(text: block.content) { newValue in
-//                    print("Update block: \(block.id) with newValue: \(newValue)")
-//                }
-//
-//                BlockSpacer()
-//            }
-//            HeadingView(size: .heading4, text: "Bullets")
 //            Group {
 //                BulletView(text: "Bullet point number one")
 //                BulletView(text: "Bullet point number two")
 //                BulletView(text: "Bullet point number three")
 //                BulletView(text: "Bullet point number four")
 //            }
-//            BlockSpacer()
-//            PromptField(placeholder: "Press '/' for commands...", text: $value)
-//                .font(.title3)
-//                .foregroundColor(ColorPalette.primaryText)
-//                .onSubmit {
-//                    if value == "" {
-//                        print("on submit")
-//                        onEnter()
-//                    }
-//                }
-//                .onAppear {
-//                    #if os(macOS)
-//                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-//                        self.keyDown(with: $0)
-//                        return $0
-//                    }
-//                    #endif
-//                }
         }.submitScope()
     }
 }
