@@ -23,7 +23,7 @@ struct SplitView: View {
                 
                 let portrait = OrientationInfo().orientation == .portrait
                 let width = geometry.size.width
-                let sidebarSizeMultiplier = portrait && width < 600 ? 0.75 : 0.35
+                let sidebarSizeMultiplier = portrait && width < 500 ? 0.75 : !portrait && width > 500 ? 0.25 : 0.35
                 
                 ZStack {
                     ColorPalette.lightSidebarMobile
