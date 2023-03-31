@@ -31,10 +31,15 @@ struct LabelView: View {
     
     private let height = 24.0
     private let minWidth = 60.0
+    #if os(macOS)
+    private let font = Font.title3
+    #else
+    private let font = Font.body
+    #endif
     
     var editingTextField: some View {
         TextField("", text: $content)
-            .font(.title3)
+            .font(font)
             .foregroundColor(Color.black)
             .lineLimit(1)
             .bold()
@@ -71,7 +76,7 @@ struct LabelView: View {
 
         } else {
             Text(label.title)
-                .font(.title3)
+                .font(font)
                 .foregroundColor(Color.black)
                 .lineLimit(1)
                 .bold()
