@@ -57,43 +57,43 @@ struct LabelView: View {
     }
     
     var body: some View {
-        Form {
-            if editing {
-                #if os(macOS)
+        if editing {
+            #if os(macOS)
+            Form {
                 editingTextField
                     .onExitCommand {
                         editing = false
                     }
-                #else
-                editingTextField
-                #endif
+            }
+            #else
+            editingTextField
+            #endif
 
-            } else {
-                Text(label.title)
-                    .font(.title3)
-                    .foregroundColor(Color.black)
-                    .lineLimit(1)
-                    .bold()
-                    .padding([.leading, .trailing], Spacing.spacing3.rawValue)
-                    .padding([.top, .bottom], Spacing.spacing0.rawValue)
-                    .frame(minWidth: minWidth)
-                    .frame(height: height)
-                    .background(
-                        RoundedRectangle(cornerRadius: height)
-                            .fill(label.color)
-                    )
-                    .contextMenu {
-                        LabelContextMenu {
-                            editing = true
-                            focusedField = .title
-                            content = label.title
-                        } delete: {
-
-                        }
+        } else {
+            Text(label.title)
+                .font(.title3)
+                .foregroundColor(Color.black)
+                .lineLimit(1)
+                .bold()
+                .padding([.leading, .trailing], Spacing.spacing3.rawValue)
+                .padding([.top, .bottom], Spacing.spacing0.rawValue)
+                .frame(minWidth: minWidth)
+                .frame(height: height)
+                .background(
+                    RoundedRectangle(cornerRadius: height)
+                        .fill(label.color)
+                )
+                .contextMenu {
+                    LabelContextMenu {
+                        editing = true
+                        focusedField = .title
+                        content = label.title
+                    } delete: {
 
                     }
-                    .contentShape(RoundedRectangle(cornerRadius: height))
-            }
+
+                }
+                .contentShape(RoundedRectangle(cornerRadius: height))
         }
     }
 }
