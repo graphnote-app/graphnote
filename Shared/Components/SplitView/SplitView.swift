@@ -17,8 +17,17 @@ struct SplitView: View {
         GeometryReader { geometry in
             HStack(spacing: Spacing.spacing0.rawValue) {
                 #if os(macOS)
-                AnyView(sidebar())
-                    .frame(width: !sidebarOpen ? .zero : nil)
+                if sidebarOpen {
+                    AnyView(sidebar())
+                        .frame(width: !sidebarOpen ? .zero : nil)
+                }
+                ToolbarView {
+//                    withAnimation {
+                        self.sidebarOpen.toggle()
+//                    }
+                    
+                }
+                
                 #else
                 
                 let portrait = OrientationInfo().orientation == .portrait
@@ -36,13 +45,12 @@ struct SplitView: View {
                 .frame(maxWidth: GlobalDimension.treeWidth)
                 .frame(width: !sidebarOpen ? .zero : finalWidth < GlobalDimension.treeWidth ? finalWidth : GlobalDimension.treeWidth)
                 
-                #endif
-                
                 ToolbarView {
                     withAnimation {
                         self.sidebarOpen.toggle()
                     }
                 }
+                #endif
                 
                 AnyView(detail())
             }
