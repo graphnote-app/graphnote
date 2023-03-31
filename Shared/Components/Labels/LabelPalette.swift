@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum LabelPalette: String {
-    case primary, purple, pink, orangeDark, orangeLight, yellow
+    case primary, purple, red, lightPurple, pink, limeGreen, darkOrange, lightOrange
     
     func getColor() -> Color {
         switch self {
@@ -16,18 +16,22 @@ enum LabelPalette: String {
             return LabelColor.primary
         case .purple:
             return LabelColor.purple
+        case .red:
+            return LabelColor.red
+        case .lightPurple:
+            return LabelColor.lightPurple
         case .pink:
             return LabelColor.pink
-        case .orangeDark:
-            return LabelColor.orangeDark
-        case .orangeLight:
-            return LabelColor.orangeLight
-        case .yellow:
-            return LabelColor.yellow
+        case .limeGreen:
+            return LabelColor.limeGreen
+        case .darkOrange:
+            return LabelColor.darkOrange
+        case .lightOrange:
+            return LabelColor.lightOrange
         }
     }
     
     static func allCases() -> [LabelPalette] {
-        return [primary, purple, pink, orangeDark, orangeLight, yellow]
+        return [primary, purple, red, lightPurple, pink, limeGreen, darkOrange, lightOrange]
     }
 }
