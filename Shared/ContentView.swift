@@ -33,8 +33,10 @@ struct ContentView: View {
                     settings = false
                     if UIDevice().userInterfaceIdiom == .phone {
                         if initialized {
-                            withAnimation {
-                                menuOpen = false
+                            if OrientationInfo().orientation == .portrait {
+                                withAnimation {
+                                    menuOpen = false
+                                }
                             }
                         } else {
                             initialized = true
