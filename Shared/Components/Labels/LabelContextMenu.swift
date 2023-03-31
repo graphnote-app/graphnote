@@ -14,23 +14,10 @@ struct LabelContextMenu: View {
     var body: some View {
         Group {
             Menu("Set Color") {
-                Button("Blue") {
-                    
-                }
-                Button("Pink") {
-                    
-                }
-                Button("Dark Orange") {
-                    
-                }
-                Button("Lite Orange") {
-                    
-                }
-                Button("Purple") {
-                    
-                }
-                Button("Yellow") {
-                    
+                ForEach(LabelPalette.allCases(), id: \.self) { color in
+                    Button(color.rawValue) {
+                        
+                    }
                 }
             }
             Button("Rename") {
