@@ -89,42 +89,42 @@ struct BlockView: View {
                     EmptyView()
                 }
                 BlockSpacer()
-            }
-            ForEach(0..<postContentEmptiesSelectedStatus.count, id: \.self) { index in
-                let status = postContentEmptiesSelectedStatus[index]
-                
-                if status == true {
-                    PromptField(placeholder: "Press '/' for commands...", text: $value)
-                           .font(.title3)
-                           .focused($isFocused)
-                           .foregroundColor(ColorPalette.primaryText)
-                           .onSubmit {
-                               if value == "" {
-                                   print("on submit")
-                                   onEnter()
-                               }
-                           }
-                           .onAppear {
-                               #if os(macOS)
-                               NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                                   self.keyDown(with: $0)
-                                   return $0
-                               }
-                               #endif
-                           }
-                } else {
-                    EmptyBlockView()
-                        .onTapGesture {
-                            for localIndex in 0..<postContentEmptiesSelectedStatus.count {
-                                postContentEmptiesSelectedStatus[localIndex] = false
-                            }
-                            
-                            postContentEmptiesSelectedStatus[index] = true
-                            isFocused = true
-                        }
-                }
-
-            }
+            }.fixedSize(horizontal: false, vertical: true)
+//            ForEach(0..<postContentEmptiesSelectedStatus.count, id: \.self) { index in
+//                let status = postContentEmptiesSelectedStatus[index]
+//
+//                if status == true {
+//                    PromptField(placeholder: "Press '/' for commands...", text: $value)
+//                           .font(.title3)
+//                           .focused($isFocused)
+//                           .foregroundColor(ColorPalette.primaryText)
+//                           .onSubmit {
+//                               if value == "" {
+//                                   print("on submit")
+//                                   onEnter()
+//                               }
+//                           }
+//                           .onAppear {
+//                               #if os(macOS)
+//                               NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+//                                   self.keyDown(with: $0)
+//                                   return $0
+//                               }
+//                               #endif
+//                           }
+//                } else {
+//                    EmptyBlockView()
+//                        .onTapGesture {
+//                            for localIndex in 0..<postContentEmptiesSelectedStatus.count {
+//                                postContentEmptiesSelectedStatus[localIndex] = false
+//                            }
+//
+//                            postContentEmptiesSelectedStatus[index] = true
+//                            isFocused = true
+//                        }
+//                }
+//
+//            }
 //            Group {
 //                BulletView(text: "Bullet point number one")
 //                BulletView(text: "Bullet point number two")

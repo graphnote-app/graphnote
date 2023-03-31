@@ -6,14 +6,19 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import UIKit
+#endif
 
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var vm = ContentViewVM()
     @State private var settings = false
+    @State private var menuOpen = true
+    @State private var initialized = false
     
     var body: some View {
-        SplitView {
+        SplitView(sidebarOpen: $menuOpen) {
             #if os(macOS)
             SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
                 .frame(width: GlobalDimension.treeWidth)
@@ -21,10 +26,20 @@ struct ContentView: View {
                     settings = false
                 }
             #else
+            
             SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
                 .background(colorScheme == .dark ? ColorPalette.darkSidebarMobile : ColorPalette.lightSidebarMobile)
                 .onChange(of: vm.selectedSubItem) { _ in
                     settings = false
+                    if UIDevice().userInterfaceIdiom == .phone {
+                        if initialized {
+                            withAnimation {
+                                menuOpen = false
+                            }
+                        } else {
+                            initialized = true
+                        }
+                    }
                 }
             #endif
         } detail: {

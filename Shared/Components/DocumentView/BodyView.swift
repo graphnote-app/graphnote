@@ -34,16 +34,13 @@ struct BodyView: View {
                 textDidChange(newValue)
             }
         #else
-        
-            TextField("placholder", text: $content, axis: .vertical)
-                .onAppear {
-                    content = text
-                }
-                .onChange(of: content) { newValue in
-                    textDidChange(newValue)
-                }
-        
-        
+        TextField("", text: $content, axis: .vertical)
+            .onAppear {
+                content = text
+            }
+            .onChange(of: content) { newValue in
+                textDidChange(newValue)
+            }
         #endif
     }
 }

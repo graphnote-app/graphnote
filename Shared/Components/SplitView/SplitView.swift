@@ -8,35 +8,35 @@
 import SwiftUI
 
 struct SplitView: View {
+    @Binding var sidebarOpen: Bool
+    
     let sidebar: () -> any View
     let detail: () -> any View
-    
-    @State private var menuOpen = true
     
     var content: some View {
         GeometryReader { geometry in
             HStack(spacing: Spacing.spacing0.rawValue) {
                 #if os(macOS)
                 AnyView(sidebar())
-                    .frame(width: !menuOpen ? .zero : nil)
+                    .frame(width: !sidebarOpen ? .zero : nil)
                 #else
                 
                 let portrait = OrientationInfo().orientation == .portrait
                 let width = geometry.size.width
-                let sidebarSizeMultiplier = portrait && width < 500 ? 0.75 : !portrait && width > 500 ? 0.25 : 0.35
+                let sidebarSizeMultiplier = portrait && width < 500 ? 0.85 : !portrait && width > 500 ? 0.25 : 0.35
                 
                 ZStack {
                     ColorPalette.lightSidebarMobile
                         .ignoresSafeArea()
                     AnyView(sidebar())
                 }
-                .frame(width: !menuOpen ? .zero : width * sidebarSizeMultiplier)
+                .frame(width: !sidebarOpen ? .zero : width * sidebarSizeMultiplier)
                 
                 #endif
                 
                 ToolbarView {
                     withAnimation {
-                        self.menuOpen.toggle()
+                        self.sidebarOpen.toggle()
                     }
                 }
                 
@@ -57,7 +57,7 @@ struct SplitView: View {
 
 struct SplitView_Previews: PreviewProvider {
     static var previews: some View {
-        SplitView {
+        SplitView(sidebarOpen: .constant(true)) {
             EmptyView()
         } detail: {
             EmptyView()
