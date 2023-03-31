@@ -8,7 +8,7 @@
 import Foundation
 
 struct GlobalDimensionIOS {
-    static let treeWidth: CGFloat = 250
+    static let treeWidth: CGFloat = 350
     static let toolbarWidth = Spacing.spacing4.rawValue + (Spacing.spacing3.rawValue * 2)
 //    static let maxDocumentContentWidth = 800.0
 //    static let minDocumentContentWidth = 200.0

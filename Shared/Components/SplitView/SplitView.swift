@@ -23,13 +23,14 @@ struct SplitView: View {
                 
                 let portrait = OrientationInfo().orientation == .portrait
                 let width = geometry.size.width
-                let sidebarSizeMultiplier = portrait && width < 500 ? 0.85 : !portrait && width > 500 ? 0.25 : 0.35
+                let sidebarSizeMultiplier = portrait && width < 500 ? 0.85 : 0.35
                 
                 ZStack {
                     ColorPalette.lightSidebarMobile
                         .ignoresSafeArea()
                     AnyView(sidebar())
                 }
+                .frame(maxWidth: GlobalDimension.treeWidth)
                 .frame(width: !sidebarOpen ? .zero : width * sidebarSizeMultiplier)
                 
                 #endif
