@@ -53,6 +53,7 @@ struct DocumentView: View {
                     .padding(GlobalDimension.toolbarWidth + Spacing.spacing1.rawValue)
                 #else
                 content
+                    .padding(.top, Spacing.spacing7.rawValue)
                 #endif
             }
             .frame(minHeight: GlobalDimension.minDocumentContentHeight)
