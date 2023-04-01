@@ -30,7 +30,7 @@ struct SplitView: View {
                 
                 #else
                 
-                let portrait = OrientationInfo().orientation == .portrait
+                let portrait = MobileUtils.OrientationInfo().orientation == .portrait
                 let width = geometry.size.width
                 let sidebarSizeMultiplier = portrait && width < 500 ? 0.85 : 0.35
                 let finalWidth = width * sidebarSizeMultiplier

@@ -33,7 +33,7 @@ struct ContentView: View {
                     settings = false
                     if UIDevice().userInterfaceIdiom == .phone {
                         if initialized {
-                            if OrientationInfo().orientation == .portrait {
+                            if MobileUtils.OrientationInfo().orientation == .portrait {
                                 withAnimation {
                                     menuOpen = false
                                 }
@@ -41,6 +41,11 @@ struct ContentView: View {
                         } else {
                             initialized = true
                         }
+                    }
+                }
+                .onChange(of: menuOpen) { newValue in
+                    if newValue == true {
+                        MobileUtils.resignKeyboard()
                     }
                 }
             #endif
