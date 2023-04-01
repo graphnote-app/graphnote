@@ -64,7 +64,9 @@ class ContentViewVM: ObservableObject {
             if let workspaces = try? workspaceRepo.readAll(), let workspace = workspaces.first {
                 selectedWorkspace = workspace
                 self.selectedWorkspaceIndex = 0
-                self.workspaces = workspaces
+                self.workspaces = workspaces.sorted(by: { lhs, rhs in
+                    lhs.title < rhs.title
+                })
             }
         }
     }
@@ -104,6 +106,8 @@ class ContentViewVM: ObservableObject {
                     }
                     
                     return TreeViewItem(id: label.id, title: label.title, color: label.color, subItems: subItems)
+                }).sorted(by: { lhs, rhs in
+                    lhs.title < rhs.title
                 })
                 
                 treeItems.append(

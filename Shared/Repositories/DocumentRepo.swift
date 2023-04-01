@@ -15,9 +15,9 @@ struct DocumentRepo {
     
     private let moc = DataController.shared.container.viewContext
     
-    func create(block: Block, in document: Document, for user: User) throws -> Bool {
+    func create(block: Block, for user: User) throws -> Bool {
         do {
-            guard let documentEntity = try DocumentEntity.getEntity(id: document.id, moc: moc) else {
+            guard let documentEntity = try DocumentEntity.getEntity(id: block.document.id, moc: moc) else {
                 return false
             }
             
