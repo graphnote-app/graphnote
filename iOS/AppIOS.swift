@@ -18,6 +18,7 @@ struct AppIOS: App {
             ContentView()
                 .autocorrectionDisabled()
                 .keyboardType(.alphabet)
+                .scrollDismissesKeyboard(.interactively)
         }
     }
 }
