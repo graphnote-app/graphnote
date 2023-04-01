@@ -12,6 +12,15 @@ struct SplitView: View {
     
     let sidebar: () -> any View
     let detail: () -> any View
+
+    var drag: some Gesture {
+        DragGesture()
+            .onEnded { _ in
+                withAnimation {
+                    self.sidebarOpen.toggle()
+                }
+            }
+    }
     
     var content: some View {
         GeometryReader { geometry in
@@ -48,6 +57,14 @@ struct SplitView: View {
                 ToolbarView {
                     withAnimation {
                         self.sidebarOpen.toggle()
+                    }
+                }
+                .gesture(drag)
+                .onTapGesture {
+                    if sidebarOpen {
+                        withAnimation {
+                            self.sidebarOpen.toggle()
+                        }
                     }
                 }
                 #endif
