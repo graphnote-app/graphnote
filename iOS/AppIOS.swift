@@ -16,6 +16,8 @@ struct AppIOS: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .autocorrectionDisabled()
+                .keyboardType(.alphabet)
         }
     }
 }
