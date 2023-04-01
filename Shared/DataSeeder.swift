@@ -32,14 +32,14 @@ struct DataSeeder{
         let welcomeBlock2 = Block(id: UUID(), type: BlockType.body, content: "Please reach out with any questions or feedback to graphnote.io@gmail.com", createdAt: now, modifiedAt: now, document: document0)
         
         let document1 = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now)
-        let block0 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document1)
-        let block1 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 1", createdAt: now, modifiedAt: now, document: document1)
+        let block0 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", createdAt: now, modifiedAt: now, document: document1)
+        let block1 = Block(id: UUID(), type: BlockType.body, content: "Thanks for stopping by!", createdAt: now, modifiedAt: now, document: document1)
         let block2 = Block(id: UUID(), type: BlockType.body, content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", createdAt: now, modifiedAt: now, document: document1)
         
         let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now)
         let block3 = Block(id: UUID(), type: BlockType.body, content: "The minimal viable product?", createdAt: now, modifiedAt: now, document: document2)
-        let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
-        let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
+        let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", createdAt: now, modifiedAt: now, document: document2)
+        let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", createdAt: now, modifiedAt: now, document: document2)
         
 //        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
         
