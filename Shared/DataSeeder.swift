@@ -19,7 +19,7 @@ struct DataSeeder{
         let user = User(id: userId, createdAt: now, modifiedAt: now)
         
         let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
-        let workspace2 = Workspace(id: UUID(), title: "Client X", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
+        let workspace1 = Workspace(id: UUID(), title: "XYZ", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
         let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
@@ -43,7 +43,7 @@ struct DataSeeder{
         
 //        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
         
-        let workspaces = [workspace, workspace2]
+        let workspaces = [workspace, workspace1]
         let labels = [label, label2, label3, label4, label5]
         let documents = [document0, document1, document2]
         let blocks = [welcomeBlock0, welcomeBlock1, welcomeBlock2, block0, block1, block2, block3, block4, block5]
