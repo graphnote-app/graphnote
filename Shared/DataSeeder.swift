@@ -20,11 +20,11 @@ struct DataSeeder{
         
         let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
         let workspace2 = Workspace(id: UUID(), title: "Client X", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
-        let label = Label(id: UUID(), title: "Web", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
+        let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label4 = Label(id: UUID(), title: "Project X", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label5 = Label(id: UUID(), title: "Graphnote", color: LabelPalette.primary.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
+        let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
+        let label5 = Label(id: UUID(), title: "Graphnote 😀", color: LabelPalette.primary.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         
         let document0 = Document(id: UUID(), title: "Welcome!", createdAt: now, modifiedAt: now)
         let welcomeBlock0 = Block(id: UUID(), type: BlockType.heading3, content: "Thanks for trying Graphnote", createdAt: now, modifiedAt: now, document: document0)
@@ -41,16 +41,12 @@ struct DataSeeder{
         let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
         let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 4", createdAt: now, modifiedAt: now, document: document2)
         
-        let document3 = Document(id: UUID(), title: "Revamp", createdAt: now, modifiedAt: now)
-        let block7 = Block(id: UUID(), type: BlockType.heading1, content: "Hello my first string! 5", createdAt: now, modifiedAt: now, document: document3)
-        let block6 = Block(id: UUID(), type: BlockType.body, content: "Hello my first string! 6", createdAt: now, modifiedAt: now, document: document3)
-        let block8 = Block(id: UUID(), type: BlockType.heading3, content: "Hello my first string! 6", createdAt: now, modifiedAt: now, document: document3)
-        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
+//        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
         
         let workspaces = [workspace, workspace2]
         let labels = [label, label2, label3, label4, label5]
-        let documents = [document0, document1, document2, document3]
-        let blocks = [welcomeBlock0, welcomeBlock1, welcomeBlock2, block0, block1, block2, block3, block4, block5, block6, block7, block8]
+        let documents = [document0, document1, document2]
+        let blocks = [welcomeBlock0, welcomeBlock1, welcomeBlock2, block0, block1, block2, block3, block4, block5]
         
         do {
 
@@ -88,16 +84,14 @@ struct DataSeeder{
                 }
             }
             
-            if try !documentRepo.create(block: blockEmpty, for: user) {
-                print("failed to create block: \(blockEmpty)")
-                return false
-            }
+//            if try !documentRepo.create(block: blockEmpty, for: user) {
+//                print("failed to create block: \(blockEmpty)")
+//                return false
+//            }
             
             documentRepo.attach(label: label, document: document1)
             documentRepo.attach(label: label5, document: document1)
             documentRepo.attach(label: label2, document: document2)
-            documentRepo.attach(label: label3, document: document3)
-            documentRepo.attach(label: label, document: document3)
             documentRepo.attach(label: label4, document: document1)
             documentRepo.attach(label: label5, document: document0)
             documentRepo.attach(label: label2, document: document0)
