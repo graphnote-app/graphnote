@@ -24,7 +24,7 @@ struct DataSeeder{
         let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label5 = Label(id: UUID(), title: "Graphnote 😀", color: LabelPalette.primary.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
+        let label5 = Label(id: UUID(), title: "Graphnote ፨", color: LabelPalette.primary.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
         
         let document0 = Document(id: UUID(), title: "Welcome!", createdAt: now, modifiedAt: now)
         let welcomeBlock0 = Block(id: UUID(), type: BlockType.heading3, content: "Thanks for trying Graphnote", createdAt: now, modifiedAt: now, document: document0)
