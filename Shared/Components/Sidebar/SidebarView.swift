@@ -17,9 +17,14 @@ struct SidebarView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Spacer()
-                .frame(height: Spacing.spacing7.rawValue)
+                .frame(maxHeight: Spacing.spacing7.rawValue)
             VStack(alignment: .leading) {
                 TreeView(selectedSubItem: $selectedSubItem, items: items)
+                
+            }
+            .padding(Spacing.spacing3.rawValue)
+            Spacer()
+            Group {
                 Button {
                     
                 } label: {
@@ -27,17 +32,20 @@ struct SidebarView: View {
                         Image(systemName: "plus")
                         Text("New Document")
                     }
-                }.buttonStyle(.plain)
-            }
-            .padding(Spacing.spacing3.rawValue)
-            Spacer()
-            HStack {
-                GearIconVIew {
-                    settingsOpen = true
+                    .frame(height: Spacing.spacing7.rawValue)
                 }
-                WorkspaceMenu(selectedIndex: $selectedWorkspaceTitleIndex, workspaceTitles: workspaceTitles)
-                    
-            }.padding(Spacing.spacing3.rawValue)
+                .buttonStyle(.plain)
+                .padding(Spacing.spacing3.rawValue)
+                HStack {
+                    GearIconVIew {
+                        settingsOpen = true
+                    }
+                    .frame(height: Spacing.spacing7.rawValue)
+                    WorkspaceMenu(selectedIndex: $selectedWorkspaceTitleIndex, workspaceTitles: workspaceTitles)
+                        .frame(height: Spacing.spacing7.rawValue)
+                }
+                .padding(Spacing.spacing3.rawValue)
+            }
         }
     }
 }

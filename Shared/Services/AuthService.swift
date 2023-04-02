@@ -36,41 +36,17 @@ final class AuthService: NSObject {
         }
     }
     
-    private var handleAuthCallback: ((Bool) -> Void)? = nil
-    
-    @objc func handleAuthorizationAppleIDButtonPress(callback: @escaping (_ success: Bool) -> Void) {
-        handleAuthCallback = callback
-        let requests = [ASAuthorizationAppleIDProvider().createRequest()]
-        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
-}
-
-extension AuthService: ASAuthorizationControllerDelegate {
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print(error)
-        self.handleAuthCallback?(false)
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    func process(authorization: ASAuthorization) {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
         print(credential.user)
-        print(credential.fullName)
-        print(credential.email)
-        self.handleAuthCallback?(true)
         
+        if let fullName = credential.fullName, let givenName = fullName.givenName, let familyName = fullName.familyName {
+            print(givenName)
+            print(familyName)
+        }
+        
+        if let email = credential.email {
+            print(email)
+        }
     }
-}
-
-extension AuthService: ASAuthorizationControllerPresentationContextProviding {
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        #if os(macOS)
-        return NSApplication.shared.windows.first!
-        #else
-        return UIApplication.shared.windows.first!
-        #endif
-    }
-    
 }
