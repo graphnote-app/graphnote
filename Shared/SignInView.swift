@@ -41,7 +41,7 @@ struct SignInView: View {
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .ignoresSafeArea()
-            .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightSidebarMobile)
+            .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         }
         
         .onAppear {
