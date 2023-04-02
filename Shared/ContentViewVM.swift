@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class ContentViewVM: ObservableObject {
+class ContentViewVM: NSObject, ObservableObject {
     private let ALL_ID = UUID()
     
     @Published var treeItems: [TreeViewItem] = []
@@ -54,6 +54,11 @@ class ContentViewVM: ObservableObject {
     
     @Published var user: User? = nil
 
+    @objc
+    func methodOfReceivedNotification(notification: NSNotification) {
+        fetch()
+    }
+    
     func initialize() {
         if let user = try? UserRepo().readAll()?.first {
             
@@ -65,6 +70,10 @@ class ContentViewVM: ObservableObject {
                 selectedWorkspace = workspace
                 self.selectedWorkspaceIndex = 0
                 self.workspaces = workspaces
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name(LabelNotification.newLabel.rawValue), object: nil)
+
+                
             }
         }
     }

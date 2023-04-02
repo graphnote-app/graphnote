@@ -119,6 +119,8 @@
 		F88D5EF229D9D4060088338F /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF029D9D4060088338F /* AuthService.swift */; };
 		F88D5EF529D9D4590088338F /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF429D9D4590088338F /* KeychainItem.swift */; };
 		F88D5EF629D9D4590088338F /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF429D9D4590088338F /* KeychainItem.swift */; };
+		F896E90429DA3BC500296073 /* AddLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896E90329DA3BC500296073 /* AddLabelView.swift */; };
+		F896E90529DA3BC500296073 /* AddLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896E90329DA3BC500296073 /* AddLabelView.swift */; };
 		F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFFA279E87E500305AFA /* SwiftyJSON */; };
 		F8A6B6DC29D0E39A00140A53 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DB29D0E39A00140A53 /* Block.swift */; };
 		F8A6B6DF29D0E3D800140A53 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DE29D0E3D800140A53 /* Document.swift */; };
@@ -203,6 +205,7 @@
 		F88D5EF829D9F2BA0088338F /* Graphnote--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--iOS--Info.plist"; sourceTree = "<group>"; };
 		F88D5EF929D9FEBC0088338F /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.2.sdk/System/Library/Frameworks/AuthenticationServices.framework; sourceTree = DEVELOPER_DIR; };
 		F896E8FF29D9FFBE00296073 /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
+		F896E90329DA3BC500296073 /* AddLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLabelView.swift; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* MobileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileUtils.swift; sourceTree = "<group>"; };
 		F8A6B6DB29D0E39A00140A53 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		F8A6B6DE29D0E3D800140A53 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -426,6 +429,7 @@
 				F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */,
 				F8BF73B729C7EB2700BA826E /* MenuCardView.swift */,
 				F88550AB29D9B51200EE458C /* SignInView.swift */,
+				F896E90329DA3BC500296073 /* AddLabelView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -659,6 +663,7 @@
 				F82EC65A29D54B62009C46BE /* TreeViewSubline.swift in Sources */,
 				F82EC65B29D54B62009C46BE /* WorkspaceMenu.swift in Sources */,
 				F82EC65C29D54B62009C46BE /* LoadingView.swift in Sources */,
+				F896E90529DA3BC500296073 /* AddLabelView.swift in Sources */,
 				F82EC65D29D54B62009C46BE /* MenuCardView.swift in Sources */,
 				F82EC65E29D54B62009C46BE /* Workspace.swift in Sources */,
 				F82EC65F29D54B62009C46BE /* Document.swift in Sources */,
@@ -729,6 +734,7 @@
 				F82EC67929D54BB6009C46BE /* GNColor.swift in Sources */,
 				F8BF73CB29C7F54900BA826E /* BlockEntity.swift in Sources */,
 				F82EC68629D5580F009C46BE /* HorizontalFlexView.swift in Sources */,
+				F896E90429DA3BC500296073 /* AddLabelView.swift in Sources */,
 				F84D088229C80CE600410C10 /* ContentViewVM.swift in Sources */,
 				F8A6B6E729D0EAA900140A53 /* DataSeeder.swift in Sources */,
 				F82EC67C29D54C61009C46BE /* GlobalDimensionIOS.swift in Sources */,

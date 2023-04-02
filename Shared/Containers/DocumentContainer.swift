@@ -17,7 +17,9 @@ struct DocumentContainer: View {
     @StateObject private var vm = DocumentContainerVM()
     
     var body: some View {
-        DocumentView(title: $vm.title, labels: $vm.labels, blocks: $vm.blocks)
+        DocumentView(title: $vm.title, labels: $vm.labels, blocks: $vm.blocks, user: user, workspace: workspace, document: document, fetch: {
+            vm.fetch(user: user, workspace: workspace, document: document)
+        })
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             .onAppear {
                 vm.fetch(user: user, workspace: workspace, document: document)

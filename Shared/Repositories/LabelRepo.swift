@@ -20,21 +20,25 @@ struct LabelRepo {
             print("Failed to get workspaceEntity: \(workspace)")
             return false
         }
-        
-        let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
-        labelEntity.title = label.title
-        labelEntity.id = label.id
-        labelEntity.modifiedAt = label.modifiedAt
-        labelEntity.createdAt = label.createdAt
-        labelEntity.workspace = workspaceEntity
-        
-        let rgb = GNColor(label.color).cgColor.components
-        labelEntity.colorRed = Float(rgb![0])
-        labelEntity.colorGreen = Float(rgb![1])
-        labelEntity.colorBlue = Float(rgb![2])
-        
-        try? moc.save()
-        return true
+
+        if let _ = try? LabelEntity.getEntity(title: label.title, workspace: workspace, moc: moc) {
+            return false
+        } else {
+            let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
+            labelEntity.title = label.title
+            labelEntity.id = label.id
+            labelEntity.modifiedAt = label.modifiedAt
+            labelEntity.createdAt = label.createdAt
+            labelEntity.workspace = workspaceEntity
+            
+            let rgb = GNColor(label.color).cgColor.components
+            labelEntity.colorRed = Float(rgb![0])
+            labelEntity.colorGreen = Float(rgb![1])
+            labelEntity.colorBlue = Float(rgb![2])
+            
+            try? moc.save()
+            return true
+        }
     }
     
     func read(id: UUID) throws -> Label? {

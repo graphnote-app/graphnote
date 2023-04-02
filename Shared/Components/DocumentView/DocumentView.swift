@@ -15,6 +15,10 @@ struct DocumentView: View {
     @Binding var title: String
     @Binding var labels: [Label]
     @Binding var blocks: [Block]
+    let user: User
+    let workspace: Workspace
+    let document: Document
+    let fetch: () -> Void
     
     var content: some View {
         Group {
@@ -26,7 +30,7 @@ struct DocumentView: View {
                             .textFieldStyle(.plain)
                         Spacer()
                             .frame(height: 20)
-                        LabelField(labels: $labels)
+                        LabelField(fetch: fetch, labels: $labels, user: user, workspace: workspace, document: document)
                     }
                     .foregroundColor(.primary)
                 }
@@ -62,8 +66,3 @@ struct DocumentView: View {
     }
 }
 
-struct DocumentView_Previews: PreviewProvider {
-    static var previews: some View {
-        DocumentView(title: .constant("Test"), labels: .constant([]), blocks: .constant([]))
-    }
-}

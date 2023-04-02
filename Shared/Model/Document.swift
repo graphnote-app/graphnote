@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Document: Equatable {
-    let id: UUID
-    let title: String
-    let createdAt: Date
-    let modifiedAt: Date
+public struct Document: Equatable {
+    public let id: UUID
+    public let title: String
+    public let createdAt: Date
+    public let modifiedAt: Date
 }

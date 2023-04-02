@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct Workspace {
-    let id: UUID
-    let title: String
-    let createdAt: Date
-    let modifiedAt: Date
-    let user: User
-    let labels: [Label]
-    let documents: [Document]
+public struct Workspace {
+    public let id: UUID
+    public let title: String
+    public let createdAt: Date
+    public let modifiedAt: Date
+    public let user: User
+    public let labels: [Label]
+    public let documents: [Document]
 }

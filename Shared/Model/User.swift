@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct User {
-    let id: UUID
-    let createdAt: Date
-    let modifiedAt: Date
+public struct User {
+    public let id: UUID
+    public let createdAt: Date
+    public let modifiedAt: Date
 }
