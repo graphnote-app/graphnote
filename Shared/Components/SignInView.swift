@@ -20,7 +20,10 @@ struct SignInView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: Spacing.spacing6.rawValue) {
-                Spacer()
+                Group {
+                    Spacer()
+                    Spacer()
+                }
                 VStack {
                     Image("GraphnoteIcon")
                         .resizable()
@@ -30,12 +33,17 @@ struct SignInView: View {
                 Text("\"Augment your memory\"")
                     .font(.title3)
                     .opacity(welcomeOpacity)
-                Spacer()
+                Group {
+                    Spacer()
+                    Spacer()
+                }
                 Text("Welcome to Graphnote")
-                    .font(.system(size: 48))
+                    .font(.system(size: Spacing.spacing7.rawValue))
+                    .foregroundColor(LabelColor.primary)
                     .opacity(welcomeOpacity)
                 Text("Thanks for using Graphnote. Built in Tennessee with Love")
                     .font(.body)
+                    .multilineTextAlignment(.center)
                     .opacity(welcomeOpacity)
                 Spacer()
                     .frame(height: Spacing.spacing6.rawValue)
