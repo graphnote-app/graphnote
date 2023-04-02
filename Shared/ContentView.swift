@@ -41,7 +41,7 @@ struct ContentView: View {
                     }
                 }
         case .signIn:
-            SignInView()
+            SignInView(uiState: $globalUIState)
         case .doc, .settings:
             SplitView(sidebarOpen: $menuOpen) {
                 #if os(macOS)

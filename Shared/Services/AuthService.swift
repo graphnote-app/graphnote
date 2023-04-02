@@ -36,17 +36,12 @@ final class AuthService: NSObject {
         }
     }
     
-    @objc func handleAuthorizationAppleIDButtonPress() {
-        print("handle request")
-        // Prepare requests for both Apple ID and password providers.
-        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
-                        ASAuthorizationPasswordProvider().createRequest()]
-        
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+    private var handleAuthCallback: ((Bool) -> Void)? = nil
+    
+    @objc func handleAuthorizationAppleIDButtonPress(callback: @escaping (_ success: Bool) -> Void) {
+        handleAuthCallback = callback
+        let requests = [ASAuthorizationAppleIDProvider().createRequest()]
+        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
@@ -56,10 +51,16 @@ final class AuthService: NSObject {
 extension AuthService: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         print(error)
+        self.handleAuthCallback?(false)
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        print(authorization)
+        let credential = authorization.credential as! ASAuthorizationAppleIDCredential
+        print(credential.user)
+        print(credential.fullName)
+        print(credential.email)
+        self.handleAuthCallback?(true)
+        
     }
 }
 
