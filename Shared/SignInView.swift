@@ -14,6 +14,7 @@ struct SignInView: View {
     @State private var getStartedOpacity = 0.0
     @State private var imageSizeScaler = 0.25
     private let duration = 2.0
+    private let imageWidth = 140.0
     
     var body: some View {
         GeometryReader { geometry in
@@ -23,8 +24,8 @@ struct SignInView: View {
                     Image("GraphnoteIcon")
                         .resizable()
                         .opacity(imageSizeScaler)
-                        .frame(width: 160 * imageSizeScaler, height: 160 * imageSizeScaler)
-                }.frame(width: 160, height: 160)
+                        .frame(width: imageWidth * imageSizeScaler, height: imageWidth * imageSizeScaler)
+                }.frame(width: imageWidth, height: imageWidth)
                 
                 Spacer()
                 Text("Welcome to Graphnote")
