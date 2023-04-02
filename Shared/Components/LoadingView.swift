@@ -35,7 +35,7 @@ struct LoadingView: View {
                     withAnimation(.linear(duration: 1)) {
                         rotationAngle += 2
                     }
-                    let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                    Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                         withAnimation(.linear(duration: 1)) {
                             rotationAngle += 2
                         }
