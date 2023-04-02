@@ -19,10 +19,13 @@ struct SignInView: View {
         GeometryReader { geometry in
             VStack(spacing: Spacing.spacing6.rawValue) {
                 Spacer()
-                Image("GraphnoteIcon")
-                    .resizable()
-                    .opacity(imageSizeScaler)
-                    .frame(width: 160 * imageSizeScaler, height: 160 * imageSizeScaler)
+                VStack {
+                    Image("GraphnoteIcon")
+                        .resizable()
+                        .opacity(imageSizeScaler)
+                        .frame(width: 160 * imageSizeScaler, height: 160 * imageSizeScaler)
+                }.frame(width: 160, height: 160)
+                
                 Spacer()
                 Text("Welcome to Graphnote")
                     .font(.largeTitle)
