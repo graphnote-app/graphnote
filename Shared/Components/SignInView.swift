@@ -41,7 +41,7 @@ struct SignInView: View {
                     .font(.system(size: Spacing.spacing7.rawValue))
                     .foregroundColor(LabelColor.primary)
                     .opacity(welcomeOpacity)
-                Text("Thanks for using Graphnote. Built in Tennessee with Love")
+                Text("Thanks for using Graphnote. Built in Tennessee with Love.")
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .opacity(welcomeOpacity)
