@@ -8,18 +8,59 @@
 import SwiftUI
 
 struct SignInView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
+    @State private var welcomeOpacity = 0.0
+    @State private var getStartedOpacity = 0.0
+    @State private var imageSizeScaler = 0.25
+    private let duration = 2.0
+    
     var body: some View {
-        VStack {
-            Spacer()
-            Image("GraphnoteIcon")
+        GeometryReader { geometry in
+            VStack(spacing: Spacing.spacing6.rawValue) {
+                Spacer()
+                Image("GraphnoteIcon")
+                    .resizable()
+                    .opacity(imageSizeScaler)
+                    .frame(width: 160 * imageSizeScaler, height: 160 * imageSizeScaler)
+                Spacer()
+                Text("Welcome to Graphnote")
+                    .font(.largeTitle)
+                    .opacity(welcomeOpacity)
+                Text("Sign in to get started.")
+                    .font(.title2)
+                    .opacity(getStartedOpacity)
+                #if os(macOS)
+                AppleSignInButton()
+                    .frame(width: 200, height: 80)
+                #else
+                AppleSignInButton()
+                    .frame(width: 220, height: 60)
+                #endif
+                Spacer()
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .ignoresSafeArea()
+            .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightSidebarMobile)
+        }
+        
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1)) {
+                imageSizeScaler = 1.0
+            }
             
-                .frame(width: 80, height: 80)
-            Text("Graphnote")
-                .font(.title)
-            Spacer()
-//            AppleSignInButton()
-//                .frame(width: 200, height: 50)
-            Spacer()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                withAnimation(.easeOut(duration: duration)) {
+                    welcomeOpacity = 1.0
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration / 2) {
+                    withAnimation(.easeOut(duration: duration)) {
+                        getStartedOpacity = 1.0
+                    }
+                }
+            }
+            
+            
         }
     }
 }

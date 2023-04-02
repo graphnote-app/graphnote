@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
-import AppKit
-import Cocoa
+import AuthenticationServices
 
+#if os(macOS)
 struct AppleSignInButton: NSViewRepresentable {
-    typealias NSViewType = NSButton
+    typealias NSViewType = ASAuthorizationAppleIDButton
     
     func makeNSView(context: Context) -> NSViewType {
-        return NSButton()
+        return ASAuthorizationAppleIDButton()
     }
     
     func updateNSView(_ nsView: NSViewType, context: Context) {
@@ -21,19 +21,16 @@ struct AppleSignInButton: NSViewRepresentable {
     }
 }
 
-//import AuthenticationServices
+#else
+struct AppleSignInButton: UIViewRepresentable {
+    typealias UIViewType = ASAuthorizationAppleIDButton
+    
+    func makeUIView(context: Context) -> UIViewType {
+        return ASAuthorizationAppleIDButton()
+    }
 
-//#if os(macOS)
+    func updateUIView(_ uiView: UIViewType, context: Context) {
 
-
-//#else
-//struct SignInWithAppleButton: UIViewRepresentable {
-//    func makeUIView(context: Context) -> some UIView {
-//        return ASAuthorizationAppleIDButton()
-//    }
-//
-//    func updateUIView(_ uiView: UIViewType, context: Context) {
-//
-//    }
-//}
-//#endif
+    }
+}
+#endif
