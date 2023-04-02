@@ -12,6 +12,7 @@ struct SignInView: View {
     
     @State private var welcomeOpacity = 0.0
     @State private var getStartedOpacity = 0.0
+    @State private var signInButtonOpacity = 0.0
     @State private var imageSizeScaler = 0.25
     private let duration = 2.0
     private let imageWidth = 140.0
@@ -37,9 +38,11 @@ struct SignInView: View {
                 #if os(macOS)
                 AppleSignInButton()
                     .frame(width: 200, height: 80)
+                    .opacity(signInButtonOpacity)
                 #else
                 AppleSignInButton()
-                    .frame(width: 220, height: 60)
+                    .frame(width: 220, height: 40)
+                    .opacity(signInButtonOpacity)
                 #endif
                 Spacer()
             }
@@ -53,18 +56,17 @@ struct SignInView: View {
                 imageSizeScaler = 1.0
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                withAnimation(.easeOut(duration: duration)) {
-                    welcomeOpacity = 1.0
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration / 2) {
-                    withAnimation(.easeOut(duration: duration)) {
-                        getStartedOpacity = 1.0
-                    }
-                }
+            withAnimation(.easeOut(duration: duration).delay(1)) {
+                welcomeOpacity = 1.0
             }
             
+            withAnimation(.easeOut(duration: duration).delay(1 + duration / 2)) {
+                getStartedOpacity = 1.0
+            }
             
+            withAnimation(.easeOut(duration: duration).delay(1 + duration / 2 + 1)) {
+                signInButtonOpacity = 1.0
+            }
         }
     }
 }

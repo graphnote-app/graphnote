@@ -17,10 +17,25 @@ struct ContentView: View {
     @State private var menuOpen = true
     @State private var initialized = false
     
-    @State private var globalUIState = AppGlobalUIState.signIn
+    @State private var globalUIState = AppGlobalUIState.loading
     
     var body: some View {
         switch globalUIState {
+        case .loading:
+            LoadingView()
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        AuthService.checkAuthStatus { state in
+                            withAnimation {
+                                if state == .authorized {
+                                    globalUIState = .doc
+                                } else {
+                                    globalUIState = .signIn
+                                }
+                            }
+                        }
+                    }
+                }
         case .signIn:
             SignInView()
         case .doc, .settings:

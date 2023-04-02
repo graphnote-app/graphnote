@@ -6,6 +6,7 @@
 //
 
 enum AppGlobalUIState {
+    case loading
     case doc
     case settings
     case signIn
