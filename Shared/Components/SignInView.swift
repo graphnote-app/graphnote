@@ -62,7 +62,9 @@ struct SignInView: View {
                     }
                 }
             })
+            .opacity(getStartedOpacity)
             .frame(width: 200, height: 80)
+            
             #else
             AppleSignInButton()
                 .frame(width: 220, height: 40)
