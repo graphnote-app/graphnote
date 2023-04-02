@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct SignInView: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -16,6 +17,7 @@ struct SignInView: View {
     @State private var getStartedOpacity = 0.0
     @State private var signInButtonOpacity = 0.0
     @State private var imageSizeScaler = 0.25
+    @State private var buttonStyle = ASAuthorizationAppleIDButton.Style.black
     private let duration = 2.0
     private let imageWidth = 140.0
     private let authService = AuthService()
@@ -53,10 +55,14 @@ struct SignInView: View {
                 .font(.title2)
                 .opacity(getStartedOpacity)
             #if os(macOS)
-            AppleSignInButton()
-                .frame(width: 200, height: 80)
-                .opacity(signInButtonOpacity)
-                .allowsHitTesting(false)
+            AppleSignInButton(callback: { success in
+                if success {
+                    withAnimation {
+                        uiState = .doc
+                    }
+                }
+            })
+            .frame(width: 200, height: 80)
             #else
             AppleSignInButton()
                 .frame(width: 220, height: 40)
@@ -82,15 +88,15 @@ struct SignInView: View {
         GeometryReader { geometry in
             #if os(macOS)
             content(geometry: geometry)
-            .onTapGesture {
-                authService.handleAuthorizationAppleIDButtonPress { success in
-                    if success {
-                        withAnimation {
-                            uiState = .doc
-                        }
-                    }
-                }
-            }
+//            .onTapGesture {
+//                authService.handleAuthorizationAppleIDButtonPress { success in
+//                    if success {
+//                        withAnimation {
+//                            uiState = .doc
+//                        }
+//                    }
+//                }
+//            }
             #else
             content(geometry: geometry)
             #endif

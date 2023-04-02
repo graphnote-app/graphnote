@@ -10,15 +10,40 @@ import AuthenticationServices
 
 #if os(macOS)
 
-struct AppleSignInButton: NSViewRepresentable {
-    typealias NSViewType = ASAuthorizationAppleIDButton
-    
-    func makeNSView(context: Context) -> NSViewType {
-        return ASAuthorizationAppleIDButton()
+final class GNAuthorizationAppleIDButton: ASAuthorizationAppleIDButton {
+    init(callback: @escaping (Bool) -> Void) {
+        self.callback = callback
+        
+        super.init(authorizationButtonType: .default, authorizationButtonStyle: .black)
+        self.target = self
+        self.action = #selector(handleAction)
     }
     
-    func updateNSView(_ nsView: NSViewType, context: Context) {
-        
+    let callback: (Bool) -> Void
+    
+    private let authService = AuthService()
+    
+    @objc
+    func handleAction() {
+        authService.handleAuthorizationAppleIDButtonPress(callback: callback)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+struct AppleSignInButton: NSViewRepresentable {
+    typealias NSViewType = GNAuthorizationAppleIDButton
+    
+    let callback: (Bool) -> Void
+    
+    func makeNSView(context: Context) -> NSViewType {
+        return GNAuthorizationAppleIDButton(callback: callback)
+    }
+    
+    func updateNSView(_ nsView: GNAuthorizationAppleIDButton, context: Context) {
+
     }
 }
 
