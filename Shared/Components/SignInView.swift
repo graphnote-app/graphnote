@@ -56,7 +56,7 @@ struct SignInView: View {
             AppleSignInButton()
                 .frame(width: 200, height: 80)
                 .opacity(signInButtonOpacity)
-                .disabled(true)
+                .allowsHitTesting(false)
             #else
             AppleSignInButton()
                 .frame(width: 220, height: 40)
