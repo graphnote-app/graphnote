@@ -14,7 +14,11 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var vm = ContentViewVM()
     @State private var settings = false
+    #if os(macOS)
     @State private var menuOpen = true
+    #else
+    @State private var menuOpen = false
+    #endif
     @State private var initialized = false
     
     @State private var globalUIState = AppGlobalUIState.loading
@@ -38,6 +42,9 @@ struct ContentView: View {
                 }
         case .signIn:
             SignInView()
+                .onTapGesture {
+                    globalUIState = .doc
+                }
         case .doc, .settings:
             SplitView(sidebarOpen: $menuOpen) {
                 #if os(macOS)
