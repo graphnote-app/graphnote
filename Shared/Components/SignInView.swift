@@ -27,11 +27,18 @@ struct SignInView: View {
                         .opacity(imageSizeScaler)
                         .frame(width: imageWidth * imageSizeScaler, height: imageWidth * imageSizeScaler)
                 }.frame(width: imageWidth, height: imageWidth)
-                
+                Text("\"Augment your memory\"")
+                    .font(.title3)
+                    .opacity(welcomeOpacity)
                 Spacer()
                 Text("Welcome to Graphnote")
-                    .font(.largeTitle)
+                    .font(.system(size: 48))
                     .opacity(welcomeOpacity)
+                Text("Thanks for using Graphnote. Built in Tennessee with Love")
+                    .font(.body)
+                    .opacity(welcomeOpacity)
+                Spacer()
+                    .frame(height: Spacing.spacing6.rawValue)
                 Text("Sign in to get started.")
                     .font(.title2)
                     .opacity(getStartedOpacity)
@@ -62,9 +69,6 @@ struct SignInView: View {
             
             withAnimation(.easeOut(duration: duration).delay(1 + duration / 2)) {
                 getStartedOpacity = 1.0
-            }
-            
-            withAnimation(.easeOut(duration: duration).delay(1 + duration / 2 + 1)) {
                 signInButtonOpacity = 1.0
             }
         }

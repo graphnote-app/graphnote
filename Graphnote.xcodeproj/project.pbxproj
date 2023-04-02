@@ -410,8 +410,6 @@
 		F8BF73AD29C7E65900BA826E /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F88550AB29D9B51200EE458C /* SignInView.swift */,
-				F88550AE29D9B5A700EE458C /* SignInWithAppleButtonView.swift */,
 				F807C8BF29C9142E00B7B239 /* LabelField */,
 				F8BF73B229C7E9F600BA826E /* Toolbar */,
 				F8BF73AE29C7E7B100BA826E /* SplitView */,
@@ -423,6 +421,8 @@
 				F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */,
 				F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */,
 				F8BF73B729C7EB2700BA826E /* MenuCardView.swift */,
+				F88550AB29D9B51200EE458C /* SignInView.swift */,
+				F88550AE29D9B5A700EE458C /* SignInWithAppleButtonView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
