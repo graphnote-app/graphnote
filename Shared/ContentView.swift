@@ -43,7 +43,10 @@ struct ContentView: View {
         case .signIn:
             SignInView()
                 .onTapGesture {
-                    globalUIState = .doc
+                    withAnimation {
+                        globalUIState = .doc
+                    }
+                    
                 }
         case .doc, .settings:
             SplitView(sidebarOpen: $menuOpen) {
