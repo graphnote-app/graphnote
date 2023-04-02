@@ -16,6 +16,7 @@ struct SignInView: View {
     @State private var imageSizeScaler = 0.25
     private let duration = 2.0
     private let imageWidth = 140.0
+    private let authService = AuthService()
     
     var body: some View {
         GeometryReader { geometry in
@@ -54,10 +55,16 @@ struct SignInView: View {
                 AppleSignInButton()
                     .frame(width: 200, height: 80)
                     .opacity(signInButtonOpacity)
+                    .onTapGesture {
+                        authService.handleAuthorizationAppleIDButtonPress()
+                    }
                 #else
                 AppleSignInButton()
                     .frame(width: 220, height: 40)
                     .opacity(signInButtonOpacity)
+                    .onTapGesture {
+                        authService.handleAuthorizationAppleIDButtonPress()
+                    }
                 #endif
                 Spacer()
             }

@@ -202,6 +202,8 @@
 		F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinnerView.swift; sourceTree = "<group>"; };
 		F88D5EF029D9D4060088338F /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		F88D5EF429D9D4590088338F /* KeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
+		F88D5EF729D9F2700088338F /* Graphnote--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--macOS--Info.plist"; sourceTree = "<group>"; };
+		F88D5EF829D9F2BA0088338F /* Graphnote--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--iOS--Info.plist"; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* MobileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileUtils.swift; sourceTree = "<group>"; };
 		F8A6B6DB29D0E39A00140A53 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		F8A6B6DE29D0E3D800140A53 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 		F84D088A29C81DA100410C10 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				F88D5EF829D9F2BA0088338F /* Graphnote--iOS--Info.plist */,
 				F8403DE529D54A5A0027A196 /* AppIOS.swift */,
 				F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */,
 				F899DFF3279E770F00305AFA /* MobileUtils.swift */,
@@ -501,6 +504,7 @@
 		F8EA407F279CFF55001F74B5 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				F88D5EF729D9F2700088338F /* Graphnote--macOS--Info.plist */,
 				F8BF73A929C7E51400BA826E /* App */,
 				F8EA4080279CFF55001F74B5 /* macOS.entitlements */,
 			);
@@ -785,7 +789,7 @@
 				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = "iOS/Graphnote--iOS--Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -820,7 +824,7 @@
 				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = "iOS/Graphnote--iOS--Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -975,6 +979,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS/Graphnote--macOS--Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1006,6 +1011,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS/Graphnote--macOS--Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

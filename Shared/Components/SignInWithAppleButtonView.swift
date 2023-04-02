@@ -12,8 +12,12 @@ import AuthenticationServices
 struct AppleSignInButton: NSViewRepresentable {
     typealias NSViewType = ASAuthorizationAppleIDButton
     
+    private let authService = AuthService()
+    
     func makeNSView(context: Context) -> NSViewType {
-        return ASAuthorizationAppleIDButton()
+        let authButton = ASAuthorizationAppleIDButton()
+        authButton.action = #selector(authService.handleAuthorizationAppleIDButtonPress)
+        return authButton
     }
     
     func updateNSView(_ nsView: NSViewType, context: Context) {
@@ -25,8 +29,12 @@ struct AppleSignInButton: NSViewRepresentable {
 struct AppleSignInButton: UIViewRepresentable {
     typealias UIViewType = ASAuthorizationAppleIDButton
     
+    private let authService = AuthService()
+    
     func makeUIView(context: Context) -> UIViewType {
-        return ASAuthorizationAppleIDButton()
+        let authButton = ASAuthorizationAppleIDButton()
+        authButton.addTarget(self, action: #selector(authService.handleAuthorizationAppleIDButtonPress), for: .touchUpInside)
+        return authButton
     }
 
     func updateUIView(_ uiView: UIViewType, context: Context) {

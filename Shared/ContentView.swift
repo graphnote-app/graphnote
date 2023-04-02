@@ -42,12 +42,11 @@ struct ContentView: View {
                 }
         case .signIn:
             SignInView()
-                .onTapGesture {
-                    withAnimation {
-                        globalUIState = .doc
-                    }
-                    
-                }
+//                .onTapGesture {
+//                    withAnimation {
+//                        globalUIState = .doc
+//                    }
+//                }
         case .doc, .settings:
             SplitView(sidebarOpen: $menuOpen) {
                 #if os(macOS)
