@@ -55,16 +55,10 @@ struct SignInView: View {
                 AppleSignInButton()
                     .frame(width: 200, height: 80)
                     .opacity(signInButtonOpacity)
-                    .onTapGesture {
-                        authService.handleAuthorizationAppleIDButtonPress()
-                    }
                 #else
                 AppleSignInButton()
                     .frame(width: 220, height: 40)
                     .opacity(signInButtonOpacity)
-                    .onTapGesture {
-                        authService.handleAuthorizationAppleIDButtonPress()
-                    }
                 #endif
                 Spacer()
             }

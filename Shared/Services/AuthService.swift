@@ -13,7 +13,7 @@ import UIKit
 
 import AuthenticationServices
 
-class AuthService: NSObject {
+final class AuthService: NSObject {
     static func checkAuthStatus( callback: @escaping (_ state: ASAuthorizationAppleIDProvider.CredentialState) -> Void) {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
@@ -36,8 +36,12 @@ class AuthService: NSObject {
         }
     }
     
-    @objc
-    func handleAuthorizationAppleIDButtonPress() {
+    @objc func handleAuthorizationAppleIDButtonPress() {
+        print("handle request")
+        // Prepare requests for both Apple ID and password providers.
+        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
+                        ASAuthorizationPasswordProvider().createRequest()]
+        
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.fullName, .email]

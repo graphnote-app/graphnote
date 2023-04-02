@@ -9,6 +9,7 @@ import SwiftUI
 import AuthenticationServices
 
 #if os(macOS)
+
 struct AppleSignInButton: NSViewRepresentable {
     typealias NSViewType = ASAuthorizationAppleIDButton
     
@@ -16,6 +17,7 @@ struct AppleSignInButton: NSViewRepresentable {
     
     func makeNSView(context: Context) -> NSViewType {
         let authButton = ASAuthorizationAppleIDButton()
+        authButton.target = self as AnyObject
         authButton.action = #selector(authService.handleAuthorizationAppleIDButtonPress)
         return authButton
     }
@@ -33,10 +35,12 @@ struct AppleSignInButton: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIViewType {
         let authButton = ASAuthorizationAppleIDButton()
-        authButton.addTarget(self, action: #selector(authService.handleAuthorizationAppleIDButtonPress), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(authService.handleAuthorizationAppleIDButtonPress))
+        tapGesture.cancelsTouchesInView = false
+        authButton.addGestureRecognizer(tapGesture)
         return authButton
     }
-
+    
     func updateUIView(_ uiView: UIViewType, context: Context) {
 
     }

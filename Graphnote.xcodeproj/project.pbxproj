@@ -204,6 +204,8 @@
 		F88D5EF429D9D4590088338F /* KeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
 		F88D5EF729D9F2700088338F /* Graphnote--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--macOS--Info.plist"; sourceTree = "<group>"; };
 		F88D5EF829D9F2BA0088338F /* Graphnote--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--iOS--Info.plist"; sourceTree = "<group>"; };
+		F88D5EF929D9FEBC0088338F /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.2.sdk/System/Library/Frameworks/AuthenticationServices.framework; sourceTree = DEVELOPER_DIR; };
+		F896E8FF29D9FFBE00296073 /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		F899DFF3279E770F00305AFA /* MobileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileUtils.swift; sourceTree = "<group>"; };
 		F8A6B6DB29D0E39A00140A53 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		F8A6B6DE29D0E3D800140A53 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 		F84D088A29C81DA100410C10 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				F896E8FF29D9FFBE00296073 /* iOS.entitlements */,
 				F88D5EF829D9F2BA0088338F /* Graphnote--iOS--Info.plist */,
 				F8403DE529D54A5A0027A196 /* AppIOS.swift */,
 				F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */,
@@ -369,6 +372,7 @@
 		F899DFF9279E87E500305AFA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F88D5EF929D9FEBC0088338F /* AuthenticationServices.framework */,
 				F88550B829D9BC4500EE458C /* SwiftUI.framework */,
 				F88550B629D9BC3A00EE458C /* AppKit.framework */,
 			);
@@ -783,6 +787,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
@@ -818,6 +823,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
