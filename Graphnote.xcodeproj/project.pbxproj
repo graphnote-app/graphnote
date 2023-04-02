@@ -108,6 +108,13 @@
 		F84D088629C81AAA00410C10 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088529C81AAA00410C10 /* TreeView.swift */; };
 		F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */; };
 		F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D857C29CBEA35006538EA /* LabelContextMenu.swift */; };
+		F88550AC29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
+		F88550AD29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
+		F88550AF29D9B5A700EE458C /* SignInWithAppleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AE29D9B5A700EE458C /* SignInWithAppleButtonView.swift */; };
+		F88550B029D9B5A700EE458C /* SignInWithAppleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AE29D9B5A700EE458C /* SignInWithAppleButtonView.swift */; };
+		F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
+		F88550B329D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
+		F88550B429D9BA8300EE458C /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
 		F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFFA279E87E500305AFA /* SwiftyJSON */; };
 		F8A6B6DC29D0E39A00140A53 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DB29D0E39A00140A53 /* Block.swift */; };
 		F8A6B6DF29D0E3D800140A53 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DE29D0E3D800140A53 /* Document.swift */; };
@@ -181,6 +188,11 @@
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocumentIdentifier.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
+		F88550AB29D9B51200EE458C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		F88550AE29D9B5A700EE458C /* SignInWithAppleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleButtonView.swift; sourceTree = "<group>"; };
+		F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGlobalUIState.swift; sourceTree = "<group>"; };
+		F88550B629D9BC3A00EE458C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		F88550B829D9BC4500EE458C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		F899DFF3279E770F00305AFA /* MobileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileUtils.swift; sourceTree = "<group>"; };
 		F8A6B6DB29D0E39A00140A53 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		F8A6B6DE29D0E3D800140A53 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -337,6 +349,8 @@
 		F899DFF9279E87E500305AFA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F88550B829D9BC4500EE458C /* SwiftUI.framework */,
+				F88550B629D9BC3A00EE458C /* AppKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -448,6 +462,9 @@
 				F82EC67E29D54D03009C46BE /* GlobalDimension.swift */,
 				F82EC68529D5580F009C46BE /* HorizontalFlexView.swift */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
+				F88550AB29D9B51200EE458C /* SignInView.swift */,
+				F88550AE29D9B5A700EE458C /* SignInWithAppleButtonView.swift */,
+				F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -573,9 +590,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F88550B429D9BA8300EE458C /* Assets.xcassets in Sources */,
 				F82EC6A229D56714009C46BE /* MobileUtils.swift in Sources */,
 				F82EC68729D55846009C46BE /* HorizontalFlexView.swift in Sources */,
 				F82EC68329D54F24009C46BE /* ContentView.swift in Sources */,
+				F88550B329D9B82B00EE458C /* AppGlobalUIState.swift in Sources */,
 				F82EC68429D54F24009C46BE /* ContentViewVM.swift in Sources */,
 				F82EC68229D54EEE009C46BE /* GlobalDimension.swift in Sources */,
 				F82EC68129D54EDC009C46BE /* ToolbarView.swift in Sources */,
@@ -611,6 +630,7 @@
 				F82EC65629D54B62009C46BE /* TreeView.swift in Sources */,
 				F82EC65729D54B62009C46BE /* TreeViewItem.swift in Sources */,
 				F82EC65829D54B62009C46BE /* TreeViewLabel.swift in Sources */,
+				F88550B029D9B5A700EE458C /* SignInWithAppleButtonView.swift in Sources */,
 				F82EC65929D54B62009C46BE /* TreeViewLine.swift in Sources */,
 				F82EC65A29D54B62009C46BE /* TreeViewSubline.swift in Sources */,
 				F82EC65B29D54B62009C46BE /* WorkspaceMenu.swift in Sources */,
@@ -637,6 +657,7 @@
 				F82EC67029D54B62009C46BE /* LabelRepo.swift in Sources */,
 				F82EC67129D54B62009C46BE /* LabelLinkRepo.swift in Sources */,
 				F82EC67229D54B62009C46BE /* DataSeeder.swift in Sources */,
+				F88550AD29D9B51200EE458C /* SignInView.swift in Sources */,
 				F82EC67329D54B62009C46BE /* SettingsView.swift in Sources */,
 				F82EC67429D54B62009C46BE /* TreeDocumentIdentifier.swift in Sources */,
 				F82EC67529D54B62009C46BE /* Spacing.swift in Sources */,
@@ -657,6 +678,7 @@
 				F8BF73CA29C7F54900BA826E /* DocumentEntity.swift in Sources */,
 				F84D087C29C809FE00410C10 /* PromptField.swift in Sources */,
 				F84D087A29C809FE00410C10 /* BodyView.swift in Sources */,
+				F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */,
 				F8A6B6FC29D1279300140A53 /* LabelLinkEntity.swift in Sources */,
 				F84D087B29C809FE00410C10 /* BulletView.swift in Sources */,
 				F8A6B6DF29D0E3D800140A53 /* Document.swift in Sources */,
@@ -664,10 +686,12 @@
 				F807C8C329C9161B00B7B239 /* EditIconView.swift in Sources */,
 				F84D087929C809ED00410C10 /* BlockView.swift in Sources */,
 				F807C8C129C9144500B7B239 /* LabelField.swift in Sources */,
+				F88550AC29D9B51200EE458C /* SignInView.swift in Sources */,
 				F84D088429C817E900410C10 /* GlobalDimensionMacOS.swift in Sources */,
 				F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */,
 				F8A6B6F629D10C6400140A53 /* UserBuilder.swift in Sources */,
 				F8A6B6EE29D0F0D300140A53 /* WorkspaceRepo.swift in Sources */,
+				F88550AF29D9B5A700EE458C /* SignInWithAppleButtonView.swift in Sources */,
 				F8A6B6F229D1008200140A53 /* UserRepo.swift in Sources */,
 				F807C8C929C919A100B7B239 /* LabelColor.swift in Sources */,
 				F8A6B6FA29D11D5B00140A53 /* LabelRepo.swift in Sources */,
@@ -916,6 +940,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -946,6 +971,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

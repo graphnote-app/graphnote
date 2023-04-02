@@ -17,65 +17,72 @@ struct ContentView: View {
     @State private var menuOpen = true
     @State private var initialized = false
     
+    @State private var globalUIState = AppGlobalUIState.signIn
+    
     var body: some View {
-        SplitView(sidebarOpen: $menuOpen) {
-            #if os(macOS)
-            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
-                .frame(width: GlobalDimension.treeWidth)
-                .onChange(of: vm.selectedSubItem) { _ in
-                    settings = false
-                }
-            #else
-            
-            SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
-                .background(colorScheme == .dark ? ColorPalette.darkSidebarMobile : ColorPalette.lightSidebarMobile)
-                .onChange(of: vm.selectedSubItem) { _ in
-                    settings = false
-                    if UIDevice().userInterfaceIdiom == .phone {
-                        if initialized {
-                            if MobileUtils.OrientationInfo().orientation == .portrait {
-                                withAnimation {
-                                    menuOpen = false
+        switch globalUIState {
+        case .signIn:
+            SignInView()
+        case .doc, .settings:
+            SplitView(sidebarOpen: $menuOpen) {
+                #if os(macOS)
+                SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
+                    .frame(width: GlobalDimension.treeWidth)
+                    .onChange(of: vm.selectedSubItem) { _ in
+                        settings = false
+                    }
+                #else
+                
+                SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
+                    .background(colorScheme == .dark ? ColorPalette.darkSidebarMobile : ColorPalette.lightSidebarMobile)
+                    .onChange(of: vm.selectedSubItem) { _ in
+                        settings = false
+                        if UIDevice().userInterfaceIdiom == .phone {
+                            if initialized {
+                                if MobileUtils.OrientationInfo().orientation == .portrait {
+                                    withAnimation {
+                                        menuOpen = false
+                                    }
                                 }
+                            } else {
+                                initialized = true
                             }
-                        } else {
-                            initialized = true
                         }
                     }
-                }
-                .onChange(of: menuOpen) { newValue in
-                    if newValue == true {
-                        MobileUtils.resignKeyboard()
+                    .onChange(of: menuOpen) { newValue in
+                        if newValue == true {
+                            MobileUtils.resignKeyboard()
+                        }
                     }
-                }
-            #endif
-        } detail: {
-            if settings {
-                return SettingsView()
+                #endif
+            } detail: {
+                if settings {
+                    return SettingsView()
+                        .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                } else if let user = vm.user, let workspace = vm.selectedWorkspace, let document = vm.selectedDocument {
+                    return DocumentContainer(user: user, workspace: workspace, document: document)
+                        .id(document.id)
+                } else {
+                    return HorizontalFlexView {
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
-            } else if let user = vm.user, let workspace = vm.selectedWorkspace, let document = vm.selectedDocument {
-                return DocumentContainer(user: user, workspace: workspace, document: document)
-                    .id(document.id)
-            } else {
-                return HorizontalFlexView {
-                    Spacer()
+                        
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
-                    
             }
-        }
-        .onAppear {
-            if seed {
-                if DataSeeder.seed() {
+            .onAppear {
+                if seed {
+                    if DataSeeder.seed() {
+                        vm.initialize()
+                        vm.fetch()
+                    } else {
+                        print("seed failed")
+                    }
+                } else {
                     vm.initialize()
                     vm.fetch()
-                } else {
-                    print("seed failed")
                 }
-            } else {
-                vm.initialize()
-                vm.fetch()
             }
         }
     }
