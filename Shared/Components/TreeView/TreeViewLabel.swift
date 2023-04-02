@@ -36,18 +36,13 @@ struct TreeViewLabel: View, Identifiable {
                 .padding(TreeViewLabelDimensions.rowPadding.rawValue)
                 .frame(minWidth: 200, alignment: .leading)
                 .contentShape(RoundedRectangle(cornerRadius: Spacing.spacing2.rawValue))
-                .contextMenu {
-                    Button {
-                        editable = true
-                    } label: {
-                        Text("Rename workspace")
-                    }
-                    Button {
-                        print("Delete workspace \(id)")
-                    } label: {
-                        Text("Delete workspace")
-                    }
-                }
+//                .contextMenu {
+//                    Button {
+//                        editable = true
+//                    } label: {
+//                        Text("Rename label")
+//                    }
+//                }
                 .onTapGesture {
                     toggle.toggle()
                 }

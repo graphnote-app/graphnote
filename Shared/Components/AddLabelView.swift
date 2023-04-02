@@ -15,43 +15,58 @@ struct AddLabelView: View {
     @State private var color = LabelPalette.allCases().randomElement()
     
     @State private var title: String = ""
-    var body: some View {
-        Spacer()
-        TextField("name", text: $title)
-            .padding()
-        Menu("label color") {
-            ForEach(LabelPalette.allCases(), id: \.self) { color in
-                Button(color.rawValue) {
-                    self.color = color
+    
+    var content: some View {
+        VStack {
+            List {
+                TextField("name", text: $title)
+                    .padding()
+                Menu("label color") {
+                    ForEach(LabelPalette.allCases(), id: \.self) { color in
+                        Button(color.rawValue) {
+                            self.color = color
+                        }
+                    }
                 }
+                .menuStyle(.borderlessButton)
+                .onChange(of: title, perform: { newValue in
+                    if newValue.count == .zero {
+                        isEmpty = true
+                    } else {
+                        isEmpty = false
+                    }
+                })
+                    .padding()
+                
             }
-        }
-        .menuStyle(.borderlessButton)
-        .onChange(of: title, perform: { newValue in
-            if newValue.count == .zero {
-                isEmpty = true
-            } else {
-                isEmpty = false
-            }
-        })
-            .padding()
-        Spacer()
-        HStack {
-            Button("Close") {
-                close()
-            }
-            .foregroundColor(.red)
-            .buttonStyle(.borderless)
-            .padding()
+            .cornerRadius(24)
             Spacer()
-            Button("Add") {
-                save(title, color!.getColor())
-            }
-            .disabled(isEmpty)
-            .foregroundColor(isEmpty ? Color.gray : Color.accentColor)
-            .buttonStyle(.borderless)
-            .padding()
+            HStack {
+                Button("Close") {
+                    close()
+                }
+                .foregroundColor(.red)
+                .buttonStyle(.borderless)
+                .padding()
+                Spacer()
+                Button("Add") {
+                    save(title, color!.getColor())
+                }
+                .disabled(isEmpty)
+                .foregroundColor(isEmpty ? Color.gray : Color.accentColor)
+                .buttonStyle(.borderless)
+                .padding()
+            }.padding()
         }
+    }
+    
+    var body: some View {
+        #if os(macOS)
+        content
+        #else
+        content
+            .frame(width: 300, height: 300)
+        #endif
     }
 }
 
