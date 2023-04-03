@@ -44,25 +44,23 @@ struct LabelField: View {
                 .sheet(isPresented: $showAddSheet, content: {
                     AddLabelView(save: { (title, color) in
                         let labelRepo = LabelRepo(user: user, workspace: workspace)
-                        let label = Label(id: UUID(), title: title, color: color, workspaceId: workspace.id, createdAt: .now, modifiedAt: .now)
                         
-                        if labelRepo.create(label: label) {
-                            let documentRepo = DocumentRepo(user: user, workspace: workspace)
-                            documentRepo.attach(label: label, document: document)
-                            fetch()
-                            newLabelNotification()
-                            self.showAddSheet = false
-                        } else {
-                            self.showAddSheet = false
-                            withAnimation {
-                                labelExistsAlertOpen = true
-                            }
+                        var label = Label(id: UUID(), title: title, color: color, workspaceId: workspace.id, createdAt: .now, modifiedAt: .now)
+                        
+                        if let labelEntity = try? labelRepo.create(label: label) {
+                            label = Label(id: labelEntity.id, title: label.title, color: label.color, workspaceId: label.workspaceId, createdAt: label.createdAt, modifiedAt: label.modifiedAt)    
                         }
                         
+                        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+                        documentRepo.attach(label: label, document: document)
+                        fetch()
+                        newLabelNotification()
+                        self.showAddSheet = false
                         
                     }, close: {
                         self.showAddSheet = false
                     })
+                    .id(document.id)
                     .presentationDetents([.medium, .large])
                     .frame(width: 300, height: 260)
                 })

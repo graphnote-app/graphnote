@@ -9,20 +9,24 @@ import Foundation
 import CoreData
 import SwiftUI
 
+enum LabelRepoError: Error {
+    case workspaceFailed
+}
+
 struct LabelRepo {
     let user: User
     let workspace: Workspace
     
     private let moc = DataController.shared.container.viewContext
     
-    func create(label: Label) -> Bool {
+    func create(label: Label) throws -> LabelEntity? {
         guard let workspaceEntity = try? getWorkspaceEntity(workspace: workspace) else {
             print("Failed to get workspaceEntity: \(workspace)")
-            return false
+            throw LabelRepoError.workspaceFailed
         }
 
-        if let _ = try? LabelEntity.getEntity(title: label.title, workspace: workspace, moc: moc) {
-            return false
+        if let labelEntity = try? LabelEntity.getEntity(title: label.title, workspace: workspace, moc: moc) {
+            return labelEntity
         } else {
             let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
             labelEntity.title = label.title
@@ -37,7 +41,7 @@ struct LabelRepo {
             labelEntity.colorBlue = Float(rgb![2])
             
             try? moc.save()
-            return true
+            return nil
         }
     }
     
