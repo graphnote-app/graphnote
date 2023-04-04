@@ -12,11 +12,13 @@ import UIKit
 #endif
 
 import AuthenticationServices
+import SwiftyJSON
 
 final class AuthService: NSObject {
-    static func checkAuthStatus( callback: @escaping (_ state: ASAuthorizationAppleIDProvider.CredentialState) -> Void) {
+    static func checkAuthStatus(user: User, callback: @escaping (_ state: ASAuthorizationAppleIDProvider.CredentialState) -> Void) {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
+        print("USER ID: \(user.id)")
+        appleIDProvider.getCredentialState(forUserID: user.id) { (credentialState, error) in
             switch credentialState {
             case .authorized:
                 callback(credentialState)
@@ -38,6 +40,20 @@ final class AuthService: NSObject {
     
     func process(authorization: ASAuthorization) {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
+        
+        // Check if user exists locally and remotely if possible (with internet)
+        // Temporarily use a static user
+        print("credential.user: \(credential.user)")
+        let id = credential.user
+        
+        let user = User(id: id, createdAt: .now, modifiedAt: .now)
+        
+        do {
+            try UserBuilder.create(user: user)
+        } catch let error {
+            print(error)
+        }
+        
         print(credential.user)
         
         if let fullName = credential.fullName, let givenName = fullName.givenName, let familyName = fullName.familyName {

@@ -11,14 +11,23 @@ import CoreData
 class DataController: ObservableObject {
     let container = NSPersistentContainer(name: "Graphnote")
     
+    @Published private(set) var loaded = false
+    
     static let shared = DataController()
     
     private init() {
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        self.load()
+    }
+    
+    private func load() {
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Core Data failed to load: \(error.localizedDescription)")
+                self.loaded = false
             }
+            
+            self.loaded = true
         }
     }
     

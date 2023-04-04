@@ -10,8 +10,8 @@ import AuthenticationServices
 
 struct SignInView: View {
     @Environment(\.colorScheme) private var colorScheme
-    
-    @Binding var uiState: AppGlobalUIState
+
+    let callback: () -> Void
     
     @State private var welcomeOpacity = 0.0
     @State private var getStartedOpacity = 0.0
@@ -20,7 +20,12 @@ struct SignInView: View {
     
     private let duration = 2.0
     private let imageWidth = 140.0
-    private let authService = AuthService()
+    private let authService: AuthService
+    
+    init(callback: @escaping () -> Void) {
+        self.callback = callback
+        self.authService = AuthService()
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -61,9 +66,7 @@ struct SignInView: View {
                     switch result {
                     case .success(let authorization):
                         authService.process(authorization: authorization)
-                        withAnimation {
-                            uiState = .doc
-                        }
+                        callback()
 
                     case .failure(let error):
                         print(error)
@@ -91,11 +94,5 @@ struct SignInView: View {
                 signInButtonOpacity = 1.0
             }
         }
-    }
-}
-
-struct SignInView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignInView(uiState: .constant(AppGlobalUIState.doc))
     }
 }

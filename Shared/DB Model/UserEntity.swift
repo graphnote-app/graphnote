@@ -12,7 +12,7 @@ public class UserEntity: NSManagedObject {
         return NSFetchRequest<UserEntity>(entityName: "UserEntity")
     }
     
-    @NSManaged public var id: UUID
+    @NSManaged public var id: String
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
 }
@@ -22,10 +22,10 @@ extension UserEntity : Comparable {
         lhs.createdAt < rhs.createdAt
     }
     
-    static public func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> UserEntity? {
+    static public func getEntity(id: String, moc: NSManagedObjectContext) throws -> UserEntity? {
         do {
             let fetchRequest = UserEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
             guard let entity = try moc.fetch(fetchRequest).first else {
                 return nil
             }

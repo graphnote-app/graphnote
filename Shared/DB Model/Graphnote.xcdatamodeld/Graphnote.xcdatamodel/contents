@@ -37,7 +37,7 @@
     </entity>
     <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="String"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DocumentEntity" inverseName="user" inverseEntity="DocumentEntity"/>
         <relationship name="workspaces" toMany="YES" deletionRule="Cascade" destinationEntity="WorkspaceEntity" inverseName="user" inverseEntity="WorkspaceEntity"/>

@@ -69,7 +69,7 @@ struct WorkspaceRepo {
     func readAll() throws -> [Workspace] {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "user.id == %@", user.id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "user.id == %@", user.id)
             let workspaces = try moc.fetch(fetchRequest)
             return workspaces.map { workspaceEntity in
                 let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in

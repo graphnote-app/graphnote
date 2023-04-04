@@ -14,7 +14,7 @@ struct UserRepo {
 
     func create(workspace: Workspace, for user: User) throws -> Bool {
         do {
-            guard let userEntity = try getUserEntity(id: user.id) else {
+            guard let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
                 return false
             }
             
@@ -73,7 +73,7 @@ struct UserRepo {
     func delete(user: User) throws {
         do {
             let fetchRequest = UserEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", user.id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", user.id)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
             
             try moc.execute(deleteRequest)
@@ -107,22 +107,6 @@ struct UserRepo {
             let fetchRequest = UserEntity.fetchRequest()
             let users = try moc.fetch(fetchRequest)
             return users
-            
-        } catch let error {
-            print(error)
-            throw error
-        }
-    }
-    
-    private func getUserEntity(id: UUID) throws -> UserEntity? {
-        do {
-            let fetchRequest = UserEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
-            guard let user = try moc.fetch(fetchRequest).first else {
-                return nil
-            }
-            
-            return user
             
         } catch let error {
             print(error)

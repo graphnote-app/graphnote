@@ -119,8 +119,6 @@
 		F88D5EEF29D9CE5B0088338F /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */; };
 		F88D5EF129D9D4060088338F /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF029D9D4060088338F /* AuthService.swift */; };
 		F88D5EF229D9D4060088338F /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF029D9D4060088338F /* AuthService.swift */; };
-		F88D5EF529D9D4590088338F /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF429D9D4590088338F /* KeychainItem.swift */; };
-		F88D5EF629D9D4590088338F /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF429D9D4590088338F /* KeychainItem.swift */; };
 		F896E90429DA3BC500296073 /* AddLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896E90329DA3BC500296073 /* AddLabelView.swift */; };
 		F896E90529DA3BC500296073 /* AddLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896E90329DA3BC500296073 /* AddLabelView.swift */; };
 		F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFFA279E87E500305AFA /* SwiftyJSON */; };
@@ -203,7 +201,6 @@
 		F88550B829D9BC4500EE458C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinnerView.swift; sourceTree = "<group>"; };
 		F88D5EF029D9D4060088338F /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		F88D5EF429D9D4590088338F /* KeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
 		F88D5EF729D9F2700088338F /* Graphnote--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--macOS--Info.plist"; sourceTree = "<group>"; };
 		F88D5EF829D9F2BA0088338F /* Graphnote--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--iOS--Info.plist"; sourceTree = "<group>"; };
 		F88D5EF929D9FEBC0088338F /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.2.sdk/System/Library/Frameworks/AuthenticationServices.framework; sourceTree = DEVELOPER_DIR; };
@@ -495,7 +492,6 @@
 				F82EC68529D5580F009C46BE /* HorizontalFlexView.swift */,
 				F8EA4073279CFF54001F74B5 /* Assets.xcassets */,
 				F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */,
-				F88D5EF429D9D4590088338F /* KeychainItem.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -658,7 +654,6 @@
 				F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */,
 				F82EC65329D54B62009C46BE /* FileIconView.swift in Sources */,
 				F82EC65429D54B62009C46BE /* TreeViewAddView.swift in Sources */,
-				F88D5EF629D9D4590088338F /* KeychainItem.swift in Sources */,
 				F82EC65529D54B62009C46BE /* CheckmarkView.swift in Sources */,
 				F82EC65629D54B62009C46BE /* TreeView.swift in Sources */,
 				F82EC65729D54B62009C46BE /* TreeViewItem.swift in Sources */,
@@ -735,7 +730,6 @@
 				F8A6B6E529D0E94E00140A53 /* LabelEntity.swift in Sources */,
 				F8A6B6F029D0FB8B00140A53 /* User.swift in Sources */,
 				F84D088629C81AAA00410C10 /* TreeView.swift in Sources */,
-				F88D5EF529D9D4590088338F /* KeychainItem.swift in Sources */,
 				F82EC67929D54BB6009C46BE /* GNColor.swift in Sources */,
 				F8BF73CB29C7F54900BA826E /* BlockEntity.swift in Sources */,
 				F82EC68629D5580F009C46BE /* HorizontalFlexView.swift in Sources */,
@@ -811,7 +805,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Graphnote--iOS-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cerebralstudio.Graphnote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -847,7 +841,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cerebralstudio.Graphnote--iOS-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cerebralstudio.Graphnote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

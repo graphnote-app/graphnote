@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct DataSeeder{
-    static func seed() -> Bool {
+    static func seed(userId: String) -> Bool {
         // Delete the database
         DataController.shared.dropDatabase()
         
         // Info
-        let userId = UUID()
         let now = Date.now
         
         let user = User(id: userId, createdAt: now, modifiedAt: now)
