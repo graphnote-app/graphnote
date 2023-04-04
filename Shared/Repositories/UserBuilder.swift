@@ -15,6 +15,13 @@ struct UserBuilder {
         userEntity.id = user.id
         userEntity.createdAt = user.createdAt
         userEntity.modifiedAt = user.modifiedAt
-        try? moc.save()
+        
+        do {
+            try moc.save()
+        } catch let error {
+            print(error)
+            throw error
+        }
+        
     }
 }

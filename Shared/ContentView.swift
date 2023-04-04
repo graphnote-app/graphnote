@@ -43,17 +43,22 @@ struct ContentView: View {
                 LoadingView()
             case .signIn:
                 SignInView {
-                    if let user = vm.user {
-                        if seed {
-                            if DataSeeder.seed(userId: user.id) {
-                                vm.fetch()
+                    if !initialized {
+                        vm.initializeUser()
+                        if let user = vm.user {
+                            if seed {
+                                if DataSeeder.seed(userId: user.id) {
+                                    vm.initializeUserWorkspaces()
+                                    vm.fetch()
+                                } else {
+                                    print("seed failed")
+                                }
                             } else {
-                                print("seed failed")
+                                vm.initializeUserWorkspaces()
+                                vm.fetch()
                             }
-                        } else {
-                            vm.fetch()
+                            checkAuthStatus(user: user)
                         }
-                        checkAuthStatus(user: user)
                     }
                 }
             case .doc, .settings:
@@ -130,14 +135,17 @@ struct ContentView: View {
         }
         .onAppear {
             if DataController.shared.loaded {
-                if !initialized {
-                    vm.initialize()
+                withAnimation(.default.delay(0.5)) {
+                    globalUIState = .signIn
                 }
                 
-                vm.fetch()
-                
-                if let user = vm.user {
-                    checkAuthStatus(user: user)
+                if !initialized {
+                    vm.initializeUser()
+                    vm.initializeUserWorkspaces()
+                    if let user = vm.user {
+                        checkAuthStatus(user: user)
+                        vm.fetch()
+                    }
                 }
             }
         }

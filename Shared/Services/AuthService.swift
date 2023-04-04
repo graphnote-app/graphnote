@@ -12,7 +12,6 @@ import UIKit
 #endif
 
 import AuthenticationServices
-import SwiftyJSON
 
 final class AuthService: NSObject {
     static func checkAuthStatus(user: User, callback: @escaping (_ state: ASAuthorizationAppleIDProvider.CredentialState) -> Void) {

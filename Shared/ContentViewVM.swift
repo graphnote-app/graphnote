@@ -66,11 +66,14 @@ class ContentViewVM: NSObject, ObservableObject {
         fetch()
     }
     
-    func initialize() {
+    func initializeUser() {
         if let user = try? UserRepo().readAll()?.first {
-            
             self.user = user
-            
+        }
+    }
+    
+    func initializeUserWorkspaces() {
+        if let user {
             let workspaceRepo = WorkspaceRepo(user: user)
             
             if let workspaces = try? workspaceRepo.readAll(), let workspace = workspaces.first {
@@ -104,45 +107,47 @@ class ContentViewVM: NSObject, ObservableObject {
             let workspaceRepo = WorkspaceRepo(user: user)
             
             if let workspaces = try? workspaceRepo.readAll() {
-                let workspace = workspaces[selectedWorkspaceIndex]
-                
-                if selectedWorkspace != nil {
-                    updateCurrentWorkspace()
-                }
-                
-                let curWorkspace = self.selectedWorkspace ?? workspace
-                
-                self.selectedWorkspace = curWorkspace
-                
-                treeItems = curWorkspace.labels.map({ label in
+                if workspaces.count > selectedWorkspaceIndex {
+                    let workspace = workspaces[selectedWorkspaceIndex]
                     
-                    let workspaceRepo = WorkspaceRepo(user: user)
-                    let labelLinks = try? workspaceRepo.readLabelLinks(workspace: curWorkspace).filter {
-                        $0.label == label.id
+                    if selectedWorkspace != nil {
+                        updateCurrentWorkspace()
                     }
                     
-                    let subItems = labelLinks?.compactMap { labelLink in
-                        do {
-                            if let document = try workspaceRepo.read(document: labelLink.document) {
-                                return TreeViewSubItem(id: document.id, title: document.title)
-                            }
-                        } catch let error {
-                            print(error)
+                    let curWorkspace = self.selectedWorkspace ?? workspace
+                    
+                    self.selectedWorkspace = curWorkspace
+                    
+                    treeItems = curWorkspace.labels.map({ label in
+                        
+                        let workspaceRepo = WorkspaceRepo(user: user)
+                        let labelLinks = try? workspaceRepo.readLabelLinks(workspace: curWorkspace).filter {
+                            $0.label == label.id
                         }
                         
-                        return nil
-                    }
-                    
-                    return TreeViewItem(id: label.id, title: label.title, color: label.color, subItems: subItems)
-                }).sorted(by: { lhs, rhs in
-                    lhs.title < rhs.title
-                })
-                
-                treeItems.append(
-                    TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: curWorkspace.documents.map {
-                        TreeViewSubItem(id: $0.id, title: $0.title)
+                        let subItems = labelLinks?.compactMap { labelLink in
+                            do {
+                                if let document = try workspaceRepo.read(document: labelLink.document) {
+                                    return TreeViewSubItem(id: document.id, title: document.title)
+                                }
+                            } catch let error {
+                                print(error)
+                            }
+                            
+                            return nil
+                        }
+                        
+                        return TreeViewItem(id: label.id, title: label.title, color: label.color, subItems: subItems)
+                    }).sorted(by: { lhs, rhs in
+                        lhs.title < rhs.title
                     })
-                )
+                    
+                    treeItems.append(
+                        TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: curWorkspace.documents.map {
+                            TreeViewSubItem(id: $0.id, title: $0.title)
+                        })
+                    )
+                }
             } else {
                 treeItems.append(
                     TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: nil)
