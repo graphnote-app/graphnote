@@ -23,6 +23,8 @@ struct ContentView: View {
     
     @State private var globalUIState = AppGlobalUIState.loading
     
+    private let loadingDelay = 1.5
+    
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
             withAnimation {
@@ -135,16 +137,17 @@ struct ContentView: View {
         }
         .onAppear {
             if DataController.shared.loaded {
-                withAnimation(.default.delay(0.5)) {
-                    globalUIState = .signIn
-                }
-                
                 if !initialized {
                     vm.initializeUser()
                     vm.initializeUserWorkspaces()
                     if let user = vm.user {
-                        checkAuthStatus(user: user)
-                        vm.fetch()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {
+                            checkAuthStatus(user: user)
+                            vm.fetch()
+                            withAnimation {
+                                globalUIState = .signIn
+                            }
+                        }
                     }
                 }
             }
