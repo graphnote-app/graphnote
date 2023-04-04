@@ -43,16 +43,17 @@ struct SplitView: View {
                 let width = geometry.size.width
                 let sidebarSizeMultiplier = portrait && width < 500 ? 0.85 : 0.35
                 let finalWidth = width * sidebarSizeMultiplier
-        
-                ZStack {
-                    ColorPalette.lightSidebarMobile
-                        .ignoresSafeArea()
-                    AnyView(sidebar())
-                        .frame(maxWidth: GlobalDimension.treeWidth)
-                        .frame(width: !sidebarOpen ? .zero : finalWidth < GlobalDimension.treeWidth ? finalWidth : GlobalDimension.treeWidth)
+                if sidebarOpen {
+                    ZStack {
+                        ColorPalette.lightSidebarMobile
+                            .ignoresSafeArea()
+                        AnyView(sidebar())
+                            .frame(maxWidth: GlobalDimension.treeWidth)
+                            .frame(width: !sidebarOpen ? .zero : finalWidth < GlobalDimension.treeWidth ? finalWidth : GlobalDimension.treeWidth)
+                    }
+                    .frame(maxWidth: GlobalDimension.treeWidth)
+                    .frame(width: !sidebarOpen ? .zero : finalWidth < GlobalDimension.treeWidth ? finalWidth : GlobalDimension.treeWidth)
                 }
-                .frame(maxWidth: GlobalDimension.treeWidth)
-                .frame(width: !sidebarOpen ? .zero : finalWidth < GlobalDimension.treeWidth ? finalWidth : GlobalDimension.treeWidth)
                 
                 ToolbarView {
                     withAnimation {
