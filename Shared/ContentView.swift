@@ -12,6 +12,8 @@ import UIKit
 
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
+//    @Environment(\.scenePhase) private var scenePhase
+    
     @StateObject private var vm = ContentViewVM()
     @State private var settings = false
     #if os(macOS)
@@ -23,7 +25,7 @@ struct ContentView: View {
     
     @State private var globalUIState = AppGlobalUIState.loading
     
-    private let loadingDelay = 1.5
+    private let loadingDelay = 1.0
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -134,7 +136,13 @@ struct ContentView: View {
                     }
                 }
             }
-        }
+        } 
+//        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willResignActiveNotification)) { notification in
+//            print("scenePhase notification: \(notification)")
+//        }
+//        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { notification in
+//            print("scenePhase notification: \(notification)")
+//        }
         .onAppear {
             if DataController.shared.loaded {
                 if !initialized {
