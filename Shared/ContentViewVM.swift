@@ -12,8 +12,12 @@ class ContentViewVM: NSObject, ObservableObject {
     private let ALL_ID = UUID()
     
     @Published var treeItems: [TreeViewItem] = []
-    @Published var selectedDocument: Document? = nil
-    @Published var workspaces: [Workspace] = []
+    @Published var selectedDocument: Document? = nil {
+        didSet {
+            print("seelcted docuent set")
+        }
+    }
+    @Published var workspaces: [Workspace]? = nil
     @Published var selectedWorkspace: Workspace? = nil {
         didSet {
             print("selecteworkspace changed")
@@ -33,10 +37,13 @@ class ContentViewVM: NSObject, ObservableObject {
     
     @Published var selectedWorkspaceIndex: Int = 0 {
         didSet {
-            if workspaces.count > selectedWorkspaceIndex {
-                selectedWorkspace = workspaces[selectedWorkspaceIndex]
-                selectedDocument = nil
-                fetch()
+            print("selectedWorkspaceIndex")
+            if let workspaces {
+                if workspaces.count > selectedWorkspaceIndex {
+                    selectedWorkspace = workspaces[selectedWorkspaceIndex]
+                    selectedDocument = nil
+                    fetch()
+                }
             }
         }
     }
@@ -67,9 +74,9 @@ class ContentViewVM: NSObject, ObservableObject {
             let workspaceRepo = WorkspaceRepo(user: user)
             
             if let workspaces = try? workspaceRepo.readAll(), let workspace = workspaces.first {
-                selectedWorkspace = workspace
-                self.selectedWorkspaceIndex = 0
-                self.workspaces = workspaces
+                selectedWorkspace = selectedWorkspace ?? workspace
+                self.selectedWorkspaceIndex = selectedWorkspace != nil ? selectedWorkspaceIndex : 0
+                self.workspaces = self.workspaces ?? workspaces
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name(LabelNotification.newLabel.rawValue), object: nil)
 
@@ -92,11 +99,13 @@ class ContentViewVM: NSObject, ObservableObject {
             
             if let workspaces = try? workspaceRepo.readAll() {
                 let workspace = workspaces[selectedWorkspaceIndex]
-                selectedWorkspace = workspace
-                treeItems = workspace.labels.map({ label in
+                let curWorkspace = self.selectedWorkspace ?? workspace
+                self.selectedWorkspace = curWorkspace
+                
+                treeItems = curWorkspace.labels.map({ label in
                     
                     let workspaceRepo = WorkspaceRepo(user: user)
-                    let labelLinks = try? workspaceRepo.readLabelLinks(workspace: workspace).filter {
+                    let labelLinks = try? workspaceRepo.readLabelLinks(workspace: curWorkspace).filter {
                         $0.label == label.id
                     }
                     
@@ -118,7 +127,7 @@ class ContentViewVM: NSObject, ObservableObject {
                 })
                 
                 treeItems.append(
-                    TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: workspace.documents.map {
+                    TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: curWorkspace.documents.map {
                         TreeViewSubItem(id: $0.id, title: $0.title)
                     })
                 )

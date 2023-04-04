@@ -88,6 +88,27 @@ struct DocumentRepo {
         try? moc.save()
     }
     
+    func attachExists(label: Label, document: Document) throws -> Bool {
+        do {
+            let fetchRequest = LabelLinkEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(
+                format: "label == %@ && workspace == %@ && document == %@",
+                label.id.uuidString,
+                workspace.id.uuidString,
+                document.id.uuidString
+            )
+            
+            let labelLinkEntities = try moc.fetch(fetchRequest)
+            
+            return !labelLinkEntities.isEmpty
+            
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     func readLabels(document: Document) -> [Label]? {
         let labelLinkRepo = LabelLinkRepo(user: user, workspace: workspace)
         

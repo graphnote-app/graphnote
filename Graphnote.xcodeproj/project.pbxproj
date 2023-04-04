@@ -108,6 +108,8 @@
 		F84D088629C81AAA00410C10 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088529C81AAA00410C10 /* TreeView.swift */; };
 		F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */; };
 		F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D857C29CBEA35006538EA /* LabelContextMenu.swift */; };
+		F86D892129DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
+		F86D892229DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
 		F88550AC29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550AD29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
@@ -192,6 +194,7 @@
 		F84D088529C81AAA00410C10 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		F84D857C29CBEA35006538EA /* LabelContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContextMenu.swift; sourceTree = "<group>"; };
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
+		F86D892029DBCABC008C707C /* LabelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelService.swift; sourceTree = "<group>"; };
 		F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocumentIdentifier.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F88550AB29D9B51200EE458C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -365,6 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				F88D5EF029D9D4060088338F /* AuthService.swift */,
+				F86D892029DBCABC008C707C /* LabelService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -668,6 +672,7 @@
 				F82EC65E29D54B62009C46BE /* Workspace.swift in Sources */,
 				F82EC65F29D54B62009C46BE /* Document.swift in Sources */,
 				F82EC66029D54B62009C46BE /* Block.swift in Sources */,
+				F86D892229DBCABC008C707C /* LabelService.swift in Sources */,
 				F82EC66129D54B62009C46BE /* Label.swift in Sources */,
 				F82EC66229D54B62009C46BE /* LabelLink.swift in Sources */,
 				F82EC66329D54B62009C46BE /* User.swift in Sources */,
@@ -757,6 +762,7 @@
 				F8A6B6F829D1140400140A53 /* DocumentRepo.swift in Sources */,
 				F8A6B6DC29D0E39A00140A53 /* Block.swift in Sources */,
 				F82EC67F29D54D03009C46BE /* GlobalDimension.swift in Sources */,
+				F86D892129DBCABC008C707C /* LabelService.swift in Sources */,
 				F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */,
 				F8BF73CF29C7F57400BA826E /* TreeDocumentIdentifier.swift in Sources */,
 				F8BF73C329C7F52500BA826E /* FileIconView.swift in Sources */,

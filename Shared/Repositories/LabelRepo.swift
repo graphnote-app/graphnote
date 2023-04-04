@@ -51,9 +51,38 @@ struct LabelRepo {
                 return nil
             }
             
-            let label = Label(id: labelEntity.id, title: labelEntity.title, color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)), workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+            let label = Label(
+                id: labelEntity.id,
+                title: labelEntity.title,
+                color: Color(
+                    red: Double(labelEntity.colorRed),
+                    green: Double(labelEntity.colorGreen),
+                    blue: Double(labelEntity.colorBlue)
+                ),
+                workspaceId: workspace.id,
+                createdAt: labelEntity.createdAt,
+                modifiedAt: labelEntity.modifiedAt
+            )
             return label
             
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func exists(label: Label) throws -> UUID? {
+        do {
+            let fetchRequest = LabelEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "title == %@", label.title)
+            let result = try moc.fetch(fetchRequest)
+            
+            if let first = result.first {
+                return first.id
+            }
+            
+            return nil
+                        
         } catch let error {
             print(error)
             throw error

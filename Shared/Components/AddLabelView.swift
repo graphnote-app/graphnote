@@ -20,7 +20,8 @@ struct AddLabelView: View {
         VStack {
             List {
                 TextField("name", text: $title)
-                    .padding()
+                    .padding([.top, .bottom])
+                    .textFieldStyle(.roundedBorder)
                 Menu("label color") {
                     ForEach(LabelPalette.allCases(), id: \.self) { color in
                         Button(color.rawValue) {
@@ -28,7 +29,7 @@ struct AddLabelView: View {
                         }
                     }
                 }
-                .menuStyle(.borderlessButton)
+                .menuStyle(.borderedButton)
                 .onChange(of: title, perform: { newValue in
                     if newValue.count == .zero {
                         isEmpty = true
@@ -36,9 +37,9 @@ struct AddLabelView: View {
                         isEmpty = false
                     }
                 })
-                    .padding()
                 
             }
+            .listStyle(.inset)
             .cornerRadius(24)
             Spacer()
             HStack {

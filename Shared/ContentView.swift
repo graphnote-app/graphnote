@@ -21,7 +21,7 @@ struct ContentView: View {
     #endif
     @State private var initialized = false
     
-    @State private var globalUIState = AppGlobalUIState.loading
+    @State private var globalUIState = AppGlobalUIState.doc
     
     var body: some View {
         switch globalUIState {
@@ -45,11 +45,16 @@ struct ContentView: View {
         case .doc, .settings:
             SplitView(sidebarOpen: $menuOpen) {
                 #if os(macOS)
-                SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
-                    .frame(width: GlobalDimension.treeWidth)
-                    .onChange(of: vm.selectedSubItem) { _ in
-                        settings = false
-                    }
+                if let workspaces = vm.workspaces {
+                    return SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
+                        .frame(width: GlobalDimension.treeWidth)
+                        .onChange(of: vm.selectedSubItem) { _ in
+                            settings = false
+                        }
+                    
+                } else {
+                    return EmptyView()
+                }
                 #else
                 
                 SidebarView(items: $vm.treeItems, settingsOpen: $settings, workspaceTitles: vm.workspaces.map{$0.title}, selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex, selectedSubItem: $vm.selectedSubItem)
@@ -93,13 +98,18 @@ struct ContentView: View {
             .onAppear {
                 if seed {
                     if DataSeeder.seed() {
-                        vm.initialize()
+                        if !initialized {
+                            vm.initialize()
+                        }
                         vm.fetch()
                     } else {
                         print("seed failed")
                     }
                 } else {
-                    vm.initialize()
+                    
+                    if !initialized {
+                        vm.initialize()
+                    }
                     vm.fetch()
                 }
             }

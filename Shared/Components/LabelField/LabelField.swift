@@ -17,11 +17,22 @@ struct LabelField: View {
     @State private var showAddSheet = false
     @State private var labelExistsAlertOpen = false
     
+    private let labelService: LabelService
+    
     let fetch: () -> Void
     @Binding var labels: [Label]
     let user: User
     let workspace: Workspace
     let document: Document
+    
+    init(fetch: @escaping () -> Void, labels: Binding<[Label]>, user: User, workspace: Workspace, document: Document) {
+        self.labelService = LabelService(user: user, workspace: workspace)
+        self.fetch = fetch
+        self._labels = labels
+        self.user = user
+        self.workspace = workspace
+        self.document = document
+    }
     
     func newLabelNotification() {
         NotificationCenter.default.post(name: Notification.Name(LabelNotification.newLabel.rawValue), object: nil)
@@ -43,19 +54,22 @@ struct LabelField: View {
             AddIconView()
                 .sheet(isPresented: $showAddSheet, content: {
                     AddLabelView(save: { (title, color) in
-                        let labelRepo = LabelRepo(user: user, workspace: workspace)
                         
-                        var label = Label(id: UUID(), title: title, color: color, workspaceId: workspace.id, createdAt: .now, modifiedAt: .now)
-                        
-                        if let labelEntity = try? labelRepo.create(label: label) {
-                            label = Label(id: labelEntity.id, title: label.title, color: label.color, workspaceId: label.workspaceId, createdAt: label.createdAt, modifiedAt: label.modifiedAt)    
+                        if let added = try? labelService.addLabel(title: title, color: color, document: document) {
+                            if added {
+                                newLabelNotification()
+                                fetch()
+                                self.showAddSheet = false
+                                
+                            } else {
+                                self.showAddSheet = false
+                                labelExistsAlertOpen = true
+                            }
+                            
+                        } else {
+                            fetch()
+                            self.showAddSheet = false
                         }
-                        
-                        let documentRepo = DocumentRepo(user: user, workspace: workspace)
-                        documentRepo.attach(label: label, document: document)
-                        fetch()
-                        newLabelNotification()
-                        self.showAddSheet = false
                         
                     }, close: {
                         self.showAddSheet = false
