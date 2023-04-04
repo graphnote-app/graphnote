@@ -61,6 +61,8 @@ struct ContentView: View {
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
                             }
+                            
+                            self.initialized = true
                             checkAuthStatus(user: user)
                         }
                     }
@@ -98,14 +100,10 @@ struct ContentView: View {
                         .onChange(of: vm.selectedSubItem) { _ in
                             settings = false
                             if UIDevice().userInterfaceIdiom == .phone {
-                                if initialized {
-                                    if MobileUtils.OrientationInfo().orientation == .portrait {
-                                        withAnimation {
-                                            menuOpen = false
-                                        }
+                                if MobileUtils.OrientationInfo().orientation == .portrait {
+                                    withAnimation {
+                                        menuOpen = false
                                     }
-                                } else {
-                                    initialized = true
                                 }
                             }
                         }
@@ -152,6 +150,12 @@ struct ContentView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {
                             checkAuthStatus(user: user)
                             vm.fetch()
+                            withAnimation {
+                                globalUIState = .signIn
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {
                             withAnimation {
                                 globalUIState = .signIn
                             }
