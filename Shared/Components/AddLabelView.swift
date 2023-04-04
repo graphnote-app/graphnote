@@ -12,35 +12,56 @@ struct AddLabelView: View {
     let close: () -> Void
     
     @State private var isEmpty = true
-    @State private var color = LabelPalette.allCases().randomElement()
+    @State private var color = LabelPalette.allCases().randomElement()!
     
     @State private var title: String = ""
     
-    var content: some View {
+    var menu: some View {
+        Menu {
+            ForEach(LabelPalette.allCases(), id: \.self) { color in
+                Button(color.rawValue) {
+                    self.color = color
+                }
+            }
+        } label: {
+            Text(self.color.rawValue)
+        }
+        .onChange(of: title, perform: { newValue in
+            if newValue.count == .zero {
+                isEmpty = true
+            } else {
+                isEmpty = false
+            }
+        })
+    }
+    
+    var body: some View {
         VStack {
+            #if os(macOS)
+            VStack(alignment: .leading) {
+                TextField("name", text: $title)
+                    .padding([.top, .bottom])
+                    .textFieldStyle(.roundedBorder)
+                    .frame(width: 220)
+                menu
+                    .menuStyle(.borderedButton)
+
+            }
+            .padding()
+            .cornerRadius(24)
+            #else
             List {
                 TextField("name", text: $title)
                     .padding([.top, .bottom])
                     .textFieldStyle(.roundedBorder)
-                Menu("label color") {
-                    ForEach(LabelPalette.allCases(), id: \.self) { color in
-                        Button(color.rawValue) {
-                            self.color = color
-                        }
-                    }
-                }
-                .menuStyle(.borderedButton)
-                .onChange(of: title, perform: { newValue in
-                    if newValue.count == .zero {
-                        isEmpty = true
-                    } else {
-                        isEmpty = false
-                    }
-                })
                 
+                menu
+                    .menuStyle(.borderlessButton)
             }
-            .listStyle(.inset)
+            .listStyle(.insetGrouped)
+            .padding()
             .cornerRadius(24)
+            #endif
             Spacer()
             HStack {
                 Button("Close") {
@@ -51,7 +72,7 @@ struct AddLabelView: View {
                 .padding()
                 Spacer()
                 Button("Add") {
-                    save(title, color!.getColor())
+                    save(title, color.getColor())
                 }
                 .disabled(isEmpty)
                 .foregroundColor(isEmpty ? Color.gray : Color.accentColor)
@@ -59,16 +80,6 @@ struct AddLabelView: View {
                 .padding()
             }.padding()
         }
-    }
-    
-    var body: some View {
-        #if os(macOS)
-        content
-            .frame(width: 300, height: 200)
-        #else
-        content
-            .frame(width: 300, height: 300)
-        #endif
     }
 }
 
