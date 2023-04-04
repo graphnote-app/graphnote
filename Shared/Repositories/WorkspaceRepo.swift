@@ -87,6 +87,26 @@ struct WorkspaceRepo {
         }
     }
     
+    func read(workspace: UUID) throws -> Workspace? {
+        do {
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace, moc: moc) else {
+                return nil
+            }
+        
+            let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
+                return Label(id: labelEntity.id, title: labelEntity.title, color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)), workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+            }
+            
+            return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
+                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
+            })
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     func read(document: UUID) throws -> Document? {
         do {
             guard let documentEntity = try DocumentEntity.getEntity(id: document, moc: moc) else {

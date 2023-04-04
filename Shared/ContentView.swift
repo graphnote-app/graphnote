@@ -21,7 +21,7 @@ struct ContentView: View {
     #endif
     @State private var initialized = false
     
-    @State private var globalUIState = AppGlobalUIState.doc
+    @State private var globalUIState = AppGlobalUIState.loading
     
     var body: some View {
         switch globalUIState {

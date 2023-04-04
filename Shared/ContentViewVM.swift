@@ -90,6 +90,14 @@ class ContentViewVM: NSObject, ObservableObject {
         }
     }
     
+    private func updateCurrentWorkspace() {
+        if let selectedWorkspace, let user {
+            let workspaceRepo = WorkspaceRepo(user: user)
+            let updatedWorkpace = try? workspaceRepo.read(workspace: selectedWorkspace.id)
+            self.selectedWorkspace = updatedWorkpace
+        }
+    }
+    
     func fetch() {
         if let user {
             
@@ -97,7 +105,13 @@ class ContentViewVM: NSObject, ObservableObject {
             
             if let workspaces = try? workspaceRepo.readAll() {
                 let workspace = workspaces[selectedWorkspaceIndex]
+                
+                if selectedWorkspace != nil {
+                    updateCurrentWorkspace()
+                }
+                
                 let curWorkspace = self.selectedWorkspace ?? workspace
+                
                 self.selectedWorkspace = curWorkspace
                 
                 treeItems = curWorkspace.labels.map({ label in
