@@ -12,22 +12,19 @@ class ContentViewVM: NSObject, ObservableObject {
     private let ALL_ID = UUID()
     
     @Published var treeItems: [TreeViewItem] = []
-    @Published var selectedDocument: Document? = nil {
-        didSet {
-            print("seelcted docuent set")
-        }
-    }
+    @Published var selectedDocument: Document? = nil
     @Published var workspaces: [Workspace]? = nil
     @Published var selectedWorkspace: Workspace? = nil {
         didSet {
-            print("selecteworkspace changed")
-            if let user = user {
-                if let workspace = selectedWorkspace {
-                    let documentRepo = DocumentRepo(user: user, workspace: workspace)
-                    if let documents = try? documentRepo.readAll(), let document = documents.first {
-                        selectedDocument = document
-                        if let selectedDocument {
-                            selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id)
+            if selectedWorkspace != oldValue {
+                if let user = user {
+                    if let workspace = selectedWorkspace {
+                        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+                        if let documents = try? documentRepo.readAll(), let document = documents.first {
+                            selectedDocument = document
+                            if let selectedDocument {
+                                selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id)
+                            }
                         }
                     }
                 }
@@ -37,24 +34,27 @@ class ContentViewVM: NSObject, ObservableObject {
     
     @Published var selectedWorkspaceIndex: Int = 0 {
         didSet {
-            print("selectedWorkspaceIndex")
-            if let workspaces {
-                if workspaces.count > selectedWorkspaceIndex {
-                    selectedWorkspace = workspaces[selectedWorkspaceIndex]
-                    selectedDocument = nil
-                    fetch()
+            if selectedWorkspaceIndex != oldValue {
+                if let workspaces {
+                    if workspaces.count > selectedWorkspaceIndex {
+                        selectedWorkspace = workspaces[selectedWorkspaceIndex]
+                        selectedDocument = nil
+                        fetch()
+                    }
                 }
             }
         }
     }
     @Published var selectedSubItem: TreeDocumentIdentifier? = nil {
         didSet {
-            if let selectedSubItem, let user {
-                let workspaceRepo = WorkspaceRepo(user: user)
-                if let document = try? workspaceRepo.read(document: selectedSubItem.document) {
-                    selectedDocument = document
+            if selectedSubItem != oldValue {
+                if let selectedSubItem, let user {
+                    let workspaceRepo = WorkspaceRepo(user: user)
+                    if let document = try? workspaceRepo.read(document: selectedSubItem.document) {
+                        selectedDocument = document
+                    }
+                    
                 }
-                
             }
         }
     }
@@ -74,13 +74,11 @@ class ContentViewVM: NSObject, ObservableObject {
             let workspaceRepo = WorkspaceRepo(user: user)
             
             if let workspaces = try? workspaceRepo.readAll(), let workspace = workspaces.first {
-                selectedWorkspace = selectedWorkspace ?? workspace
+                self.selectedWorkspace = selectedWorkspace ?? workspace
                 self.selectedWorkspaceIndex = selectedWorkspace != nil ? selectedWorkspaceIndex : 0
                 self.workspaces = self.workspaces ?? workspaces
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name(LabelNotification.newLabel.rawValue), object: nil)
-
-                
             }
         }
     }
