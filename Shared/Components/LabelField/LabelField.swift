@@ -76,7 +76,7 @@ struct LabelField: View {
                     })
                     .id(document.id)
                     .presentationDetents([.medium, .large])
-                    .frame(width: 300, height: 260)
+//                    .frame(width: 300, height: 260)
                 })
                 .alert("Label already exists!", isPresented: $labelExistsAlertOpen, actions: {
                     

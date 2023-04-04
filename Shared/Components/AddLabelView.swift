@@ -64,6 +64,7 @@ struct AddLabelView: View {
     var body: some View {
         #if os(macOS)
         content
+            .frame(width: 300, height: 200)
         #else
         content
             .frame(width: 300, height: 300)
