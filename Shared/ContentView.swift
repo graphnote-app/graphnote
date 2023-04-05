@@ -64,6 +64,7 @@ struct ContentView: View {
                         
                         self.initialized = true
                         checkAuthStatus(user: user)
+                        vm.createUser(user: user)
                     }
                 }
             case .doc, .settings:
@@ -162,8 +163,14 @@ struct ContentView: View {
 //        }
         .onAppear {
             if DataController.shared.loaded {
+
+                
                 if !initialized {
                     vm.initializeUser()
+                    if let user = vm.user {
+                        vm.createUser(user: user)
+                    }
+                    
                     vm.initializeUserWorkspaces()
                     if let user = vm.user {
                         DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {

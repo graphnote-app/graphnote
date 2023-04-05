@@ -138,6 +138,8 @@
 		F8A6B6FC29D1279300140A53 /* LabelLinkEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */; };
 		F8A6B6FE29D2043300140A53 /* LabelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6FD29D2043300140A53 /* LabelPalette.swift */; };
 		F8A6B70229D2740600140A53 /* LabelLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B70129D2740600140A53 /* LabelLink.swift */; };
+		F8AAD1F529DD358200863A7D /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AAD1F429DD358200863A7D /* SyncService.swift */; };
+		F8AAD1F629DD358200863A7D /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AAD1F429DD358200863A7D /* SyncService.swift */; };
 		F8BF73AB29C7E52200BA826E /* AppMacOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AA29C7E52200BA826E /* AppMacOS.swift */; };
 		F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73AF29C7E7BD00BA826E /* SplitView.swift */; };
 		F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E19E5629A8669000BD0BB9 /* Spacing.swift */; };
@@ -223,6 +225,7 @@
 		F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLinkEntity.swift; sourceTree = "<group>"; };
 		F8A6B6FD29D2043300140A53 /* LabelPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelPalette.swift; sourceTree = "<group>"; };
 		F8A6B70129D2740600140A53 /* LabelLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelLink.swift; sourceTree = "<group>"; };
+		F8AAD1F429DD358200863A7D /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
 		F8AD578027C1D94400E07D82 /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		F8BF73AA29C7E52200BA826E /* AppMacOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMacOS.swift; sourceTree = "<group>"; };
 		F8BF73AF29C7E7BD00BA826E /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
@@ -366,6 +369,7 @@
 			children = (
 				F88D5EF029D9D4060088338F /* AuthService.swift */,
 				F86D892029DBCABC008C707C /* LabelService.swift */,
+				F8AAD1F429DD358200863A7D /* SyncService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -653,6 +657,7 @@
 				F82EC65129D54B62009C46BE /* ArrowView.swift in Sources */,
 				F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */,
 				F82EC65329D54B62009C46BE /* FileIconView.swift in Sources */,
+				F8AAD1F629DD358200863A7D /* SyncService.swift in Sources */,
 				F82EC65429D54B62009C46BE /* TreeViewAddView.swift in Sources */,
 				F82EC65529D54B62009C46BE /* CheckmarkView.swift in Sources */,
 				F82EC65629D54B62009C46BE /* TreeView.swift in Sources */,
@@ -775,6 +780,7 @@
 				F84D087F29C809FE00410C10 /* BlockSpacer.swift in Sources */,
 				F807C8BE29C9132600B7B239 /* LabelView.swift in Sources */,
 				F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */,
+				F8AAD1F529DD358200863A7D /* SyncService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
