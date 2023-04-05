@@ -164,12 +164,8 @@ struct ContentView: View {
         .onAppear {
             if DataController.shared.loaded {
 
-                
                 if !initialized {
                     vm.initializeUser()
-                    if let user = vm.user {
-                        vm.createUser(user: user)
-                    }
                     
                     vm.initializeUserWorkspaces()
                     if let user = vm.user {

@@ -181,11 +181,14 @@ class ContentViewVM: NSObject, ObservableObject {
     }
     
     func createUser(user: User) {
-        syncService.createUser(user: user) { success in
-            if success {
-                print("Created a new user on the server side!")
-            } else {
-                print("Failed to create user!")
+        syncService.createUser(user: user) { statusCode in
+            switch statusCode {
+            case 201:
+                print("New user created")
+            case 409:
+                print("Conflict: User exists")
+            default:
+                print("Error from server")
             }
         }
     }

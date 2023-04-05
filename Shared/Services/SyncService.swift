@@ -10,7 +10,7 @@ import Foundation
 struct SyncService {
     let baseURL = URL(string: "http://10.0.0.207:3000/")!
     
-    func createUser(user: User, callback: @escaping (Bool) -> Void) {
+    func createUser(user: User, callback: @escaping (_ statusCode: Int) -> Void) {
         var request = URLRequest(url: baseURL.appendingPathComponent("user"))
         let encoder = JSONEncoder()
         request.httpMethod = "POST"
@@ -23,16 +23,7 @@ struct SyncService {
             }
             
             if let response = response as? HTTPURLResponse {
-                print(response.statusCode)
-                switch response.statusCode {
-                case 400:
-                    callback(false)
-                case 201:
-                    callback(true)
-                default:
-                    // Error case
-                    callback(false)
-                }
+                callback(response.statusCode)
             }
             
             if let data {
