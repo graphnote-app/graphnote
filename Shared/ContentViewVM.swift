@@ -101,21 +101,23 @@ class ContentViewVM: NSObject, ObservableObject {
         }
     }
     
-    func addDocument(_ document: Document) {
+    func addDocument(_ document: Document) -> Bool {
         if let user, let selectedWorkspace, let selected = selectedSubItem {
             let workspaceRepo = WorkspaceRepo(user: user)
-            // Add error handling. Show alert or something
             
             if let created = try? workspaceRepo.create(document: document, in: selectedWorkspace, for: user) {
                 if created {
                     selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
+                    return true
                 } else {
-                    // Add error handling. Show alert or something
+                    return false
                 }
             } else {
-                // Add error handling. Show alert or something
+                return false
             }
         }
+        
+        return false
     }
     
     func fetch() {

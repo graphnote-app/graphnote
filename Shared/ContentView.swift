@@ -24,6 +24,7 @@ struct ContentView: View {
     @State private var initialized = false
     
     @State private var globalUIState = AppGlobalUIState.loading
+    @State private var newDocFailedAlert = false
     
     private let loadingDelay = 1.0
     
@@ -77,9 +78,15 @@ struct ContentView: View {
                             selectedSubItem: $vm.selectedSubItem
                         ) {
                             let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now)
-                            vm.addDocument(document)
-                            vm.fetch()
+                            if !vm.addDocument(document) {
+                                newDocFailedAlert = true
+                            } else {
+                                vm.fetch()
+                            }
                         }
+                        .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
+                            Text("Document failed to create")
+                        })
                         .frame(width: GlobalDimension.treeWidth)
                         .onChange(of: vm.selectedSubItem) { _ in
                             settings = false
