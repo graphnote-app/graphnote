@@ -47,24 +47,22 @@ struct ContentView: View {
                 LoadingView()
             case .signIn:
                 SignInView {
-                    if !initialized {
-                        vm.initializeUser()
-                        if let user = vm.user {
-                            if seed {
-                                if DataSeeder.seed(userId: user.id) {
-                                    vm.initializeUserWorkspaces()
-                                    vm.fetch()
-                                } else {
-                                    print("seed failed")
-                                }
-                            } else {
+                    vm.initializeUser()
+                    if let user = vm.user {
+                        if seed {
+                            if DataSeeder.seed(userId: user.id) {
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
+                            } else {
+                                print("seed failed")
                             }
-                            
-                            self.initialized = true
-                            checkAuthStatus(user: user)
+                        } else {
+                            vm.initializeUserWorkspaces()
+                            vm.fetch()
                         }
+                        
+                        self.initialized = true
+                        checkAuthStatus(user: user)
                     }
                 }
             case .doc, .settings:
@@ -77,7 +75,11 @@ struct ContentView: View {
                             workspaceTitles: workspaces.map{$0.title},
                             selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex,
                             selectedSubItem: $vm.selectedSubItem
-                        )
+                        ) {
+                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now)
+                            vm.addDocument(document)
+                            vm.fetch()
+                        }
                         .frame(width: GlobalDimension.treeWidth)
                         .onChange(of: vm.selectedSubItem) { _ in
                             settings = false

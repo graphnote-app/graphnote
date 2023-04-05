@@ -13,6 +13,7 @@ struct SidebarView: View {
     let workspaceTitles: [String]
     @Binding var selectedWorkspaceTitleIndex: Int
     @Binding var selectedSubItem: TreeDocumentIdentifier?
+    let newDocument: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -26,7 +27,7 @@ struct SidebarView: View {
             Spacer()
             Group {
                 Button {
-                    
+                    newDocument()
                 } label: {
                     HStack {
                         Image(systemName: "plus")
