@@ -104,7 +104,17 @@ struct ContentView: View {
                             workspaceTitles: workspaces.map{$0.title},
                             selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex,
                             selectedSubItem: $vm.selectedSubItem
-                        )
+                        ) {
+                           let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now)
+                           if !vm.addDocument(document) {
+                               newDocFailedAlert = true
+                           } else {
+                               vm.fetch()
+                           }
+                       }
+                       .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
+                           Text("Document failed to create")
+                       })
                         .background(colorScheme == .dark ? ColorPalette.darkSidebarMobile : ColorPalette.lightSidebarMobile)
                         .onChange(of: vm.selectedSubItem) { _ in
                             settings = false
