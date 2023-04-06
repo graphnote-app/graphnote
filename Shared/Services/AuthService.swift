@@ -37,7 +37,7 @@ final class AuthService: NSObject {
         }
     }
     
-    func process(authorization: ASAuthorization) -> Bool {
+    func process(authorization: ASAuthorization, callback: @escaping (Bool) -> Void) {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
         
         // Check if user exists locally and remotely if possible (with internet)
@@ -66,7 +66,7 @@ final class AuthService: NSObject {
                 try UserBuilder.create(user: user)
             } catch let error {
                 print(error)
-                return false
+                callback(false)
             }
             
         } else {
@@ -74,14 +74,35 @@ final class AuthService: NSObject {
             // Add check for user existing in local DB vs not (throw error)
             let userRepo = UserRepo()
             if let user = try? userRepo.read(id: id) {
-                
+                print(user)
             } else {
                 // Check server for User
+                SyncService.shared.fetchUser(id: id) { user in
+                    if let user {
+                        print(user)
+                        do {
+                            try UserBuilder.create(user: user)
+                            callback(true)
+                        } catch let error {
+                            print(error)
+                            // Todo add error alert
+                            print("SyncService couldn't find the user")
+                            print("Failure in system. Please contact use for human support!")
+                            callback(false)
+    
+                        }
+                    } else {
+                        // Todo add error alert
+                        print("SyncService couldn't find the user")
+                        print("Failure in system. Please contact use for human support!")
+                        callback(false)
+                    }
+                }
             }
             
         }
         
-        return true
+        callback(false)
     }
     
     private func createUser(user: User) {

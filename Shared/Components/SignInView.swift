@@ -8,6 +8,17 @@
 import SwiftUI
 import AuthenticationServices
 
+enum SignInError: LocalizedError {
+    case signInNoUser
+    
+    var errorDescription: String? {
+        switch self {
+        case .signInNoUser:
+            return "There was an issue signing you in.. Please make sure you are connected to the internet. Contact us for support if the issue continues!"
+        }
+    }
+}
+
 struct SignInView: View {
     @Environment(\.colorScheme) private var colorScheme
 
@@ -17,6 +28,7 @@ struct SignInView: View {
     @State private var getStartedOpacity = 0.0
     @State private var signInButtonOpacity = 0.0
     @State private var imageSizeScaler = 0.25
+    @State private var isFailureAlertOpen = false
     
     private let duration = 2.0
     private let imageWidth = 140.0
@@ -65,8 +77,14 @@ struct SignInView: View {
                 } onCompletion: { result in
                     switch result {
                     case .success(let authorization):
-                        authService.process(authorization: authorization)
-                        callback()
+                        authService.process(authorization: authorization, callback: { success in
+                            if success {
+                                callback()
+                            } else {
+                                isFailureAlertOpen = true
+                                callback()
+                            }
+                        })
 
                     case .failure(let error):
                         print(error)
@@ -80,6 +98,9 @@ struct SignInView: View {
             .ignoresSafeArea()
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         }
+        .alert(isPresented: $isFailureAlertOpen, error: SignInError.signInNoUser, actions: {
+            
+        })
         .onAppear {
             withAnimation(.easeInOut(duration: 1)) {
                 imageSizeScaler = 1.0
