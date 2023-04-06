@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct DataSeeder{
-    static func seed(userId: String) -> Bool {
+    static func seed(userId: String, email: String) -> Bool {
         // Delete the database
         DataController.shared.dropDatabase()
         
         // Info
         let now = Date.now
         
-        let user = User(id: userId, createdAt: now, modifiedAt: now)
+        let user = User(id: userId, email: email, givenName: nil, familyName: nil, createdAt: now, modifiedAt: now)
         
         let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
         let workspace1 = Workspace(id: UUID(), title: "XYZ", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])

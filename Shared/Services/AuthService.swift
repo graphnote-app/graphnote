@@ -37,7 +37,7 @@ final class AuthService: NSObject {
         }
     }
     
-    func process(authorization: ASAuthorization) {
+    func process(authorization: ASAuthorization) -> Bool {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
         
         // Check if user exists locally and remotely if possible (with internet)
@@ -45,23 +45,55 @@ final class AuthService: NSObject {
         print("credential.user: \(credential.user)")
         let id = credential.user
         
-        let user = User(id: id, createdAt: .now, modifiedAt: .now)
-        
-        do {
-            try UserBuilder.create(user: user)
-        } catch let error {
-            print(error)
-        }
         
         print(credential.user)
         
-        if let fullName = credential.fullName, let givenName = fullName.givenName, let familyName = fullName.familyName {
-            print(givenName)
-            print(familyName)
+        // We only get the email on Sign Up and not Sign In (important)
+        if let email = credential.email {
+            print("SIGN UP")
+            
+            // Name is always optional so don't rely on it
+            let fullName = credential.fullName
+            print(email)
+            print(fullName)
+            
+            let givenName = fullName?.givenName
+            let familyName = fullName?.familyName
+            
+            let user = User(id: id, email: email, givenName: givenName, familyName: familyName, createdAt: .now, modifiedAt: .now)
+            
+            do {
+                try UserBuilder.create(user: user)
+            } catch let error {
+                print(error)
+                return false
+            }
+            
+        } else {
+            print("SIGN IN")
+            // Add check for user existing in local DB vs not (throw error)
+            let userRepo = UserRepo()
+            if let user = try? userRepo.read(id: id) {
+                
+            } else {
+                // Check server for User
+            }
+            
         }
         
-        if let email = credential.email {
-            print(email)
+        return true
+    }
+    
+    private func createUser(user: User) {
+        SyncService.shared.createUser(user: user) { statusCode in
+            switch statusCode {
+            case 201:
+                print("New user created")
+            case 409:
+                print("Conflict: User exists")
+            default:
+                print("Error from server")
+            }
         }
     }
 }

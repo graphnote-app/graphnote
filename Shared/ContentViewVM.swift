@@ -10,7 +10,6 @@ import SwiftUI
 
 class ContentViewVM: NSObject, ObservableObject {
     private let ALL_ID = UUID()
-    private let syncService = SyncService()
     
     @Published var treeItems: [TreeViewItem] = []
     @Published var selectedDocument: Document? = nil
@@ -177,19 +176,6 @@ class ContentViewVM: NSObject, ObservableObject {
             treeItems.append(
                 TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: nil)
             )
-        }
-    }
-    
-    func createUser(user: User) {
-        syncService.createUser(user: user) { statusCode in
-            switch statusCode {
-            case 201:
-                print("New user created")
-            case 409:
-                print("Conflict: User exists")
-            default:
-                print("Error from server")
-            }
         }
     }
 }

@@ -13,6 +13,9 @@ struct UserBuilder {
     static func create(user: User) throws {
         let userEntity = UserEntity(entity: UserEntity.entity(), insertInto: moc)
         userEntity.id = user.id
+        userEntity.email = user.email
+        userEntity.familyName = user.familyName
+        userEntity.givenName = user.givenName
         userEntity.createdAt = user.createdAt
         userEntity.modifiedAt = user.modifiedAt
         

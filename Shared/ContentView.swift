@@ -51,9 +51,10 @@ struct ContentView: View {
                     vm.initializeUser()
                     if let user = vm.user {
                         if seed {
-                            if DataSeeder.seed(userId: user.id) {
+                            if DataSeeder.seed(userId: user.id, email: user.email) {
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
+                                
                             } else {
                                 print("seed failed")
                             }
@@ -64,7 +65,6 @@ struct ContentView: View {
                         
                         self.initialized = true
                         checkAuthStatus(user: user)
-                        vm.createUser(user: user)
                     }
                 }
             case .doc, .settings:

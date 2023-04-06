@@ -13,6 +13,9 @@ public class UserEntity: NSManagedObject {
     }
     
     @NSManaged public var id: String
+    @NSManaged public var email: String
+    @NSManaged public var givenName: String?
+    @NSManaged public var familyName: String?
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
 }

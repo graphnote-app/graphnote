@@ -47,13 +47,20 @@ struct UserRepo {
         }
     }
     
-    func read(id: UUID) throws -> User? {
+    func read(id: String) throws -> User? {
         do {
             guard let userEntity = try getEntity(id: id) else {
                 return nil
             }
             
-            let user = User(id: userEntity.id, createdAt: userEntity.createdAt, modifiedAt: userEntity.modifiedAt)
+            let user = User(
+                id: userEntity.id,
+                email: userEntity.email,
+                givenName: userEntity.givenName,
+                familyName: userEntity.familyName,
+                createdAt: userEntity.createdAt,
+                modifiedAt: userEntity.modifiedAt
+            )
             return user
             
         } catch let error {
@@ -66,7 +73,14 @@ struct UserRepo {
         let entities = try self.getEntities()
         
         return entities.map {
-            User(id: $0.id, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
+            User(
+                id: $0.id,
+                email: $0.email,
+                givenName: $0.givenName,
+                familyName: $0.familyName,
+                createdAt: $0.createdAt,
+                modifiedAt: $0.modifiedAt
+            )
         }
     }
     
@@ -85,10 +99,10 @@ struct UserRepo {
         }
     }
     
-    private func getEntity(id: UUID) throws -> UserEntity? {
+    private func getEntity(id: String) throws -> UserEntity? {
         do {
             let fetchRequest = UserEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
             guard let user = try moc.fetch(fetchRequest).first else {
                 return nil
             }

@@ -8,6 +8,8 @@
 import Foundation
 
 struct SyncService {
+    static let shared = SyncService()
+    
     let baseURL = URL(string: "http://10.0.0.207:3000/")!
     
     func createUser(user: User, callback: @escaping (_ statusCode: Int) -> Void) {
