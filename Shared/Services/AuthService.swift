@@ -64,7 +64,7 @@ final class AuthService: NSObject {
             
             createUser(user: user) { statusCode in
                 switch statusCode {
-                case 201:
+                case 201, 409:
                     DispatchQueue.main.async {
                         callback(true)
                     }
