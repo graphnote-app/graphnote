@@ -62,6 +62,19 @@ final class AuthService: NSObject {
             
             let user = User(id: id, email: email, givenName: givenName, familyName: familyName, createdAt: .now, modifiedAt: .now)
             
+            createUser(user: user) { statusCode in
+                switch statusCode {
+                case 201:
+                    DispatchQueue.main.async {
+                        callback(true)
+                    }
+                default:
+                    DispatchQueue.main.async {
+                        callback(false)
+                    }
+                }
+            }
+            
             do {
                 try UserBuilder.create(user: user)
             } catch let error {
@@ -75,6 +88,10 @@ final class AuthService: NSObject {
             let userRepo = UserRepo()
             if let user = try? userRepo.read(id: id) {
                 print(user)
+                DispatchQueue.main.async {
+                    callback(true)
+                }
+                return
             } else {
                 // Check server for User
                 SyncService.shared.fetchUser(id: id) { user in
@@ -82,32 +99,40 @@ final class AuthService: NSObject {
                         print(user)
                         do {
                             try UserBuilder.create(user: user)
-                            callback(true)
+                            DispatchQueue.main.async {
+                                callback(true)
+                            }
+                            return
+                            
                         } catch let error {
                             print(error)
                             // Todo add error alert
-                            print("SyncService couldn't find the user")
+                            print("Couldn't create the user")
                             print("Failure in system. Please contact use for human support!")
-                            callback(false)
+                            DispatchQueue.main.async {
+                                callback(false)
+                            }
+                            return
     
                         }
                     } else {
                         // Todo add error alert
                         print("SyncService couldn't find the user")
                         print("Failure in system. Please contact use for human support!")
-                        callback(false)
+                        DispatchQueue.main.async {
+                            callback(false)
+                        }
+                        return
                     }
                 }
             }
             
         }
-        
-        callback(false)
     }
     
-    private func createUser(user: User) {
-        SyncService.shared.createUser(user: user) { statusCode in
-            switch statusCode {
+    private func createUser(user: User, callback: @escaping (_ statusCode: Int) -> Void) {
+        SyncService.shared.createUser(user: user) { response in
+            switch response.statusCode {
             case 201:
                 print("New user created")
             case 409:
@@ -115,6 +140,8 @@ final class AuthService: NSObject {
             default:
                 print("Error from server")
             }
+            
+            callback(response.statusCode)
         }
     }
 }
