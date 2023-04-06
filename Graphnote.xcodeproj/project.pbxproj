@@ -110,6 +110,8 @@
 		F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D857C29CBEA35006538EA /* LabelContextMenu.swift */; };
 		F86D892129DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
 		F86D892229DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
+		F87A06D829DE923E002CC7EF /* SyncMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06D729DE923E002CC7EF /* SyncMessage.swift */; };
+		F87A06D929DE923E002CC7EF /* SyncMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06D729DE923E002CC7EF /* SyncMessage.swift */; };
 		F88550AC29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550AD29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
@@ -196,6 +198,7 @@
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		F86D892029DBCABC008C707C /* LabelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelService.swift; sourceTree = "<group>"; };
 		F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocumentIdentifier.swift; sourceTree = "<group>"; };
+		F87A06D729DE923E002CC7EF /* SyncMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMessage.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F88550AB29D9B51200EE458C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGlobalUIState.swift; sourceTree = "<group>"; };
@@ -364,12 +367,21 @@
 			path = "DB Model";
 			sourceTree = "<group>";
 		};
+		F87A06D629DE922F002CC7EF /* SyncService */ = {
+			isa = PBXGroup;
+			children = (
+				F8AAD1F429DD358200863A7D /* SyncService.swift */,
+				F87A06D729DE923E002CC7EF /* SyncMessage.swift */,
+			);
+			path = SyncService;
+			sourceTree = "<group>";
+		};
 		F88D5EF329D9D40B0088338F /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				F88D5EF029D9D4060088338F /* AuthService.swift */,
 				F86D892029DBCABC008C707C /* LabelService.swift */,
-				F8AAD1F429DD358200863A7D /* SyncService.swift */,
+				F87A06D629DE922F002CC7EF /* SyncService */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -697,6 +709,7 @@
 				F82EC67329D54B62009C46BE /* SettingsView.swift in Sources */,
 				F82EC67429D54B62009C46BE /* TreeDocumentIdentifier.swift in Sources */,
 				F82EC67529D54B62009C46BE /* Spacing.swift in Sources */,
+				F87A06D929DE923E002CC7EF /* SyncMessage.swift in Sources */,
 				F82EC67629D54B62009C46BE /* ColorPalette.swift in Sources */,
 				F8403DE629D54A5A0027A196 /* AppIOS.swift in Sources */,
 			);
@@ -771,6 +784,7 @@
 				F8A6B6E929D0EAFD00140A53 /* Label.swift in Sources */,
 				F8BF73AB29C7E52200BA826E /* AppMacOS.swift in Sources */,
 				F8BF73BC29C7F38300BA826E /* WorkspaceMenu.swift in Sources */,
+				F87A06D829DE923E002CC7EF /* SyncMessage.swift in Sources */,
 				F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */,
 				F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,

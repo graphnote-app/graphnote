@@ -13,12 +13,19 @@ struct SyncService {
     let baseURL = URL(string: "http://10.0.0.207:3000/")!
     
     func createUser(user: User, callback: @escaping (_ response: HTTPURLResponse) -> Void) {
-        var request = URLRequest(url: baseURL.appendingPathComponent("user"))
+        
+        // Create message
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
+        let contents = try! encoder.encode(user)
+        let jsonString = String(data: contents, encoding: .utf8)!
+        let message = SyncMessage(id: UUID(), timestamp: .now, type: .createUser, contents: jsonString)
+        
+        var request = URLRequest(url: baseURL.appendingPathComponent("user"))
         request.httpMethod = "POST"
-        request.httpBody = try! encoder.encode(user)
+        request.httpBody = try! encoder.encode(message)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 print(error)
