@@ -41,7 +41,6 @@ final class AuthService: NSObject {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
         
         // Check if user exists locally and remotely if possible (with internet)
-        // Temporarily use a static user
         print("credential.user: \(credential.user)")
         let id = credential.user
         
