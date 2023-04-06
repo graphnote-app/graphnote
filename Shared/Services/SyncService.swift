@@ -68,6 +68,7 @@ struct SyncService {
 
                             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
                             guard let date = formatter.date(from: dateStr) else {
+                                print("Date parsing FAILED!")
                                 return .now
                             }
                             
