@@ -47,14 +47,12 @@ class SyncService: ObservableObject {
                     switch response.statusCode {
                     case 201, 409:
                         // Drop the item from the queue
-                        if self.queue?.remove(id: queueItem.id) == true {
-                            self.requestIDs.remove(queueItem.id)
-                        }
+                        self.queue?.remove(id: queueItem.id)
                         break
                     default:
                         print("generic request method in processQueue returned statusCode: \(response.statusCode)")
                     }
-                    
+                    self.requestIDs.remove(queueItem.id)
                     self.statusCode = response.statusCode
                 }
             }
