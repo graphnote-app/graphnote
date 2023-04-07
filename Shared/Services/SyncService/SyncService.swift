@@ -17,6 +17,7 @@ class SyncService: ObservableObject {
     
     private(set) var watching = false
     private var timer: Timer? = nil
+    private var requestIDs: Set<UUID> = Set()
     
     private lazy var queue: SyncQueue? = nil
     
@@ -40,17 +41,22 @@ class SyncService: ObservableObject {
     
     private func processQueue() {
         if let queueItem = self.queue?.peek() {
-            request(message: queueItem) { response in
-                switch response.statusCode {
-                case 201, 409:
-                    // Drop the item from the queue
-                    self.queue?.remove(id: queueItem.id)
-                    break
-                default:
-                    print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+            if !requestIDs.contains(queueItem.id) {
+                requestIDs.insert(queueItem.id)
+                request(message: queueItem) { response in
+                    switch response.statusCode {
+                    case 201, 409:
+                        // Drop the item from the queue
+                        if self.queue?.remove(id: queueItem.id) == true {
+                            self.requestIDs.remove(queueItem.id)
+                        }
+                        break
+                    default:
+                        print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                    }
+                    
+                    self.statusCode = response.statusCode
                 }
-                
-                self.statusCode = response.statusCode
             }
         }
     }
