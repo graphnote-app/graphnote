@@ -54,7 +54,7 @@ struct ContentView: View {
                             if DataSeeder.seed(userId: user.id, email: user.email) {
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
-                                
+
                             } else {
                                 print("seed failed")
                             }
@@ -154,7 +154,12 @@ struct ContentView: View {
                     }
                 }
             }
-        } 
+        }
+        .onChange(of: vm.user, perform: { newValue in
+            if let newValue {
+                SyncService.shared.startQueue(user: newValue)
+            }
+        })
 //        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willResignActiveNotification)) { notification in
 //            print("scenePhase notification: \(notification)")
 //        }
@@ -163,7 +168,7 @@ struct ContentView: View {
 //        }
         .onAppear {
             if DataController.shared.loaded {
-
+            
                 if !initialized {
                     vm.initializeUser()
                     
@@ -184,7 +189,12 @@ struct ContentView: View {
                         }
                     }
                 }
+                
+                
             }
+        }
+        .onDisappear {
+            SyncService.shared.stopQueue()
         }
     }
 }

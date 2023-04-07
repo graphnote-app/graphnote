@@ -8,12 +8,22 @@
 import Foundation
 
 enum SyncMessageType: String, Codable {
-    case createUser
+    case user
+}
+
+enum SyncMessageAction: String, Codable {
+    case create
+    case read
+    case update
+    case delete
 }
 
 struct SyncMessage: Codable {
     let id: UUID
+    let user: String
     let timestamp: Date
     let type: SyncMessageType
+    let action: SyncMessageAction
     let contents: String
+    let isSynced: Bool
 }

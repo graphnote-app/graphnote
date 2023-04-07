@@ -61,7 +61,12 @@ final class AuthService: NSObject {
             
             let user = User(id: id, email: email, givenName: givenName, familyName: familyName, createdAt: .now, modifiedAt: .now)
             
-            createUser(user: user) { statusCode in
+            if !SyncService.shared.watching {
+                SyncService.shared.startQueue(user: user)
+            }
+            
+            SyncService.shared.createUser(user: user)
+            _ = SyncService.shared.$statusCode.sink { statusCode in
                 switch statusCode {
                 case 201, 409:
                     DispatchQueue.main.async {
@@ -126,21 +131,6 @@ final class AuthService: NSObject {
                 }
             }
             
-        }
-    }
-    
-    private func createUser(user: User, callback: @escaping (_ statusCode: Int) -> Void) {
-        SyncService.shared.createUser(user: user) { response in
-            switch response.statusCode {
-            case 201:
-                print("New user created")
-            case 409:
-                print("Conflict: User exists")
-            default:
-                print("Error from server")
-            }
-            
-            callback(response.statusCode)
         }
     }
 }

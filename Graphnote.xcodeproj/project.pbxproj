@@ -108,10 +108,16 @@
 		F84D088629C81AAA00410C10 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088529C81AAA00410C10 /* TreeView.swift */; };
 		F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */; };
 		F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D857C29CBEA35006538EA /* LabelContextMenu.swift */; };
+		F863496329E03ED800C49D0B /* SyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* SyncQueue.swift */; };
+		F863496429E03ED800C49D0B /* SyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* SyncQueue.swift */; };
 		F86D892129DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
 		F86D892229DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
 		F87A06D829DE923E002CC7EF /* SyncMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06D729DE923E002CC7EF /* SyncMessage.swift */; };
 		F87A06D929DE923E002CC7EF /* SyncMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06D729DE923E002CC7EF /* SyncMessage.swift */; };
+		F87A06DB29DEAFDE002CC7EF /* SyncMessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06DA29DEAFDE002CC7EF /* SyncMessageEntity.swift */; };
+		F87A06DC29DEAFDE002CC7EF /* SyncMessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06DA29DEAFDE002CC7EF /* SyncMessageEntity.swift */; };
+		F87A06DE29DEB11F002CC7EF /* SyncMessageRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06DD29DEB11F002CC7EF /* SyncMessageRepo.swift */; };
+		F87A06DF29DEB11F002CC7EF /* SyncMessageRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06DD29DEB11F002CC7EF /* SyncMessageRepo.swift */; };
 		F88550AC29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550AD29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
@@ -195,10 +201,13 @@
 		F84D088329C817E900410C10 /* GlobalDimensionMacOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimensionMacOS.swift; sourceTree = "<group>"; };
 		F84D088529C81AAA00410C10 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		F84D857C29CBEA35006538EA /* LabelContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContextMenu.swift; sourceTree = "<group>"; };
+		F863496229E03ED800C49D0B /* SyncQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueue.swift; sourceTree = "<group>"; };
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		F86D892029DBCABC008C707C /* LabelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelService.swift; sourceTree = "<group>"; };
 		F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocumentIdentifier.swift; sourceTree = "<group>"; };
 		F87A06D729DE923E002CC7EF /* SyncMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMessage.swift; sourceTree = "<group>"; };
+		F87A06DA29DEAFDE002CC7EF /* SyncMessageEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMessageEntity.swift; sourceTree = "<group>"; };
+		F87A06DD29DEB11F002CC7EF /* SyncMessageRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMessageRepo.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F88550AB29D9B51200EE458C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGlobalUIState.swift; sourceTree = "<group>"; };
@@ -363,6 +372,7 @@
 				F8EA066929BD1CFD0023F833 /* BlockEntity.swift */,
 				F8F32C8527B9CDFB003B0DF9 /* WorkspaceEntity.swift */,
 				F8A6B6F329D1028000140A53 /* UserEntity.swift */,
+				F87A06DA29DEAFDE002CC7EF /* SyncMessageEntity.swift */,
 			);
 			path = "DB Model";
 			sourceTree = "<group>";
@@ -372,6 +382,7 @@
 			children = (
 				F8AAD1F429DD358200863A7D /* SyncService.swift */,
 				F87A06D729DE923E002CC7EF /* SyncMessage.swift */,
+				F863496229E03ED800C49D0B /* SyncQueue.swift */,
 			);
 			path = SyncService;
 			sourceTree = "<group>";
@@ -418,6 +429,7 @@
 				F8A6B6F729D1140400140A53 /* DocumentRepo.swift */,
 				F8A6B6F929D11D5B00140A53 /* LabelRepo.swift */,
 				F8403DD429D3B1440027A196 /* LabelLinkRepo.swift */,
+				F87A06DD29DEB11F002CC7EF /* SyncMessageRepo.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -660,6 +672,7 @@
 				F82EC64829D54B62009C46BE /* BlockSpacer.swift in Sources */,
 				F82EC64929D54B62009C46BE /* BulletView.swift in Sources */,
 				F82EC64A29D54B62009C46BE /* BlockType.swift in Sources */,
+				F863496429E03ED800C49D0B /* SyncQueue.swift in Sources */,
 				F82EC64B29D54B62009C46BE /* EmptyBlockView.swift in Sources */,
 				F82EC64C29D54B62009C46BE /* PromptField.swift in Sources */,
 				F82EC64D29D54B62009C46BE /* BodyView.swift in Sources */,
@@ -668,6 +681,7 @@
 				F82EC65029D54B62009C46BE /* DocumentView.swift in Sources */,
 				F82EC65129D54B62009C46BE /* ArrowView.swift in Sources */,
 				F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */,
+				F87A06DC29DEAFDE002CC7EF /* SyncMessageEntity.swift in Sources */,
 				F82EC65329D54B62009C46BE /* FileIconView.swift in Sources */,
 				F8AAD1F629DD358200863A7D /* SyncService.swift in Sources */,
 				F82EC65429D54B62009C46BE /* TreeViewAddView.swift in Sources */,
@@ -705,6 +719,7 @@
 				F82EC67029D54B62009C46BE /* LabelRepo.swift in Sources */,
 				F82EC67129D54B62009C46BE /* LabelLinkRepo.swift in Sources */,
 				F82EC67229D54B62009C46BE /* DataSeeder.swift in Sources */,
+				F87A06DF29DEB11F002CC7EF /* SyncMessageRepo.swift in Sources */,
 				F88550AD29D9B51200EE458C /* SignInView.swift in Sources */,
 				F82EC67329D54B62009C46BE /* SettingsView.swift in Sources */,
 				F82EC67429D54B62009C46BE /* TreeDocumentIdentifier.swift in Sources */,
@@ -723,6 +738,7 @@
 				F8A6B6E129D0E40200140A53 /* Workspace.swift in Sources */,
 				F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */,
 				F807C8C529C9170500B7B239 /* CheckmarkIconView.swift in Sources */,
+				F863496329E03ED800C49D0B /* SyncQueue.swift in Sources */,
 				F84D088029C809FE00410C10 /* HeadingView.swift in Sources */,
 				F8BF73CA29C7F54900BA826E /* DocumentEntity.swift in Sources */,
 				F88D5EF129D9D4060088338F /* AuthService.swift in Sources */,
@@ -787,10 +803,12 @@
 				F87A06D829DE923E002CC7EF /* SyncMessage.swift in Sources */,
 				F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */,
 				F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */,
+				F87A06DE29DEB11F002CC7EF /* SyncMessageRepo.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8403DDA29D521830027A196 /* DocumentContainerVM.swift in Sources */,
 				F8BF73B029C7E7BD00BA826E /* SplitView.swift in Sources */,
 				F8BF73D229C7F8C100BA826E /* LoadingView.swift in Sources */,
+				F87A06DB29DEAFDE002CC7EF /* SyncMessageEntity.swift in Sources */,
 				F84D087F29C809FE00410C10 /* BlockSpacer.swift in Sources */,
 				F807C8BE29C9132600B7B239 /* LabelView.swift in Sources */,
 				F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */,

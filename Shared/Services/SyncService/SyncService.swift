@@ -7,20 +7,64 @@
 
 import Foundation
 
-struct SyncService {
+enum SyncServiceError: Error {
+}
+
+class SyncService: ObservableObject {
     static let shared = SyncService()
+    @Published private(set) var statusCode: Int = 200
+    @Published private(set) var error: SyncServiceError? = nil
+    
+    private(set) var watching = false
+    private var timer: Timer? = nil
+    
+    private lazy var queue: SyncQueue? = nil
+    
+    func startQueue(user: User) {
+        if queue == nil {
+            self.queue = SyncQueue(user: user)
+        }
+        
+        self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+            self.processQueue()
+        }
+
+        watching = true
+    }
+    
+    func stopQueue() {
+        self.timer?.invalidate()
+        self.timer = nil
+        watching = false
+    }
+    
+    private func processQueue() {
+        if let queueItem = self.queue?.peek() {
+            request(message: queueItem) { response in
+                switch response.statusCode {
+                case 201, 409:
+                    // Drop the item from the queue
+                    self.queue?.remove(id: queueItem.id)
+                    break
+                default:
+                    print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                }
+                
+                self.statusCode = response.statusCode
+            }
+        }
+    }
     
     let baseURL = URL(string: "http://10.0.0.207:3000/")!
     
-    func createUser(user: User, callback: @escaping (_ response: HTTPURLResponse) -> Void) {
-        
-        // Create message
+    enum HTTPMethod: String {
+        case post
+        case get
+    }
+    
+    func request(message: SyncMessage, callback: @escaping (_ response: HTTPURLResponse) -> Void) {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
-        let contents = try! encoder.encode(user)
-        let jsonString = String(data: contents, encoding: .utf8)!
-        let message = SyncMessage(id: UUID(), timestamp: .now, type: .createUser, contents: jsonString)
-        
         var request = URLRequest(url: baseURL.appendingPathComponent("user"))
         request.httpMethod = "POST"
         request.httpBody = try! encoder.encode(message)
@@ -42,6 +86,19 @@ struct SyncService {
         }
         
         task.resume()
+    }
+    
+    func createUser(user: User) {
+        // Create message
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let contents = try! encoder.encode(user)
+        let jsonString = String(data: contents, encoding: .utf8)!
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, contents: jsonString, isSynced: false)
+        
+        // Save message to local queue
+        print(self.queue?.add(message: message))
+        
     }
     
     func fetchUser(id: String, callback: @escaping (_ user: User?) -> Void) {
