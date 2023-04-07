@@ -45,7 +45,7 @@ struct DocumentRepo {
             fetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id.uuidString)
             let documentEntities = try moc.fetch(fetchRequest)
             return documentEntities.map { documentEntity in
-                Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt)
+                Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: documentEntity.workspace.id)
             }
             
         } catch let error {

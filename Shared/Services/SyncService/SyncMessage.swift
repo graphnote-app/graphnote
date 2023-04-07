@@ -9,6 +9,7 @@ import Foundation
 
 enum SyncMessageType: String, Codable {
     case user
+    case document
 }
 
 enum SyncMessageAction: String, Codable {
@@ -24,6 +25,6 @@ struct SyncMessage: Codable {
     let timestamp: Date
     let type: SyncMessageType
     let action: SyncMessageAction
-    let contents: String
     let isSynced: Bool
+    let contents: String
 }

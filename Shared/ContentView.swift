@@ -70,7 +70,7 @@ struct ContentView: View {
             case .doc, .settings:
                 SplitView(sidebarOpen: $menuOpen) {
                     #if os(macOS)
-                    if let workspaces = vm.workspaces {
+                    if let workspaces = vm.workspaces, let workspace = vm.selectedWorkspace {
                         return SidebarView(
                             items: $vm.treeItems,
                             settingsOpen: $settings,
@@ -78,7 +78,7 @@ struct ContentView: View {
                             selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex,
                             selectedSubItem: $vm.selectedSubItem
                         ) {
-                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now)
+                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
                             if !vm.addDocument(document) {
                                 newDocFailedAlert = true
                             } else {

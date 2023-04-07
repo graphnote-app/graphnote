@@ -48,16 +48,21 @@ class SyncService: ObservableObject {
             if !requestIDs.contains(queueItem.id) {
                 requestIDs.insert(queueItem.id)
                 request(message: queueItem) { response in
-                    switch response.statusCode {
-                    case 201, 409:
-                        // Drop the item from the queue
-                        self.queue?.remove(id: queueItem.id)
-                        break
-                    default:
-                        print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                    if let response {
+                        switch response.statusCode {
+                        case 201, 409:
+                            // Drop the item from the queue
+                            self.queue?.remove(id: queueItem.id)
+                            break
+                        default:
+                            print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                        }
+                        
+                        self.statusCode = response.statusCode
                     }
+
                     self.requestIDs.remove(queueItem.id)
-                    self.statusCode = response.statusCode
+                    
                 }
             }
         }
@@ -70,10 +75,10 @@ class SyncService: ObservableObject {
         case get
     }
     
-    func request(message: SyncMessage, callback: @escaping (_ response: HTTPURLResponse) -> Void) {
+    func request(message: SyncMessage, callback: @escaping (_ response: HTTPURLResponse?) -> Void) {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
-        var request = URLRequest(url: baseURL.appendingPathComponent("user"))
+        var request = URLRequest(url: baseURL.appendingPathComponent("message"))
         request.httpMethod = "POST"
         request.httpBody = try! encoder.encode(message)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -81,6 +86,7 @@ class SyncService: ObservableObject {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 print(error)
+                callback(nil)
             }
             
             if let response = response as? HTTPURLResponse {
@@ -101,10 +107,25 @@ class SyncService: ObservableObject {
         encoder.dateEncodingStrategy = .iso8601
         let contents = try! encoder.encode(user)
         let jsonString = String(data: contents, encoding: .utf8)!
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, contents: jsonString, isSynced: false)
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, contents: jsonString)
         
         // Save message to local queue
         print(self.queue?.add(message: message))
+        
+    }
+    
+    func createDocument(user: User, document: Document, workspace: Workspace) {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let contents = try! encoder.encode(document)
+        let jsonString = String(data: contents, encoding: .utf8)!
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, contents: jsonString)
+        
+        // Save message to local queue
+        print(self.queue?.add(message: message))
+        
+        let workspaceRepo = WorkspaceRepo(user: user)
+        try? workspaceRepo.create(document: document, in: workspace, for: user)
         
     }
     

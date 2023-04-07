@@ -54,8 +54,8 @@ struct SyncMessageRepo {
                                    timestamp: $0.timestamp,
                                    type: SyncMessageType(rawValue: $0.type)!,
                                    action: SyncMessageAction(rawValue: $0.action)!,
-                                   contents: contents,
-                                   isSynced: $0.isSynced
+                                   isSynced: $0.isSynced,
+                                   contents: contents
                 )
             }
             

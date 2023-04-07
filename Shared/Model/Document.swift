@@ -7,9 +7,10 @@
 
 import Foundation
 
-public struct Document: Equatable {
+public struct Document: Equatable, Codable {
     public let id: UUID
     public let title: String
     public let createdAt: Date
     public let modifiedAt: Date
+    public let workspace: UUID
 }

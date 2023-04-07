@@ -48,9 +48,9 @@ class ContentViewVM: NSObject, ObservableObject {
     @Published var selectedSubItem: TreeDocumentIdentifier? = nil {
         didSet {
             if selectedSubItem != oldValue {
-                if let selectedSubItem, let user {
+                if let selectedSubItem, let user, let selectedWorkspace {
                     let workspaceRepo = WorkspaceRepo(user: user)
-                    if let document = try? workspaceRepo.read(document: selectedSubItem.document) {
+                    if let document = try? workspaceRepo.read(document: selectedSubItem.document, workspace: selectedWorkspace.id) {
                         selectedDocument = document
                     }
                     
@@ -103,18 +103,9 @@ class ContentViewVM: NSObject, ObservableObject {
     
     func addDocument(_ document: Document) -> Bool {
         if let user, let selectedWorkspace, let selected = selectedSubItem {
-            let workspaceRepo = WorkspaceRepo(user: user)
-            
-            if let created = try? workspaceRepo.create(document: document, in: selectedWorkspace, for: user) {
-                if created {
-                    selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
-                    return true
-                } else {
-                    return false
-                }
-            } else {
-                return false
-            }
+            SyncService.shared.createDocument(user: user, document: document, workspace: selectedWorkspace)
+            selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
+            return true
         }
         
         return false
@@ -146,7 +137,7 @@ class ContentViewVM: NSObject, ObservableObject {
                         
                         let subItems = labelLinks?.compactMap { labelLink in
                             do {
-                                if let document = try workspaceRepo.read(document: labelLink.document) {
+                                if let document = try workspaceRepo.read(document: labelLink.document, workspace: labelLink.workspace) {
                                     return TreeViewSubItem(id: document.id, title: document.title)
                                 }
                             } catch let error {

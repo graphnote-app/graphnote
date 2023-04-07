@@ -77,7 +77,7 @@ struct WorkspaceRepo {
                 }
                 
                 return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
+                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
                 })
             }
             
@@ -98,7 +98,7 @@ struct WorkspaceRepo {
             }
             
             return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
+                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
             })
             
         } catch let error {
@@ -107,13 +107,13 @@ struct WorkspaceRepo {
         }
     }
     
-    func read(document: UUID) throws -> Document? {
+    func read(document: UUID, workspace: UUID) throws -> Document? {
         do {
             guard let documentEntity = try DocumentEntity.getEntity(id: document, moc: moc) else {
                 return nil
             }
             
-            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt)
+            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace)
             return document
             
         } catch let error {
