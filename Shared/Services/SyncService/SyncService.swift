@@ -8,6 +8,10 @@
 import Foundation
 
 enum SyncServiceError: Error {
+    case fetchFailed
+    case decoderFailed
+    case userNotFound
+    case unknown
 }
 
 class SyncService: ObservableObject {
@@ -77,7 +81,6 @@ class SyncService: ObservableObject {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 print(error)
-                return
             }
             
             if let response = response as? HTTPURLResponse {
@@ -105,7 +108,7 @@ class SyncService: ObservableObject {
         
     }
     
-    func fetchUser(id: String, callback: @escaping (_ user: User?) -> Void) {
+    func fetchUser(id: String, callback: @escaping (_ user: User?, _ error: SyncServiceError?) -> Void) {
         var request = URLRequest(url: baseURL.appendingPathComponent("user")
             .appending(queryItems: [.init(name: "id", value: id)]))
         request.httpMethod = "GET"
@@ -114,6 +117,7 @@ class SyncService: ObservableObject {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 print(error)
+                callback(nil, SyncServiceError.fetchFailed)
                 return
             }
             
@@ -146,18 +150,18 @@ class SyncService: ObservableObject {
                         
                         do {
                             let user = try decoder.decode(User.self, from: data)
-                            callback(user)
+                            callback(user, nil)
                         } catch let error {
                             print(error)
-                            callback(nil)
+                            callback(nil, SyncServiceError.decoderFailed)
                         }
                         
                     }
                 case 404:
-                    callback(nil)
+                    callback(nil, SyncServiceError.userNotFound)
                 default:
                     print("Response failed with statusCode: \(response.statusCode)")
-                    callback(nil)
+                    callback(nil, SyncServiceError.unknown)
                 }
                 
             }

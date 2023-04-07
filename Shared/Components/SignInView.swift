@@ -10,11 +10,20 @@ import AuthenticationServices
 
 enum SignInError: LocalizedError {
     case signInNoUser
+    case createUserFailed
+    case fetchFailed
+    case unknown
     
     var errorDescription: String? {
         switch self {
         case .signInNoUser:
             return "There was an issue signing you in.. Please make sure you are connected to the internet. Contact us for support if the issue continues!"
+        case .createUserFailed:
+            return "There was an issue signing you in.. (Failed to create user)"
+        case .fetchFailed:
+            return "There was an issue signing you in.. (Failed to fetch user)"
+        case .unknown:
+            return "There was an issue signing you in.. (Failed for unknown reason)"
         }
     }
 }
@@ -29,6 +38,7 @@ struct SignInView: View {
     @State private var signInButtonOpacity = 0.0
     @State private var imageSizeScaler = 0.25
     @State private var isFailureAlertOpen = false
+    @State private var isFailureAlertMessage: SignInError? = nil
     
     private let duration = 2.0
     private let imageWidth = 140.0
@@ -77,13 +87,25 @@ struct SignInView: View {
                 } onCompletion: { result in
                     switch result {
                     case .success(let authorization):
-                        authService.process(authorization: authorization, callback: { success in
-                            if success {
-                                callback()
-                            } else {
+                        authService.process(authorization: authorization, callback: { error in
+                            if let error {
+                                switch error {
+                                case .createUserFailed:
+                                    isFailureAlertMessage = SignInError.createUserFailed
+                                case .fetchFailed:
+                                    isFailureAlertMessage = SignInError.fetchFailed
+                                case .userNotFound:
+                                    isFailureAlertMessage = SignInError.signInNoUser
+                                case .unknown:
+                                    isFailureAlertMessage = SignInError.unknown
+                                }
+                                print(error)
+                                
                                 isFailureAlertOpen = true
-                                callback()
                             }
+
+                            callback()
+
                         })
 
                     case .failure(let error):
@@ -98,8 +120,11 @@ struct SignInView: View {
             .ignoresSafeArea()
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         }
-        .alert(isPresented: $isFailureAlertOpen, error: SignInError.signInNoUser, actions: {
-            
+        .alert(isPresented: $isFailureAlertOpen, error: isFailureAlertMessage, actions: {
+            Text("OK")
+                .onTapGesture {
+                    isFailureAlertMessage = nil
+                }
         })
         .onAppear {
             withAnimation(.easeInOut(duration: 1)) {

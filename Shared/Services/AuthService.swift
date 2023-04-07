@@ -13,6 +13,13 @@ import UIKit
 
 import AuthenticationServices
 
+enum AuthServiceError: Error {
+    case createUserFailed
+    case fetchFailed
+    case userNotFound
+    case unknown
+}
+
 final class AuthService: NSObject {
     static func checkAuthStatus(user: User, callback: @escaping (_ state: ASAuthorizationAppleIDProvider.CredentialState) -> Void) {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
@@ -37,7 +44,7 @@ final class AuthService: NSObject {
         }
     }
     
-    func process(authorization: ASAuthorization, callback: @escaping (Bool) -> Void) {
+    func process(authorization: ASAuthorization, callback: @escaping (AuthServiceError?) -> Void) {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
         
         // Check if user exists locally and remotely if possible (with internet)
@@ -70,11 +77,11 @@ final class AuthService: NSObject {
                 switch statusCode {
                 case 201, 409:
                     DispatchQueue.main.async {
-                        callback(true)
+                        callback(nil)
                     }
                 default:
                     DispatchQueue.main.async {
-                        callback(false)
+                        callback(AuthServiceError.unknown)
                     }
                 }
             }
@@ -83,7 +90,7 @@ final class AuthService: NSObject {
                 try UserBuilder.create(user: user)
             } catch let error {
                 print(error)
-                callback(false)
+                callback(AuthServiceError.createUserFailed)
             }
             
         } else {
@@ -93,18 +100,25 @@ final class AuthService: NSObject {
             if let user = try? userRepo.read(id: id) {
                 print(user)
                 DispatchQueue.main.async {
-                    callback(true)
+                    callback(nil)
                 }
                 return
             } else {
                 // Check server for User
-                SyncService.shared.fetchUser(id: id) { user in
+                SyncService.shared.fetchUser(id: id) { (user, error) in
+                    if let error {
+                        DispatchQueue.main.async {
+                            callback(AuthServiceError.fetchFailed)
+                        }
+                        return
+                    }
+                    
                     if let user {
                         print(user)
                         do {
                             try UserBuilder.create(user: user)
                             DispatchQueue.main.async {
-                                callback(true)
+                                callback(nil)
                             }
                             return
                             
@@ -114,7 +128,7 @@ final class AuthService: NSObject {
                             print("Couldn't create the user")
                             print("Failure in system. Please contact use for human support!")
                             DispatchQueue.main.async {
-                                callback(false)
+                                callback(AuthServiceError.createUserFailed)
                             }
                             return
     
@@ -124,7 +138,7 @@ final class AuthService: NSObject {
                         print("SyncService couldn't find the user")
                         print("Failure in system. Please contact use for human support!")
                         DispatchQueue.main.async {
-                            callback(false)
+                            callback(AuthServiceError.userNotFound)
                         }
                         return
                     }
