@@ -42,11 +42,10 @@ struct SignInView: View {
     
     private let duration = 2.0
     private let imageWidth = 140.0
-    private let authService: AuthService
+    private let authService = AuthService()
     
     init(callback: @escaping () -> Void) {
         self.callback = callback
-        self.authService = AuthService()
     }
     
     var body: some View {

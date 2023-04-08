@@ -10,6 +10,8 @@ import SwiftUI
 import UIKit
 #endif
 
+import Combine
+
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
 //    @Environment(\.scenePhase) private var scenePhase
@@ -25,8 +27,10 @@ struct ContentView: View {
     
     @State private var globalUIState = AppGlobalUIState.loading
     @State private var newDocFailedAlert = false
+    @State private var networkSyncFailedAlert = false
     
     private let loadingDelay = 1.0
+    private let networkSyncFailedNotification = Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -160,6 +164,21 @@ struct ContentView: View {
                 SyncService.shared.startQueue(user: newValue)
             }
         })
+        .alert("Network sync failed: \(SyncService.shared.error?.localizedDescription ?? String(SyncService.shared.statusCode))", isPresented: $networkSyncFailedAlert, actions: {
+            Button("Try again") {
+                networkSyncFailedAlert = false
+                if let user = vm.user {
+                    SyncService.shared.startQueue(user: user)
+                }
+            }
+            Button("Later") {
+                networkSyncFailedAlert = false
+            }
+        })
+        .onReceive(NotificationCenter.default.publisher(for: networkSyncFailedNotification)) { notification in
+            print("Network synced failed: \(notification)")
+            networkSyncFailedAlert = true
+        }
 //        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willResignActiveNotification)) { notification in
 //            print("scenePhase notification: \(notification)")
 //        }

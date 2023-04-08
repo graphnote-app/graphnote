@@ -129,7 +129,6 @@
 		F88D5EF229D9D4060088338F /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF029D9D4060088338F /* AuthService.swift */; };
 		F896E90429DA3BC500296073 /* AddLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896E90329DA3BC500296073 /* AddLabelView.swift */; };
 		F896E90529DA3BC500296073 /* AddLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896E90329DA3BC500296073 /* AddLabelView.swift */; };
-		F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = F899DFFA279E87E500305AFA /* SwiftyJSON */; };
 		F8A6B6DC29D0E39A00140A53 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DB29D0E39A00140A53 /* Block.swift */; };
 		F8A6B6DF29D0E3D800140A53 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6DE29D0E3D800140A53 /* Document.swift */; };
 		F8A6B6E129D0E40200140A53 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6B6E029D0E40200140A53 /* Workspace.swift */; };
@@ -278,7 +277,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F899DFFB279E87E500305AFA /* SwiftyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,7 +575,6 @@
 			);
 			name = "Graphnote (macOS)";
 			packageProductDependencies = (
-				F899DFFA279E87E500305AFA /* SwiftyJSON */,
 			);
 			productName = "Graphnote (macOS)";
 			productReference = F8EA407E279CFF55001F74B5 /* Graphnote.app */;
@@ -611,7 +608,6 @@
 			);
 			mainGroup = F8EA406B279CFF54001F74B5;
 			packageReferences = (
-				F899DFF6279E87D400305AFA /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
 			productRefGroup = F8EA4079279CFF55001F74B5 /* Products */;
 			projectDirPath = "";
@@ -1102,25 +1098,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		F899DFF6279E87D400305AFA /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F899DFFA279E87E500305AFA /* SwiftyJSON */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F899DFF6279E87D400305AFA /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
-			productName = SwiftyJSON;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */ = {

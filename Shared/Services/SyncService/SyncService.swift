@@ -8,10 +8,18 @@
 import Foundation
 
 enum SyncServiceError: Error {
-    case fetchFailed
+    case postFailed
     case decoderFailed
     case userNotFound
+    case systemNetworkRestrained
+    case lowDataMode
+    case cellular
+    case cannotConnectToHost
     case unknown
+}
+
+enum SyncServiceNotification: String {
+    case networkSyncFailed
 }
 
 class SyncService: ObservableObject {
@@ -26,6 +34,8 @@ class SyncService: ObservableObject {
     private lazy var queue: SyncQueue? = nil
     
     func startQueue(user: User) {
+        self.error = nil
+        statusCode = 200
         if queue == nil {
             self.queue = SyncQueue(user: user)
         }
@@ -47,8 +57,9 @@ class SyncService: ObservableObject {
         if let queueItem = self.queue?.peek() {
             if !requestIDs.contains(queueItem.id) {
                 requestIDs.insert(queueItem.id)
-                request(message: queueItem) { response in
-                    if let response {
+                request(message: queueItem) { result in
+                    switch result {
+                    case .success(let response):
                         switch response.statusCode {
                         case 201, 409:
                             // Drop the item from the queue
@@ -56,13 +67,20 @@ class SyncService: ObservableObject {
                             break
                         default:
                             print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                            break
                         }
-                        
+
                         self.statusCode = response.statusCode
+                        break
+                    case .failure(let error):
+                        print(error)
+                        self.stopQueue()
+                        self.error = error
+                        NotificationCenter.default.post(name: Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue), object: nil)
+                        break
                     }
 
                     self.requestIDs.remove(queueItem.id)
-                    
                 }
             }
         }
@@ -75,7 +93,7 @@ class SyncService: ObservableObject {
         case get
     }
     
-    func request(message: SyncMessage, callback: @escaping (_ response: HTTPURLResponse?) -> Void) {
+    func request(message: SyncMessage, callback: @escaping (_ result: Result<HTTPURLResponse, SyncServiceError>) -> Void) {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         var request = URLRequest(url: baseURL.appendingPathComponent("message"))
@@ -84,18 +102,40 @@ class SyncService: ObservableObject {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error {
-                print(error)
-                callback(nil)
+            if let error = error as? URLError {
+                switch error.networkUnavailableReason {
+                case .cellular:
+                    callback(.failure(.cellular))
+                    return
+                case .constrained:
+                    callback(.failure(.lowDataMode))
+                    return
+                case .expensive:
+                    callback(.failure(.systemNetworkRestrained))
+                    return
+                case .none:
+                    break
+                }
+                
+                print(error.errorCode)
+                
+                if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                    callback(.failure(.cannotConnectToHost))
+                    return
+                }
+                
+                callback(.failure(.postFailed))
+                return
             }
             
             if let response = response as? HTTPURLResponse {
-                callback(response)
+                callback(.success(response))
+                return
             }
             
-            if let data {
-                print(data)
-            }
+//            if let data {
+//                print(data)
+//            }
         }
         
         task.resume()
@@ -138,7 +178,7 @@ class SyncService: ObservableObject {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 print(error)
-                callback(nil, SyncServiceError.fetchFailed)
+                callback(nil, SyncServiceError.postFailed)
                 return
             }
             
