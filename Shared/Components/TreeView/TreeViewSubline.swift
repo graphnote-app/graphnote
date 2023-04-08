@@ -13,7 +13,7 @@ struct TreeViewSubline: View {
     
     var body: some View {
         HStack {
-            TreeBulletView()
+            TreeDocView()
             HStack {
                 Text(title)
                 Spacer()

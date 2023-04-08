@@ -18,7 +18,7 @@ struct TreeViewLine: View {
             ArrowView(color: color, down: toggle)
                 .frame(width: TreeViewLabelDimensions.arrowWidthHeight.rawValue, height: TreeViewLabelDimensions.arrowWidthHeight.rawValue)
                         
-            FileIconView()
+            TreeTagView()
                 .foregroundColor(color)
                 .padding(TreeViewLabelDimensions.rowPadding.rawValue)
             Text(label)

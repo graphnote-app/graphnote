@@ -14,7 +14,7 @@ struct BulletView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: Spacing.spacing0.rawValue) {
-            TreeBulletView()
+            TreeDocView()
                 .padding(Spacing.spacing3.rawValue)
             Spacer()
                 .frame(width: Spacing.spacing3.rawValue)
