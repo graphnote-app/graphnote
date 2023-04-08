@@ -79,11 +79,12 @@ struct SplitView: View {
                 
                 AnyView(detail())
                     .overlay(alignment: .trailing) {
-                        VStack {
-                            SyncStatusIconView(status: syncStatus)
-                                .padding([.trailing, .top], Spacing.spacing3.rawValue)
-                                .onTapGesture(perform: retrySync)
+                        VStack(spacing: .zero) {
                             Spacer()
+                            SyncStatusIconView(status: syncStatus)
+                                .padding(Spacing.spacing3.rawValue)
+                                .onTapGesture(perform: retrySync)
+                            
                         }
                         
                     }
