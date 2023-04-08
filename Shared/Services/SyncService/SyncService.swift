@@ -57,6 +57,9 @@ class SyncService: ObservableObject {
             self.queue = SyncQueue(user: user)
         }
         
+        // Invalidate timer always so we don't get runaway timers
+        self.timer?.invalidate()
+        self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             self.processQueue()
         }

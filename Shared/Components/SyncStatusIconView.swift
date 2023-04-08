@@ -14,7 +14,7 @@ struct SyncStatusIconView: View {
     var color: Color {
         switch status {
         case .paused:
-            return LabelColor.primary
+            return LabelColor.red
         case .failed:
             return LabelColor.red
         case .success:
