@@ -34,8 +34,6 @@ class SyncService: ObservableObject {
     private lazy var queue: SyncQueue? = nil
     
     func startQueue(user: User) {
-        self.error = nil
-        statusCode = 200
         if queue == nil {
             self.queue = SyncQueue(user: user)
         }
