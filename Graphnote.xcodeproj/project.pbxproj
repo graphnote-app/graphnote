@@ -35,7 +35,7 @@
 		F82EC64F29D54B62009C46BE /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
 		F82EC65029D54B62009C46BE /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
 		F82EC65129D54B62009C46BE /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
-		F82EC65229D54B62009C46BE /* TreeDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC930279D0CF700A1F693 /* TreeDocView.swift */; };
+		F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC930279D0CF700A1F693 /* TreeBulletView.swift */; };
 		F82EC65329D54B62009C46BE /* TreeTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC933279D0ECA00A1F693 /* TreeTagView.swift */; };
 		F82EC65429D54B62009C46BE /* TreeViewAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */; };
 		F82EC65529D54B62009C46BE /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289327A24688009CC9B9 /* CheckmarkView.swift */; };
@@ -155,7 +155,7 @@
 		F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73B729C7EB2700BA826E /* MenuCardView.swift */; };
 		F8BF73BC29C7F38300BA826E /* WorkspaceMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */; };
 		F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD578027C1D94400E07D82 /* ArrowView.swift */; };
-		F8BF73BF29C7F52500BA826E /* TreeDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC930279D0CF700A1F693 /* TreeDocView.swift */; };
+		F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC930279D0CF700A1F693 /* TreeBulletView.swift */; };
 		F8BF73C329C7F52500BA826E /* TreeTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC933279D0ECA00A1F693 /* TreeTagView.swift */; };
 		F8BF73C529C7F52500BA826E /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9289327A24688009CC9B9 /* CheckmarkView.swift */; };
 		F8BF73C629C7F54900BA826E /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D92887279FD05B009CC9B9 /* DataController.swift */; };
@@ -179,7 +179,7 @@
 		F807C8C829C919A100B7B239 /* LabelColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelColor.swift; sourceTree = "<group>"; };
 		F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceMenu.swift; sourceTree = "<group>"; };
 		F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewLabel.swift; sourceTree = "<group>"; };
-		F81CC930279D0CF700A1F693 /* TreeDocView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocView.swift; sourceTree = "<group>"; };
+		F81CC930279D0CF700A1F693 /* TreeBulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBulletView.swift; sourceTree = "<group>"; };
 		F81CC933279D0ECA00A1F693 /* TreeTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeTagView.swift; sourceTree = "<group>"; };
 		F82EC67829D54BB6009C46BE /* GNColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNColor.swift; sourceTree = "<group>"; };
 		F82EC67B29D54C61009C46BE /* GlobalDimensionIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimensionIOS.swift; sourceTree = "<group>"; };
@@ -309,7 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				F8AD578027C1D94400E07D82 /* ArrowView.swift */,
-				F81CC930279D0CF700A1F693 /* TreeDocView.swift */,
+				F81CC930279D0CF700A1F693 /* TreeBulletView.swift */,
 				F81CC933279D0ECA00A1F693 /* TreeTagView.swift */,
 				F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */,
 				F8D9289327A24688009CC9B9 /* CheckmarkView.swift */,
@@ -676,7 +676,7 @@
 				F82EC64F29D54B62009C46BE /* BlockView.swift in Sources */,
 				F82EC65029D54B62009C46BE /* DocumentView.swift in Sources */,
 				F82EC65129D54B62009C46BE /* ArrowView.swift in Sources */,
-				F82EC65229D54B62009C46BE /* TreeDocView.swift in Sources */,
+				F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */,
 				F87A06DC29DEAFDE002CC7EF /* SyncMessageEntity.swift in Sources */,
 				F82EC65329D54B62009C46BE /* TreeTagView.swift in Sources */,
 				F8AAD1F629DD358200863A7D /* SyncService.swift in Sources */,
@@ -779,7 +779,7 @@
 				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,
 				F84D087729C808B100410C10 /* DocumentView.swift in Sources */,
 				F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */,
-				F8BF73BF29C7F52500BA826E /* TreeDocView.swift in Sources */,
+				F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */,
 				F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */,
 				F84D087E29C809FE00410C10 /* BlockType.swift in Sources */,
 				F8A6B6FE29D2043300140A53 /* LabelPalette.swift in Sources */,

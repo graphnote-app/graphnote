@@ -1,5 +1,5 @@
 //
-//  TreeDocView.swift
+//  TreeBulletView.swift
 //  Graphnote
 //
 //  Created by Hayden Pennington on 1/22/22.
@@ -11,16 +11,16 @@ fileprivate enum Dimensions: CGFloat {
     case bulletDiameter = 6
 }
 
-struct TreeDocView: View {
+struct TreeBulletView: View {
     var body: some View {
-        Image(systemName: "doc.plaintext")
+        Circle()
             .frame(width: Dimensions.bulletDiameter.rawValue, height: Dimensions.bulletDiameter.rawValue)
-            .foregroundColor(Color.accentColor)
+            .foregroundColor(Color.gray)
     }
 }
 
 struct TreeBulletView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeDocView()
+        TreeBulletView()
     }
 }
