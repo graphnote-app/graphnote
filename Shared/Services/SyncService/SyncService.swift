@@ -56,29 +56,34 @@ class SyncService: ObservableObject {
             if !requestIDs.contains(queueItem.id) {
                 requestIDs.insert(queueItem.id)
                 request(message: queueItem) { result in
-                    switch result {
-                    case .success(let response):
-                        switch response.statusCode {
-                        case 201, 409:
-                            // Drop the item from the queue
-                            self.queue?.remove(id: queueItem.id)
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let response):
+                            switch response.statusCode {
+                            case 201, 409:
+                                // Drop the item from the queue
+                                self.queue?.remove(id: queueItem.id)
+                                break
+                            case 500:
+                                print("Server error: \(response.statusCode)")
+                                break
+                            default:
+                                print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                                break
+                            }
+                            
+                            self.statusCode = response.statusCode
                             break
-                        default:
-                            print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                        case .failure(let error):
+                            print(error)
+                            self.stopQueue()
+                            self.error = error
+                            NotificationCenter.default.post(name: Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue), object: nil)
                             break
                         }
-
-                        self.statusCode = response.statusCode
-                        break
-                    case .failure(let error):
-                        print(error)
-                        self.stopQueue()
-                        self.error = error
-                        NotificationCenter.default.post(name: Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue), object: nil)
-                        break
+                        
+                        self.requestIDs.remove(queueItem.id)
                     }
-
-                    self.requestIDs.remove(queueItem.id)
                 }
             }
         }
@@ -144,8 +149,10 @@ class SyncService: ObservableObject {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         let contents = try! encoder.encode(user)
-        let jsonString = String(data: contents, encoding: .utf8)!
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, contents: jsonString)
+        
+//        let json = try! JSONSerialization.jsonObject(with: contents) as! Dictionary<String, Any>
+//        print(json)
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
         
         // Save message to local queue
         print(self.queue?.add(message: message))
@@ -156,8 +163,8 @@ class SyncService: ObservableObject {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         let contents = try! encoder.encode(document)
-        let jsonString = String(data: contents, encoding: .utf8)!
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, contents: jsonString)
+
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
         
         // Save message to local queue
         print(self.queue?.add(message: message))

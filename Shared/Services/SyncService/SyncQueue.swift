@@ -65,8 +65,9 @@ class SyncQueue {
     }
     
     private func fetchQueue() {
-        if let queue = try? syncMessageRepo.readAll() {
+        if let queue = try? syncMessageRepo.readAllWhere(isSynced: false) {
             self.queue = queue
+            print(self.queue)
         }
     }
 }

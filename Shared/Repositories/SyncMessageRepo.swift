@@ -19,14 +19,19 @@ struct SyncMessageRepo {
     
     func create(message: SyncMessage) throws {
         do {
-            if let data = message.contents.data(using: .utf8) {
+            let encoder = JSONEncoder()
+            
+            if let data = try? encoder.encode(message.contents) {
                 let messageEntity = SyncMessageEntity(entity: SyncMessageEntity.entity(), insertInto: moc)
                 messageEntity.id = message.id
+                messageEntity.user = message.user
                 messageEntity.timestamp = message.timestamp
                 messageEntity.type = message.type.rawValue
                 messageEntity.action = message.action.rawValue
                 messageEntity.contents = data
                 messageEntity.isSynced = message.isSynced
+                
+                print(messageEntity.contents)
                 
                 try moc.save()
             } else {
@@ -40,11 +45,12 @@ struct SyncMessageRepo {
         }
     }
     
-    func readAll() throws -> [SyncMessage] {
+    func readAllWhere(isSynced: Bool) throws -> [SyncMessage] {
         do {
             let fetchRequest = SyncMessageEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "user == %@", user.id)
+            fetchRequest.predicate = NSPredicate(format: "user == %@ && isSynced == false", user.id, isSynced)
             let messageEntities = try moc.fetch(fetchRequest)
+
             let decoder = JSONDecoder()
             
             return messageEntities.map {
