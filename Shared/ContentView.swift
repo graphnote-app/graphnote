@@ -172,8 +172,8 @@ struct ContentView: View {
                 SyncService.shared.startQueue(user: newValue)
             }
         })
-        .alert("Network sync failed. Status: (\(SyncService.shared.statusCode))\nOffline mode will continue until relaunch or tapping the wifi icon", isPresented: $networkSyncFailedAlert, actions: {
-            Button("Connect") {
+        .alert("Offline Mode", isPresented: $networkSyncFailedAlert, actions: {
+            Button("Try to Connect") {
                 networkSyncFailedAlert = false
                 if let user = vm.user {
                     SyncService.shared.startQueue(user: user)
@@ -184,6 +184,8 @@ struct ContentView: View {
                 networkSyncFailedAlert = false
                 SyncService.shared.stopQueue()
             }
+        }, message: {
+            Text("Error: \(SyncService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
         })
         .onReceive(NotificationCenter.default.publisher(for: networkSyncFailedNotification)) { notification in
             print("Network synced failed: \(notification)")
