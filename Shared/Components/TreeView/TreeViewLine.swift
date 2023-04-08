@@ -12,15 +12,30 @@ struct TreeViewLine: View {
     let color: Color
     let toggle: Bool
     let label: String
+    let isAll: Bool
+    
+    init(id: UUID, color: Color, toggle: Bool, label: String, isAll: Bool = false) {
+        self.id = id
+        self.color = color
+        self.toggle = toggle
+        self.label = label
+        self.isAll = isAll
+    }
     
     var body: some View {
         HStack {
             ArrowView(color: color, down: toggle)
                 .frame(width: TreeViewLabelDimensions.arrowWidthHeight.rawValue, height: TreeViewLabelDimensions.arrowWidthHeight.rawValue)
-                        
-            TreeTagView()
-                .foregroundColor(color)
-                .padding(TreeViewLabelDimensions.rowPadding.rawValue)
+            if isAll {
+                TreeDocView()
+                    .foregroundColor(color)
+                    .padding(TreeViewLabelDimensions.rowPadding.rawValue)
+            } else {
+                TreeTagView()
+                    .foregroundColor(color)
+                    .padding(TreeViewLabelDimensions.rowPadding.rawValue)
+            }
+
             Text(label)
                 .bold()
                 .padding(TreeViewLabelDimensions.rowPadding.rawValue)

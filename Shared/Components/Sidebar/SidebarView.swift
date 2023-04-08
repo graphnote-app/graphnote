@@ -13,6 +13,7 @@ struct SidebarView: View {
     let workspaceTitles: [String]
     @Binding var selectedWorkspaceTitleIndex: Int
     @Binding var selectedSubItem: TreeDocumentIdentifier?
+    let allID: UUID
     let newDocument: () -> Void
     
     var body: some View {
@@ -20,7 +21,7 @@ struct SidebarView: View {
             Spacer()
                 .frame(maxHeight: Spacing.spacing7.rawValue)
             VStack(alignment: .leading) {
-                TreeView(selectedSubItem: $selectedSubItem, items: items)
+                TreeView(selectedSubItem: $selectedSubItem, allID: allID, items: items)
                 
             }
             .padding(Spacing.spacing3.rawValue)

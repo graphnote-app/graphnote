@@ -9,9 +9,12 @@ import SwiftUI
 
 struct SplitView: View {
     @Binding var sidebarOpen: Bool
+    let syncStatus: SyncServiceStatus
     
     let sidebar: () -> any View
     let detail: () -> any View
+    let retrySync: () -> Void
+    
 
     var drag: some Gesture {
         DragGesture()
@@ -31,6 +34,8 @@ struct SplitView: View {
                         .frame(width: !sidebarOpen ? .zero : nil)
                 }
                 ToolbarView {
+                    MenuCardView()
+                } action: {
 //                    withAnimation {
                         self.sidebarOpen.toggle()
 //                    }
@@ -56,6 +61,8 @@ struct SplitView: View {
                 }
                 
                 ToolbarView {
+                    MenuCardView()
+                } action: {
                     withAnimation {
                         self.sidebarOpen.toggle()
                     }
@@ -71,6 +78,15 @@ struct SplitView: View {
                 #endif
                 
                 AnyView(detail())
+                    .overlay(alignment: .trailing) {
+                        VStack {
+                            SyncStatusIconView(status: syncStatus)
+                                .padding([.trailing, .top], Spacing.spacing3.rawValue)
+                                .onTapGesture(perform: retrySync)
+                            Spacer()
+                        }
+                        
+                    }
             }
         }
     }
@@ -87,10 +103,12 @@ struct SplitView: View {
 
 struct SplitView_Previews: PreviewProvider {
     static var previews: some View {
-        SplitView(sidebarOpen: .constant(true)) {
+        SplitView(sidebarOpen: .constant(true), syncStatus: .success) {
             EmptyView()
         } detail: {
             EmptyView()
+        } retrySync: {
+            
         }
     }
 }

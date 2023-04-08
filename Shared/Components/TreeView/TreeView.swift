@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TreeView: View {
     @Binding var selectedSubItem: TreeDocumentIdentifier?
+    let allID: UUID
     var items: [TreeViewItem]
     
     var body: some View {
@@ -16,7 +17,7 @@ struct TreeView: View {
             HStack(spacing: Spacing.spacing0.rawValue) {
                 VStack(alignment: .leading) {
                     ForEach(items, id: \.id) { item in
-                        TreeViewLabel(id: UUID(), label: .constant(item.title), color: item.color) {
+                        TreeViewLabel(id: UUID(), label: .constant(item.title), color: item.color, isAll: allID == item.id) {
                             if let subItems = item.subItems {
                                 return ForEach(subItems, id: \.id) { subItem in
                                     TreeViewSubline(title: subItem.title, selected: selectedSubItem?.document == subItem.id && selectedSubItem?.label == item.id)
@@ -39,6 +40,6 @@ struct TreeView: View {
 
 struct TreeView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeView(selectedSubItem: .constant(nil), items: [])
+        TreeView(selectedSubItem: .constant(nil), allID: UUID(), items: [])
     }
 }

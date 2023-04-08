@@ -20,13 +20,32 @@ enum SyncServiceError: Error {
 
 enum SyncServiceNotification: String {
     case networkSyncFailed
+    case networkSyncSuccess
+}
+
+enum SyncServiceStatus {
+    case paused
+    case failed
+    case success
 }
 
 class SyncService: ObservableObject {
     static let shared = SyncService()
     @Published private(set) var statusCode: Int = 200
-    @Published private(set) var error: SyncServiceError? = nil
+    @Published private(set) var error: SyncServiceError? = nil {
+        didSet {
+            if oldValue != error {
+                if error == nil {
+                    syncStatus = .success
+                } else {
+                    syncStatus = .failed
+                }
+            }
+        }
+    }
     
+    @Published private(set) var syncStatus: SyncServiceStatus = .success
+
     private(set) var watching = false
     private var timer: Timer? = nil
     private var requestIDs: Set<UUID> = Set()
@@ -51,6 +70,10 @@ class SyncService: ObservableObject {
         watching = false
     }
     
+    private func postSyncNotification(_ notification: SyncServiceNotification) {
+        NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
+    }
+    
     private func processQueue() {
         if let queueItem = self.queue?.peek() {
             if !requestIDs.contains(queueItem.id) {
@@ -63,22 +86,31 @@ class SyncService: ObservableObject {
                             case 201, 409:
                                 // Drop the item from the queue
                                 self.queue?.remove(id: queueItem.id)
+                                self.syncStatus = .success
+                                self.postSyncNotification(.networkSyncSuccess)
                                 break
                             case 500:
                                 print("Server error: \(response.statusCode)")
+                                self.postSyncNotification(.networkSyncFailed)
+                                self.syncStatus = .failed
                                 break
                             default:
                                 print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                                self.postSyncNotification(.networkSyncFailed)
+                                self.syncStatus = .failed
                                 break
                             }
                             
                             self.statusCode = response.statusCode
+                            self.error = nil
+                            
                             break
                         case .failure(let error):
                             print(error)
                             self.stopQueue()
                             self.error = error
-                            NotificationCenter.default.post(name: Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue), object: nil)
+                            self.postSyncNotification(.networkSyncFailed)
+                            self.syncStatus = .failed
                             break
                         }
                         

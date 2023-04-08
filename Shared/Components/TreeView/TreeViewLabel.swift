@@ -28,11 +28,12 @@ struct TreeViewLabel: View, Identifiable {
     let id: UUID
     @Binding var label: String
     let color: Color
+    let isAll: Bool
     let content: () -> any View
 
     var body: some View {
         VStack(alignment: .leading) {
-            TreeViewLine(id: UUID(), color: color, toggle: toggle, label: label)
+            TreeViewLine(id: UUID(), color: color, toggle: toggle, label: label, isAll: isAll)
                 .padding(TreeViewLabelDimensions.rowPadding.rawValue)
                 .frame(minWidth: 200, alignment: .leading)
                 .contentShape(RoundedRectangle(cornerRadius: Spacing.spacing2.rawValue))

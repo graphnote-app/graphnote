@@ -167,6 +167,10 @@
 		F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D329C7FD1C00BA826E /* ContentView.swift */; };
 		F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D629C7FDFD00BA826E /* SidebarView.swift */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
+		F8EA1EC329E1D6ED00931810 /* TreeDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */; };
+		F8EA1EC429E1D6ED00931810 /* TreeDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */; };
+		F8EA1EC629E1DE9200931810 /* SyncStatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */; };
+		F8EA1EC729E1DE9200931810 /* SyncStatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */; };
 		F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -258,6 +262,8 @@
 		F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSpacer.swift; sourceTree = "<group>"; };
 		F8EA066929BD1CFD0023F833 /* BlockEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEntity.swift; sourceTree = "<group>"; };
 		F8EA066F29BD35960023F833 /* EmptyBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBlockView.swift; sourceTree = "<group>"; };
+		F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocView.swift; sourceTree = "<group>"; };
+		F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusIconView.swift; sourceTree = "<group>"; };
 		F8EA4073279CFF54001F74B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F8EA407E279CFF55001F74B5 /* Graphnote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphnote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EA4080279CFF55001F74B5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
@@ -308,9 +314,11 @@
 		F81CC936279D108400A1F693 /* TreeView */ = {
 			isa = PBXGroup;
 			children = (
+				F8BF73B729C7EB2700BA826E /* MenuCardView.swift */,
 				F8AD578027C1D94400E07D82 /* ArrowView.swift */,
 				F81CC930279D0CF700A1F693 /* TreeBulletView.swift */,
 				F81CC933279D0ECA00A1F693 /* TreeTagView.swift */,
+				F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */,
 				F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */,
 				F8D9289327A24688009CC9B9 /* CheckmarkView.swift */,
 				F84D088529C81AAA00410C10 /* TreeView.swift */,
@@ -452,9 +460,9 @@
 				F84D087829C808B500410C10 /* DocumentView */,
 				F81CC936279D108400A1F693 /* TreeView */,
 				F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */,
+				F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */,
 				F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */,
 				F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */,
-				F8BF73B729C7EB2700BA826E /* MenuCardView.swift */,
 				F88550AB29D9B51200EE458C /* SignInView.swift */,
 				F896E90329DA3BC500296073 /* AddLabelView.swift */,
 			);
@@ -659,6 +667,7 @@
 				F82EC63F29D54B62009C46BE /* GearIconVIew.swift in Sources */,
 				F82EC64029D54B62009C46BE /* LabelField.swift in Sources */,
 				F82EC64129D54B62009C46BE /* EditIconView.swift in Sources */,
+				F8EA1EC429E1D6ED00931810 /* TreeDocView.swift in Sources */,
 				F82EC64229D54B62009C46BE /* CheckmarkIconView.swift in Sources */,
 				F82EC64329D54B62009C46BE /* XMarkIconView.swift in Sources */,
 				F82EC64429D54B62009C46BE /* LabelView.swift in Sources */,
@@ -667,6 +676,7 @@
 				F82EC64729D54B62009C46BE /* LabelContextMenu.swift in Sources */,
 				F82EC64829D54B62009C46BE /* BlockSpacer.swift in Sources */,
 				F82EC64929D54B62009C46BE /* BulletView.swift in Sources */,
+				F8EA1EC729E1DE9200931810 /* SyncStatusIconView.swift in Sources */,
 				F82EC64A29D54B62009C46BE /* BlockType.swift in Sources */,
 				F863496429E03ED800C49D0B /* SyncQueue.swift in Sources */,
 				F82EC64B29D54B62009C46BE /* EmptyBlockView.swift in Sources */,
@@ -748,6 +758,7 @@
 				F8A6B6F429D1028000140A53 /* UserEntity.swift in Sources */,
 				F807C8C329C9161B00B7B239 /* EditIconView.swift in Sources */,
 				F84D087929C809ED00410C10 /* BlockView.swift in Sources */,
+				F8EA1EC629E1DE9200931810 /* SyncStatusIconView.swift in Sources */,
 				F807C8C129C9144500B7B239 /* LabelField.swift in Sources */,
 				F88550AC29D9B51200EE458C /* SignInView.swift in Sources */,
 				F84D088429C817E900410C10 /* GlobalDimensionMacOS.swift in Sources */,
@@ -807,6 +818,7 @@
 				F87A06DB29DEAFDE002CC7EF /* SyncMessageEntity.swift in Sources */,
 				F84D087F29C809FE00410C10 /* BlockSpacer.swift in Sources */,
 				F807C8BE29C9132600B7B239 /* LabelView.swift in Sources */,
+				F8EA1EC329E1D6ED00931810 /* TreeDocView.swift in Sources */,
 				F8BF73B829C7EB2700BA826E /* MenuCardView.swift in Sources */,
 				F8AAD1F529DD358200863A7D /* SyncService.swift in Sources */,
 			);

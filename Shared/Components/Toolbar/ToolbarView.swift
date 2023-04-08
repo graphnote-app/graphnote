@@ -10,12 +10,13 @@ import SwiftUI
 struct ToolbarView: View {
     @Environment(\.colorScheme) private var colorScheme
     
+    let content: () -> any View
     let action: () -> Void
     
     var body: some View {
         VStack {
             Spacer()
-            MenuCardView()
+            AnyView(content())
                 .padding(Spacing.spacing3.rawValue)
                 .onTapGesture(perform: action)
         }
@@ -26,7 +27,9 @@ struct ToolbarView: View {
 struct ToolbarView_Previews: PreviewProvider {
     static var previews: some View {
         ToolbarView {
-            print("toggle toolbar")
+            MenuCardView()
+        } action: {
+            
         }
     }
 }

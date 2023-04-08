@@ -28,8 +28,10 @@ struct ContentView: View {
     @State private var globalUIState = AppGlobalUIState.loading
     @State private var newDocFailedAlert = false
     @State private var networkSyncFailedAlert = false
+    @State private var syncStatus: SyncServiceStatus = .success
     
     private let loadingDelay = 1.0
+    private let networkSyncSuccessNotification = Notification.Name(SyncServiceNotification.networkSyncSuccess.rawValue)
     private let networkSyncFailedNotification = Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue)
     
     func checkAuthStatus(user: User) {
@@ -72,7 +74,7 @@ struct ContentView: View {
                     }
                 }
             case .doc, .settings:
-                SplitView(sidebarOpen: $menuOpen) {
+                SplitView(sidebarOpen: $menuOpen, syncStatus: syncStatus) {
                     #if os(macOS)
                     if let workspaces = vm.workspaces, let workspace = vm.selectedWorkspace {
                         return SidebarView(
@@ -80,7 +82,8 @@ struct ContentView: View {
                             settingsOpen: $settings,
                             workspaceTitles: workspaces.map{$0.title},
                             selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex,
-                            selectedSubItem: $vm.selectedSubItem
+                            selectedSubItem: $vm.selectedSubItem,
+                            allID: vm.ALL_ID
                         ) {
                             let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
                             if !vm.addDocument(document) {
@@ -108,7 +111,8 @@ struct ContentView: View {
                             settingsOpen: $settings,
                             workspaceTitles: workspaces.map{$0.title},
                             selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex,
-                            selectedSubItem: $vm.selectedSubItem
+                            selectedSubItem: $vm.selectedSubItem,
+                            allID: vm.ALL_ID
                         ) {
                             let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
                            if !vm.addDocument(document) {
@@ -156,6 +160,10 @@ struct ContentView: View {
                         .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
                         
                     }
+                } retrySync: {
+                    if let user = vm.user {
+                        SyncService.shared.startQueue(user: user)
+                    }
                 }
             }
         }
@@ -173,11 +181,16 @@ struct ContentView: View {
             }
             Button("Later") {
                 networkSyncFailedAlert = false
+                syncStatus = .paused
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: networkSyncFailedNotification)) { notification in
             print("Network synced failed: \(notification)")
             networkSyncFailedAlert = true
+            syncStatus = .failed
+        }
+        .onReceive(NotificationCenter.default.publisher(for: networkSyncSuccessNotification)) { notification in
+            syncStatus = .success
         }
 //        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willResignActiveNotification)) { notification in
 //            print("scenePhase notification: \(notification)")
