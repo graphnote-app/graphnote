@@ -31,6 +31,7 @@ enum SyncServiceStatus {
 
 class SyncService: ObservableObject {
     static let shared = SyncService()
+    let syncInterval = 0.25
     @Published private(set) var statusCode: Int = 200
     @Published private(set) var error: SyncServiceError? = nil {
         didSet {
@@ -60,7 +61,7 @@ class SyncService: ObservableObject {
         // Invalidate timer always so we don't get runaway timers
         self.timer?.invalidate()
         self.timer = nil
-        self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+        self.timer = Timer.scheduledTimer(withTimeInterval: syncInterval, repeats: true) { timer in
             self.processQueue()
         }
 
