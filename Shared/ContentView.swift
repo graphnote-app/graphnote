@@ -180,8 +180,9 @@ struct ContentView: View {
                 }
             }
             Button("Later") {
-                networkSyncFailedAlert = false
                 syncStatus = .paused
+                networkSyncFailedAlert = false
+                SyncService.shared.stopQueue()
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: networkSyncFailedNotification)) { notification in
