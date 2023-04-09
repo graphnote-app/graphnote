@@ -17,6 +17,53 @@ struct SyncMessageRepo {
         case contentParseFailed
     }
     
+    func setSyncedOnMessageID(id: UUID) throws {
+        do {
+            guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
+                // Add throw error here
+                fatalError()
+                return
+            }
+            
+            messageEntity.isSynced = true
+            
+            try moc.save()
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func readAllIDs(includeSynced: Bool) -> [UUID]? {
+        do {
+            let fetchRequest = SyncMessageIDEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "isSynced == %@", NSNumber(value: includeSynced))
+            let syncMessageIDs = try moc.fetch(fetchRequest)
+            print(syncMessageIDs)
+            return syncMessageIDs.map {$0.id}
+                
+        } catch let error {
+            print(error)
+            return nil
+        }
+    }
+    
+    func create(id: UUID) throws {
+        do {
+
+            let syncMessageIdEntity = SyncMessageIDEntity(entity: SyncMessageIDEntity.entity(), insertInto: moc)
+            syncMessageIdEntity.id = id
+            syncMessageIdEntity.isSynced = false
+            
+            try moc.save()
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     func create(message: SyncMessage) throws {
         do {
             let encoder = JSONEncoder()
@@ -45,10 +92,49 @@ struct SyncMessageRepo {
         }
     }
     
+    private func fetchLastSyncTime() throws -> LastSyncTimeEntity? {
+        do {
+            let fetchRequest = LastSyncTimeEntity.fetchRequest()
+            guard let lastSyncTimeEntity = try moc.fetch(fetchRequest).first else {
+                return nil
+            }
+            
+            return lastSyncTimeEntity
+                
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func setLastSyncTime(time: Date?) throws {
+        do {
+            
+            if let lastSyncTimeEntity = try? fetchLastSyncTime() {
+                // Update
+                lastSyncTimeEntity.lastSyncTime = time ?? Date.now
+            } else {
+                // Create
+                let messageEntity = LastSyncTimeEntity(entity: LastSyncTimeEntity.entity(), insertInto: moc)
+                messageEntity.lastSyncTime = time ?? Date.now
+            }
+                        
+            try moc.save()
+
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func readLastSyncTime() throws -> Date? {
+        try? fetchLastSyncTime()?.lastSyncTime
+    }
+    
     func readAllWhere(isSynced: Bool) throws -> [SyncMessage] {
         do {
             let fetchRequest = SyncMessageEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "user == %@ && isSynced == false", user.id, isSynced)
+            fetchRequest.predicate = NSPredicate(format: "user == %@ && isSynced == %@", user.id, NSNumber(value: isSynced))
             let messageEntities = try moc.fetch(fetchRequest)
 
             let decoder = JSONDecoder()

@@ -15,9 +15,9 @@ struct WorkspaceRepo {
     
     private let moc = DataController.shared.container.viewContext
     
-    func create(document: Document, in workspace: Workspace, for user: User) throws -> Bool {
+    func create(document: Document, for user: User) throws -> Bool {
         do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc),
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: document.workspace, moc: moc),
                   let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
                 return false
             }
@@ -30,7 +30,7 @@ struct WorkspaceRepo {
             documentEntity.workspace = workspaceEntity
             documentEntity.user = userEntity
             
-            try? moc.save()
+            try moc.save()
             
             return true
 

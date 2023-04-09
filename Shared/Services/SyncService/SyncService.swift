@@ -53,6 +53,11 @@ class SyncService: ObservableObject {
     
     private lazy var queue: SyncQueue? = nil
     
+    private func getLastSyncTime(user: User) -> Date? {
+        let syncMessageRepo = SyncMessageRepo(user: user)
+        return try? syncMessageRepo.readLastSyncTime()
+    }
+    
     func startQueue(user: User) {
         if queue == nil {
             self.queue = SyncQueue(user: user)
@@ -62,7 +67,7 @@ class SyncService: ObservableObject {
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: syncInterval, repeats: true) { timer in
-            self.processQueue()
+            self.processQueue(user: user)
         }
 
         watching = true
@@ -78,20 +83,115 @@ class SyncService: ObservableObject {
         NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
     }
     
-    private func processQueue() {
+    private func processQueue(user: User) {
+        // Pull messages
+        
+        let syncMessageRepo = SyncMessageRepo(user: user)
+        guard let ids = syncMessageRepo.readAllIDs(includeSynced: false) else {
+            return
+        }
+        print("ids: \(ids)")
+        
+        // TODO: Batch pulls
+        for id in ids {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            var request = URLRequest(url: self.baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: id.uuidString)]))
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    if let error = error as? URLError {
+                        switch error.networkUnavailableReason {
+                        case .cellular:
+                            self.error = .cellular
+                            return
+                        case .constrained:
+                            self.error = .lowDataMode
+                            return
+                        case .expensive:
+                            self.error = .systemNetworkRestrained
+                            return
+                        case .none:
+                            self.error = .unknown
+                            break
+                        case .some(_):
+                            self.error = .unknown
+                            break
+                        }
+                        
+                        print(error.errorCode)
+                        
+                        if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                            self.error = .cannotConnectToHost
+                            return
+                        }
+                        
+                        self.error = .postFailed
+                        return
+                    }
+                    
+                    if let response = response as? HTTPURLResponse {
+                        self.error = nil
+                    }
+                    
+                    if let data {
+                        let decoder = JSONDecoder()
+                        let formatter = DateFormatter()
+                        formatter.calendar = Calendar(identifier: .iso8601)
+                        formatter.locale = Locale(identifier: "en_US_POSIX")
+                        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                        decoder.dateDecodingStrategy = .millisecondsSince1970
+                        
+                        do {
+                            let syncMessage = try decoder.decode(SyncMessage.self, from: data)
+                            
+                            if let contentsData = syncMessage.contents.data(using: .utf8) {
+                                self.createMessage(user: user, message: syncMessage)
+                                switch syncMessage.type {
+                                case .user:
+                                    break
+                                case .document:
+                                    let document = try! decoder.decode(Document.self, from: contentsData)
+                                    let workspaceRepo = WorkspaceRepo(user: user)
+                                    try! workspaceRepo.create(document: document, for: user)
+                                    
+                                }
+                                try syncMessageRepo.setSyncedOnMessageID(id: syncMessage.id)
+                            }
+                            
+                        } catch let error {
+                            print(error)
+                        }
+                    }
+                }
+            }
+            
+            task.resume()
+        }
+        
+        // Push messages
         if let queueItem = self.queue?.peek() {
-            if !requestIDs.contains(queueItem.id) {
-                requestIDs.insert(queueItem.id)
-                request(message: queueItem) { result in
+            if queueItem.isSynced == true {
+                self.queue?.remove(id: queueItem.id)
+                return
+            }
+            
+            if !self.requestIDs.contains(queueItem.id) {
+                self.requestIDs.insert(queueItem.id)
+                self.request(message: queueItem) { result in
                     DispatchQueue.main.async {
                         switch result {
                         case .success(let response):
+                            print(response.statusCode)
                             switch response.statusCode {
+                                
                             case 201, 409:
                                 // Drop the item from the queue
-                                self.queue?.remove(id: queueItem.id)
-                                self.syncStatus = .success
-                                self.postSyncNotification(.networkSyncSuccess)
+                                if self.queue?.remove(id: queueItem.id) != nil {
+                                    self.syncStatus = .success
+                                    self.postSyncNotification(.networkSyncSuccess)
+                                }
                                 break
                             case 500:
                                 print("Server error: \(response.statusCode)")
@@ -132,9 +232,22 @@ class SyncService: ObservableObject {
         case get
     }
     
+    func dbHas(message: SyncMessage) -> Bool {
+        return true
+    }
+    
+    func createMessage(user: User, message: SyncMessage) ->Bool {
+        let repo = SyncMessageRepo(user: user)
+        if let _ = try? repo.create(message: message) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     func request(message: SyncMessage, callback: @escaping (_ result: Result<HTTPURLResponse, SyncServiceError>) -> Void) {
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
+        encoder.dateEncodingStrategy = .millisecondsSince1970
         var request = URLRequest(url: baseURL.appendingPathComponent("message"))
         request.httpMethod = "POST"
         request.httpBody = try! encoder.encode(message)
@@ -153,6 +266,8 @@ class SyncService: ObservableObject {
                     callback(.failure(.systemNetworkRestrained))
                     return
                 case .none:
+                    break
+                case .some(_):
                     break
                 }
                 
@@ -183,7 +298,7 @@ class SyncService: ObservableObject {
     func createUser(user: User) {
         // Create message
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
+        encoder.dateEncodingStrategy = .millisecondsSince1970
         let contents = try! encoder.encode(user)
         
 //        let json = try! JSONSerialization.jsonObject(with: contents) as! Dictionary<String, Any>
@@ -195,9 +310,9 @@ class SyncService: ObservableObject {
         
     }
     
-    func createDocument(user: User, document: Document, workspace: Workspace) {
+    func createDocument(user: User, document: Document) {
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
+        encoder.dateEncodingStrategy = .millisecondsSince1970
         let contents = try! encoder.encode(document)
 
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
@@ -206,7 +321,69 @@ class SyncService: ObservableObject {
         print(self.queue?.add(message: message))
         
         let workspaceRepo = WorkspaceRepo(user: user)
-        try? workspaceRepo.create(document: document, in: workspace, for: user)
+        try? workspaceRepo.create(document: document, for: user)
+        
+    }
+    
+    func fetchMessageIDs(user: User) {
+        let syncMessageRepo = SyncMessageRepo(user: user)
+        
+        if let lastSyncTime = getLastSyncTime(user: user) {
+            print(lastSyncTime.timeIntervalSince1970)
+            
+            var request = URLRequest(url: baseURL.appendingPathComponent("message/ids")
+                .appending(queryItems: [.init(name: "user", value: user.id), .init(name: "last", value: String(lastSyncTime.timeIntervalSince1970))]))
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error {
+                    print(error)
+                    return
+                }
+                
+                if let response = response as? HTTPURLResponse {
+                    print(response)
+                    
+                    switch response.statusCode {
+                    case 200:
+                        break
+                    default:
+                        print(response.statusCode)
+                        return
+                    }
+                    
+                }
+                
+                if let data {
+
+                    let decoder = JSONDecoder()
+                    
+                    let syncMessageIDsResult = try! decoder.decode(SyncMessageIDsResult.self, from: data)
+                    let lastSyncTime = syncMessageIDsResult.lastSyncTime
+                    print("lastSyncTime from server: \(lastSyncTime)")
+                    let lastSyncDate = Date(timeIntervalSince1970: lastSyncTime)
+                    let ids = syncMessageIDsResult.ids
+                    
+                    print(ids)
+                    
+                    // Save ids then set sync time if successful
+                    do {
+                        for id in ids {
+                            try syncMessageRepo.create(id: UUID(uuidString: id)!)
+                        }
+                        
+                        try syncMessageRepo.setLastSyncTime(time: lastSyncDate)
+                    } catch let error {
+                        print(error)
+                    }
+                    
+                }
+            }
+            
+            task.resume()
+        } else {
+            try? syncMessageRepo.setLastSyncTime(time: nil)
+        }
         
     }
     
@@ -230,26 +407,8 @@ class SyncService: ObservableObject {
                 case 200:
                     if let data {
                         let decoder = JSONDecoder()
+                        decoder.dateDecodingStrategy = .millisecondsSince1970
 
-                        let formatter = DateFormatter()
-                        formatter.calendar = Calendar(identifier: .iso8601)
-                        formatter.locale = Locale(identifier: "en_US_POSIX")
-                        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-                        decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
-                            let container = try decoder.singleValueContainer()
-                            let dateStr = try container.decode(String.self)
-
-                            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-                            guard let date = formatter.date(from: dateStr) else {
-                                print("Date parsing FAILED!")
-                                return .now
-                            }
-                            
-                            return date
-        
-                        })
-                        
                         do {
                             let user = try decoder.decode(User.self, from: data)
                             callback(user, nil)

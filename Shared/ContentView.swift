@@ -49,6 +49,11 @@ struct ContentView: View {
     
     var body: some View {
         Group {
+            Button("fetch message ids") {
+                if let user = vm.user {
+                    SyncService.shared.fetchMessageIDs(user: user)
+                }
+            }
             switch globalUIState {
             case .loading:
                 LoadingView()
@@ -68,7 +73,7 @@ struct ContentView: View {
                             vm.initializeUserWorkspaces()
                             vm.fetch()
                         }
-                        
+//                        SyncService.shared.fetchMessageIDs(user: user)
                         self.initialized = true
                         checkAuthStatus(user: user)
                     }
@@ -216,6 +221,7 @@ struct ContentView: View {
                                 globalUIState = .signIn
                             }
                         }
+//                        SyncService.shared.fetchMessageIDs(user: user)
                     } else {
                         DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {
                             withAnimation {

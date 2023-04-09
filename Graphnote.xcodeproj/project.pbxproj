@@ -171,6 +171,8 @@
 		F8EA1EC429E1D6ED00931810 /* TreeDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */; };
 		F8EA1EC629E1DE9200931810 /* SyncStatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */; };
 		F8EA1EC729E1DE9200931810 /* SyncStatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */; };
+		F8EA1ECF29E219F500931810 /* SyncMessageIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1ECE29E219F500931810 /* SyncMessageIDEntity.swift */; };
+		F8EA1ED029E219F500931810 /* SyncMessageIDEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1ECE29E219F500931810 /* SyncMessageIDEntity.swift */; };
 		F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -264,6 +266,7 @@
 		F8EA066F29BD35960023F833 /* EmptyBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBlockView.swift; sourceTree = "<group>"; };
 		F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocView.swift; sourceTree = "<group>"; };
 		F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusIconView.swift; sourceTree = "<group>"; };
+		F8EA1ECE29E219F500931810 /* SyncMessageIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMessageIDEntity.swift; sourceTree = "<group>"; };
 		F8EA4073279CFF54001F74B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F8EA407E279CFF55001F74B5 /* Graphnote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graphnote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8EA4080279CFF55001F74B5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
@@ -371,6 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */,
+				F8EA1ECE29E219F500931810 /* SyncMessageIDEntity.swift */,
 				F8D92887279FD05B009CC9B9 /* DataController.swift */,
 				F8A6B6E429D0E94E00140A53 /* LabelEntity.swift */,
 				F8A6B6FB29D1279300140A53 /* LabelLinkEntity.swift */,
@@ -670,6 +674,7 @@
 				F8EA1EC429E1D6ED00931810 /* TreeDocView.swift in Sources */,
 				F82EC64229D54B62009C46BE /* CheckmarkIconView.swift in Sources */,
 				F82EC64329D54B62009C46BE /* XMarkIconView.swift in Sources */,
+				F8EA1ED029E219F500931810 /* SyncMessageIDEntity.swift in Sources */,
 				F82EC64429D54B62009C46BE /* LabelView.swift in Sources */,
 				F82EC64529D54B62009C46BE /* LabelColor.swift in Sources */,
 				F82EC64629D54B62009C46BE /* LabelPalette.swift in Sources */,
@@ -810,6 +815,7 @@
 				F87A06D829DE923E002CC7EF /* SyncMessage.swift in Sources */,
 				F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */,
 				F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */,
+				F8EA1ECF29E219F500931810 /* SyncMessageIDEntity.swift in Sources */,
 				F87A06DE29DEB11F002CC7EF /* SyncMessageRepo.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
 				F8403DDA29D521830027A196 /* DocumentContainerVM.swift in Sources */,

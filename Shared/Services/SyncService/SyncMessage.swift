@@ -28,3 +28,8 @@ struct SyncMessage: Codable {
     let isSynced: Bool
     let contents: String
 }
+
+struct SyncMessageIDsResult: Codable {
+    let lastSyncTime: Double
+    let ids: [String]
+}

@@ -35,6 +35,9 @@
         <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="workspace" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
+    <entity name="LastSyncTimeEntity" representedClassName="LastSyncTimeEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="lastSyncTime" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
     <entity name="SyncMessageEntity" representedClassName=".SyncMessageEntity" syncable="YES">
         <attribute name="action" attributeType="String"/>
         <attribute name="contents" attributeType="Binary"/>
@@ -43,6 +46,10 @@
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="type" attributeType="String"/>
         <attribute name="user" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="SyncMessageIDEntity" representedClassName=".SyncMessageIDEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isSynced" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>

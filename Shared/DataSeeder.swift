@@ -62,8 +62,8 @@ struct DataSeeder{
             }
             
             for document in documents {
-                if try !workspaceRepo.create(document: document, in: workspace, for: user) {
-                    print("failed to create document :\(document) in workspace: \(workspace)")
+                if try !workspaceRepo.create(document: document, for: user) {
+                    print("failed to create document :\(document) in workspace: \(document.workspace)")
                     return false
                 }
             }

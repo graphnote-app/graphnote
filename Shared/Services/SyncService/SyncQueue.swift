@@ -64,6 +64,12 @@ class SyncQueue {
         return self.queue.count
     }
     
+    func has(message: SyncMessage) -> Bool {
+        return queue.contains(where: { filterMessage in
+            return filterMessage.id == message.id
+        })
+    }
+    
     private func fetchQueue() {
         if let queue = try? syncMessageRepo.readAllWhere(isSynced: false) {
             self.queue = queue

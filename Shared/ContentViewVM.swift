@@ -102,8 +102,8 @@ class ContentViewVM: NSObject, ObservableObject {
     }
     
     func addDocument(_ document: Document) -> Bool {
-        if let user, let selectedWorkspace, let selected = selectedSubItem {
-            SyncService.shared.createDocument(user: user, document: document, workspace: selectedWorkspace)
+        if let user, let selected = selectedSubItem {
+            SyncService.shared.createDocument(user: user, document: document)
             selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
             return true
         }
