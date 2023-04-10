@@ -43,6 +43,7 @@ struct ContentView: View {
                 print(state == .authorized)
                 if state == .authorized {
                     globalUIState = .doc
+                    vm.fetch()
                 } else {
                     globalUIState = .signIn
                 }
@@ -55,11 +56,6 @@ struct ContentView: View {
             switch globalUIState {
             case .loading:
                 LoadingView()
-                    .onAppear {
-                        if let user = vm.user {
-                            SyncService.shared.fetchMessageIDs(user: user)
-                        }
-                    }
             case .signIn:
                 SignInView {
                     vm.initializeUser()
@@ -260,12 +256,8 @@ struct ContentView: View {
                     if let user = vm.user {
                         DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {
                             checkAuthStatus(user: user)
-                            vm.fetch()
-                            withAnimation {
-                                globalUIState = .signIn
-                            }
                         }
-//                        SyncService.shared.fetchMessageIDs(user: user)
+                        
                     } else {
                         DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {
                             withAnimation {
