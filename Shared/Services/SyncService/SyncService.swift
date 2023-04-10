@@ -267,47 +267,6 @@ class SyncService: ObservableObject {
         self.postSyncNotification(.workspaceCreated)
     }
     
-//    private func processEntity(data: Data, user: User) {
-//        let decoder = JSONDecoder()
-//        let formatter = DateFormatter()
-//        formatter.calendar = Calendar(identifier: .iso8601)
-//        formatter.locale = Locale(identifier: "en_US_POSIX")
-//        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-//        decoder.dateDecodingStrategy = .millisecondsSince1970
-//
-//        do {
-//            let syncMessage = try decoder.decode(SyncMessage.self, from: data)
-//
-//            print(syncMessage.contents)
-//            if let contentsData = syncMessage.contents.data(using: .utf8) {
-//                self.createMessage(user: user, message: syncMessage)
-//                switch syncMessage.type {
-//                case .user:
-//                    break
-//                case .document:
-//                    let document = try! decoder.decode(Document.self, from: contentsData)
-//                    print("document: \(document)")
-//                    let workspaceRepo = WorkspaceRepo(user: user)
-//                    try! workspaceRepo.create(document: document, for: user)
-//                    self.postSyncNotification(.documentCreated)
-//                case .workspace:
-//                    print("contents here: \(syncMessage.contents)")
-//                    let workspace = try! decoder.decode(Workspace.self, from: contentsData)
-//                    let userRepo = UserRepo()
-//                    try! userRepo.create(workspace: workspace, for: user)
-//                    self.postSyncNotification(.workspaceCreated)
-//                }
-//
-//                let syncMessageRepo = SyncMessageRepo(user: user)
-//                try syncMessageRepo.setSyncedOnMessageID(id: syncMessage.id)
-//            }
-//
-//        } catch let error {
-//            print(error)
-//        }
-//
-//    }
-    
     private func processQueue(user: User) {
         // Push messages
         if let queueItem = self.queue?.peek() {
@@ -390,8 +349,6 @@ class SyncService: ObservableObject {
         encoder.dateEncodingStrategy = .millisecondsSince1970
         let contents = try! encoder.encode(workspace)
         print("contents: \(contents)")
-//        let json = try! JSONSerialization.jsonObject(with: contents) as! Dictionary<String, Any>
-//        print(json)
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .workspace, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
         
         // Save message to local queue

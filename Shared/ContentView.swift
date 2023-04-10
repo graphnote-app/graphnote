@@ -218,13 +218,18 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: localWorkspaceCreatedNotification)) { notification in
 //            vm.initializeUser()
 //            vm.initializeUserWorkspaces()
-            vm.fetch()
+            DispatchQueue.main.async {
+                vm.fetch()
+            }
+            
 
         }
         .onReceive(NotificationCenter.default.publisher(for: localDocumentCreatedNotification)) { notification in
 //            vm.initializeUser()
 //            vm.initializeUserWorkspaces()
-            vm.fetch()
+            DispatchQueue.main.async {
+                vm.fetch()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in
             syncStatus = .success
