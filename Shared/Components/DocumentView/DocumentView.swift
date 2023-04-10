@@ -19,6 +19,7 @@ struct DocumentView: View {
     let workspace: Workspace
     let document: Document
     let fetch: () -> Void
+    let onRefresh: () -> Void
     
     var content: some View {
         Group {
@@ -62,6 +63,9 @@ struct DocumentView: View {
             }
             .frame(minHeight: GlobalDimension.minDocumentContentHeight)
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+        }
+        .refreshable {
+            onRefresh()
         }
     }
 }

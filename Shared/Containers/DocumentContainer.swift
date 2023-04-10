@@ -13,13 +13,16 @@ struct DocumentContainer: View {
     let user: User
     let workspace: Workspace
     let document: Document
+    let onRefresh: () -> Void
     
     @StateObject private var vm = DocumentContainerVM()
     
     var body: some View {
-        DocumentView(title: $vm.title, labels: $vm.labels, blocks: $vm.blocks, user: user, workspace: workspace, document: document, fetch: {
+        DocumentView(title: $vm.title, labels: $vm.labels, blocks: $vm.blocks, user: user, workspace: workspace, document: document) {
             vm.fetch(user: user, workspace: workspace, document: document)
-        })
+        } onRefresh: {
+            
+        }
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             .onAppear {
                 vm.fetch(user: user, workspace: workspace, document: document)

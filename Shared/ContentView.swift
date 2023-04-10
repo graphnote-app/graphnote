@@ -76,7 +76,7 @@ struct ContentView: View {
                             vm.initializeUserWorkspaces()
                             vm.fetch()
                         }
-//                        SyncService.shared.fetchMessageIDs(user: user)
+                        SyncService.shared.fetchMessageIDs(user: user)
                         self.initialized = true
                         checkAuthStatus(user: user)
                     }
@@ -104,6 +104,8 @@ struct ContentView: View {
                             } else {
                                 vm.fetch()
                             }
+                        } refresh: {
+                            vm.fetch()
                         }
                         .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
                             Text("Document failed to create")
@@ -133,7 +135,9 @@ struct ContentView: View {
                            } else {
                                vm.fetch()
                            }
-                       }
+                        } refresh: {
+                            vm.fetch()
+                        }
                        .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
                            Text("Document failed to create")
                        })
@@ -167,7 +171,9 @@ struct ContentView: View {
                             return EmptyView()
                         }
                     } else if let user = vm.user, let workspace = vm.selectedWorkspace, let document = vm.selectedDocument {
-                        return DocumentContainer(user: user, workspace: workspace, document: document)
+                        return DocumentContainer(user: user, workspace: workspace, document: document, onRefresh: {
+                            vm.fetch()
+                        })
                             .id(document.id)
                             .onAppear {
                                 

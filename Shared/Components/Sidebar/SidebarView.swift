@@ -15,13 +15,16 @@ struct SidebarView: View {
     @Binding var selectedSubItem: TreeDocumentIdentifier?
     let allID: UUID
     let newDocument: () -> Void
+    let refresh: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
             Spacer()
                 .frame(maxHeight: Spacing.spacing7.rawValue)
             VStack(alignment: .leading) {
-                TreeView(selectedSubItem: $selectedSubItem, allID: allID, items: items)
+                TreeView(selectedSubItem: $selectedSubItem, allID: allID, items: items) {
+                    refresh()
+                }
                 
             }
             .padding(Spacing.spacing3.rawValue)

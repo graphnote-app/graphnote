@@ -11,6 +11,7 @@ struct TreeView: View {
     @Binding var selectedSubItem: TreeDocumentIdentifier?
     let allID: UUID
     var items: [TreeViewItem]
+    let refresh: () -> Void
     
     var body: some View {
         ScrollView {
@@ -35,11 +36,8 @@ struct TreeView: View {
             }
         }
         .padding([.top, .bottom])
-    }
-}
-
-struct TreeView_Previews: PreviewProvider {
-    static var previews: some View {
-        TreeView(selectedSubItem: .constant(nil), allID: UUID(), items: [])
+        .refreshable {
+            refresh()
+        }
     }
 }
