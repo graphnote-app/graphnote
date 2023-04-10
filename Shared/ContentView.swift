@@ -214,14 +214,14 @@ struct ContentView: View {
             Text("Error: \(SyncService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
         })
         .onReceive(NotificationCenter.default.publisher(for: localWorkspaceCreatedNotification)) { notification in
-            vm.initializeUser()
-            vm.initializeUserWorkspaces()
+//            vm.initializeUser()
+//            vm.initializeUserWorkspaces()
             vm.fetch()
 
         }
         .onReceive(NotificationCenter.default.publisher(for: localDocumentCreatedNotification)) { notification in
-            vm.initializeUser()
-            vm.initializeUserWorkspaces()
+//            vm.initializeUser()
+//            vm.initializeUserWorkspaces()
             vm.fetch()
         }
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in

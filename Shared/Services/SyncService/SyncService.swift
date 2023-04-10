@@ -149,8 +149,9 @@ class SyncService: ObservableObject {
                             if !repo.has(id: syncMessage.id) {
                                 try repo.create(message: syncMessage)
                             }
-                            self.processingPullQueue[queueUUID] = false
                             self.pullQueue.remove(at: 0)
+                            self.processingPullQueue[queueUUID] = false
+                            
                             
                             
                         } catch let error {
@@ -227,32 +228,22 @@ class SyncService: ObservableObject {
                         formatter.locale = Locale(identifier: "en_US_POSIX")
                         formatter.timeZone = TimeZone(secondsFromGMT: 0)
                         decoder.dateDecodingStrategy = .millisecondsSince1970
-                        
+                
                         do {
                             let syncMessage = try decoder.decode(SyncMessage.self, from: data)
-                            
-                            
                             if let contentsData = syncMessage.contents.data(using: .utf8) {
-                                self.createMessage(user: user, message: syncMessage)
+                                let syncMessage = try decoder.decode(SyncMessage.self, from: data)
                                 switch syncMessage.type {
                                 case .user:
                                     break
                                 case .document:
                                     let document = try! decoder.decode(Document.self, from: contentsData)
-                                    print("document: \(document)")
-                                    let workspaceRepo = WorkspaceRepo(user: user)
-                                    try! workspaceRepo.create(document: document, for: user)
-                                    self.postSyncNotification(.documentCreated)
+                                    self.processDocument(document, user: user)
                                 case .workspace:
-                                    print("contents here: \(syncMessage.contents)")
                                     let workspace = try! decoder.decode(Workspace.self, from: contentsData)
-                                    let userRepo = UserRepo()
-                                    try! userRepo.create(workspace: workspace, for: user)
-                                    self.postSyncNotification(.workspaceCreated)
+                                    self.processWorkspace(workspace, user: user)
                                 }
-                                try syncMessageRepo.setSyncedOnMessageID(id: syncMessage.id)
                             }
-                            
                         } catch let error {
                             print(error)
                         }
@@ -263,6 +254,59 @@ class SyncService: ObservableObject {
             task.resume()
         }
     }
+    
+    private func processDocument(_ doc: Document, user: User) {
+        let workspaceRepo = WorkspaceRepo(user: user)
+        try! workspaceRepo.create(document: doc, for: user)
+        self.postSyncNotification(.documentCreated)
+    }
+    
+    private func processWorkspace(_ workspace: Workspace, user: User) {
+        let userRepo = UserRepo()
+        try! userRepo.create(workspace: workspace, for: user)
+        self.postSyncNotification(.workspaceCreated)
+    }
+    
+//    private func processEntity(data: Data, user: User) {
+//        let decoder = JSONDecoder()
+//        let formatter = DateFormatter()
+//        formatter.calendar = Calendar(identifier: .iso8601)
+//        formatter.locale = Locale(identifier: "en_US_POSIX")
+//        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+//        decoder.dateDecodingStrategy = .millisecondsSince1970
+//
+//        do {
+//            let syncMessage = try decoder.decode(SyncMessage.self, from: data)
+//
+//            print(syncMessage.contents)
+//            if let contentsData = syncMessage.contents.data(using: .utf8) {
+//                self.createMessage(user: user, message: syncMessage)
+//                switch syncMessage.type {
+//                case .user:
+//                    break
+//                case .document:
+//                    let document = try! decoder.decode(Document.self, from: contentsData)
+//                    print("document: \(document)")
+//                    let workspaceRepo = WorkspaceRepo(user: user)
+//                    try! workspaceRepo.create(document: document, for: user)
+//                    self.postSyncNotification(.documentCreated)
+//                case .workspace:
+//                    print("contents here: \(syncMessage.contents)")
+//                    let workspace = try! decoder.decode(Workspace.self, from: contentsData)
+//                    let userRepo = UserRepo()
+//                    try! userRepo.create(workspace: workspace, for: user)
+//                    self.postSyncNotification(.workspaceCreated)
+//                }
+//
+//                let syncMessageRepo = SyncMessageRepo(user: user)
+//                try syncMessageRepo.setSyncedOnMessageID(id: syncMessage.id)
+//            }
+//
+//        } catch let error {
+//            print(error)
+//        }
+//
+//    }
     
     private func processQueue(user: User) {
         // Push messages
@@ -285,6 +329,7 @@ class SyncService: ObservableObject {
                                 // Drop the item from the queue
                                 if self.queue?.remove(id: queueItem.id) != nil {
                                     self.syncStatus = .success
+                                    print(queueItem)
                                     self.postSyncNotification(.networkSyncSuccess)
                                 }
                                 break
@@ -351,6 +396,7 @@ class SyncService: ObservableObject {
         
         // Save message to local queue
         print(self.queue?.add(message: message))
+        processWorkspace(workspace, user: user)
     }
     
     func request(message: SyncMessage, callback: @escaping (_ result: Result<HTTPURLResponse, SyncServiceError>) -> Void) {
@@ -412,9 +458,11 @@ class SyncService: ObservableObject {
 //        let json = try! JSONSerialization.jsonObject(with: contents) as! Dictionary<String, Any>
 //        print(json)
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
-        
+        let repo = SyncMessageRepo(user: user)
+        try? repo.create(message: message)
         // Save message to local queue
         print(self.queue?.add(message: message))
+//        processEntity(data: contents, user: user)
         
     }
     
@@ -424,12 +472,13 @@ class SyncService: ObservableObject {
         let contents = try! encoder.encode(document)
 
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
-        
+        let repo = SyncMessageRepo(user: user)
+        try? repo.create(message: message)
         // Save message to local queue
         print(self.queue?.add(message: message))
-        
-        let workspaceRepo = WorkspaceRepo(user: user)
-        try? workspaceRepo.create(document: document, for: user)
+        processDocument(document, user: user)
+//        let workspaceRepo = WorkspaceRepo(user: user)
+//        try? workspaceRepo.create(document: document, for: user)
         
     }
     

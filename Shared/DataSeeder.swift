@@ -17,8 +17,8 @@ struct DataSeeder{
         
         let user = User(id: userId, email: email, givenName: nil, familyName: nil, createdAt: now, modifiedAt: now)
         
-        let workspace = Workspace(id: UUID().uuidString, title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
-        let workspace1 = Workspace(id: UUID().uuidString, title: "XYZ", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
+        let workspace = Workspace(id: UUID().uuidString, title: "Personal", createdAt: now, modifiedAt: now, user: user.id, labels: [], documents: [])
+        let workspace1 = Workspace(id: UUID().uuidString, title: "XYZ", createdAt: now, modifiedAt: now, user: user.id, labels: [], documents: [])
         let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)
         let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)
         let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)

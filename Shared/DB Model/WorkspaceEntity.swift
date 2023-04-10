@@ -27,10 +27,10 @@ extension WorkspaceEntity : Comparable {
         lhs.createdAt < rhs.createdAt
     }
     
-    static public func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> WorkspaceEntity? {
+    static public func getEntity(id: String, moc: NSManagedObjectContext) throws -> WorkspaceEntity? {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
             guard let entity = try moc.fetch(fetchRequest).first else {
                 return nil
             }

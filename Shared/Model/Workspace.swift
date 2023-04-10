@@ -16,7 +16,7 @@ struct Workspace: Equatable, Codable {
     let title: String
     let createdAt: Date
     let modifiedAt: Date
-    let user: User
+    let user: String
     let labels: [Label]
     let documents: [Document]
 }

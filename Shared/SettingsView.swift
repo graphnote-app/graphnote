@@ -28,7 +28,7 @@ struct SettingsView: View {
                         title: "New workspace",
                         createdAt: now,
                         modifiedAt: now,
-                        user: user,
+                        user: user.id,
                         labels: [],
                         documents: []
                 )

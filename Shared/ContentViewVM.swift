@@ -102,9 +102,11 @@ class ContentViewVM: NSObject, ObservableObject {
     }
     
     func addDocument(_ document: Document) -> Bool {
-        if let user, let selected = selectedSubItem {
+        if let user {
             SyncService.shared.createDocument(user: user, document: document)
-            selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
+            if let selected = selectedSubItem {
+                selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
+            }
             return true
         }
         
@@ -120,7 +122,7 @@ class ContentViewVM: NSObject, ObservableObject {
                 self.workspaces = workspaces
                 if workspaces.count > selectedWorkspaceIndex {
                     let workspace = workspaces[selectedWorkspaceIndex]
-                    
+                    self.workspaces = workspaces
                     if selectedWorkspace != nil {
                         updateCurrentWorkspace()
                     }
