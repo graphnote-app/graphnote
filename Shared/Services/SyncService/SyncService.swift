@@ -23,6 +23,7 @@ enum SyncServiceNotification: String {
     case networkSyncSuccess
     case messageIDsFetched
     case workspaceCreated
+    case documentCreated
 }
 
 enum SyncServiceStatus {
@@ -52,8 +53,10 @@ class SyncService: ObservableObject {
     private(set) var watching = false
     private var timer: Timer? = nil
     private var requestIDs: Set<UUID> = Set()
+    private var processingPullQueue: [UUID : Bool] = [:]
     
     private lazy var queue: SyncQueue? = nil
+    var pullQueue: [UUID] = []
     
     private func getLastSyncTime(user: User) -> Date? {
         let syncMessageRepo = SyncMessageRepo(user: user)
@@ -70,6 +73,12 @@ class SyncService: ObservableObject {
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: syncInterval, repeats: true) { timer in
             self.processQueue(user: user)
+            if self.processingPullQueue.values.allSatisfy({
+                $0 == false
+            }) {
+                self.processPullQueue(user: user)
+            }
+            
         }
 
         watching = true
@@ -83,6 +92,80 @@ class SyncService: ObservableObject {
     
     private func postSyncNotification(_ notification: SyncServiceNotification) {
         NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
+    }
+    
+    func processPullQueue(user: User) {
+        for queueUUID in self.pullQueue {
+            var request = URLRequest(url: self.baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
+            request.httpMethod = "GET"
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    if let error = error as? URLError {
+                        switch error.networkUnavailableReason {
+                        case .cellular:
+                            self.error = .cellular
+                            return
+                        case .constrained:
+                            self.error = .lowDataMode
+                            return
+                        case .expensive:
+                            self.error = .systemNetworkRestrained
+                            return
+                        case .none:
+                            self.error = .unknown
+                            break
+                        case .some(_):
+                            self.error = .unknown
+                            break
+                        }
+                        
+                        print(error.errorCode)
+                        self.processingPullQueue[queueUUID] = false
+                        if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                            self.error = .cannotConnectToHost
+                            return
+                        }
+                        
+                        self.error = .postFailed
+                        return
+                    }
+                    
+                    if let response = response as? HTTPURLResponse {
+                        self.error = nil
+                    }
+                    
+                    if let data {
+                        let decoder = JSONDecoder()
+                        let formatter = DateFormatter()
+                        formatter.calendar = Calendar(identifier: .iso8601)
+                        formatter.locale = Locale(identifier: "en_US_POSIX")
+                        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                        decoder.dateDecodingStrategy = .millisecondsSince1970
+                        
+                        do {
+                            let syncMessage = try decoder.decode(SyncMessage.self, from: data)
+                            let repo = SyncMessageRepo(user: user)
+                            
+                            if !repo.has(id: syncMessage.id) {
+                                try repo.create(message: syncMessage)
+                            }
+                            self.processingPullQueue[queueUUID] = false
+                            self.pullQueue.remove(at: 0)
+                            
+                            
+                        } catch let error {
+                            print(error)
+                            self.error = .unknown
+                            self.processingPullQueue[queueUUID] = false
+                        }
+                    }
+                }
+            }
+            
+            task.resume()
+            self.processingPullQueue[queueUUID] = true
+        }
+        
     }
     
     func processMessageIDs(user: User) {
@@ -156,8 +239,10 @@ class SyncService: ObservableObject {
                                     break
                                 case .document:
                                     let document = try! decoder.decode(Document.self, from: contentsData)
+                                    print("document: \(document)")
                                     let workspaceRepo = WorkspaceRepo(user: user)
                                     try! workspaceRepo.create(document: document, for: user)
+                                    self.postSyncNotification(.documentCreated)
                                 case .workspace:
                                     print("contents here: \(syncMessage.contents)")
                                     let workspace = try! decoder.decode(Workspace.self, from: contentsData)
@@ -392,7 +477,9 @@ class SyncService: ObservableObject {
                     // Save ids then set sync time if successful
                     do {
                         for id in ids {
-                            try syncMessageRepo.create(id: UUID(uuidString: id)!)
+                            let uuid = UUID(uuidString: id)!
+                            try syncMessageRepo.create(id: uuid)
+                            self.pullQueue.append(uuid)
                         }
                         
                         try syncMessageRepo.setLastSyncTime(time: lastSyncDate)

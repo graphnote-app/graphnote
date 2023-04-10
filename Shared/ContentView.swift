@@ -29,13 +29,13 @@ struct ContentView: View {
     @State private var newDocFailedAlert = false
     @State private var networkSyncFailedAlert = false
     @State private var syncStatus: SyncServiceStatus = .success
-    @State private var update = false
     
     private let loadingDelay = 1.0
     private let networkSyncSuccessNotification = Notification.Name(SyncServiceNotification.networkSyncSuccess.rawValue)
     private let networkSyncFailedNotification = Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue)
     private let networkMessageIDsFetchedNotification = Notification.Name(SyncServiceNotification.messageIDsFetched.rawValue)
     private let localWorkspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
+    private let localDocumentCreatedNotification = Notification.Name(SyncServiceNotification.documentCreated.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -105,7 +105,6 @@ struct ContentView: View {
                                 vm.fetch()
                             }
                         }
-                        .id(update)
                         .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
                             Text("Document failed to create")
                         })
@@ -135,7 +134,6 @@ struct ContentView: View {
                                vm.fetch()
                            }
                        }
-                       .id(update)
                        .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
                            Text("Document failed to create")
                        })
@@ -162,8 +160,12 @@ struct ContentView: View {
                     #endif
                 } detail: {
                     if settings {
-                        return SettingsView()
-                            .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                        if let user = vm.user {
+                            return SettingsView(user: user)
+                                .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                        } else {
+                            return EmptyView()
+                        }
                     } else if let user = vm.user, let workspace = vm.selectedWorkspace, let document = vm.selectedDocument {
                         return DocumentContainer(user: user, workspace: workspace, document: document)
                             .id(document.id)
@@ -215,8 +217,12 @@ struct ContentView: View {
             vm.initializeUser()
             vm.initializeUserWorkspaces()
             vm.fetch()
-            update.toggle()
 
+        }
+        .onReceive(NotificationCenter.default.publisher(for: localDocumentCreatedNotification)) { notification in
+            vm.initializeUser()
+            vm.initializeUserWorkspaces()
+            vm.fetch()
         }
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in
             syncStatus = .success

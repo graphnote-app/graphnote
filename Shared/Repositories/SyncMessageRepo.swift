@@ -17,6 +17,21 @@ struct SyncMessageRepo {
         case contentParseFailed
     }
     
+    func has(id: UUID) -> Bool {
+        do {
+            let fetchRequest = SyncMessageEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            guard let syncMessage = try moc.fetch(fetchRequest).first else {
+                return false
+            }
+            print(syncMessage)
+            return syncMessage.id == id            
+        } catch let error {
+            print(error)
+            return false
+        }
+    }
+    
     func setSyncedOnMessageID(id: UUID) throws {
         do {
             guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {

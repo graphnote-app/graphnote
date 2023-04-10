@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    let user: User
+    
     var content: some View {
         VStack(alignment: .leading) {
             Spacer()
@@ -17,7 +19,29 @@ struct SettingsView: View {
                     .font(.title)
                     .bold()
                 Spacer()
+                
             }
+            Button {
+                let now = Date.now
+                let workspace = Workspace(
+                        id: UUID().uuidString,
+                        title: "New workspace",
+                        createdAt: now,
+                        modifiedAt: now,
+                        user: user,
+                        labels: [],
+                        documents: []
+                )
+                SyncService.shared.createWorkspace(user: user, workspace: workspace)
+            } label: {
+                HStack {
+                    Image(systemName: "plus")
+                    Text("New Workspace")
+                }
+                .frame(height: Spacing.spacing7.rawValue)
+            }
+            .buttonStyle(.plain)
+            .padding(Spacing.spacing3.rawValue)
             Spacer()
         }
     }
@@ -32,8 +56,3 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
-}
