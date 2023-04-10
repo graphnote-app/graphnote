@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum LabelPalette: String {
+enum LabelPalette: String, Codable {
     case primary, purple, red, lightPurple, pink, limeGreen, darkOrange, lightOrange
     
     func getColor() -> Color {

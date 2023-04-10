@@ -21,6 +21,8 @@ enum SyncServiceError: Error {
 enum SyncServiceNotification: String {
     case networkSyncFailed
     case networkSyncSuccess
+    case messageIDsFetched
+    case workspaceCreated
 }
 
 enum SyncServiceStatus {
@@ -83,7 +85,7 @@ class SyncService: ObservableObject {
         NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
     }
     
-    private func processQueue(user: User) {
+    func processMessageIDs(user: User) {
         // Pull messages
         
         let syncMessageRepo = SyncMessageRepo(user: user)
@@ -146,6 +148,7 @@ class SyncService: ObservableObject {
                         do {
                             let syncMessage = try decoder.decode(SyncMessage.self, from: data)
                             
+                            
                             if let contentsData = syncMessage.contents.data(using: .utf8) {
                                 self.createMessage(user: user, message: syncMessage)
                                 switch syncMessage.type {
@@ -155,7 +158,12 @@ class SyncService: ObservableObject {
                                     let document = try! decoder.decode(Document.self, from: contentsData)
                                     let workspaceRepo = WorkspaceRepo(user: user)
                                     try! workspaceRepo.create(document: document, for: user)
-                                    
+                                case .workspace:
+                                    print("contents here: \(syncMessage.contents)")
+                                    let workspace = try! decoder.decode(Workspace.self, from: contentsData)
+                                    let userRepo = UserRepo()
+                                    try! userRepo.create(workspace: workspace, for: user)
+                                    self.postSyncNotification(.workspaceCreated)
                                 }
                                 try syncMessageRepo.setSyncedOnMessageID(id: syncMessage.id)
                             }
@@ -169,7 +177,9 @@ class SyncService: ObservableObject {
             
             task.resume()
         }
-        
+    }
+    
+    private func processQueue(user: User) {
         // Push messages
         if let queueItem = self.queue?.peek() {
             if queueItem.isSynced == true {
@@ -236,13 +246,26 @@ class SyncService: ObservableObject {
         return true
     }
     
-    func createMessage(user: User, message: SyncMessage) ->Bool {
+    func createMessage(user: User, message: SyncMessage) -> Bool {
         let repo = SyncMessageRepo(user: user)
         if let _ = try? repo.create(message: message) {
             return true
         } else {
             return false
         }
+    }
+    
+    func createWorkspace(user: User, workspace: Workspace) {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .millisecondsSince1970
+        let contents = try! encoder.encode(workspace)
+        print("contents: \(contents)")
+//        let json = try! JSONSerialization.jsonObject(with: contents) as! Dictionary<String, Any>
+//        print(json)
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .workspace, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
+        
+        // Save message to local queue
+        print(self.queue?.add(message: message))
     }
     
     func request(message: SyncMessage, callback: @escaping (_ result: Result<HTTPURLResponse, SyncServiceError>) -> Void) {
@@ -373,6 +396,10 @@ class SyncService: ObservableObject {
                         }
                         
                         try syncMessageRepo.setLastSyncTime(time: lastSyncDate)
+                        DispatchQueue.main.async {
+                            self.postSyncNotification(.messageIDsFetched)
+                        }
+                        
                     } catch let error {
                         print(error)
                     }

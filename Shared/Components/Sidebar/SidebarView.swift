@@ -44,6 +44,7 @@ struct SidebarView: View {
                     }
                     .frame(height: Spacing.spacing7.rawValue)
                     WorkspaceMenu(selectedIndex: $selectedWorkspaceTitleIndex, workspaceTitles: workspaceTitles)
+                        .id("\(selectedWorkspaceTitleIndex):\(workspaceTitles)".hashValue)
                         .frame(height: Spacing.spacing7.rawValue)
                 }
                 .padding(Spacing.spacing3.rawValue)

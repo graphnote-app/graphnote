@@ -47,7 +47,7 @@ struct LabelView: View {
             .padding([.top, .bottom], Spacing.spacing0.rawValue)
             .frame(minWidth: minWidth)
             .frame(height: height)
-            .background(RoundedRectangle(cornerRadius: height).fill(label.color))
+            .background(RoundedRectangle(cornerRadius: height).fill(label.color.getColor()))
             .contentShape(RoundedRectangle(cornerRadius: height))
             .focused($focusedField, equals: .title)
             .focused($isFocused)
@@ -86,7 +86,7 @@ struct LabelView: View {
                 .frame(height: height)
                 .background(
                     RoundedRectangle(cornerRadius: height)
-                        .fill(label.color)
+                        .fill(label.color.getColor())
                 )
                 .contextMenu {
                     LabelContextMenu {

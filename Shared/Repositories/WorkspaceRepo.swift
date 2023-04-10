@@ -42,7 +42,7 @@ struct WorkspaceRepo {
     
     func create(label: Label, in workspace: Workspace, for user: User) throws -> Bool {
         do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc) else {
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: UUID(uuidString: workspace.id)!, moc: moc) else {
                 return false
             }
             
@@ -51,9 +51,7 @@ struct WorkspaceRepo {
             labelEntity.createdAt = label.createdAt
             labelEntity.modifiedAt = label.modifiedAt
             labelEntity.title = label.title
-            labelEntity.colorRed = Float(GNColor(label.color).getColorComponents().red)
-            labelEntity.colorGreen = Float(GNColor(label.color).getColorComponents().green)
-            labelEntity.colorBlue = Float(GNColor(label.color).getColorComponents().blue)
+            labelEntity.color = label.color.rawValue
             labelEntity.workspace = workspaceEntity
             
             try? moc.save()
@@ -73,11 +71,11 @@ struct WorkspaceRepo {
             let workspaces = try moc.fetch(fetchRequest)
             return workspaces.map { workspaceEntity in
                 let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                    return Label(id: labelEntity.id, title: labelEntity.title, color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)), workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: UUID(uuidString: labelEntity.workspace.id)!, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
                 }
                 
                 return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
+                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: UUID(uuidString: $0.workspace.id)!)
                 })
             }
             
@@ -94,11 +92,11 @@ struct WorkspaceRepo {
             }
         
             let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                return Label(id: labelEntity.id, title: labelEntity.title, color: Color(red: Double(labelEntity.colorRed), green: Double(labelEntity.colorGreen), blue: Double(labelEntity.colorBlue)), workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: UUID(uuidString: labelEntity.workspace.id)!, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
             }
             
             return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
+                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: UUID(uuidString: $0.workspace.id)!)
             })
             
         } catch let error {
@@ -124,7 +122,7 @@ struct WorkspaceRepo {
     
     func update(workspace: Workspace) throws {
         do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc) else {
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: UUID(uuidString: workspace.id)!, moc: moc) else {
                 return
             }
             
@@ -142,7 +140,7 @@ struct WorkspaceRepo {
     func delete(workspace: Workspace) throws {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
             
             try moc.execute(deleteRequest)
@@ -157,7 +155,7 @@ struct WorkspaceRepo {
     func readLabelLinks(workspace: Workspace) throws -> [LabelLink] {
         do {
             let fetchRequest = LabelLinkEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "workspace == %@", workspace.id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "workspace == %@", workspace.id)
             let labelLinksEntities = try moc.fetch(fetchRequest)
             return labelLinksEntities.map {
                 LabelLink(id: $0.id, label: $0.label, document: $0.document, workspace: $0.workspace, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)

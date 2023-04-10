@@ -17,25 +17,25 @@ struct DataSeeder{
         
         let user = User(id: userId, email: email, givenName: nil, familyName: nil, createdAt: now, modifiedAt: now)
         
-        let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
-        let workspace1 = Workspace(id: UUID(), title: "XYZ", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
-        let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label5 = Label(id: UUID(), title: "Graphnote ፨", color: LabelPalette.primary.getColor(), workspaceId: workspace.id, createdAt: now, modifiedAt: now)
+        let workspace = Workspace(id: UUID().uuidString, title: "Personal", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
+        let workspace1 = Workspace(id: UUID().uuidString, title: "XYZ", createdAt: now, modifiedAt: now, user: user, labels: [], documents: [])
+        let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)
+        let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)
+        let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)
+        let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)
+        let label5 = Label(id: UUID(), title: "Graphnote ፨", color: LabelPalette.primary, workspaceId: UUID(uuidString: workspace.id)!, createdAt: now, modifiedAt: now)
         
-        let document0 = Document(id: UUID(), title: "Welcome!", createdAt: now, modifiedAt: now, workspace: workspace.id)
+        let document0 = Document(id: UUID(), title: "Welcome!", createdAt: now, modifiedAt: now, workspace: UUID(uuidString: workspace.id)!)
         let welcomeBlock0 = Block(id: UUID(), type: BlockType.heading3, content: "Thanks for trying Graphnote", createdAt: now, modifiedAt: now, document: document0)
         let welcomeBlock1 = Block(id: UUID(), type: BlockType.heading3, content: "You can create a new document or edit this one!", createdAt: now, modifiedAt: now, document: document0)
         let welcomeBlock2 = Block(id: UUID(), type: BlockType.body, content: "Please reach out with any questions or feedback to graphnote.io@gmail.com", createdAt: now, modifiedAt: now, document: document0)
         
-        let document1 = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, workspace: workspace.id)
+        let document1 = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, workspace: UUID(uuidString: workspace.id)!)
         let block0 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", createdAt: now, modifiedAt: now, document: document1)
         let block1 = Block(id: UUID(), type: BlockType.body, content: "Thanks for stopping by!", createdAt: now, modifiedAt: now, document: document1)
         let block2 = Block(id: UUID(), type: BlockType.body, content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.BREAKLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", createdAt: now, modifiedAt: now, document: document1)
         
-        let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now, workspace: workspace.id)
+        let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now, workspace: UUID(uuidString: workspace.id)!)
         let block3 = Block(id: UUID(), type: BlockType.body, content: "The minimal viable product?", createdAt: now, modifiedAt: now, document: document2)
         let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", createdAt: now, modifiedAt: now, document: document2)
         let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", createdAt: now, modifiedAt: now, document: document2)
@@ -59,6 +59,8 @@ struct DataSeeder{
                     print("failed to return success from workspace creation: \(workspace)")
                     return false
                 }
+                
+                SyncService.shared.createWorkspace(user: user, workspace: workspace)
             }
             
             for document in documents {

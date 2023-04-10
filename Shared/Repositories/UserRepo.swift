@@ -30,9 +30,7 @@ struct UserRepo {
                 labelEntity.title = $0.title
                 labelEntity.createdAt = $0.createdAt
                 labelEntity.modifiedAt = $0.modifiedAt
-                labelEntity.colorRed = Float(GNColor($0.color).getColorComponents().red)
-                labelEntity.colorGreen = Float(GNColor($0.color).getColorComponents().green)
-                labelEntity.colorBlue = Float(GNColor($0.color).getColorComponents().blue)
+                labelEntity.color = $0.color.rawValue
                 labelEntity.workspace = workspaceEntity
                 return labelEntity
             })

@@ -8,27 +8,25 @@
 import Foundation
 import CoreData
 
-public class LabelEntity: NSManagedObject {
+class LabelEntity: NSManagedObject {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<LabelEntity> {
         return NSFetchRequest<LabelEntity>(entityName: "LabelEntity")
     }
     
-    @NSManaged public var id: UUID
-    @NSManaged public var title: String
-    @NSManaged public var colorRed: Float
-    @NSManaged public var colorGreen: Float
-    @NSManaged public var colorBlue: Float
-    @NSManaged public var workspace: WorkspaceEntity
-    @NSManaged public var createdAt: Date
-    @NSManaged public var modifiedAt: Date
+    @NSManaged var id: UUID
+    @NSManaged var title: String
+    @NSManaged var color: String
+    @NSManaged var workspace: WorkspaceEntity
+    @NSManaged var createdAt: Date
+    @NSManaged var modifiedAt: Date
 }
 
 extension LabelEntity : Comparable {
-    public static func < (lhs: LabelEntity, rhs: LabelEntity) -> Bool {
+    static func < (lhs: LabelEntity, rhs: LabelEntity) -> Bool {
         lhs.createdAt < rhs.createdAt
     }
     
-    static public func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> LabelEntity? {
+    static func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> LabelEntity? {
         do {
             let fetchRequest = LabelEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
@@ -44,10 +42,10 @@ extension LabelEntity : Comparable {
         }
     }
     
-    static public func getEntity(title: String, workspace: Workspace, moc: NSManagedObjectContext) throws -> LabelEntity? {
+    static func getEntity(title: String, workspace: Workspace, moc: NSManagedObjectContext) throws -> LabelEntity? {
         do {
             let fetchRequest = LabelEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "title == %@ && workspace.id == %@", title, workspace.id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "title == %@ && workspace.id == %@", title, workspace.id)
             guard let entity = try moc.fetch(fetchRequest).first else {
                 return nil
             }

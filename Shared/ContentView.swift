@@ -29,10 +29,13 @@ struct ContentView: View {
     @State private var newDocFailedAlert = false
     @State private var networkSyncFailedAlert = false
     @State private var syncStatus: SyncServiceStatus = .success
+    @State private var update = false
     
     private let loadingDelay = 1.0
     private let networkSyncSuccessNotification = Notification.Name(SyncServiceNotification.networkSyncSuccess.rawValue)
     private let networkSyncFailedNotification = Notification.Name(SyncServiceNotification.networkSyncFailed.rawValue)
+    private let networkMessageIDsFetchedNotification = Notification.Name(SyncServiceNotification.messageIDsFetched.rawValue)
+    private let localWorkspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -49,14 +52,14 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            Button("fetch message ids") {
-                if let user = vm.user {
-                    SyncService.shared.fetchMessageIDs(user: user)
-                }
-            }
             switch globalUIState {
             case .loading:
                 LoadingView()
+                    .onAppear {
+                        if let user = vm.user {
+                            SyncService.shared.fetchMessageIDs(user: user)
+                        }
+                    }
             case .signIn:
                 SignInView {
                     vm.initializeUser()
@@ -78,6 +81,11 @@ struct ContentView: View {
                         checkAuthStatus(user: user)
                     }
                 }
+                .onAppear {
+                    if let user = vm.user {
+                        SyncService.shared.fetchMessageIDs(user: user)
+                    }
+                }
             case .doc, .settings:
                 SplitView(sidebarOpen: $menuOpen, syncStatus: syncStatus) {
                     #if os(macOS)
@@ -85,18 +93,19 @@ struct ContentView: View {
                         return SidebarView(
                             items: $vm.treeItems,
                             settingsOpen: $settings,
-                            workspaceTitles: workspaces.map{$0.title},
+                            workspaceTitles: vm.workspaces!.map{$0.title},
                             selectedWorkspaceTitleIndex: $vm.selectedWorkspaceIndex,
                             selectedSubItem: $vm.selectedSubItem,
                             allID: vm.ALL_ID
                         ) {
-                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
+                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: UUID(uuidString: workspace.id)!)
                             if !vm.addDocument(document) {
                                 newDocFailedAlert = true
                             } else {
                                 vm.fetch()
                             }
                         }
+                        .id(update)
                         .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
                             Text("Document failed to create")
                         })
@@ -119,13 +128,14 @@ struct ContentView: View {
                             selectedSubItem: $vm.selectedSubItem,
                             allID: vm.ALL_ID
                         ) {
-                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
+                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: UUID(uuidString: workspace.id)!)
                            if !vm.addDocument(document) {
                                newDocFailedAlert = true
                            } else {
                                vm.fetch()
                            }
                        }
+                       .id(update)
                        .alert("New Doc Failed", isPresented: $newDocFailedAlert, actions: {
                            Text("Document failed to create")
                        })
@@ -157,6 +167,9 @@ struct ContentView: View {
                     } else if let user = vm.user, let workspace = vm.selectedWorkspace, let document = vm.selectedDocument {
                         return DocumentContainer(user: user, workspace: workspace, document: document)
                             .id(document.id)
+                            .onAppear {
+                                
+                            }
                     } else {
                         return HorizontalFlexView {
                             Spacer()
@@ -167,7 +180,13 @@ struct ContentView: View {
                     }
                 } retrySync: {
                     if let user = vm.user {
-                        SyncService.shared.startQueue(user: user)
+                        SyncService.shared.fetchMessageIDs(user: user)
+                        
+                    }
+                }
+                .onAppear {
+                    if let user = vm.user {
+                        SyncService.shared.fetchMessageIDs(user: user)
                     }
                 }
             }
@@ -192,6 +211,19 @@ struct ContentView: View {
         }, message: {
             Text("Error: \(SyncService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
         })
+        .onReceive(NotificationCenter.default.publisher(for: localWorkspaceCreatedNotification)) { notification in
+            vm.initializeUser()
+            vm.initializeUserWorkspaces()
+            vm.fetch()
+            update.toggle()
+
+        }
+        .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in
+            syncStatus = .success
+            if let user = vm.user {
+                SyncService.shared.processMessageIDs(user: user)
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: networkSyncFailedNotification)) { notification in
             print("Network synced failed: \(notification)")
             networkSyncFailedAlert = true

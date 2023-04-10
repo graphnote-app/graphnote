@@ -11,11 +11,11 @@ struct LabelService {
     let user: User
     let workspace: Workspace
     
-    func addLabel(title: String, color: Color, document: Document) throws -> Bool {
+    func addLabel(title: String, color: LabelPalette, document: Document) throws -> Bool {
         let labelRepo = LabelRepo(user: user, workspace: workspace)
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
-        var label = Label(id: UUID(), title: title, color: color, workspaceId: workspace.id, createdAt: .now, modifiedAt: .now)
+        var label = Label(id: UUID(), title: title, color: color, workspaceId: UUID(uuidString: workspace.id)!, createdAt: .now, modifiedAt: .now)
         
         let existingLabelUUID = try? labelRepo.exists(label: label)
 

@@ -34,11 +34,7 @@ struct LabelRepo {
             labelEntity.modifiedAt = label.modifiedAt
             labelEntity.createdAt = label.createdAt
             labelEntity.workspace = workspaceEntity
-            
-            let rgb = GNColor(label.color).cgColor.components
-            labelEntity.colorRed = Float(rgb![0])
-            labelEntity.colorGreen = Float(rgb![1])
-            labelEntity.colorBlue = Float(rgb![2])
+            labelEntity.color = label.color.rawValue
             
             try? moc.save()
             return nil
@@ -54,12 +50,8 @@ struct LabelRepo {
             let label = Label(
                 id: labelEntity.id,
                 title: labelEntity.title,
-                color: Color(
-                    red: Double(labelEntity.colorRed),
-                    green: Double(labelEntity.colorGreen),
-                    blue: Double(labelEntity.colorBlue)
-                ),
-                workspaceId: workspace.id,
+                color: LabelPalette(rawValue: labelEntity.color)!,
+                workspaceId: UUID(uuidString: workspace.id)!,
                 createdAt: labelEntity.createdAt,
                 modifiedAt: labelEntity.modifiedAt
             )
@@ -92,7 +84,7 @@ struct LabelRepo {
     private func getWorkspaceEntity(workspace: Workspace) throws -> WorkspaceEntity? {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id)
             guard let user = try moc.fetch(fetchRequest).first else {
                 return nil
             }

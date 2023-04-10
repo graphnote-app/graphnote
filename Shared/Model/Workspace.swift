@@ -7,16 +7,16 @@
 
 import Foundation
 
-public struct Workspace: Equatable {
-    public static func == (lhs: Workspace, rhs: Workspace) -> Bool {
+struct Workspace: Equatable, Codable {
+    static func == (lhs: Workspace, rhs: Workspace) -> Bool {
         lhs.id == rhs.id
     }
     
-    public let id: UUID
-    public let title: String
-    public let createdAt: Date
-    public let modifiedAt: Date
-    public let user: User
-    public let labels: [Label]
-    public let documents: [Document]
+    let id: String
+    let title: String
+    let createdAt: Date
+    let modifiedAt: Date
+    let user: User
+    let labels: [Label]
+    let documents: [Document]
 }

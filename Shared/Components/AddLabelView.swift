@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddLabelView: View {
-    let save: (_ title: String, Color) -> Void
+    let save: (_ title: String, LabelPalette) -> Void
     let close: () -> Void
     
     @State private var isEmpty = true
@@ -72,7 +72,7 @@ struct AddLabelView: View {
                 .padding()
                 Spacer()
                 Button("Add") {
-                    save(title, color.getColor())
+                    save(title, color)
                 }
                 .disabled(isEmpty)
                 .foregroundColor(isEmpty ? Color.gray : Color.accentColor)

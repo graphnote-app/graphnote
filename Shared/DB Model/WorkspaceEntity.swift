@@ -13,7 +13,7 @@ public class WorkspaceEntity: NSManagedObject {
         return NSFetchRequest<WorkspaceEntity>(entityName: "WorkspaceEntity")
     }
     
-    @NSManaged public var id: UUID
+    @NSManaged public var id: String
     @NSManaged public var title: String
     @NSManaged public var documents: NSSet
     @NSManaged public var createdAt: Date

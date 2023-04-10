@@ -50,7 +50,7 @@ class ContentViewVM: NSObject, ObservableObject {
             if selectedSubItem != oldValue {
                 if let selectedSubItem, let user, let selectedWorkspace {
                     let workspaceRepo = WorkspaceRepo(user: user)
-                    if let document = try? workspaceRepo.read(document: selectedSubItem.document, workspace: selectedWorkspace.id) {
+                    if let document = try? workspaceRepo.read(document: selectedSubItem.document, workspace: UUID(uuidString: selectedWorkspace.id)!) {
                         selectedDocument = document
                     }
                     
@@ -96,7 +96,7 @@ class ContentViewVM: NSObject, ObservableObject {
     private func updateCurrentWorkspace() {
         if let selectedWorkspace, let user {
             let workspaceRepo = WorkspaceRepo(user: user)
-            let updatedWorkpace = try? workspaceRepo.read(workspace: selectedWorkspace.id)
+            let updatedWorkpace = try? workspaceRepo.read(workspace: UUID(uuidString: selectedWorkspace.id)!)
             self.selectedWorkspace = updatedWorkpace
         }
     }
@@ -117,6 +117,7 @@ class ContentViewVM: NSObject, ObservableObject {
             let workspaceRepo = WorkspaceRepo(user: user)
             
             if let workspaces = try? workspaceRepo.readAll() {
+                self.workspaces = workspaces
                 if workspaces.count > selectedWorkspaceIndex {
                     let workspace = workspaces[selectedWorkspaceIndex]
                     
@@ -147,7 +148,7 @@ class ContentViewVM: NSObject, ObservableObject {
                             return nil
                         }
                         
-                        return TreeViewItem(id: label.id, title: label.title, color: label.color, subItems: subItems)
+                        return TreeViewItem(id: label.id, title: label.title, color: label.color.getColor(), subItems: subItems)
                     }).sorted(by: { lhs, rhs in
                         lhs.title < rhs.title
                     })

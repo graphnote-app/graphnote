@@ -14,6 +14,7 @@ struct WorkspaceMenu: View {
     
     var body: some View {
         if workspaceTitles.count > selectedIndex {
+            
             Menu(workspaceTitles[selectedIndex]) {
                 ForEach(0..<workspaceTitles.count, id: \.self) { index in
                     Button(workspaceTitles[index]) {
@@ -21,8 +22,12 @@ struct WorkspaceMenu: View {
                     }
                 }
             }
+            .id(workspaceTitles.hashValue)
             .menuStyle(.borderlessButton)
             .accentColor(ColorPalette.primaryText)
+            .onAppear {
+                print(workspaceTitles)
+            }
         }
     }
 }

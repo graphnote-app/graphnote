@@ -8,19 +8,19 @@
 import Foundation
 import SwiftUI
 
-public struct Label: Equatable, Hashable {
+struct Label: Equatable, Hashable, Codable {
     static public func == (lhs: Label, rhs: Label) -> Bool {
         return lhs.id == rhs.id || lhs.title == rhs.title
     }
     
-    public let id: UUID
-    public let title: String
-    public let color: Color
-    public let workspaceId: UUID
-    public let createdAt: Date
-    public let modifiedAt: Date
+    let id: UUID
+    let title: String
+    let color: LabelPalette
+    let workspaceId: UUID
+    let createdAt: Date
+    let modifiedAt: Date
     
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(workspaceId)
         hasher.combine(title)
