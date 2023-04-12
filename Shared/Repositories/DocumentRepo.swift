@@ -42,10 +42,10 @@ struct DocumentRepo {
     func readAll() throws -> [Document] {
         do {
             let fetchRequest = DocumentEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id)
+            fetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id.uuidString)
             let documentEntities = try moc.fetch(fetchRequest)
             return documentEntities.map { documentEntity in
-                Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: UUID(uuidString: documentEntity.workspace.id)!)
+                Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: documentEntity.workspace.id)
             }
             
         } catch let error {
@@ -80,7 +80,7 @@ struct DocumentRepo {
         let labelLink = LabelLinkEntity(entity: LabelLinkEntity.entity(), insertInto: moc)
         labelLink.label = label.id
         labelLink.document = document.id
-        labelLink.workspace = UUID(uuidString: workspace.id)!
+        labelLink.workspace = workspace.id
         labelLink.id = UUID()
         labelLink.createdAt = .now
         labelLink.modifiedAt = .now
@@ -94,7 +94,7 @@ struct DocumentRepo {
             fetchRequest.predicate = NSPredicate(
                 format: "label == %@ && workspace == %@ && document == %@",
                 label.id.uuidString,
-                workspace.id,
+                workspace.id.uuidString,
                 document.id.uuidString
             )
             
@@ -122,7 +122,7 @@ struct DocumentRepo {
                     id: labelEntity.id,
                     title: labelEntity.title,
                     color: LabelPalette(rawValue: labelEntity.color)!,
-                    workspaceId: UUID(uuidString: labelEntity.workspace.id)!,
+                    workspaceId: labelEntity.workspace.id,
                     createdAt: labelEntity.createdAt,
                     modifiedAt: labelEntity.modifiedAt
                 )

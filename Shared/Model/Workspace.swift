@@ -12,7 +12,7 @@ struct Workspace: Equatable, Codable {
         lhs.id == rhs.id
     }
     
-    let id: String
+    let id: UUID
     let title: String
     let createdAt: Date
     let modifiedAt: Date

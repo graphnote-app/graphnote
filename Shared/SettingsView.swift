@@ -24,7 +24,7 @@ struct SettingsView: View {
             Button {
                 let now = Date.now
                 let workspace = Workspace(
-                        id: UUID().uuidString,
+                        id: UUID(),
                         title: "New workspace",
                         createdAt: now,
                         modifiedAt: now,

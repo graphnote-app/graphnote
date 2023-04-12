@@ -13,7 +13,7 @@ public class WorkspaceEntity: NSManagedObject {
         return NSFetchRequest<WorkspaceEntity>(entityName: "WorkspaceEntity")
     }
     
-    @NSManaged public var id: String
+    @NSManaged public var id: UUID
     @NSManaged public var title: String
     @NSManaged public var documents: NSSet
     @NSManaged public var createdAt: Date
@@ -27,10 +27,10 @@ extension WorkspaceEntity : Comparable {
         lhs.createdAt < rhs.createdAt
     }
     
-    static public func getEntity(id: String, moc: NSManagedObjectContext) throws -> WorkspaceEntity? {
+    static public func getEntity(id: UUID, moc: NSManagedObjectContext) throws -> WorkspaceEntity? {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
             guard let entity = try moc.fetch(fetchRequest).first else {
                 return nil
             }

@@ -35,7 +35,7 @@ enum SyncServiceStatus {
 class SyncService: ObservableObject {
     static let shared = SyncService()
     let syncInterval = 0.25
-    @Published private(set) var statusCode: Int = 200
+    @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
         didSet {
             if oldValue != error {

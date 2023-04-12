@@ -50,7 +50,7 @@ class ContentViewVM: NSObject, ObservableObject {
             if selectedSubItem != oldValue {
                 if let selectedSubItem, let user, let selectedWorkspace {
                     let workspaceRepo = WorkspaceRepo(user: user)
-                    if let document = try? workspaceRepo.read(document: selectedSubItem.document, workspace: UUID(uuidString: selectedWorkspace.id)!) {
+                    if let document = try? workspaceRepo.read(document: selectedSubItem.document, workspace: selectedWorkspace.id) {
                         selectedDocument = document
                     }
                     
@@ -96,7 +96,7 @@ class ContentViewVM: NSObject, ObservableObject {
     private func updateCurrentWorkspace() {
         if let selectedWorkspace, let user {
             let workspaceRepo = WorkspaceRepo(user: user)
-            let updatedWorkpace = try? workspaceRepo.read(workspace: UUID(uuidString: selectedWorkspace.id)!)
+            let updatedWorkpace = try? workspaceRepo.read(workspace: selectedWorkspace.id)
             self.selectedWorkspace = updatedWorkpace
         }
     }

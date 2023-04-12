@@ -61,7 +61,7 @@ final class AuthService: NSObject {
             // Name is always optional so don't rely on it
             let fullName = credential.fullName
             print(email)
-            print(fullName)
+            print(fullName as Any)
             
             let givenName = fullName?.givenName
             let familyName = fullName?.familyName
@@ -74,6 +74,7 @@ final class AuthService: NSObject {
             
             SyncService.shared.createUser(user: user)
             _ = SyncService.shared.$statusCode.sink { statusCode in
+                print("statusCode: \(statusCode)")
                 switch statusCode {
                 case 201, 409:
                     DispatchQueue.main.async {
@@ -107,6 +108,7 @@ final class AuthService: NSObject {
                 // Check server for User
                 SyncService.shared.fetchUser(id: id) { (user, error) in
                     if let error {
+                        print(error.localizedDescription)
                         DispatchQueue.main.async {
                             callback(AuthServiceError.fetchFailed)
                         }

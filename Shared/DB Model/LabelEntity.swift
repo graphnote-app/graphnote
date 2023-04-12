@@ -45,7 +45,7 @@ extension LabelEntity : Comparable {
     static func getEntity(title: String, workspace: Workspace, moc: NSManagedObjectContext) throws -> LabelEntity? {
         do {
             let fetchRequest = LabelEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "title == %@ && workspace.id == %@", title, workspace.id)
+            fetchRequest.predicate = NSPredicate(format: "title == %@ && workspace.id == %@", title, workspace.id.uuidString)
             guard let entity = try moc.fetch(fetchRequest).first else {
                 return nil
             }

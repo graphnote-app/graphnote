@@ -41,11 +41,13 @@ struct ContentView: View {
         AuthService.checkAuthStatus(user: user) { state in
             withAnimation {
                 print(state == .authorized)
-                if state == .authorized {
-                    globalUIState = .doc
-                    vm.fetch()
-                } else {
-                    globalUIState = .signIn
+                DispatchQueue.main.async {
+                    if state == .authorized {
+                        globalUIState = .doc
+                        vm.fetch()
+                    } else {
+                        globalUIState = .signIn
+                    }
                 }
             }
         }
@@ -89,7 +91,7 @@ struct ContentView: View {
             case .doc, .settings:
                 SplitView(sidebarOpen: $menuOpen, syncStatus: syncStatus) {
                     #if os(macOS)
-                    if let workspaces = vm.workspaces, let workspace = vm.selectedWorkspace {
+                    if let workspace = vm.selectedWorkspace {
                         return SidebarView(
                             items: $vm.treeItems,
                             settingsOpen: $settings,
@@ -98,7 +100,7 @@ struct ContentView: View {
                             selectedSubItem: $vm.selectedSubItem,
                             allID: vm.ALL_ID
                         ) {
-                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: UUID(uuidString: workspace.id)!)
+                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
                             if !vm.addDocument(document) {
                                 newDocFailedAlert = true
                             } else {
@@ -129,7 +131,7 @@ struct ContentView: View {
                             selectedSubItem: $vm.selectedSubItem,
                             allID: vm.ALL_ID
                         ) {
-                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: UUID(uuidString: workspace.id)!)
+                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
                            if !vm.addDocument(document) {
                                newDocFailedAlert = true
                            } else {

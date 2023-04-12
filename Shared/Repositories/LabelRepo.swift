@@ -51,7 +51,7 @@ struct LabelRepo {
                 id: labelEntity.id,
                 title: labelEntity.title,
                 color: LabelPalette(rawValue: labelEntity.color)!,
-                workspaceId: UUID(uuidString: workspace.id)!,
+                workspaceId: workspace.id,
                 createdAt: labelEntity.createdAt,
                 modifiedAt: labelEntity.modifiedAt
             )
@@ -84,7 +84,7 @@ struct LabelRepo {
     private func getWorkspaceEntity(workspace: Workspace) throws -> WorkspaceEntity? {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id.uuidString)
             guard let user = try moc.fetch(fetchRequest).first else {
                 return nil
             }

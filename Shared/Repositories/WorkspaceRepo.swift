@@ -43,7 +43,7 @@ struct WorkspaceRepo {
     
     func create(document: Document, for user: User) throws -> Bool {
         do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: document.workspace.uuidString, moc: moc),
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: document.workspace, moc: moc),
                   let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
                 return false
             }
@@ -97,11 +97,11 @@ struct WorkspaceRepo {
             let workspaces = try moc.fetch(fetchRequest)
             return workspaces.map { workspaceEntity in
                 let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: UUID(uuidString: labelEntity.workspace.id)!, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
                 }
                 
                 return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: UUID(uuidString: $0.workspace.id)!)
+                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
                 })
             }
             
@@ -113,16 +113,16 @@ struct WorkspaceRepo {
     
     func read(workspace: UUID) throws -> Workspace? {
         do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.uuidString, moc: moc) else {
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace, moc: moc) else {
                 return nil
             }
         
             let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: UUID(uuidString: labelEntity.workspace.id)!, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
             }
             
             return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: UUID(uuidString: $0.workspace.id)!)
+                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
             })
             
         } catch let error {
@@ -166,7 +166,7 @@ struct WorkspaceRepo {
     func delete(workspace: Workspace) throws {
         do {
             let fetchRequest = WorkspaceEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id)
+            fetchRequest.predicate = NSPredicate(format: "id == %@", workspace.id.uuidString)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
             
             try moc.execute(deleteRequest)
@@ -181,7 +181,7 @@ struct WorkspaceRepo {
     func readLabelLinks(workspace: Workspace) throws -> [LabelLink] {
         do {
             let fetchRequest = LabelLinkEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "workspace == %@", workspace.id)
+            fetchRequest.predicate = NSPredicate(format: "workspace == %@", workspace.id.uuidString)
             let labelLinksEntities = try moc.fetch(fetchRequest)
             return labelLinksEntities.map {
                 LabelLink(id: $0.id, label: $0.label, document: $0.document, workspace: $0.workspace, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt)
