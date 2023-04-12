@@ -31,7 +31,7 @@ enum SignInError: LocalizedError {
 struct SignInView: View {
     @Environment(\.colorScheme) private var colorScheme
 
-    let callback: () -> Void
+    let callback: (_ success: Bool) -> Void
     
     @State private var welcomeOpacity = 0.0
     @State private var getStartedOpacity = 0.0
@@ -44,7 +44,7 @@ struct SignInView: View {
     private let imageWidth = 140.0
     private let authService = AuthService()
     
-    init(callback: @escaping () -> Void) {
+    init(callback: @escaping (_ success: Bool) -> Void) {
         self.callback = callback
     }
     
@@ -101,9 +101,10 @@ struct SignInView: View {
                                 print(error)
                                 
                                 isFailureAlertOpen = true
+                                callback(false)
                             }
-
-                            callback()
+                            
+                            callback(true)
 
                         })
 

@@ -57,24 +57,28 @@ struct ContentView: View {
             case .loading:
                 LoadingView()
             case .signIn:
-                SignInView {
-                    vm.initializeUser()
-                    if let user = vm.user {
-                        if seed {
-                            if DataSeeder.seed(userId: user.id, email: user.email) {
+                SignInView { success in
+                    if success {
+                        vm.initializeUser()
+                        if let user = vm.user {
+                            if seed {
+                                if DataSeeder.seed(userId: user.id, email: user.email) {
+                                    vm.initializeUserWorkspaces()
+                                    vm.fetch()
+
+                                } else {
+                                    print("seed failed")
+                                }
+                            } else {
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
-
-                            } else {
-                                print("seed failed")
                             }
-                        } else {
-                            vm.initializeUserWorkspaces()
-                            vm.fetch()
+                            SyncService.shared.fetchMessageIDs(user: user)
+                            self.initialized = true
+                            checkAuthStatus(user: user)
                         }
-                        SyncService.shared.fetchMessageIDs(user: user)
-                        self.initialized = true
-                        checkAuthStatus(user: user)
+                    } else {
+                        print("Failed to login")
                     }
                 }
                 .onAppear {
@@ -270,6 +274,8 @@ struct ContentView: View {
                             }
                         }
                     }
+                } else {
+                    globalUIState = .doc
                 }
                 
                 
