@@ -275,10 +275,10 @@ struct ContentView: View {
                         }
                     }
                 } else {
-                    globalUIState = .doc
+                    if let user = vm.user {
+                        checkAuthStatus(user: user)
+                    }
                 }
-                
-                
             }
         }
         .onDisappear {
