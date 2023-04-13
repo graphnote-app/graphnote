@@ -20,3 +20,9 @@ public struct Document: Equatable, Codable, Hashable {
         hasher.combine(workspace)
     }
 }
+
+public struct DocumentUpdate: Codable {
+    public let id: UUID
+    public let workspace: UUID
+    public let content: Dictionary<String, String>
+}

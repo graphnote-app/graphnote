@@ -8,9 +8,29 @@
 import Foundation
 
 class DocumentContainerVM: ObservableObject {
-    @Published var title = ""
+    private var initialized = false
+    
+    init(title: String) {
+        self.title = title
+        self.initialized = true
+    }
+    
+    @Published var title = "" {
+        didSet {
+            if title != oldValue && initialized {
+                if let document = document?.id, let workspace = workspace?.id, let user {
+                    let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.uuidString)\", \"workspace\": \"\(workspace.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
+                    print(SyncService.shared.createMessage(user: user, message: message))
+                }
+            }
+        }
+    }
     @Published var labels = [Label]()
     @Published var blocks = [Block]()
+    
+    var document: Document? = nil
+    var workspace: Workspace? = nil
+    var user: User? = nil
     
     func fetch(user: User, workspace: Workspace, document: Document) {
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
@@ -23,6 +43,9 @@ class DocumentContainerVM: ObservableObject {
             self.blocks = blocks
         }
         
+        self.user = user
+        self.workspace = workspace
+        self.document = document
         self.title = document.title
     }
 }

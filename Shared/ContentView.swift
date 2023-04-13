@@ -45,6 +45,8 @@ struct ContentView: View {
                     if state == .authorized {
                         globalUIState = .doc
                         vm.fetch()
+                        SyncService.shared.startQueue(user: user)
+                        
                     } else {
                         globalUIState = .signIn
                     }

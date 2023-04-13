@@ -152,8 +152,6 @@ class SyncService: ObservableObject {
                             self.pullQueue.remove(at: 0)
                             self.processingPullQueue[queueUUID] = false
                             
-                            
-                            
                         } catch let error {
                             print(error)
                             self.error = .unknown
@@ -169,6 +167,16 @@ class SyncService: ObservableObject {
         
     }
     
+    var decoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        decoder.dateDecodingStrategy = .millisecondsSince1970
+        return decoder
+    }
+    
     func processMessageIDs(user: User) {
         // Pull messages
         
@@ -180,80 +188,128 @@ class SyncService: ObservableObject {
         
         // TODO: Batch pulls
         for id in ids {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-            var request = URLRequest(url: self.baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: id.uuidString)]))
-            request.httpMethod = "GET"
-            
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                DispatchQueue.main.async {
-                    if let error = error as? URLError {
-                        switch error.networkUnavailableReason {
-                        case .cellular:
-                            self.error = .cellular
-                            return
-                        case .constrained:
-                            self.error = .lowDataMode
-                            return
-                        case .expensive:
-                            self.error = .systemNetworkRestrained
-                            return
-                        case .none:
-                            self.error = .unknown
-                            break
-                        case .some(_):
-                            self.error = .unknown
-                            break
-                        }
-                        
-                        print(error.errorCode)
-                        
-                        if error.errorCode == URLError.cannotConnectToHost.rawValue {
-                            self.error = .cannotConnectToHost
-                            return
-                        }
-                        
-                        self.error = .postFailed
-                        return
-                    }
-                    
-                    if let response = response as? HTTPURLResponse {
-                        self.error = nil
-                    }
-                    
-                    if let data {
-                        let decoder = JSONDecoder()
-                        let formatter = DateFormatter()
-                        formatter.calendar = Calendar(identifier: .iso8601)
-                        formatter.locale = Locale(identifier: "en_US_POSIX")
-                        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-                        decoder.dateDecodingStrategy = .millisecondsSince1970
+            if !syncMessageRepo.has(id: id) {
+                let encoder = JSONEncoder()
+                encoder.dateEncodingStrategy = .iso8601
+                var request = URLRequest(url: self.baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: id.uuidString)]))
+                request.httpMethod = "GET"
                 
-                        do {
-                            let syncMessage = try decoder.decode(SyncMessage.self, from: data)
-                            if let contentsData = syncMessage.contents.data(using: .utf8) {
-                                let syncMessage = try decoder.decode(SyncMessage.self, from: data)
-                                switch syncMessage.type {
-                                case .user:
-                                    break
-                                case .document:
-                                    let document = try! decoder.decode(Document.self, from: contentsData)
-                                    self.processDocument(document, user: user)
-                                case .workspace:
-                                    let workspace = try! decoder.decode(Workspace.self, from: contentsData)
-                                    self.processWorkspace(workspace, user: user)
-                                }
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    DispatchQueue.main.async {
+                        if let error = error as? URLError {
+                            switch error.networkUnavailableReason {
+                            case .cellular:
+                                self.error = .cellular
+                                return
+                            case .constrained:
+                                self.error = .lowDataMode
+                                return
+                            case .expensive:
+                                self.error = .systemNetworkRestrained
+                                return
+                            case .none:
+                                self.error = .unknown
+                                break
+                            case .some(_):
+                                self.error = .unknown
+                                break
                             }
-                        } catch let error {
-                            print(error)
+                            
+                            print(error.errorCode)
+                            
+                            if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                                self.error = .cannotConnectToHost
+                                return
+                            }
+                            
+                            self.error = .postFailed
+                            return
+                        }
+                        
+                        if let response = response as? HTTPURLResponse {
+                            self.error = nil
+                        }
+                        
+                        if let data {
+                            do {
+                                let syncMessage = try self.decoder.decode(SyncMessage.self, from: data)
+                                if let contentsData = syncMessage.contents.data(using: .utf8) {
+                                    switch syncMessage.type {
+                                    case .user:
+                                        self.syncMessageUser(user: user, message: syncMessage, data: contentsData)
+                                    case .document:
+                                        self.syncMessageDocument(user: user, message: syncMessage, data: contentsData)
+                                    case .workspace:
+                                        self.syncMessageWorkspace(user: user, message: syncMessage, data: contentsData)
+                                    }
+                                }
+                            } catch let error {
+                                print(error)
+                            }
                         }
                     }
                 }
+                
+                task.resume()
             }
-            
-            task.resume()
         }
     }
+    
+    private func syncMessageUser(user: User, message: SyncMessage, data: Data) {
+        
+    }
+    
+    private func syncMessageDocument(user: User, message: SyncMessage, data: Data) {
+        switch message.action {
+        case .create:
+            let document = try! decoder.decode(Document.self, from: data)
+            self.processDocument(document, user: user)
+        case .update:
+            let documentUpdate = try! decoder.decode(DocumentUpdate.self, from: data)
+            updateDocument(documentUpdate, user: user)
+        case .delete:
+            break
+        case .read:
+            break
+        }
+    }
+    
+    private func syncMessageWorkspace(user: User, message: SyncMessage, data: Data) {
+        switch message.action {
+        case .create:
+            let workspace = try! decoder.decode(Workspace.self, from: data)
+            self.processWorkspace(workspace, user: user)
+        case .update:
+            break
+        case .delete:
+            break
+        case .read:
+            break
+        }
+    }
+    
+    private func updateDocument(_ documentUpdate: DocumentUpdate, user: User) {
+        
+        let workspaceRepo = WorkspaceRepo(user: user)
+        if let workspace = try? workspaceRepo.read(workspace: documentUpdate.workspace) {
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+            guard let document = try? documentRepo.read(id: documentUpdate.id) else {
+                print("document couldn't be read: \(documentUpdate.id)")
+                return
+            }
+            
+            for diff in documentUpdate.content.keys {
+                switch diff {
+                case "title":
+                    documentRepo.update(document: document, title: documentUpdate.content["title"])
+                default:
+                    fatalError("diff key isn't a switch case: \(diff)")
+                    break
+                }
+            }
+        }
+    }
+    
     
     private func processDocument(_ doc: Document, user: User) {
         let workspaceRepo = WorkspaceRepo(user: user)
@@ -331,17 +387,8 @@ class SyncService: ObservableObject {
         case get
     }
     
-    func dbHas(message: SyncMessage) -> Bool {
-        return true
-    }
-    
-    func createMessage(user: User, message: SyncMessage) -> Bool {
-        let repo = SyncMessageRepo(user: user)
-        if let _ = try? repo.create(message: message) {
-            return true
-        } else {
-            return false
-        }
+    func createMessage(user: User, message: SyncMessage) {
+        self.queue?.add(message: message)
     }
     
     func createWorkspace(user: User, workspace: Workspace) {

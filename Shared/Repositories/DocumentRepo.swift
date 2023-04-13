@@ -54,6 +54,22 @@ struct DocumentRepo {
         }
     }
     
+    func read(id: UUID) throws -> Document? {
+        do {
+            let fetchRequest = DocumentEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            let documentEntities = try moc.fetch(fetchRequest)
+            return documentEntities.first.map { entity in
+                Document(id: entity.id, title: entity.title, createdAt: entity.createdAt, modifiedAt: entity.modifiedAt, workspace: entity.workspace.id)
+            }
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    
     func readBlocks(document: Document) throws -> [Block]? {
         do {
             let fetchRequest = BlockEntity.fetchRequest()

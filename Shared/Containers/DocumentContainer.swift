@@ -15,7 +15,15 @@ struct DocumentContainer: View {
     let document: Document
     let onRefresh: () -> Void
     
-    @StateObject private var vm = DocumentContainerVM()
+    @StateObject private var vm: DocumentContainerVM
+    
+    init(user: User, workspace: Workspace, document: Document, onRefresh: @escaping () -> Void) {
+        self.user = user
+        self.workspace = workspace
+        self.document = document
+        self.onRefresh = onRefresh
+        self._vm = StateObject(wrappedValue: DocumentContainerVM(title: document.title))
+    }
     
     var body: some View {
         DocumentView(title: $vm.title, labels: $vm.labels, blocks: $vm.blocks, user: user, workspace: workspace, document: document) {
