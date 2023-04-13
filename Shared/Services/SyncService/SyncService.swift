@@ -266,7 +266,7 @@ class SyncService: ObservableObject {
             self.processDocument(document, user: user)
         case .update:
             let documentUpdate = try! decoder.decode(DocumentUpdate.self, from: data)
-            updateDocument(documentUpdate, user: user)
+            updateDocument(documentUpdate, message: message, user: user)
         case .delete:
             break
         case .read:
@@ -288,7 +288,7 @@ class SyncService: ObservableObject {
         }
     }
     
-    private func updateDocument(_ documentUpdate: DocumentUpdate, user: User) {
+    private func updateDocument(_ documentUpdate: DocumentUpdate, message: SyncMessage, user: User) {
         
         let workspaceRepo = WorkspaceRepo(user: user)
         if let workspace = try? workspaceRepo.read(workspace: documentUpdate.workspace) {
@@ -298,15 +298,20 @@ class SyncService: ObservableObject {
                 return
             }
             
-            for diff in documentUpdate.content.keys {
-                switch diff {
-                case "title":
-                    documentRepo.update(document: document, title: documentUpdate.content["title"])
-                default:
-                    fatalError("diff key isn't a switch case: \(diff)")
-                    break
+            if document.modifiedAt < message.timestamp {
+                for diff in documentUpdate.content.keys {
+                    switch diff {
+                    case "title":
+                        documentRepo.update(document: document, modifiedAt: message.timestamp, title: documentUpdate.content["title"])
+                    default:
+                        fatalError("diff key isn't a switch case: \(diff)")
+                        break
+                    }
                 }
+            } else {
+                print("Dropping document")
             }
+            
         }
     }
     

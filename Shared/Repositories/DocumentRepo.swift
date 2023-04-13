@@ -85,10 +85,15 @@ struct DocumentRepo {
         }
     }
     
-    func update(document: Document, title: String? = nil) {
+    func update(document: Document, modifiedAt: Date, title: String? = nil) {
         if let documentEntity = try? DocumentEntity.getEntity(id: document.id, moc: moc), let title {
             documentEntity.title = title
-            try? moc.save()
+            documentEntity.modifiedAt = modifiedAt
+            do {
+                try moc.save()
+            } catch let error {
+                print(error)
+            }
         }
     }
 

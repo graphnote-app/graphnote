@@ -8,23 +8,44 @@
 import Foundation
 
 class DocumentContainerVM: ObservableObject {
-    private var initialized = false
+    private var previousTitle = ""
+    private var previousId: UUID? = nil
+    private let saveInterval = 2.0
+    private var timer: Timer? = nil
     
     init(title: String) {
         self.title = title
-        self.initialized = true
+        
+        self.timer = Timer.scheduledTimer(timeInterval: saveInterval, target: self, selector: #selector(save), userInfo: nil, repeats: true)
+//        self.timer = Timer.scheduledTimer(withTimeInterval: saveInterval, repeats: true) { _ in
+//            if self.title != self.previousTitle {
+//                if let document = self.document?.id, let workspace = self.workspace?.id, let user = self.user {
+//                    let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.uuidString)\", \"workspace\": \"\(workspace.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
+//                    print(SyncService.shared.createMessage(user: user, message: message))
+//                }
+//                self.previousTitle = self.title
+//            }
+//        }
     }
     
-    @Published var title = "" {
-        didSet {
-            if title != oldValue && initialized {
-                if let document = document?.id, let workspace = workspace?.id, let user {
-                    let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.uuidString)\", \"workspace\": \"\(workspace.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
-                    print(SyncService.shared.createMessage(user: user, message: message))
-                }
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    @objc
+    func save() {
+        if self.title != self.previousTitle && previousId == self.document?.id {
+            if let document = self.document?.id, let workspace = self.workspace?.id, let user = self.user {
+                let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.uuidString)\", \"workspace\": \"\(workspace.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
+                print(SyncService.shared.createMessage(user: user, message: message))
             }
         }
+        self.previousTitle = self.title
+        self.previousId = self.document?.id
     }
+    
+    @Published var title = ""
     @Published var labels = [Label]()
     @Published var blocks = [Block]()
     

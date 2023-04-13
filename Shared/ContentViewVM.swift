@@ -86,13 +86,6 @@ class ContentViewVM: NSObject, ObservableObject {
         }
     }
     
-    func updateDocumentTitle(_ title: String) {
-        if let selectedWorkspace, let selectedDocument, let user {
-            let documentRepo = DocumentRepo(user: user, workspace: selectedWorkspace)
-            documentRepo.update(document: selectedDocument, title: title)
-        }
-    }
-    
     private func updateCurrentWorkspace() {
         if let selectedWorkspace, let user {
             let workspaceRepo = WorkspaceRepo(user: user)

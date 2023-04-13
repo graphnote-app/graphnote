@@ -55,19 +55,11 @@ struct DataSeeder{
             let documentRepo = DocumentRepo(user: user, workspace: workspace)
             
             for workspace in workspaces {
-//                if try !userRepo.create(workspace: workspace, for: user) {
-//                    print("failed to return success from workspace creation: \(workspace)")
-//                    return false
-//                }
-                
                 SyncService.shared.createWorkspace(user: user, workspace: workspace)
             }
             
             for document in documents {
-                if try !workspaceRepo.create(document: document, for: user) {
-                    print("failed to create document :\(document) in workspace: \(document.workspace)")
-                    return false
-                }
+                SyncService.shared.createDocument(user: user, document: document)
             }
             
             for label in labels {
