@@ -44,7 +44,7 @@ final class AuthService: NSObject {
         }
     }
     
-    func process(authorization: ASAuthorization, callback: @escaping (AuthServiceError?) -> Void) {
+    func process(authorization: ASAuthorization, callback: @escaping (Bool, AuthServiceError?) -> Void) {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
         
         // Check if user exists locally and remotely if possible (with internet)
@@ -78,11 +78,11 @@ final class AuthService: NSObject {
                 switch statusCode {
                 case 201, 409:
                     DispatchQueue.main.async {
-                        callback(nil)
+                        callback(true, nil)
                     }
                 default:
                     DispatchQueue.main.async {
-                        callback(AuthServiceError.unknown)
+                        callback(true, AuthServiceError.unknown)
                     }
                 }
             }
@@ -91,7 +91,7 @@ final class AuthService: NSObject {
                 try UserBuilder.create(user: user)
             } catch let error {
                 print(error)
-                callback(AuthServiceError.createUserFailed)
+                callback(true, AuthServiceError.createUserFailed)
             }
             
         } else {
@@ -101,7 +101,7 @@ final class AuthService: NSObject {
             if let user = try? userRepo.read(id: id) {
                 print(user)
                 DispatchQueue.main.async {
-                    callback(nil)
+                    callback(false, nil)
                 }
                 return
             } else {
@@ -110,7 +110,7 @@ final class AuthService: NSObject {
                     if let error {
                         print(error.localizedDescription)
                         DispatchQueue.main.async {
-                            callback(AuthServiceError.fetchFailed)
+                            callback(false, AuthServiceError.fetchFailed)
                         }
                         return
                     }
@@ -120,7 +120,7 @@ final class AuthService: NSObject {
                         do {
                             try UserBuilder.create(user: user)
                             DispatchQueue.main.async {
-                                callback(nil)
+                                callback(false, nil)
                             }
                             return
                             
@@ -130,7 +130,7 @@ final class AuthService: NSObject {
                             print("Couldn't create the user")
                             print("Failure in system. Please contact use for human support!")
                             DispatchQueue.main.async {
-                                callback(AuthServiceError.createUserFailed)
+                                callback(false, AuthServiceError.createUserFailed)
                             }
                             return
     
@@ -140,7 +140,7 @@ final class AuthService: NSObject {
                         print("SyncService couldn't find the user")
                         print("Failure in system. Please contact use for human support!")
                         DispatchQueue.main.async {
-                            callback(AuthServiceError.userNotFound)
+                            callback(false, AuthServiceError.userNotFound)
                         }
                         return
                     }

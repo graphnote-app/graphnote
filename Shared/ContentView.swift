@@ -36,6 +36,7 @@ struct ContentView: View {
     private let networkMessageIDsFetchedNotification = Notification.Name(SyncServiceNotification.messageIDsFetched.rawValue)
     private let localWorkspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
     private let localDocumentCreatedNotification = Notification.Name(SyncServiceNotification.documentCreated.rawValue)
+    private let localDocumentUpdatedNotification = Notification.Name(SyncServiceNotification.documentUpdated.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -61,11 +62,11 @@ struct ContentView: View {
             case .loading:
                 LoadingView()
             case .signIn:
-                SignInView { success in
+                SignInView { isSignUp, success in
                     if success {
                         vm.initializeUser()
                         if let user = vm.user {
-                            if seed {
+                            if isSignUp {
                                 if DataSeeder.seed(userId: user.id, email: user.email) {
                                     vm.initializeUserWorkspaces()
                                     vm.fetch()
@@ -224,8 +225,6 @@ struct ContentView: View {
             Text("Error: \(SyncService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
         })
         .onReceive(NotificationCenter.default.publisher(for: localWorkspaceCreatedNotification)) { notification in
-//            vm.initializeUser()
-//            vm.initializeUserWorkspaces()
             DispatchQueue.main.async {
                 vm.fetch()
             }
@@ -233,12 +232,16 @@ struct ContentView: View {
 
         }
         .onReceive(NotificationCenter.default.publisher(for: localDocumentCreatedNotification)) { notification in
-//            vm.initializeUser()
-//            vm.initializeUserWorkspaces()
             DispatchQueue.main.async {
                 vm.fetch()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: localDocumentUpdatedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.fetch()
+            }
+        }
+        
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in
             syncStatus = .success
             if let user = vm.user {

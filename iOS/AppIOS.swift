@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-let seed = true
-
 @main
 struct AppIOS: App {
     @Environment(\.colorScheme) private var colorScheme

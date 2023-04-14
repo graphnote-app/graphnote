@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-let seed = true
-
 @main
 struct AppMacOS: App {
     var body: some Scene {

@@ -24,6 +24,7 @@ enum SyncServiceNotification: String {
     case messageIDsFetched
     case workspaceCreated
     case documentCreated
+    case documentUpdated
 }
 
 enum SyncServiceStatus {
@@ -303,6 +304,7 @@ class SyncService: ObservableObject {
                     switch diff {
                     case "title":
                         documentRepo.update(document: document, modifiedAt: message.timestamp, title: documentUpdate.content["title"])
+                        self.postSyncNotification(.documentUpdated)
                     default:
                         fatalError("diff key isn't a switch case: \(diff)")
                         break
