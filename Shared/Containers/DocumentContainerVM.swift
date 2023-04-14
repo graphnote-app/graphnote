@@ -27,6 +27,7 @@ class DocumentContainerVM: ObservableObject {
     @objc
     func save() {
         if self.title != self.previousTitle && previousId == self.document?.id {
+            print("title: \(self.title) previousTitle: \(previousTitle) id: \(document?.id) previousId: \(previousId)")
             if let document = self.document, let workspace = self.workspace, let user = self.user {
                 DataService.shared.updateDocumentTitle(user: user, workspace: workspace, document: document, title: self.title)
             }
@@ -35,17 +36,17 @@ class DocumentContainerVM: ObservableObject {
         }
     }
     
-    @Published var title = "" {
-        didSet {
-            self.previousTitle = oldValue
-        }
-    }
+    @Published var title = ""
     @Published var labels = [Label]()
     @Published var blocks = [Block]()
     
     var document: Document? = nil {
         didSet {
             self.previousId = oldValue?.id
+            if let document {
+                self.title = document.title
+                self.previousTitle = self.title
+            }
         }
     }
     

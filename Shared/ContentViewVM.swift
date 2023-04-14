@@ -94,6 +94,14 @@ class ContentViewVM: NSObject, ObservableObject {
         }
     }
     
+    private func updateCurrentDocument() {
+        if let selectedDocument, let selectedWorkspace, let user {
+            let workspaceRepo = WorkspaceRepo(user: user)
+            let updatedDocument = try? workspaceRepo.read(document: selectedDocument.id, workspace: selectedWorkspace.id)
+            self.selectedDocument = updatedDocument
+        }
+    }
+    
     func addDocument(_ document: Document) -> Bool {
         if let user {
             do {
@@ -112,6 +120,12 @@ class ContentViewVM: NSObject, ObservableObject {
         }
     }
     
+    func fetchDocument() {
+        if selectedDocument != nil {
+            updateCurrentDocument()
+        }
+    }
+    
     func fetch() {
         if let user {
             
@@ -125,6 +139,7 @@ class ContentViewVM: NSObject, ObservableObject {
                     if selectedWorkspace != nil {
                         updateCurrentWorkspace()
                     }
+
                     
                     let curWorkspace = self.selectedWorkspace ?? workspace
                     

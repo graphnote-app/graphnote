@@ -38,6 +38,7 @@ struct ContentView: View {
     private let localDocumentCreatedNotification = Notification.Name(SyncServiceNotification.documentCreated.rawValue)
     private let documentUpdateSyncedNotification = Notification.Name(SyncServiceNotification.documentUpdateSynced.rawValue)
     private let localDocumentUpdatedNotification = Notification.Name(DataServiceNotification.documentUpdatedLocally.rawValue)
+    private let documentUpdateReceivedNotification = Notification.Name(SyncServiceNotification.documentUpdateReceived.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -179,7 +180,7 @@ struct ContentView: View {
                         return DocumentContainer(user: user, workspace: workspace, document: document, onRefresh: {
                             vm.fetch()
                         })
-                            .id(document.id)
+                            .id(document.hashValue)
                             .onAppear {
                                 
                             }
@@ -228,8 +229,6 @@ struct ContentView: View {
             DispatchQueue.main.async {
                 vm.fetch()
             }
-            
-
         }
         .onReceive(NotificationCenter.default.publisher(for: localDocumentCreatedNotification)) { notification in
             DispatchQueue.main.async {
@@ -237,9 +236,6 @@ struct ContentView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: documentUpdateSyncedNotification)) { notification in
-            DispatchQueue.main.async {
-                vm.fetch()
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: localDocumentUpdatedNotification)) { notification in
             DispatchQueue.main.async {
@@ -250,6 +246,12 @@ struct ContentView: View {
             syncStatus = .success
             if let user = vm.user {
                 SyncService.shared.processMessageIDs(user: user)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: documentUpdateReceivedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.fetch()
+                vm.fetchDocument()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: networkSyncFailedNotification)) { notification in

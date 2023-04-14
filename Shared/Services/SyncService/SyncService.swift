@@ -25,6 +25,7 @@ enum SyncServiceNotification: String {
     case workspaceCreated
     case documentCreated
     case documentUpdateSynced
+    case documentUpdateReceived
 }
 
 enum SyncServiceStatus {
@@ -276,6 +277,7 @@ class SyncService: ObservableObject {
         case .update:
             let documentUpdate = try! decoder.decode(DocumentUpdate.self, from: data)
             updateDocument(documentUpdate, message: message, user: user)
+            self.postSyncNotification(.documentUpdateReceived)
         case .delete:
             break
         case .read:
