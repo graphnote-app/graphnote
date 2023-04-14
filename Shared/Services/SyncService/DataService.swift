@@ -24,8 +24,14 @@ enum DataServiceNotification: String {
 class DataService: ObservableObject {
     static let shared = DataService()
     
-    @Published private(set) var watching: Bool = false
+    private let syncService = SyncService()
+    
+    var watching: Bool {
+        return syncService.watching
+    }
+    
     @Published private(set) var syncStatus: SyncServiceStatus = .paused
+    @Published private(set) var error: SyncServiceError? = nil
     @Published private(set) var statusCode: Int = 201
     
     func createDocument(user: User, document: Document, sync: Bool = true) throws {
@@ -95,7 +101,7 @@ class DataService: ObservableObject {
     }
     
     func fetchUser(id: String, callback: @escaping (_ user: User?, _ error: SyncServiceError?) -> Void) {
-        var request = URLRequest(url: SyncService.shared.baseURL.appendingPathComponent("user")
+        var request = URLRequest(url: syncService.baseURL.appendingPathComponent("user")
             .appending(queryItems: [.init(name: "id", value: id)]))
         request.httpMethod = "GET"
         print("SyncService fetchUser fetching: \(id)")
@@ -149,31 +155,35 @@ class DataService: ObservableObject {
         
         // Sync to server
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
-        SyncService.shared.createMessage(user: user, message: message)
+        syncService.createMessage(user: user, message: message)
     }
     
     func startWatching(user: User) {
-        if !watching {
-            _ = SyncService.shared.$watching.sink { value in
-                self.watching = value
-            }
-            
-            _ = SyncService.shared.$syncStatus.sink { value in
-                self.syncStatus = value
-            }
-            
-            _ = SyncService.shared.$statusCode.sink { value in
-                self.statusCode = value
-            }
-            
-            SyncService.shared.startQueue(user: user)
+        _ = syncService.$syncStatus.sink { value in
+            self.syncStatus = value
         }
+        
+        _ = syncService.$statusCode.sink { value in
+            self.statusCode = value
+        }
+        
+        _ = syncService.$error.sink { value in
+            self.error = value
+        }
+        
+        syncService.startQueue(user: user)
     }
     
     func stopWatching() {
-        if watching {
-            SyncService.shared.stopQueue()
-        }
+        syncService.stopQueue()
+    }
+    
+    func processMessageIDs(user: User) {
+        syncService.processMessageIDs(user: user)
+    }
+    
+    func fetchMessageIDs(user: User) {
+        syncService.fetchMessageIDs(user: user)
     }
     
     private func postNotification(_ notification: DataServiceNotification) {
@@ -197,7 +207,7 @@ class DataService: ObservableObject {
     }
     
     private func saveMessage(_ message: SyncMessage, user: User) {
-        SyncService.shared.createMessage(user: user, message: message)
+        syncService.createMessage(user: user, message: message)
     }
     
     private var decoder: JSONDecoder {

@@ -15,6 +15,8 @@ enum SyncServiceError: Error {
     case lowDataMode
     case cellular
     case cannotConnectToHost
+    case createMessageFailed
+    case getFailed
     case unknown
 }
 
@@ -34,9 +36,7 @@ enum SyncServiceStatus {
     case success
 }
 
-class SyncService: ObservableObject {
-    static let shared = SyncService()
-    
+class SyncService: ObservableObject {    
     let baseURL = URL(string: "http://10.0.0.207:3000/")!
     
     enum HTTPMethod: String {
@@ -101,7 +101,9 @@ class SyncService: ObservableObject {
     }
     
     private func postSyncNotification(_ notification: SyncServiceNotification) {
-        NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
+        }
     }
     
     func processPullQueue(user: User) {
@@ -527,8 +529,29 @@ class SyncService: ObservableObject {
             request.httpMethod = "GET"
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error {
-                    print(error)
+                if let error = error as? URLError {
+                    if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                        self.error = .cannotConnectToHost
+                        self.postSyncNotification(.networkSyncFailed)
+                        return
+                    }
+                    
+                    switch error.networkUnavailableReason {
+                    case .cellular:
+                        self.error = .cellular
+                    case .constrained:
+                        self.error = .lowDataMode
+                    case .expensive:
+                        self.error = .systemNetworkRestrained
+                    case .none:
+                        self.error = .unknown
+                    case .some(_):
+                        self.error = .unknown
+                    }
+                    
+                    print(error.errorCode)
+                    
+                    self.postSyncNotification(.networkSyncFailed)
                     return
                 }
                 
@@ -540,6 +563,8 @@ class SyncService: ObservableObject {
                         break
                     default:
                         print(response.statusCode)
+                        self.error = .getFailed
+                        self.postSyncNotification(.networkSyncFailed)
                         return
                     }
                     
@@ -572,9 +597,15 @@ class SyncService: ObservableObject {
                         
                     } catch let error {
                         print(error)
+                        self.error = .createMessageFailed
+                        self.postSyncNotification(.networkSyncFailed)
+                        return
                     }
                     
                 }
+                
+                self.error = nil
+                self.postSyncNotification(.networkSyncSuccess)
             }
             
             task.resume()

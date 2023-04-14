@@ -79,7 +79,7 @@ struct ContentView: View {
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
                             }
-                            SyncService.shared.fetchMessageIDs(user: user)
+                            DataService.shared.fetchMessageIDs(user: user)
                             self.initialized = true
                             checkAuthStatus(user: user)
                         }
@@ -89,7 +89,7 @@ struct ContentView: View {
                 }
                 .onAppear {
                     if let user = vm.user {
-                        SyncService.shared.fetchMessageIDs(user: user)
+                        DataService.shared.fetchMessageIDs(user: user)
                     }
                 }
             case .doc, .settings:
@@ -195,12 +195,13 @@ struct ContentView: View {
                 } retrySync: {
                     if let user = vm.user {
                         DataService.shared.startWatching(user: user)
-                        SyncService.shared.fetchMessageIDs(user: user)
+                        DataService.shared.fetchMessageIDs(user: user)
+                        DataService.shared.processMessageIDs(user: user)
                     }
                 }
                 .onAppear {
                     if let user = vm.user {
-                        SyncService.shared.fetchMessageIDs(user: user)
+                        DataService.shared.fetchMessageIDs(user: user)
                     }
                 }
             }
@@ -213,8 +214,10 @@ struct ContentView: View {
         .alert("Offline Mode", isPresented: $networkSyncFailedAlert, actions: {
             Button("Try to Connect") {
                 networkSyncFailedAlert = false
+                syncStatus = .success
                 if let user = vm.user {
                     DataService.shared.startWatching(user: user)
+                    DataService.shared.fetchMessageIDs(user: user)
                 }
             }
             Button("Continue Offline") {
@@ -223,7 +226,7 @@ struct ContentView: View {
                 DataService.shared.stopWatching()
             }
         }, message: {
-            Text("Error: \(SyncService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
+            Text("Error: \(DataService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
         })
         .onReceive(NotificationCenter.default.publisher(for: localWorkspaceCreatedNotification)) { notification in
             DispatchQueue.main.async {
@@ -245,7 +248,7 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in
             syncStatus = .success
             if let user = vm.user {
-                SyncService.shared.processMessageIDs(user: user)
+                DataService.shared.processMessageIDs(user: user)
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: documentUpdateReceivedNotification)) { notification in
@@ -261,6 +264,10 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: networkSyncSuccessNotification)) { notification in
             syncStatus = .success
+            networkSyncFailedAlert = false
+            if let user = vm.user {
+                DataService.shared.startWatching(user: user)
+            }
         }
 //        .onReceive(NotificationCenter.default.publisher(for: NSApplication.willResignActiveNotification)) { notification in
 //            print("scenePhase notification: \(notification)")
