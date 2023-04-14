@@ -1,5 +1,5 @@
 //
-//  SyncQueue.swift
+//  DBQueue.swift
 //  Graphnote
 //
 //  Created by Hayden Pennington on 4/7/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SyncQueue {
+class DBQueue {
     let user: User
     
     private var queue = [SyncMessage]()

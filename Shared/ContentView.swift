@@ -46,8 +46,7 @@ struct ContentView: View {
                     if state == .authorized {
                         globalUIState = .doc
                         vm.fetch()
-                        SyncService.shared.startQueue(user: user)
-                        
+                        DataService.shared.startWatching(user: user)
                     } else {
                         globalUIState = .signIn
                     }
@@ -206,20 +205,20 @@ struct ContentView: View {
         }
         .onChange(of: vm.user, perform: { newValue in
             if let newValue {
-                SyncService.shared.startQueue(user: newValue)
+                DataService.shared.startWatching(user: newValue)
             }
         })
         .alert("Offline Mode", isPresented: $networkSyncFailedAlert, actions: {
             Button("Try to Connect") {
                 networkSyncFailedAlert = false
                 if let user = vm.user {
-                    SyncService.shared.startQueue(user: user)
+                    DataService.shared.startWatching(user: user)
                 }
             }
             Button("Continue Offline") {
                 syncStatus = .paused
                 networkSyncFailedAlert = false
-                SyncService.shared.stopQueue()
+                DataService.shared.stopWatching()
             }
         }, message: {
             Text("Error: \(SyncService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
@@ -264,7 +263,7 @@ struct ContentView: View {
 //        }
         .onAppear {
             if DataController.shared.loaded {
-            
+                
                 if !initialized {
                     vm.initializeUser()
                     
@@ -289,7 +288,7 @@ struct ContentView: View {
             }
         }
         .onDisappear {
-            SyncService.shared.stopQueue()
+            DataService.shared.stopWatching()
         }
     }
 }

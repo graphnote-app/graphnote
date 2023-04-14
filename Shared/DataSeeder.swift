@@ -49,21 +49,20 @@ struct DataSeeder{
         
         do {
 
-            try UserBuilder.create(user: user)
-            let userRepo = UserRepo()
+            try! DataService.shared.createUser(user: user)
             let workspaceRepo = WorkspaceRepo(user: user)
             let documentRepo = DocumentRepo(user: user, workspace: workspace)
             
             for workspace in workspaces {
-                SyncService.shared.createWorkspace(user: user, workspace: workspace)
+                try! DataService.shared.createWorkspace(user: user, workspace: workspace)
             }
             
             for document in documents {
-                SyncService.shared.createDocument(user: user, document: document)
+                try! DataService.shared.createDocument(user: user, document: document)
             }
             
             for label in labels {
-                if try !workspaceRepo.create(label: label, in: workspace, for: user) {
+                if try !workspaceRepo.create(label: label, in: workspace) {
                     print("failed to create label :\(label) in workspace: \(workspace)")
                     return false
                 }
@@ -71,7 +70,7 @@ struct DataSeeder{
             
             for i in 0..<blocks.count {
                 let block = blocks[i]
-                if try !documentRepo.create(block: block, for: user) {
+                if try !documentRepo.create(block: block) {
                     print("failed to create block: \(block)")
                     return false
                 }

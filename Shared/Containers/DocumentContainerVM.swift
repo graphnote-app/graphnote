@@ -8,7 +8,7 @@
 import Foundation
 
 class DocumentContainerVM: ObservableObject {
-    private var previousTitle = ""
+    private var previousTitle: String? = nil
     private var previousId: UUID? = nil
     private let saveInterval = 2.0
     private var timer: Timer? = nil
@@ -17,15 +17,6 @@ class DocumentContainerVM: ObservableObject {
         self.title = title
         
         self.timer = Timer.scheduledTimer(timeInterval: saveInterval, target: self, selector: #selector(save), userInfo: nil, repeats: true)
-//        self.timer = Timer.scheduledTimer(withTimeInterval: saveInterval, repeats: true) { _ in
-//            if self.title != self.previousTitle {
-//                if let document = self.document?.id, let workspace = self.workspace?.id, let user = self.user {
-//                    let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.uuidString)\", \"workspace\": \"\(workspace.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
-//                    print(SyncService.shared.createMessage(user: user, message: message))
-//                }
-//                self.previousTitle = self.title
-//            }
-//        }
     }
     
     deinit {
@@ -36,20 +27,28 @@ class DocumentContainerVM: ObservableObject {
     @objc
     func save() {
         if self.title != self.previousTitle && previousId == self.document?.id {
-            if let document = self.document?.id, let workspace = self.workspace?.id, let user = self.user {
-                let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.uuidString)\", \"workspace\": \"\(workspace.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
-                print(SyncService.shared.createMessage(user: user, message: message))
+            if let document = self.document, let workspace = self.workspace, let user = self.user {
+                DataService.shared.updateDocumentTitle(user: user, workspace: workspace, document: document, title: self.title)
             }
+            self.previousTitle = title
+            self.previousId = document?.id
         }
-        self.previousTitle = self.title
-        self.previousId = self.document?.id
     }
     
-    @Published var title = ""
+    @Published var title = "" {
+        didSet {
+            self.previousTitle = oldValue
+        }
+    }
     @Published var labels = [Label]()
     @Published var blocks = [Block]()
     
-    var document: Document? = nil
+    var document: Document? = nil {
+        didSet {
+            self.previousId = oldValue?.id
+        }
+    }
+    
     var workspace: Workspace? = nil
     var user: User? = nil
     
@@ -68,5 +67,13 @@ class DocumentContainerVM: ObservableObject {
         self.workspace = workspace
         self.document = document
         self.title = document.title
+        
+        if self.previousId == nil  {
+            self.previousId = document.id
+        }
+        
+        if self.previousTitle == nil {
+            self.previousTitle = document.title
+        }
     }
 }

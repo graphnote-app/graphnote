@@ -96,14 +96,20 @@ class ContentViewVM: NSObject, ObservableObject {
     
     func addDocument(_ document: Document) -> Bool {
         if let user {
-            SyncService.shared.createDocument(user: user, document: document)
-            if let selected = selectedSubItem {
-                selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
+            do {
+                try DataService.shared.createDocument(user: user, document: document)
+                if let selected = selectedSubItem {
+                    selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
+                }
+                return true
+            } catch let error {
+                print(error)
+                return false
             }
-            return true
+            
+        } else {
+            return false
         }
-        
-        return false
     }
     
     func fetch() {

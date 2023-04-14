@@ -12,7 +12,7 @@ struct UserRepo {
     
     private let moc = DataController.shared.container.viewContext
 
-    func create(workspace: Workspace, for user: User) throws -> Bool {
+    func create(workspace: Workspace, for user: User) -> Bool {
         do {
             guard let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
                 return false
@@ -35,17 +35,17 @@ struct UserRepo {
                 return labelEntity
             })
             
-            try? moc.save()
+            try moc.save()
             
             return true
             
         } catch let error {
             print(error)
-            throw error
+            return false
         }
     }
     
-    func read(id: String) throws -> User? {
+    func read(id: String) -> User? {
         do {
             guard let userEntity = try getEntity(id: id) else {
                 return nil
@@ -63,7 +63,7 @@ struct UserRepo {
             
         } catch let error {
             print(error)
-            throw error
+            return nil
         }
     }
     

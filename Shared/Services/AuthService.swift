@@ -68,12 +68,21 @@ final class AuthService: NSObject {
             
             let user = User(id: id, email: email, givenName: givenName, familyName: familyName, createdAt: .now, modifiedAt: .now)
             
-            if !SyncService.shared.watching {
-                SyncService.shared.startQueue(user: user)
+            if !DataService.shared.watching {
+                DataService.shared.startWatching(user: user)
             }
             
-            SyncService.shared.createUser(user: user)
-            _ = SyncService.shared.$statusCode.sink { statusCode in
+            do {
+                try DataService.shared.createUser(user: user)
+            } catch let error {
+                print(error)
+                callback(true, AuthServiceError.createUserFailed)
+                return
+            }
+            
+            
+            
+            _ = DataService.shared.$statusCode.sink { statusCode in
                 print("statusCode: \(statusCode)")
                 switch statusCode {
                 case 201, 409:
@@ -85,13 +94,6 @@ final class AuthService: NSObject {
                         callback(true, AuthServiceError.unknown)
                     }
                 }
-            }
-            
-            do {
-                try UserBuilder.create(user: user)
-            } catch let error {
-                print(error)
-                callback(true, AuthServiceError.createUserFailed)
             }
             
         } else {
@@ -106,7 +108,7 @@ final class AuthService: NSObject {
                 return
             } else {
                 // Check server for User
-                SyncService.shared.fetchUser(id: id) { (user, error) in
+                DataService.shared.fetchUser(id: id) { (user, error) in
                     if let error {
                         print(error.localizedDescription)
                         DispatchQueue.main.async {

@@ -15,10 +15,11 @@ struct WorkspaceRepo {
     
     private let moc = DataController.shared.container.viewContext
     
-    func create(workspace: Workspace, user: User) throws -> Bool {
+    func create(workspace: Workspace) -> Bool {
         do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc),
-                  let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
+            let workspaceEntity = WorkspaceEntity(entity: WorkspaceEntity.entity(), insertInto: moc)
+            
+            guard let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
                 return false
             }
             
@@ -30,18 +31,17 @@ struct WorkspaceRepo {
             workspaceEntity.createdAt = workspace.createdAt
             workspaceEntity.modifiedAt = workspace.modifiedAt
             
-            
             try moc.save()
             
             return true
 
         } catch let error {
             print(error)
-            throw error
+            return false
         }
     }
     
-    func create(document: Document, for user: User) throws -> Bool {
+    func create(document: Document) -> Bool {
         do {
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: document.workspace, moc: moc),
                   let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
@@ -62,11 +62,11 @@ struct WorkspaceRepo {
 
         } catch let error {
             print(error)
-            throw error
+            return false
         }
     }
     
-    func create(label: Label, in workspace: Workspace, for user: User) throws -> Bool {
+    func create(label: Label, in workspace: Workspace) throws -> Bool {
         do {
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc) else {
                 return false

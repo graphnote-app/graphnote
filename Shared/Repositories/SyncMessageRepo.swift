@@ -175,8 +175,7 @@ struct SyncMessageRepo {
     func updateToIsSynced(id: UUID) throws {
         do {
             guard let messageEntity = try SyncMessageEntity.getEntity(id: id, moc: moc) else {
-                // Add throw error here
-                return
+                fatalError("message not found to update")
             }
             
             messageEntity.isSynced = true

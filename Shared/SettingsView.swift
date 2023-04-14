@@ -32,7 +32,12 @@ struct SettingsView: View {
                         labels: [],
                         documents: []
                 )
-                SyncService.shared.createWorkspace(user: user, workspace: workspace)
+                do {
+                    try DataService.shared.createWorkspace(user: user, workspace: workspace)
+                } catch let error {
+                    print(error)
+                }
+                
             } label: {
                 HStack {
                     Image(systemName: "plus")

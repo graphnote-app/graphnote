@@ -15,7 +15,7 @@ struct DocumentRepo {
     
     private let moc = DataController.shared.container.viewContext
     
-    func create(block: Block, for user: User) throws -> Bool {
+    func create(block: Block) throws -> Bool {
         do {
             guard let documentEntity = try DocumentEntity.getEntity(id: block.document.id, moc: moc) else {
                 return false
@@ -85,15 +85,18 @@ struct DocumentRepo {
         }
     }
     
-    func update(document: Document, modifiedAt: Date, title: String? = nil) {
-        if let documentEntity = try? DocumentEntity.getEntity(id: document.id, moc: moc), let title {
-            documentEntity.title = title
-            documentEntity.modifiedAt = modifiedAt
-            do {
+    func update(document: Document) -> Bool {
+        do {
+            if let documentEntity = try DocumentEntity.getEntity(id: document.id, moc: moc) {
+                documentEntity.title = document.title
+                documentEntity.modifiedAt = document.modifiedAt
                 try moc.save()
-            } catch let error {
-                print(error)
             }
+            
+            return true
+        } catch let error {
+            print(error)
+            return false
         }
     }
 

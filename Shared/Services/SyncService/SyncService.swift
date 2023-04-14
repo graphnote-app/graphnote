@@ -35,6 +35,14 @@ enum SyncServiceStatus {
 
 class SyncService: ObservableObject {
     static let shared = SyncService()
+    
+    let baseURL = URL(string: "http://10.0.0.207:3000/")!
+    
+    enum HTTPMethod: String {
+        case post
+        case get
+    }
+    
     let syncInterval = 0.25
     @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
@@ -50,14 +58,14 @@ class SyncService: ObservableObject {
     }
     
     @Published private(set) var syncStatus: SyncServiceStatus = .success
-
-    private(set) var watching = false
+    @Published private(set) var watching = false
+    
     private var timer: Timer? = nil
     private var requestIDs: Set<UUID> = Set()
     private var processingPullQueue: [UUID : Bool] = [:]
     
-    private lazy var queue: SyncQueue? = nil
-    var pullQueue: [UUID] = []
+    private var pushQueue: DBQueue? = nil
+    private var pullQueue: [UUID] = []
     
     private func getLastSyncTime(user: User) -> Date? {
         let syncMessageRepo = SyncMessageRepo(user: user)
@@ -65,15 +73,15 @@ class SyncService: ObservableObject {
     }
     
     func startQueue(user: User) {
-        if queue == nil {
-            self.queue = SyncQueue(user: user)
+        if pushQueue == nil {
+            self.pushQueue = DBQueue(user: user)
         }
         
         // Invalidate timer always so we don't get runaway timers
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: syncInterval, repeats: true) { timer in
-            self.processQueue(user: user)
+            self.processPushQueue(user: user)
             if self.processingPullQueue.values.allSatisfy({
                 $0 == false
             }) {
@@ -303,8 +311,23 @@ class SyncService: ObservableObject {
                 for diff in documentUpdate.content.keys {
                     switch diff {
                     case "title":
-                        documentRepo.update(document: document, modifiedAt: message.timestamp, title: documentUpdate.content["title"])
-                        self.postSyncNotification(.documentUpdated)
+                        if let title = documentUpdate.content["title"] {
+                            let updatedDocument = Document(
+                                id: document.id,
+                                title: title,
+                                createdAt: document.createdAt,
+                                modifiedAt: message.timestamp,
+                                workspace: document.workspace
+                            )
+                            
+                            if documentRepo.update(document: updatedDocument) {
+                                self.postSyncNotification(.documentUpdated)
+                            } else {
+                                print("Document update failed")
+                            }
+                            
+                        }
+                        
                     default:
                         fatalError("diff key isn't a switch case: \(diff)")
                         break
@@ -313,28 +336,33 @@ class SyncService: ObservableObject {
             } else {
                 print("Dropping document")
             }
-            
         }
     }
     
     
     private func processDocument(_ doc: Document, user: User) {
         let workspaceRepo = WorkspaceRepo(user: user)
-        try! workspaceRepo.create(document: doc, for: user)
-        self.postSyncNotification(.documentCreated)
+        if workspaceRepo.create(document: doc) {
+            self.postSyncNotification(.documentCreated)
+        } else {
+            print("Document creation failed")
+        }
     }
     
     private func processWorkspace(_ workspace: Workspace, user: User) {
         let userRepo = UserRepo()
-        try! userRepo.create(workspace: workspace, for: user)
-        self.postSyncNotification(.workspaceCreated)
+        if userRepo.create(workspace: workspace, for: user) {
+            self.postSyncNotification(.workspaceCreated)
+        } else {
+            print("Workspace creation failed")
+        }
     }
     
-    private func processQueue(user: User) {
+    private func processPushQueue(user: User) {
         // Push messages
-        if let queueItem = self.queue?.peek() {
+        if let queueItem = self.pushQueue?.peek() {
             if queueItem.isSynced == true {
-                self.queue?.remove(id: queueItem.id)
+                self.pushQueue?.remove(id: queueItem.id)
                 return
             }
             
@@ -349,7 +377,7 @@ class SyncService: ObservableObject {
                                 
                             case 201, 409:
                                 // Drop the item from the queue
-                                if self.queue?.remove(id: queueItem.id) != nil {
+                                if self.pushQueue?.remove(id: queueItem.id) == true {
                                     self.syncStatus = .success
                                     print(queueItem)
                                     self.postSyncNotification(.networkSyncSuccess)
@@ -387,15 +415,8 @@ class SyncService: ObservableObject {
         }
     }
     
-    let baseURL = URL(string: "http://10.0.0.207:3000/")!
-    
-    enum HTTPMethod: String {
-        case post
-        case get
-    }
-    
     func createMessage(user: User, message: SyncMessage) {
-        self.queue?.add(message: message)
+        self.pushQueue?.add(message: message)
     }
     
     func createWorkspace(user: User, workspace: Workspace) {
@@ -406,7 +427,7 @@ class SyncService: ObservableObject {
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .workspace, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
         
         // Save message to local queue
-        print(self.queue?.add(message: message))
+        print(self.pushQueue?.add(message: message))
         processWorkspace(workspace, user: user)
     }
     
@@ -472,7 +493,7 @@ class SyncService: ObservableObject {
         let repo = SyncMessageRepo(user: user)
         try? repo.create(message: message)
         // Save message to local queue
-        print(self.queue?.add(message: message))
+        print(self.pushQueue?.add(message: message))
 //        processEntity(data: contents, user: user)
         
     }
@@ -486,7 +507,7 @@ class SyncService: ObservableObject {
         let repo = SyncMessageRepo(user: user)
         try? repo.create(message: message)
         // Save message to local queue
-        print(self.queue?.add(message: message))
+        print(self.pushQueue?.add(message: message))
         processDocument(document, user: user)
 //        let workspaceRepo = WorkspaceRepo(user: user)
 //        try? workspaceRepo.create(document: document, for: user)

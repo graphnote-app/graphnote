@@ -10,7 +10,7 @@ import Foundation
 struct UserBuilder {
     private static let moc = DataController.shared.container.viewContext
     
-    static func create(user: User) throws {
+    static func create(user: User) -> Bool {
         let userEntity = UserEntity(entity: UserEntity.entity(), insertInto: moc)
         userEntity.id = user.id
         userEntity.email = user.email
@@ -21,9 +21,10 @@ struct UserBuilder {
         
         do {
             try moc.save()
+            return true
         } catch let error {
             print(error)
-            throw error
+            return false
         }
         
     }
