@@ -153,23 +153,27 @@ class DataService: ObservableObject {
     }
     
     func startWatching(user: User) {
-        _ = SyncService.shared.$watching.sink { value in
-            self.watching = value
+        if !watching {
+            _ = SyncService.shared.$watching.sink { value in
+                self.watching = value
+            }
+            
+            _ = SyncService.shared.$syncStatus.sink { value in
+                self.syncStatus = value
+            }
+            
+            _ = SyncService.shared.$statusCode.sink { value in
+                self.statusCode = value
+            }
+            
+            SyncService.shared.startQueue(user: user)
         }
-        
-        _ = SyncService.shared.$syncStatus.sink { value in
-            self.syncStatus = value
-        }
-        
-        _ = SyncService.shared.$statusCode.sink { value in
-            self.statusCode = value
-        }
-        
-        SyncService.shared.startQueue(user: user)
     }
     
     func stopWatching() {
-        SyncService.shared.stopQueue()
+        if watching {
+            SyncService.shared.stopQueue()
+        }
     }
     
     private func postNotification(_ notification: DataServiceNotification) {
