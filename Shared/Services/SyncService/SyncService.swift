@@ -24,7 +24,7 @@ enum SyncServiceNotification: String {
     case messageIDsFetched
     case workspaceCreated
     case documentCreated
-    case documentUpdated
+    case documentUpdateSynced
 }
 
 enum SyncServiceStatus {
@@ -321,7 +321,7 @@ class SyncService: ObservableObject {
                             )
                             
                             if documentRepo.update(document: updatedDocument) {
-                                self.postSyncNotification(.documentUpdated)
+                                self.postSyncNotification(.documentUpdateSynced)
                             } else {
                                 print("Document update failed")
                             }

@@ -17,6 +17,10 @@ enum DataServiceError: Error {
     case userEncodeFailed
 }
 
+enum DataServiceNotification: String {
+    case documentUpdatedLocally
+}
+
 class DataService: ObservableObject {
     static let shared = DataService()
     
@@ -141,6 +145,8 @@ class DataService: ObservableObject {
             return
         }
         
+        self.postNotification(.documentUpdatedLocally)
+        
         // Sync to server
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
         SyncService.shared.createMessage(user: user, message: message)
@@ -164,6 +170,10 @@ class DataService: ObservableObject {
     
     func stopWatching() {
         SyncService.shared.stopQueue()
+    }
+    
+    private func postNotification(_ notification: DataServiceNotification) {
+        NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
     }
     
     private func packageMessage(id: String, type: SyncMessageType, action: SyncMessageAction, contents: Data) -> SyncMessage? {

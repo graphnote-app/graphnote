@@ -15,14 +15,14 @@ struct DocumentContainer: View {
     let document: Document
     let onRefresh: () -> Void
     
-    @ObservedObject private var vm: DocumentContainerVM
+    @StateObject private var vm: DocumentContainerVM
     
     init(user: User, workspace: Workspace, document: Document, onRefresh: @escaping () -> Void) {
         self.user = user
         self.workspace = workspace
         self.document = document
         self.onRefresh = onRefresh
-        self._vm = ObservedObject(wrappedValue: DocumentContainerVM(title: document.title))
+        self._vm = StateObject(wrappedValue: DocumentContainerVM(title: document.title))
     }
     
     var body: some View {

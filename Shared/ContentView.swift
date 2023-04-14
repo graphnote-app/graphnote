@@ -36,7 +36,8 @@ struct ContentView: View {
     private let networkMessageIDsFetchedNotification = Notification.Name(SyncServiceNotification.messageIDsFetched.rawValue)
     private let localWorkspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
     private let localDocumentCreatedNotification = Notification.Name(SyncServiceNotification.documentCreated.rawValue)
-    private let localDocumentUpdatedNotification = Notification.Name(SyncServiceNotification.documentUpdated.rawValue)
+    private let documentUpdateSyncedNotification = Notification.Name(SyncServiceNotification.documentUpdateSynced.rawValue)
+    private let localDocumentUpdatedNotification = Notification.Name(DataServiceNotification.documentUpdatedLocally.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -235,12 +236,16 @@ struct ContentView: View {
                 vm.fetch()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: documentUpdateSyncedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.fetch()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: localDocumentUpdatedNotification)) { notification in
             DispatchQueue.main.async {
                 vm.fetch()
             }
         }
-        
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in
             syncStatus = .success
             if let user = vm.user {
