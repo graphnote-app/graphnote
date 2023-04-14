@@ -109,7 +109,7 @@ class DataService: ObservableObject {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 print(error)
-                callback(nil, SyncServiceError.postFailed)
+                callback(nil, SyncServiceError.getFailed)
                 return
             }
             
