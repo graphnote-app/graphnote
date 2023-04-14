@@ -194,8 +194,8 @@ struct ContentView: View {
                     }
                 } retrySync: {
                     if let user = vm.user {
+                        DataService.shared.startWatching(user: user)
                         SyncService.shared.fetchMessageIDs(user: user)
-                        
                     }
                 }
                 .onAppear {
