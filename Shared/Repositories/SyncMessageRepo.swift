@@ -31,28 +31,28 @@ struct SyncMessageRepo {
         }
     }
     
-    func setSyncedOnMessageID(id: UUID) throws {
-        do {
-            guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
-                // Add throw error here
-                fatalError()
-                return
-            }
-            
-            messageEntity.isSynced = true
-            
-            try moc.save()
-            
-        } catch let error {
-            print(error)
-            throw error
-        }
-    }
+//    func setSyncedOnMessageID(id: UUID) throws {
+//        do {
+//            guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
+//                // Add throw error here
+//                fatalError()
+//                return
+//            }
+//
+//            messageEntity.isSynced = true
+//
+//            try moc.save()
+//
+//        } catch let error {
+//            print(error)
+//            throw error
+//        }
+//    }
     
-    func readAllIDs(includeSynced: Bool) -> [UUID]? {
+    func readAllIDsNotApplied() -> [UUID]? {
         do {
             let fetchRequest = SyncMessageIDEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "isSynced == %@", NSNumber(value: includeSynced))
+            fetchRequest.predicate = NSPredicate(format: "isApplied == %@", NSNumber(value: false))
             let syncMessageIDs = try moc.fetch(fetchRequest)
             return syncMessageIDs.map {$0.id}
                 

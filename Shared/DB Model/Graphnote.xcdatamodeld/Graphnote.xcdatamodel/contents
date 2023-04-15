@@ -47,6 +47,7 @@
     </entity>
     <entity name="SyncMessageIDEntity" representedClassName=".SyncMessageIDEntity" syncable="YES">
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isApplied" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isSynced" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES">

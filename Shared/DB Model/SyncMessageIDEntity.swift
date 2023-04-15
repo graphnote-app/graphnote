@@ -14,6 +14,7 @@ public class SyncMessageIDEntity: NSManagedObject {
     
     @NSManaged public var id: UUID
     @NSManaged public var isSynced: Bool
+    @NSManaged public var isApplied: Bool
 }
 
 extension SyncMessageIDEntity {

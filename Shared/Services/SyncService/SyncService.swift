@@ -210,7 +210,7 @@ class SyncService: ObservableObject {
         // Pull messages
         
         let syncMessageRepo = SyncMessageRepo(user: user)
-        guard let ids = syncMessageRepo.readAllIDs(includeSynced: false) else {
+        guard let ids = syncMessageRepo.readAllIDsNotApplied() else {
             print("NO IDs")
             return
         }
@@ -262,19 +262,24 @@ class SyncService: ObservableObject {
                         if let data {
                             do {
                                 let syncMessage = try self.decoder.decode(SyncMessage.self, from: data)
+                                var success = false
                                 if let contentsData = syncMessage.contents.data(using: .utf8) {
                                     switch syncMessage.type {
                                     case .user:
-                                        self.syncMessageUser(user: user, message: syncMessage, data: contentsData)
+                                        success = self.syncMessageUser(user: user, message: syncMessage, data: contentsData)
                                     case .document:
-                                        self.syncMessageDocument(user: user, message: syncMessage, data: contentsData)
+                                        success = self.syncMessageDocument(user: user, message: syncMessage, data: contentsData)
                                     case .workspace:
-                                        self.syncMessageWorkspace(user: user, message: syncMessage, data: contentsData)
+                                        success = self.syncMessageWorkspace(user: user, message: syncMessage, data: contentsData)
                                     case .label:
-                                        self.syncMessageLabel(user: user, message: syncMessage, data: contentsData)
+                                        success = self.syncMessageLabel(user: user, message: syncMessage, data: contentsData)
                                     case .labelLink:
-                                        self.syncMessageLabelLink(user: user, message: syncMessage, data: contentsData)
+                                        success = self.syncMessageLabelLink(user: user, message: syncMessage, data: contentsData)
                                     }
+                                }
+                                
+                                if success {
+                                    try syncMessageRepo.updateToIsSynced(id: id)
                                 }
                             } catch let error {
                                 print(error)
@@ -288,15 +293,15 @@ class SyncService: ObservableObject {
         }
     }
     
-    private func syncMessageUser(user: User, message: SyncMessage, data: Data) {
-        
+    private func syncMessageUser(user: User, message: SyncMessage, data: Data) -> Bool {
+        return false
     }
     
-    private func syncMessageLabelLink(user: User, message: SyncMessage, data: Data) {
+    private func syncMessageLabelLink(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
             let labelLink = try! decoder.decode(LabelLink.self, from: data)
-            self.processLabelLink(labelLink, user: user)
+            return self.processLabelLink(labelLink, user: user)
         case .update:
             break
         case .delete:
@@ -304,13 +309,15 @@ class SyncService: ObservableObject {
         case .read:
             break
         }
+        
+        return false
     }
     
-    private func syncMessageLabel(user: User, message: SyncMessage, data: Data) {
+    private func syncMessageLabel(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
             let label = try! decoder.decode(Label.self, from: data)
-            self.processLabel(label, user: user)
+            return self.processLabel(label, user: user)
         case .update:
             break
         case .delete:
@@ -318,29 +325,34 @@ class SyncService: ObservableObject {
         case .read:
             break
         }
+        
+        return false
     }
     
-    private func syncMessageDocument(user: User, message: SyncMessage, data: Data) {
+    private func syncMessageDocument(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
             let document = try! decoder.decode(Document.self, from: data)
-            self.processDocument(document, user: user)
+            return self.processDocument(document, user: user)
         case .update:
             let documentUpdate = try! decoder.decode(DocumentUpdate.self, from: data)
-            updateDocument(documentUpdate, message: message, user: user)
+            let success = updateDocument(documentUpdate, message: message, user: user)
             self.postSyncNotification(.documentUpdateReceived)
+            return success
         case .delete:
             break
         case .read:
             break
         }
+        
+        return false
     }
     
-    private func syncMessageWorkspace(user: User, message: SyncMessage, data: Data) {
+    private func syncMessageWorkspace(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
             let workspace = try! decoder.decode(Workspace.self, from: data)
-            self.processWorkspace(workspace, user: user)
+            return self.processWorkspace(workspace, user: user)
         case .update:
             break
         case .delete:
@@ -348,16 +360,18 @@ class SyncService: ObservableObject {
         case .read:
             break
         }
+        
+        return false
     }
     
-    private func updateDocument(_ documentUpdate: DocumentUpdate, message: SyncMessage, user: User) {
+    private func updateDocument(_ documentUpdate: DocumentUpdate, message: SyncMessage, user: User) -> Bool {
         
         let workspaceRepo = WorkspaceRepo(user: user)
         if let workspace = try? workspaceRepo.read(workspace: documentUpdate.workspace) {
             let documentRepo = DocumentRepo(user: user, workspace: workspace)
             guard let document = try? documentRepo.read(id: documentUpdate.id) else {
                 print("document couldn't be read: \(documentUpdate.id)")
-                return
+                return false
             }
             
             if document.modifiedAt < message.timestamp {
@@ -375,14 +389,16 @@ class SyncService: ObservableObject {
                             
                             if documentRepo.update(document: updatedDocument) {
                                 self.postSyncNotification(.documentUpdateSynced)
+                                return true
                             } else {
                                 print("Document update failed")
+                                return false
                             }
                             
                         }
                         
                     default:
-                        fatalError("diff key isn't a switch case: \(diff)")
+                        return false
                         break
                     }
                 }
@@ -390,14 +406,16 @@ class SyncService: ObservableObject {
                 print("Dropping document")
             }
         }
+        
+        return false
     }
     
-    private func processLabelLink(_ labelLink: LabelLink, user: User) {
+    private func processLabelLink(_ labelLink: LabelLink, user: User) -> Bool {
         do {
             let workspaceRepo = WorkspaceRepo(user: user)
             guard let workspace = try? workspaceRepo.read(workspace: labelLink.workspace) else {
                 print("Couldn't read workspace: \(labelLink.workspace)")
-                return
+                return false
             }
             
             let labelRepo = LabelRepo(user: user, workspace: workspace)
@@ -407,39 +425,51 @@ class SyncService: ObservableObject {
                let label = try labelRepo.read(id: labelLink.label) {
                 if documentRepo.attach(label: label, document: document) != nil {
                     self.postSyncNotification(.labelLinkCreated)
+                    return true
                 } else {
                     print("LabelLink creation failed")
+                    return false
                 }
             }
+
         } catch let error {
             print(error)
+            return false
         }
+        
+        return false
     }
     
-    private func processLabel(_ label: Label, user: User) {
+    private func processLabel(_ label: Label, user: User) -> Bool {
         let workspaceRepo = WorkspaceRepo(user: user)
         if workspaceRepo.create(label: label) {
             self.postSyncNotification(.labelCreated)
+            return true
         } else {
             print("Label creation failed")
+            return false
         }
     }
     
-    private func processDocument(_ doc: Document, user: User) {
+    private func processDocument(_ doc: Document, user: User) -> Bool {
         let workspaceRepo = WorkspaceRepo(user: user)
         if workspaceRepo.create(document: doc) {
             self.postSyncNotification(.documentCreated)
+            return true
         } else {
             print("Document creation failed")
+            return false
         }
     }
     
-    private func processWorkspace(_ workspace: Workspace, user: User) {
+    private func processWorkspace(_ workspace: Workspace, user: User) -> Bool {
         let userRepo = UserRepo()
         if userRepo.create(workspace: workspace, for: user) {
             self.postSyncNotification(.workspaceCreated)
+            return true
         } else {
             print("Workspace creation failed")
+            return false
         }
     }
     
