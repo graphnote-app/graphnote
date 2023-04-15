@@ -34,7 +34,6 @@ struct LabelService {
                     print("Attachment exists and label exists")
                     return false
                 } else {
-                    try DataService.shared.createLabel(user: user, label: label)
                     try DataService.shared.attachLabel(user: user, label: label, document: document)
                     return true
                 }

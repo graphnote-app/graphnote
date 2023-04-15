@@ -64,16 +64,15 @@ struct LabelField: View {
                                 
                             } else {
                                 self.showAddSheet = false
-                                labelExistsAlertOpen = true
+                                DispatchQueue.main.async {
+                                    labelExistsAlertOpen = true
+                                }
                             }
-                            
                             
                         } catch let error {
                             print(error)
                             return
                         }
-                        
-                        
                         
                     }, close: {
                         self.showAddSheet = false
@@ -82,7 +81,6 @@ struct LabelField: View {
                     .presentationDetents([.medium, .large])
                 })
                 .alert("Label already exists!", isPresented: $labelExistsAlertOpen, actions: {
-                    
                 })
                 .onTapGesture {
                     showAddSheet = true
