@@ -199,9 +199,9 @@ class DataService: ObservableObject {
         syncService.stopQueue()
     }
     
-    func processMessageIDs(user: User) {
-        syncService.processMessageIDs(user: user)
-    }
+//    func processMessageIDs(user: User) {
+//        syncService.processMessageIDs(user: user)
+//    }
     
     func fetchMessageIDs(user: User) {
         syncService.fetchMessageIDs(user: user)
