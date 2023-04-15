@@ -725,7 +725,7 @@ class SyncService: ObservableObject {
             
             task.resume()
         } else {
-            try? DispatchQueue.global(priority: .default).sync {
+            DispatchQueue.global(qos: .default).sync {
                 try? syncMessageRepo.setLastSyncTime(time: nil)
             }
         }
