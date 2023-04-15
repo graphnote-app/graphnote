@@ -15,14 +15,13 @@ struct DocumentContainer: View {
     let document: Document
     let onRefresh: () -> Void
     
-    @StateObject private var vm: DocumentContainerVM
+    @StateObject private var vm = DocumentContainerVM()
     
     init(user: User, workspace: Workspace, document: Document, onRefresh: @escaping () -> Void) {
         self.user = user
         self.workspace = workspace
         self.document = document
         self.onRefresh = onRefresh
-        self._vm = StateObject(wrappedValue: DocumentContainerVM(title: document.title))
     }
     
     var body: some View {
@@ -31,6 +30,7 @@ struct DocumentContainer: View {
         } onRefresh: {
             vm.fetch(user: user, workspace: workspace, document: document)
         }
+        .id("\(document.id) : \(workspace.id)")
         .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         .onAppear {
             vm.fetch(user: user, workspace: workspace, document: document)

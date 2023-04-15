@@ -137,7 +137,7 @@ struct WorkspaceRepo {
                 return nil
             }
             
-            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace)
+            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: documentEntity.workspace.id)
             return document
             
         } catch let error {

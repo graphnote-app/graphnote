@@ -19,6 +19,7 @@ enum DataServiceError: Error {
 
 enum DataServiceNotification: String {
     case documentUpdatedLocally
+    case workspaceCreated
 }
 
 class DataService: ObservableObject {
@@ -62,6 +63,8 @@ class DataService: ObservableObject {
             throw DataServiceError.workspaceCreateFailed
         }
         
+        postNotification(.workspaceCreated)
+        
         if sync {
             guard let data = encodeWorkspace(workspace: workspace) else {
                 throw DataServiceError.workspaceEncodeFailed
@@ -98,48 +101,6 @@ class DataService: ObservableObject {
     func getUser(id: String) -> User? {
         let userRepo = UserRepo()
         return userRepo.read(id: id)
-    }
-    
-    func fetchUser(id: String, callback: @escaping (_ user: User?, _ error: SyncServiceError?) -> Void) {
-        var request = URLRequest(url: syncService.baseURL.appendingPathComponent("user")
-            .appending(queryItems: [.init(name: "id", value: id)]))
-        request.httpMethod = "GET"
-        print("SyncService fetchUser fetching: \(id)")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error {
-                print(error)
-                callback(nil, SyncServiceError.getFailed)
-                return
-            }
-            
-            if let response = response as? HTTPURLResponse {
-                print(response.statusCode)
-                print(response)
-                switch response.statusCode {
-                case 200:
-                    if let data {
-                        
-                        do {
-                            let user = try self.decoder.decode(User.self, from: data)
-                            callback(user, nil)
-                        } catch let error {
-                            print(error)
-                            callback(nil, SyncServiceError.decoderFailed)
-                        }
-                        
-                    }
-                case 404:
-                    callback(nil, SyncServiceError.userNotFound)
-                default:
-                    print("Response failed with statusCode: \(response.statusCode)")
-                    callback(nil, SyncServiceError.unknown)
-                }
-                
-            }
-        }
-        
-        task.resume()
     }
     
     func updateDocumentTitle(user: User, workspace: Workspace, document: Document, title: String) {

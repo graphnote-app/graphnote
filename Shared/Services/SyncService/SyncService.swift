@@ -36,8 +36,9 @@ enum SyncServiceStatus {
     case success
 }
 
+let baseURL = URL(string: "http://10.0.0.207:3000/")!
+
 class SyncService: ObservableObject {    
-    let baseURL = URL(string: "http://10.0.0.207:3000/")!
     
     enum HTTPMethod: String {
         case post
@@ -45,6 +46,7 @@ class SyncService: ObservableObject {
     }
     
     let syncInterval = 0.25
+    let fetchInterval = 10.0
     @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
         didSet {
@@ -62,6 +64,7 @@ class SyncService: ObservableObject {
     @Published private(set) var watching = false
     
     private var timer: Timer? = nil
+    private var fetchTimer: Timer? = nil
     private var requestIDs: Set<UUID> = Set()
     private var processingPullQueue: [UUID : Bool] = [:]
     
@@ -82,22 +85,34 @@ class SyncService: ObservableObject {
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: syncInterval, repeats: true) { timer in
-            self.processPushQueue(user: user)
-            if self.processingPullQueue.values.allSatisfy({
-                $0 == false
-            }) {
-                self.processPullQueue(user: user)
-            }
-            
+            self.processQueues(user: user)
+        }
+        
+        self.fetchTimer?.invalidate()
+        self.fetchTimer = nil
+        self.fetchTimer = Timer.scheduledTimer(withTimeInterval: fetchInterval, repeats: true) { timer in
+            self.fetchMessageIDs(user: user)
         }
 
         watching = true
     }
     
+    private func processQueues(user: User) {
+        self.processPushQueue(user: user)
+        if self.processingPullQueue.values.allSatisfy({
+            $0 == false
+        }) {
+            self.processPullQueue(user: user)
+        }
+        processMessageIDs(user: user)
+    }
+    
     func stopQueue() {
-        self.timer?.invalidate()
-        self.timer = nil
         watching = false
+        self.timer?.invalidate()
+        self.fetchTimer?.invalidate()
+        self.timer = nil
+        self.fetchTimer = nil
     }
     
     private func postSyncNotification(_ notification: SyncServiceNotification) {
@@ -108,7 +123,7 @@ class SyncService: ObservableObject {
     
     func processPullQueue(user: User) {
         for queueUUID in self.pullQueue {
-            var request = URLRequest(url: self.baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
+            var request = URLRequest(url: baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
             request.httpMethod = "GET"
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 DispatchQueue.main.async {
@@ -142,7 +157,7 @@ class SyncService: ObservableObject {
                         return
                     }
                     
-                    if let response = response as? HTTPURLResponse {
+                    if let _ = response as? HTTPURLResponse {
                         self.error = nil
                     }
                     
@@ -194,16 +209,16 @@ class SyncService: ObservableObject {
         
         let syncMessageRepo = SyncMessageRepo(user: user)
         guard let ids = syncMessageRepo.readAllIDs(includeSynced: false) else {
+            print("NO IDs")
             return
         }
-        print("ids: \(ids)")
         
         // TODO: Batch pulls
         for id in ids {
             if !syncMessageRepo.has(id: id) {
                 let encoder = JSONEncoder()
                 encoder.dateEncodingStrategy = .iso8601
-                var request = URLRequest(url: self.baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: id.uuidString)]))
+                var request = URLRequest(url: baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: id.uuidString)]))
                 request.httpMethod = "GET"
                 
                 let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -529,133 +544,94 @@ class SyncService: ObservableObject {
             request.httpMethod = "GET"
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error as? URLError {
-                    if error.errorCode == URLError.cannotConnectToHost.rawValue {
-                        self.error = .cannotConnectToHost
+                DispatchQueue.main.async {
+                    if let error = error as? URLError {
+                        if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                            self.error = .cannotConnectToHost
+                            self.postSyncNotification(.networkSyncFailed)
+                            return
+                        }
+                        
+                        switch error.networkUnavailableReason {
+                        case .cellular:
+                            self.error = .cellular
+                        case .constrained:
+                            self.error = .lowDataMode
+                        case .expensive:
+                            self.error = .systemNetworkRestrained
+                        case .none:
+                            self.error = .unknown
+                        case .some(_):
+                            self.error = .unknown
+                        }
+                        
+                        print(error.errorCode)
+                        
                         self.postSyncNotification(.networkSyncFailed)
                         return
                     }
                     
-                    switch error.networkUnavailableReason {
-                    case .cellular:
-                        self.error = .cellular
-                    case .constrained:
-                        self.error = .lowDataMode
-                    case .expensive:
-                        self.error = .systemNetworkRestrained
-                    case .none:
-                        self.error = .unknown
-                    case .some(_):
-                        self.error = .unknown
+                    if let response = response as? HTTPURLResponse {
+                        print(response)
+                        
+                        switch response.statusCode {
+                        case 200:
+                            break
+                        default:
+                            print(response.statusCode)
+                            self.error = .getFailed
+                            self.postSyncNotification(.networkSyncFailed)
+                            return
+                        }
+                        
                     }
                     
-                    print(error.errorCode)
-                    
-                    self.postSyncNotification(.networkSyncFailed)
-                    return
-                }
-                
-                if let response = response as? HTTPURLResponse {
-                    print(response)
-                    
-                    switch response.statusCode {
-                    case 200:
-                        break
-                    default:
-                        print(response.statusCode)
-                        self.error = .getFailed
-                        self.postSyncNotification(.networkSyncFailed)
-                        return
-                    }
-                    
-                }
-                
-                if let data {
+                    if let data {
 
-                    let decoder = JSONDecoder()
-                    
-                    let syncMessageIDsResult = try! decoder.decode(SyncMessageIDsResult.self, from: data)
-                    let lastSyncTime = syncMessageIDsResult.lastSyncTime
-                    print("lastSyncTime from server: \(lastSyncTime)")
-                    let lastSyncDate = Date(timeIntervalSince1970: lastSyncTime)
-                    let ids = syncMessageIDsResult.ids
-                    
-                    print(ids)
-                    
-                    // Save ids then set sync time if successful
-                    do {
-                        for id in ids {
-                            let uuid = UUID(uuidString: id)!
-                            try syncMessageRepo.create(id: uuid)
-                            self.pullQueue.append(uuid)
+                        let decoder = JSONDecoder()
+                        
+                        let syncMessageIDsResult = try! decoder.decode(SyncMessageIDsResult.self, from: data)
+                        let lastSyncTime = syncMessageIDsResult.lastSyncTime
+                        print("lastSyncTime from server: \(lastSyncTime)")
+                        let lastSyncDate = Date(timeIntervalSince1970: lastSyncTime)
+                        let ids = syncMessageIDsResult.ids
+                        
+    //                    print(ids)
+                        
+                        // Save ids then set sync time if successful
+                        do {
+                            for id in ids {
+                                let uuid = UUID(uuidString: id)!
+                                try syncMessageRepo.create(id: uuid)
+                                self.pullQueue.append(uuid)
+                            }
+                            
+                            try syncMessageRepo.setLastSyncTime(time: lastSyncDate)
+                            
+                            DispatchQueue.main.async {
+                                self.postSyncNotification(.messageIDsFetched)
+                            }
+                            
+                        } catch let error {
+                            print(error)
+                            self.error = .createMessageFailed
+                            self.postSyncNotification(.networkSyncFailed)
+                            return
                         }
                         
-                        try syncMessageRepo.setLastSyncTime(time: lastSyncDate)
-                        DispatchQueue.main.async {
-                            self.postSyncNotification(.messageIDsFetched)
-                        }
-                        
-                    } catch let error {
-                        print(error)
-                        self.error = .createMessageFailed
-                        self.postSyncNotification(.networkSyncFailed)
-                        return
                     }
                     
+                    self.error = nil
+                    self.postSyncNotification(.networkSyncSuccess)
                 }
                 
-                self.error = nil
-                self.postSyncNotification(.networkSyncSuccess)
             }
             
             task.resume()
         } else {
-            try? syncMessageRepo.setLastSyncTime(time: nil)
-        }
-        
-    }
-    
-    func fetchUser(id: String, callback: @escaping (_ user: User?, _ error: SyncServiceError?) -> Void) {
-        var request = URLRequest(url: baseURL.appendingPathComponent("user")
-            .appending(queryItems: [.init(name: "id", value: id)]))
-        request.httpMethod = "GET"
-        print("SyncService fetchUser fetching: \(id)")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error {
-                print(error)
-                callback(nil, SyncServiceError.postFailed)
-                return
-            }
-            
-            if let response = response as? HTTPURLResponse {
-                print(response.statusCode)
-                print(response)
-                switch response.statusCode {
-                case 200:
-                    if let data {
-                        let decoder = JSONDecoder()
-                        decoder.dateDecodingStrategy = .millisecondsSince1970
-
-                        do {
-                            let user = try decoder.decode(User.self, from: data)
-                            callback(user, nil)
-                        } catch let error {
-                            print(error)
-                            callback(nil, SyncServiceError.decoderFailed)
-                        }
-                        
-                    }
-                case 404:
-                    callback(nil, SyncServiceError.userNotFound)
-                default:
-                    print("Response failed with statusCode: \(response.statusCode)")
-                    callback(nil, SyncServiceError.unknown)
-                }
-                
+            try? DispatchQueue.global(priority: .default).sync {
+                try? syncMessageRepo.setLastSyncTime(time: nil)
             }
         }
-        
-        task.resume()
     }
 }

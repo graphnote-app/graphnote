@@ -24,7 +24,6 @@ struct SyncMessageRepo {
             guard let syncMessage = try moc.fetch(fetchRequest).first else {
                 return false
             }
-            print(syncMessage)
             return syncMessage.id == id            
         } catch let error {
             print(error)
@@ -55,7 +54,6 @@ struct SyncMessageRepo {
             let fetchRequest = SyncMessageIDEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "isSynced == %@", NSNumber(value: includeSynced))
             let syncMessageIDs = try moc.fetch(fetchRequest)
-            print(syncMessageIDs)
             return syncMessageIDs.map {$0.id}
                 
         } catch let error {
@@ -92,8 +90,6 @@ struct SyncMessageRepo {
                 messageEntity.action = message.action.rawValue
                 messageEntity.contents = data
                 messageEntity.isSynced = message.isSynced
-                
-                print(messageEntity.contents)
                 
                 try moc.save()
             } else {

@@ -100,7 +100,7 @@ final class AuthService: NSObject {
             print("SIGN IN")
             // Add check for user existing in local DB vs not (throw error)
             let userRepo = UserRepo()
-            if let user = try? userRepo.read(id: id) {
+            if let user = userRepo.read(id: id) {
                 print(user)
                 DispatchQueue.main.async {
                     callback(false, nil)
@@ -108,7 +108,8 @@ final class AuthService: NSObject {
                 return
             } else {
                 // Check server for User
-                DataService.shared.fetchUser(id: id) { (user, error) in
+                
+                UserService().fetchUser(id: id) { (user, error) in
                     if let error {
                         print(error.localizedDescription)
                         DispatchQueue.main.async {
@@ -119,24 +120,20 @@ final class AuthService: NSObject {
                     
                     if let user {
                         print(user)
-                        do {
-                            try UserBuilder.create(user: user)
-                            DispatchQueue.main.async {
-                                callback(false, nil)
-                            }
-                            return
-                            
-                        } catch let error {
-                            print(error)
-                            // Todo add error alert
-                            print("Couldn't create the user")
-                            print("Failure in system. Please contact use for human support!")
+            
+                        if UserBuilder.create(user: user) == false {
                             DispatchQueue.main.async {
                                 callback(false, AuthServiceError.createUserFailed)
                             }
                             return
-    
                         }
+                        
+                        DispatchQueue.main.async {
+                            callback(false, nil)
+                        }
+                        
+                        return
+                        
                     } else {
                         // Todo add error alert
                         print("SyncService couldn't find the user")

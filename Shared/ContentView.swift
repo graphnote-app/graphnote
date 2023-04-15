@@ -39,6 +39,7 @@ struct ContentView: View {
     private let documentUpdateSyncedNotification = Notification.Name(SyncServiceNotification.documentUpdateSynced.rawValue)
     private let localDocumentUpdatedNotification = Notification.Name(DataServiceNotification.documentUpdatedLocally.rawValue)
     private let documentUpdateReceivedNotification = Notification.Name(SyncServiceNotification.documentUpdateReceived.rawValue)
+    private let workspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -180,10 +181,7 @@ struct ContentView: View {
                         return DocumentContainer(user: user, workspace: workspace, document: document, onRefresh: {
                             vm.fetch()
                         })
-                            .id(document.hashValue)
-                            .onAppear {
-                                
-                            }
+                        .id(vm.selectedDocument.hashValue)
                     } else {
                         return HorizontalFlexView {
                             Spacer()
@@ -196,7 +194,6 @@ struct ContentView: View {
                     if let user = vm.user {
                         DataService.shared.startWatching(user: user)
                         DataService.shared.fetchMessageIDs(user: user)
-                        DataService.shared.processMessageIDs(user: user)
                     }
                 }
                 .onAppear {
@@ -247,9 +244,6 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in
             syncStatus = .success
-            if let user = vm.user {
-                DataService.shared.processMessageIDs(user: user)
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: documentUpdateReceivedNotification)) { notification in
             DispatchQueue.main.async {
@@ -261,6 +255,9 @@ struct ContentView: View {
             print("Network synced failed: \(notification)")
             networkSyncFailedAlert = true
             syncStatus = .failed
+        }
+        .onReceive(NotificationCenter.default.publisher(for: workspaceCreatedNotification)) { notification in
+            vm.fetch()
         }
         .onReceive(NotificationCenter.default.publisher(for: networkSyncSuccessNotification)) { notification in
             syncStatus = .success

@@ -22,8 +22,9 @@ class ContentViewVM: NSObject, ObservableObject {
                         let documentRepo = DocumentRepo(user: user, workspace: workspace)
                         if let documents = try? documentRepo.readAll(), let document = documents.first {
                             selectedDocument = document
-                            if let selectedDocument {
-                                selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id)
+                            fetch()
+                            if let selectedDocument, let selectedWorkspace {
+                                selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id, workspace: selectedWorkspace.id)
                             }
                         }
                     }
@@ -38,7 +39,6 @@ class ContentViewVM: NSObject, ObservableObject {
                 if let workspaces {
                     if workspaces.count > selectedWorkspaceIndex {
                         selectedWorkspace = workspaces[selectedWorkspaceIndex]
-                        selectedDocument = nil
                         fetch()
                     }
                 }
@@ -47,11 +47,11 @@ class ContentViewVM: NSObject, ObservableObject {
     }
     @Published var selectedSubItem: TreeDocumentIdentifier? = nil {
         didSet {
-            if selectedSubItem != oldValue {
+            if selectedSubItem != nil {
                 if let selectedSubItem, let user, let selectedWorkspace {
                     let workspaceRepo = WorkspaceRepo(user: user)
                     if let document = try? workspaceRepo.read(document: selectedSubItem.document, workspace: selectedWorkspace.id) {
-                        selectedDocument = document
+                        self.selectedDocument = document
                     }
                     
                 }
@@ -106,8 +106,8 @@ class ContentViewVM: NSObject, ObservableObject {
         if let user {
             do {
                 try DataService.shared.createDocument(user: user, document: document)
-                if let selected = selectedSubItem {
-                    selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id)
+                if let selected = selectedSubItem, let selectedWorkspace {
+                    selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id, workspace: selectedWorkspace.id)
                 }
                 return true
             } catch let error {
@@ -164,26 +164,31 @@ class ContentViewVM: NSObject, ObservableObject {
                             return nil
                         }
                         
-                        return TreeViewItem(id: label.id, title: label.title, color: label.color.getColor(), subItems: subItems)
+                        return TreeViewItem(id: label.id, workspace: workspace.id, title: label.title, color: label.color.getColor(), subItems: subItems)
                     }).sorted(by: { lhs, rhs in
                         lhs.title < rhs.title
                     })
                     
                     treeItems.append(
-                        TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: curWorkspace.documents.map {
+                        TreeViewItem(id: ALL_ID, workspace: workspace.id, title: "ALL", color: Color.gray, subItems: curWorkspace.documents.map {
                             TreeViewSubItem(id: $0.id, title: $0.title)
                         })
                     )
                 }
             } else {
-                treeItems.append(
-                    TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: nil)
-                )
+                if let selectedWorkspace {
+                    treeItems.append(
+                        TreeViewItem(id: ALL_ID, workspace: selectedWorkspace.id, title: "ALL", color: Color.gray, subItems: nil)
+                    )
+                }
             }
         } else {
-            treeItems.append(
-                TreeViewItem(id: ALL_ID, title: "ALL", color: Color.gray, subItems: nil)
-            )
+            if let selectedWorkspace {
+                treeItems.append(
+                    TreeViewItem(id: ALL_ID, workspace: selectedWorkspace.id, title: "ALL", color: Color.gray, subItems: nil)
+                )
+            }
+            
         }
     }
 }

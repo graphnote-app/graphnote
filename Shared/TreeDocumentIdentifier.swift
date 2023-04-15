@@ -10,4 +10,5 @@ import Foundation
 struct TreeDocumentIdentifier: Equatable {
     let label: UUID
     let document: UUID
+    let workspace: UUID
 }

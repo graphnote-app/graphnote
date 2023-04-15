@@ -13,9 +13,7 @@ class DocumentContainerVM: ObservableObject {
     private let saveInterval = 2.0
     private var timer: Timer? = nil
     
-    init(title: String) {
-        self.title = title
-        
+    init() {
         self.timer = Timer.scheduledTimer(timeInterval: saveInterval, target: self, selector: #selector(save), userInfo: nil, repeats: true)
     }
     
@@ -27,7 +25,7 @@ class DocumentContainerVM: ObservableObject {
     @objc
     func save() {
         if self.title != self.previousTitle && previousId == self.document?.id {
-            print("title: \(self.title) previousTitle: \(previousTitle) id: \(document?.id) previousId: \(previousId)")
+//            print("title: \(self.title) previousTitle: \(previousTitle) id: \(document?.id) previousId: \(previousId)")
             if let document = self.document, let workspace = self.workspace, let user = self.user {
                 DataService.shared.updateDocumentTitle(user: user, workspace: workspace, document: document, title: self.title)
             }

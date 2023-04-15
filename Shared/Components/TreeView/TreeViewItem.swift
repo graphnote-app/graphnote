@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TreeViewItem {
     let id: UUID
+    let workspace: UUID
     let title: String
     let color: Color
     let subItems: [TreeViewSubItem]?

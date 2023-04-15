@@ -23,7 +23,7 @@ struct TreeView: View {
                                 return ForEach(subItems, id: \.id) { subItem in
                                     TreeViewSubline(title: subItem.title, selected: selectedSubItem?.document == subItem.id && selectedSubItem?.label == item.id)
                                         .onTapGesture {
-                                            selectedSubItem = TreeDocumentIdentifier(label: item.id, document: subItem.id)
+                                            selectedSubItem = TreeDocumentIdentifier(label: item.id, document: subItem.id, workspace: item.workspace)
                                         }
                                 }
                             } else {
