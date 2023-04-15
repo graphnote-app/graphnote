@@ -66,9 +66,9 @@ struct WorkspaceRepo {
         }
     }
     
-    func create(label: Label, in workspace: Workspace) throws -> Bool {
+    func create(label: Label) -> Bool {
         do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace.id, moc: moc) else {
+            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: label.workspace, moc: moc) else {
                 return false
             }
             
@@ -80,13 +80,13 @@ struct WorkspaceRepo {
             labelEntity.color = label.color.rawValue
             labelEntity.workspace = workspaceEntity
             
-            try? moc.save()
+            try moc.save()
             
             return true
 
         } catch let error {
             print(error)
-            throw error
+            return false
         }
     }
     
@@ -97,7 +97,7 @@ struct WorkspaceRepo {
             let workspaces = try moc.fetch(fetchRequest)
             return workspaces.map { workspaceEntity in
                 let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
                 }
                 
                 return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
@@ -118,7 +118,7 @@ struct WorkspaceRepo {
             }
         
             let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspaceId: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
             }
             
             return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
@@ -156,7 +156,7 @@ struct WorkspaceRepo {
             workspaceEntity.createdAt = workspace.createdAt
             workspaceEntity.modifiedAt = workspace.modifiedAt
             
-            try? moc.save()
+            try moc.save()
         } catch let error {
             print(error)
             throw error

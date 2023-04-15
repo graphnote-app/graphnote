@@ -51,7 +51,7 @@ struct LabelRepo {
                 id: labelEntity.id,
                 title: labelEntity.title,
                 color: LabelPalette(rawValue: labelEntity.color)!,
-                workspaceId: workspace.id,
+                workspace: workspace.id,
                 createdAt: labelEntity.createdAt,
                 modifiedAt: labelEntity.modifiedAt
             )

@@ -40,6 +40,9 @@ struct ContentView: View {
     private let localDocumentUpdatedNotification = Notification.Name(DataServiceNotification.documentUpdatedLocally.rawValue)
     private let documentUpdateReceivedNotification = Notification.Name(SyncServiceNotification.documentUpdateReceived.rawValue)
     private let workspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
+    private let labelLinkCreatedNotification = Notification.Name(DataServiceNotification.labelLinkCreated.rawValue)
+    private let labelCreatedNotification = Notification.Name(DataServiceNotification.labelCreated.rawValue)
+//    private let documentCreatedNotification = Notification.Name(SyncServiceNotification.documentCreated.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -235,9 +238,24 @@ struct ContentView: View {
                 vm.fetch()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: labelLinkCreatedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.fetch()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: documentUpdateSyncedNotification)) { notification in
         }
         .onReceive(NotificationCenter.default.publisher(for: localDocumentUpdatedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.fetch()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: labelLinkCreatedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.fetch()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: labelCreatedNotification)) { notification in
             DispatchQueue.main.async {
                 vm.fetch()
             }

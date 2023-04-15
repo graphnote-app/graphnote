@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LabelLink {
+struct LabelLink: Codable {
     let id: UUID
     let label: UUID
     let document: UUID

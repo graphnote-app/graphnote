@@ -19,11 +19,11 @@ struct DataSeeder{
         
         let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user.id, labels: [], documents: [])
         let workspace1 = Workspace(id: UUID(), title: "XYZ", createdAt: now, modifiedAt: now, user: user.id, labels: [], documents: [])
-        let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!, workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!, workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!, workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!, workspaceId: workspace.id, createdAt: now, modifiedAt: now)
-        let label5 = Label(id: UUID(), title: "Graphnote ፨", color: LabelPalette.primary, workspaceId: workspace.id, createdAt: now, modifiedAt: now)
+        let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
+        let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
+        let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
+        let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
+        let label5 = Label(id: UUID(), title: "Graphnote ፨", color: LabelPalette.primary, workspace: workspace.id, createdAt: now, modifiedAt: now)
         
         let document0 = Document(id: UUID(), title: "Welcome!", createdAt: now, modifiedAt: now, workspace: workspace.id)
         let welcomeBlock0 = Block(id: UUID(), type: BlockType.heading3, content: "Thanks for trying Graphnote", createdAt: now, modifiedAt: now, document: document0)
@@ -50,7 +50,6 @@ struct DataSeeder{
         do {
 
             try! DataService.shared.createUser(user: user)
-            let workspaceRepo = WorkspaceRepo(user: user)
             let documentRepo = DocumentRepo(user: user, workspace: workspace)
             
             for workspace in workspaces {
@@ -62,10 +61,7 @@ struct DataSeeder{
             }
             
             for label in labels {
-                if try !workspaceRepo.create(label: label, in: workspace) {
-                    print("failed to create label :\(label) in workspace: \(workspace)")
-                    return false
-                }
+                try! DataService.shared.createLabel(user: user, label: label)
             }
             
             for i in 0..<blocks.count {
@@ -76,19 +72,14 @@ struct DataSeeder{
                 }
             }
             
-//            if try !documentRepo.create(block: blockEmpty, for: user) {
-//                print("failed to create block: \(blockEmpty)")
-//                return false
-//            }
-            
-            documentRepo.attach(label: label, document: document1)
-            documentRepo.attach(label: label5, document: document1)
-            documentRepo.attach(label: label2, document: document2)
-            documentRepo.attach(label: label4, document: document1)
-            documentRepo.attach(label: label5, document: document0)
-            documentRepo.attach(label: label2, document: document0)
-            documentRepo.attach(label: label3, document: document0)
-            documentRepo.attach(label: label4, document: document0)
+            try! DataService.shared.attachLabel(user: user, label: label, document: document1)
+            try! DataService.shared.attachLabel(user: user, label: label5, document: document1)
+            try! DataService.shared.attachLabel(user: user, label: label2, document: document2)
+            try! DataService.shared.attachLabel(user: user, label: label4, document: document1)
+            try! DataService.shared.attachLabel(user: user, label: label5, document: document0)
+            try! DataService.shared.attachLabel(user: user, label: label2, document: document0)
+            try! DataService.shared.attachLabel(user: user, label: label3, document: document0)
+            try! DataService.shared.attachLabel(user: user, label: label4, document: document0)
             
             return true
         

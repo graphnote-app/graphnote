@@ -11,7 +11,6 @@ import SwiftUI
 
 struct LabelLinkRepo {
     let user: User
-    let workspace: Workspace
     
     private let moc = DataController.shared.container.viewContext
     

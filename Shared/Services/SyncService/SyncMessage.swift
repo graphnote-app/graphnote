@@ -9,8 +9,10 @@ import Foundation
 
 enum SyncMessageType: String, Codable {
     case user
-    case document
     case workspace
+    case document
+    case label
+    case labelLink
 }
 
 enum SyncMessageAction: String, Codable {

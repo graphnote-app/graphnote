@@ -28,6 +28,8 @@ enum SyncServiceNotification: String {
     case documentCreated
     case documentUpdateSynced
     case documentUpdateReceived
+    case labelCreated
+    case labelLinkCreated
 }
 
 enum SyncServiceStatus {
@@ -45,8 +47,8 @@ class SyncService: ObservableObject {
         case get
     }
     
-    let syncInterval = 0.25
-    let fetchInterval = 10.0
+    let syncInterval = 0.5
+    let fetchInterval = 2.0
     @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
         didSet {
@@ -268,6 +270,10 @@ class SyncService: ObservableObject {
                                         self.syncMessageDocument(user: user, message: syncMessage, data: contentsData)
                                     case .workspace:
                                         self.syncMessageWorkspace(user: user, message: syncMessage, data: contentsData)
+                                    case .label:
+                                        self.syncMessageLabel(user: user, message: syncMessage, data: contentsData)
+                                    case .labelLink:
+                                        self.syncMessageLabelLink(user: user, message: syncMessage, data: contentsData)
                                     }
                                 }
                             } catch let error {
@@ -284,6 +290,34 @@ class SyncService: ObservableObject {
     
     private func syncMessageUser(user: User, message: SyncMessage, data: Data) {
         
+    }
+    
+    private func syncMessageLabelLink(user: User, message: SyncMessage, data: Data) {
+        switch message.action {
+        case .create:
+            let labelLink = try! decoder.decode(LabelLink.self, from: data)
+            self.processLabelLink(labelLink, user: user)
+        case .update:
+            break
+        case .delete:
+            break
+        case .read:
+            break
+        }
+    }
+    
+    private func syncMessageLabel(user: User, message: SyncMessage, data: Data) {
+        switch message.action {
+        case .create:
+            let label = try! decoder.decode(Label.self, from: data)
+            self.processLabel(label, user: user)
+        case .update:
+            break
+        case .delete:
+            break
+        case .read:
+            break
+        }
     }
     
     private func syncMessageDocument(user: User, message: SyncMessage, data: Data) {
@@ -358,6 +392,38 @@ class SyncService: ObservableObject {
         }
     }
     
+    private func processLabelLink(_ labelLink: LabelLink, user: User) {
+        do {
+            let workspaceRepo = WorkspaceRepo(user: user)
+            guard let workspace = try? workspaceRepo.read(workspace: labelLink.workspace) else {
+                print("Couldn't read workspace: \(labelLink.workspace)")
+                return
+            }
+            
+            let labelRepo = LabelRepo(user: user, workspace: workspace)
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+            print(labelLink)
+            if let document = try documentRepo.read(id: labelLink.document),
+               let label = try labelRepo.read(id: labelLink.label) {
+                if documentRepo.attach(label: label, document: document) != nil {
+                    self.postSyncNotification(.labelLinkCreated)
+                } else {
+                    print("LabelLink creation failed")
+                }
+            }
+        } catch let error {
+            print(error)
+        }
+    }
+    
+    private func processLabel(_ label: Label, user: User) {
+        let workspaceRepo = WorkspaceRepo(user: user)
+        if workspaceRepo.create(label: label) {
+            self.postSyncNotification(.labelCreated)
+        } else {
+            print("Label creation failed")
+        }
+    }
     
     private func processDocument(_ doc: Document, user: User) {
         let workspaceRepo = WorkspaceRepo(user: user)

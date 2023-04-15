@@ -100,16 +100,30 @@ struct DocumentRepo {
         }
     }
 
-    func attach(label: Label, document: Document) {
-        let labelLink = LabelLinkEntity(entity: LabelLinkEntity.entity(), insertInto: moc)
-        labelLink.label = label.id
-        labelLink.document = document.id
-        labelLink.workspace = workspace.id
-        labelLink.id = UUID()
-        labelLink.createdAt = .now
-        labelLink.modifiedAt = .now
-        
-        try? moc.save()
+    func attach(label: Label, document: Document) -> LabelLink? {
+        do {
+            let labelLink = LabelLinkEntity(entity: LabelLinkEntity.entity(), insertInto: moc)
+            labelLink.label = label.id
+            labelLink.document = document.id
+            labelLink.workspace = workspace.id
+            labelLink.id = UUID()
+            labelLink.createdAt = .now
+            labelLink.modifiedAt = .now
+            
+            try moc.save()
+            
+            return LabelLink(id: labelLink.id,
+                             label: labelLink.label,
+                             document: labelLink.document,
+                             workspace: labelLink.workspace,
+                             createdAt: labelLink.createdAt,
+                             modifiedAt: labelLink.modifiedAt
+            )
+            
+        } catch let error {
+            print(error)
+            return nil
+        }
     }
     
     func attachExists(label: Label, document: Document) throws -> Bool {
@@ -134,7 +148,7 @@ struct DocumentRepo {
     }
     
     func readLabels(document: Document) -> [Label]? {
-        let labelLinkRepo = LabelLinkRepo(user: user, workspace: workspace)
+        let labelLinkRepo = LabelLinkRepo(user: user)
         
         guard let labelLinks = try? labelLinkRepo.readAll(document: document) else {
             return nil
@@ -146,7 +160,7 @@ struct DocumentRepo {
                     id: labelEntity.id,
                     title: labelEntity.title,
                     color: LabelPalette(rawValue: labelEntity.color)!,
-                    workspaceId: labelEntity.workspace.id,
+                    workspace: labelEntity.workspace.id,
                     createdAt: labelEntity.createdAt,
                     modifiedAt: labelEntity.modifiedAt
                 )

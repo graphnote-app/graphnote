@@ -55,7 +55,8 @@ struct LabelField: View {
                 .sheet(isPresented: $showAddSheet, content: {
                     AddLabelView(save: { (title, color) in
                         
-                        if let added = try? labelService.addLabel(title: title, color: color, document: document) {
+                        do {
+                            let added = try labelService.addLabel(title: title, color: color, document: document)
                             if added {
                                 newLabelNotification()
                                 fetch()
@@ -66,10 +67,13 @@ struct LabelField: View {
                                 labelExistsAlertOpen = true
                             }
                             
-                        } else {
-                            fetch()
-                            self.showAddSheet = false
+                            
+                        } catch let error {
+                            print(error)
+                            return
                         }
+                        
+                        
                         
                     }, close: {
                         self.showAddSheet = false

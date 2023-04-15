@@ -15,11 +15,17 @@ enum DataServiceError: Error {
     case workspaceEncodeFailed
     case userCreateFailed
     case userEncodeFailed
+    case labelCreateFailed
+    case labelEncodeFailed
+    case labelLinkEncodeFailed
 }
 
 enum DataServiceNotification: String {
     case documentUpdatedLocally
     case workspaceCreated
+    case documentCreated
+    case labelCreated
+    case labelLinkCreated
 }
 
 class DataService: ObservableObject {
@@ -35,12 +41,66 @@ class DataService: ObservableObject {
     @Published private(set) var error: SyncServiceError? = nil
     @Published private(set) var statusCode: Int = 201
     
+    func attachLabel(user: User, label: Label, document: Document, sync: Bool = true) throws {
+        let workspaceRepo = WorkspaceRepo(user: user)
+        if let workspace = try? workspaceRepo.read(workspace: label.workspace) {
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+            if let link = documentRepo.attach(label: label, document: document) {
+                
+                postNotification(.labelLinkCreated)
+                
+                if sync {
+                    guard let data = encodeLabelLink(link: link) else {
+                        throw DataServiceError.labelLinkEncodeFailed
+                    }
+                    
+                    guard let message = packageMessage(id: user.id, type: .labelLink, action: .create, contents: data) else {
+                        throw DataServiceError.messagePackFailed
+                    }
+                    
+                    saveMessage(message, user: user)
+                }
+            }
+        }
+    }
+    
+    func createLabel(user: User, label: Label, sync: Bool = true) throws {
+        let workspaceRepo = WorkspaceRepo(user: user)
+        guard let workspace = try? workspaceRepo.read(workspace: label.workspace) else {
+            throw DataServiceError.labelCreateFailed
+        }
+        
+        let labelRepo = LabelRepo(user: user, workspace: workspace)
+        
+        if try labelRepo.exists(label: label) == nil {
+            if workspaceRepo.create(label: label) == false {
+                throw DataServiceError.labelCreateFailed
+            }
+            
+            postNotification(.labelCreated)
+            
+            if sync {
+                guard let data = encodeLabel(label: label) else {
+                    throw DataServiceError.labelEncodeFailed
+                }
+                
+                guard let message = packageMessage(id: user.id, type: .label, action: .create, contents: data) else {
+                    throw DataServiceError.messagePackFailed
+                }
+                
+                saveMessage(message, user: user)
+            }
+        }
+    }
+    
     func createDocument(user: User, document: Document, sync: Bool = true) throws {
         let workpaceRepo = WorkspaceRepo(user: user)
         
         if workpaceRepo.create(document: document) == false {
             throw DataServiceError.documentCreateFailed
         }
+        
+        postNotification(.documentCreated)
         
         if sync {
             guard let data = encodeDocument(document: document) else {
@@ -182,6 +242,24 @@ class DataService: ObservableObject {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
         return encoder
+    }
+    
+    private func encodeLabelLink(link: LabelLink) -> Data? {
+        do {
+            return try encoder.encode(link)
+        } catch let error {
+            print(error)
+            return nil
+        }
+    }
+    
+    private func encodeLabel(label: Label) -> Data? {
+        do {
+            return try encoder.encode(label)
+        } catch let error {
+            print(error)
+            return nil
+        }
     }
     
     private func encodeDocument(document: Document) -> Data? {
