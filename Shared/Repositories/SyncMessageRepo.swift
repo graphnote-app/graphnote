@@ -31,28 +31,46 @@ struct SyncMessageRepo {
         }
     }
     
-//    func setSyncedOnMessageID(id: UUID) throws {
-//        do {
-//            guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
-//                // Add throw error here
-//                fatalError()
-//                return
-//            }
-//
-//            messageEntity.isSynced = true
-//
-//            try moc.save()
-//
-//        } catch let error {
-//            print(error)
-//            throw error
-//        }
-//    }
+    func setSyncedOnMessageID(id: UUID) throws {
+        do {
+            guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
+                // Add throw error here
+                print("couldn't get SyncMessageIDEntity")
+                return
+            }
+
+            messageEntity.isSynced = true
+
+            try moc.save()
+
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
     
-    func readAllIDsNotApplied() -> [UUID]? {
+    func setAppliedOnMessageID(id: UUID) throws {
+        do {
+            guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
+                // Add throw error here
+                print("couldn't get SyncMessageIDEntity")
+                return
+            }
+
+            messageEntity.isApplied = true
+
+            try moc.save()
+
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func readAllIDsNotSynced() -> [UUID]? {
         do {
             let fetchRequest = SyncMessageIDEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "isApplied == %@", NSNumber(value: false))
+            fetchRequest.predicate = NSPredicate(format: "isSynced == %@", NSNumber(value: false))
             let syncMessageIDs = try moc.fetch(fetchRequest)
             return syncMessageIDs.map {$0.id}
                 

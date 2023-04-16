@@ -43,8 +43,10 @@ struct WorkspaceRepo {
     
     func create(document: Document) -> Bool {
         do {
+            print(document)
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: document.workspace, moc: moc),
                   let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
+                print("get either WorkspaceEntity or UserEntity")
                 return false
             }
             

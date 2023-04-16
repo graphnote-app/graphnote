@@ -48,7 +48,7 @@ class SyncService: ObservableObject {
     }
     
     let syncInterval = 1.0
-    let fetchInterval = 4.0
+    let fetchInterval = 2.0
     @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
         didSet {
@@ -70,8 +70,8 @@ class SyncService: ObservableObject {
     private var requestIDs: Set<UUID> = Set()
     private var processingPullQueue: [UUID : Bool] = [:]
     
-    private var pushQueue: DBQueue? = nil
-    private var pullQueue: [UUID] = []
+    private var pushQueue: SyncServiceDBPushQueue? = nil
+    private var pullQueue: SyncServiceDBPullQueue? = nil
     
     private func getLastSyncTime(user: User) -> Date? {
         let syncMessageRepo = SyncMessageRepo(user: user)
@@ -80,7 +80,11 @@ class SyncService: ObservableObject {
     
     func startQueue(user: User) {
         if pushQueue == nil {
-            self.pushQueue = DBQueue(user: user)
+            self.pushQueue = SyncServiceDBPushQueue(user: user)
+        }
+        
+        if pullQueue == nil {
+            self.pullQueue = SyncServiceDBPullQueue(user: user)
         }
         
         // Invalidate timer always so we don't get runaway timers
@@ -123,100 +127,103 @@ class SyncService: ObservableObject {
     }
     
     func processPullQueue(user: User) {
-        for queueUUID in self.pullQueue {
-            var request = URLRequest(url: baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
-            request.httpMethod = "GET"
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                DispatchQueue.main.async {
-                    if let error = error as? URLError {
-                        switch error.networkUnavailableReason {
-                        case .cellular:
-                            self.error = .cellular
-                            return
-                        case .constrained:
-                            self.error = .lowDataMode
-                            return
-                        case .expensive:
-                            self.error = .systemNetworkRestrained
-                            return
-                        case .none:
-                            self.error = .unknown
-                            break
-                        case .some(_):
-                            self.error = .unknown
-                            break
-                        }
-                        
-                        print(error.errorCode)
-                        self.processingPullQueue[queueUUID] = false
-                        if error.errorCode == URLError.cannotConnectToHost.rawValue {
-                            self.error = .cannotConnectToHost
-                            return
-                        }
-                        
-                        self.error = .postFailed
-                        return
-                    }
-                    
-                    if let _ = response as? HTTPURLResponse {
-                        self.error = nil
-                    }
-                    
-                    if let data {
-                        let decoder = JSONDecoder()
-                        let formatter = DateFormatter()
-                        formatter.calendar = Calendar(identifier: .iso8601)
-                        formatter.locale = Locale(identifier: "en_US_POSIX")
-                        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-                        decoder.dateDecodingStrategy = .millisecondsSince1970
-                        
-                        do {
-                            let syncMessage = try decoder.decode(SyncMessage.self, from: data)
-                            let repo = SyncMessageRepo(user: user)
-                            
-                            if !repo.has(id: syncMessage.id) {
-                                try repo.create(message: syncMessage)
-                                try repo.updateToIsSynced(id: syncMessage.id)
-                                
-                                var success = false
-                                if let contentsData = syncMessage.contents.data(using: .utf8) {
-                                    switch syncMessage.type {
-                                    case .user:
-                                        success = self.syncMessageUser(user: user, message: syncMessage, data: contentsData)
-                                    case .document:
-                                        success = self.syncMessageDocument(user: user, message: syncMessage, data: contentsData)
-                                    case .workspace:
-                                        success = self.syncMessageWorkspace(user: user, message: syncMessage, data: contentsData)
-                                    case .label:
-                                        success = self.syncMessageLabel(user: user, message: syncMessage, data: contentsData)
-                                    case .labelLink:
-                                        success = self.syncMessageLabelLink(user: user, message: syncMessage, data: contentsData)
-                                    }
+        for i in 0..<10 {
+            if let queueUUID = self.pullQueue?.peek(offset: i) {
+                if !(self.processingPullQueue[queueUUID] == true) {
+                    var request = URLRequest(url: baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
+                    request.httpMethod = "GET"
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        DispatchQueue.main.async {
+                            if let error = error as? URLError {
+                                switch error.networkUnavailableReason {
+                                case .cellular:
+                                    self.error = .cellular
+                                    return
+                                case .constrained:
+                                    self.error = .lowDataMode
+                                    return
+                                case .expensive:
+                                    self.error = .systemNetworkRestrained
+                                    return
+                                case .none:
+                                    self.error = .unknown
+                                    break
+                                case .some(_):
+                                    self.error = .unknown
+                                    break
                                 }
                                 
-                                if success {
-                                    self.pullQueue.remove(at: 0)
+                                print(error.errorCode)
+                                self.processingPullQueue[queueUUID] = false
+                                if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                                    self.error = .cannotConnectToHost
+                                    return
                                 }
-                            } else {
-                                try repo.updateToIsSynced(id: syncMessage.id)
-                                self.pullQueue.remove(at: 0)
+                                
+                                self.error = .postFailed
+                                return
                             }
                             
-                            self.processingPullQueue[queueUUID] = false
+                            if let _ = response as? HTTPURLResponse {
+                                self.error = nil
+                            }
                             
-                        } catch let error {
-                            print(error)
-                            self.error = .unknown
-                            self.processingPullQueue[queueUUID] = false
+                            if let data {
+                                let decoder = JSONDecoder()
+                                let formatter = DateFormatter()
+                                formatter.calendar = Calendar(identifier: .iso8601)
+                                formatter.locale = Locale(identifier: "en_US_POSIX")
+                                formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                                decoder.dateDecodingStrategy = .millisecondsSince1970
+                                
+                                do {
+                                    let syncMessage = try decoder.decode(SyncMessage.self, from: data)
+                                    let repo = SyncMessageRepo(user: user)
+                                    
+                                    if !repo.has(id: syncMessage.id) {
+                                        try repo.create(message: syncMessage)
+                                        try repo.updateToIsSynced(id: syncMessage.id)
+                                        
+                                        var success = false
+                                        if let contentsData = syncMessage.contents.data(using: .utf8) {
+                                            switch syncMessage.type {
+                                            case .user:
+                                                success = self.syncMessageUser(user: user, message: syncMessage, data: contentsData)
+                                            case .document:
+                                                success = self.syncMessageDocument(user: user, message: syncMessage, data: contentsData)
+                                            case .workspace:
+                                                success = self.syncMessageWorkspace(user: user, message: syncMessage, data: contentsData)
+                                            case .label:
+                                                success = self.syncMessageLabel(user: user, message: syncMessage, data: contentsData)
+                                            case .labelLink:
+                                                success = self.syncMessageLabelLink(user: user, message: syncMessage, data: contentsData)
+                                            }
+                                        }
+                                        
+                                        if success {
+                                            self.pullQueue?.remove(id: syncMessage.id)
+                                        }
+                                    } else {
+                                        try repo.updateToIsSynced(id: syncMessage.id)
+                                        self.pullQueue?.remove(id: syncMessage.id)
+                                    }
+                                    
+                                    self.processingPullQueue[queueUUID] = false
+                                    
+                                } catch let error {
+                                    print(error)
+                                    self.error = .unknown
+                                    self.processingPullQueue[queueUUID] = false
+                                }
+                            }
                         }
                     }
+                    
+                    task.resume()
+                    self.processingPullQueue[queueUUID] = true
                 }
             }
-            
-            task.resume()
-            self.processingPullQueue[queueUUID] = true
         }
-        
     }
     
     var decoder: JSONDecoder {
@@ -230,6 +237,18 @@ class SyncService: ObservableObject {
     }
     
     private func syncMessageUser(user: User, message: SyncMessage, data: Data) -> Bool {
+//        switch message.action {
+//        case .create:
+//            let user = try! decoder.decode(User.self, from: data)
+//            return false
+//        case .update:
+//            break
+//        case .delete:
+//            break
+//        case .read:
+//            break
+//        }
+        
         return false
     }
     
@@ -564,7 +583,6 @@ class SyncService: ObservableObject {
         let syncMessageRepo = SyncMessageRepo(user: user)
         
         if let lastSyncTime = getLastSyncTime(user: user) {
-            print(lastSyncTime.timeIntervalSince1970)
             
             var request = URLRequest(url: baseURL.appendingPathComponent("message/ids")
                 .appending(queryItems: [.init(name: "user", value: user.id), .init(name: "last", value: String(lastSyncTime.timeIntervalSince1970))]))
@@ -599,8 +617,6 @@ class SyncService: ObservableObject {
                     }
                     
                     if let response = response as? HTTPURLResponse {
-                        print(response)
-                        
                         switch response.statusCode {
                         case 200:
                             break
@@ -619,7 +635,6 @@ class SyncService: ObservableObject {
                         
                         let syncMessageIDsResult = try! decoder.decode(SyncMessageIDsResult.self, from: data)
                         let lastSyncTime = syncMessageIDsResult.lastSyncTime
-                        print("lastSyncTime from server: \(lastSyncTime)")
                         let lastSyncDate = Date(timeIntervalSince1970: lastSyncTime)
                         let ids = syncMessageIDsResult.ids
                                                 
@@ -628,7 +643,7 @@ class SyncService: ObservableObject {
                             for id in ids {
                                 let uuid = UUID(uuidString: id)!
                                 try syncMessageRepo.create(id: uuid)
-                                self.pullQueue.append(uuid)
+                                self.pullQueue?.add(id: uuid)
                             }
                             
                             try syncMessageRepo.setLastSyncTime(time: lastSyncDate)

@@ -110,8 +110,8 @@
 		F84D088629C81AAA00410C10 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D088529C81AAA00410C10 /* TreeView.swift */; };
 		F84D088929C81B4000410C10 /* TreeViewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81CC92A279D078D00A1F693 /* TreeViewLabel.swift */; };
 		F84D857D29CBEA35006538EA /* LabelContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D857C29CBEA35006538EA /* LabelContextMenu.swift */; };
-		F863496329E03ED800C49D0B /* DBQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* DBQueue.swift */; };
-		F863496429E03ED800C49D0B /* DBQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* DBQueue.swift */; };
+		F863496329E03ED800C49D0B /* SyncServiceDBPushQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */; };
+		F863496429E03ED800C49D0B /* SyncServiceDBPushQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */; };
 		F86D892129DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
 		F86D892229DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
 		F87A06D829DE923E002CC7EF /* SyncMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06D729DE923E002CC7EF /* SyncMessage.swift */; };
@@ -122,6 +122,8 @@
 		F87A06DF29DEB11F002CC7EF /* SyncMessageRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A06DD29DEB11F002CC7EF /* SyncMessageRepo.swift */; };
 		F88313A929EAA9C20073658A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313A829EAA9C20073658A /* UserService.swift */; };
 		F88313AA29EAA9C20073658A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313A829EAA9C20073658A /* UserService.swift */; };
+		F88313AF29EB739F0073658A /* SyncServiceDBPullQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */; };
+		F88313B029EB739F0073658A /* SyncServiceDBPullQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */; };
 		F88550AC29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550AD29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
@@ -211,7 +213,7 @@
 		F84D088329C817E900410C10 /* GlobalDimensionMacOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDimensionMacOS.swift; sourceTree = "<group>"; };
 		F84D088529C81AAA00410C10 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		F84D857C29CBEA35006538EA /* LabelContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContextMenu.swift; sourceTree = "<group>"; };
-		F863496229E03ED800C49D0B /* DBQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBQueue.swift; sourceTree = "<group>"; };
+		F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServiceDBPushQueue.swift; sourceTree = "<group>"; };
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		F86D892029DBCABC008C707C /* LabelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelService.swift; sourceTree = "<group>"; };
 		F875124827B4A11500E86D57 /* TreeDocumentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocumentIdentifier.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 		F87A06DD29DEB11F002CC7EF /* SyncMessageRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMessageRepo.swift; sourceTree = "<group>"; };
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F88313A829EAA9C20073658A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserService.swift; path = Shared/Services/UserService.swift; sourceTree = SOURCE_ROOT; };
+		F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServiceDBPullQueue.swift; sourceTree = "<group>"; };
 		F88550AB29D9B51200EE458C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGlobalUIState.swift; sourceTree = "<group>"; };
 		F88550B629D9BC3A00EE458C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -398,7 +401,8 @@
 			children = (
 				F8AAD1F429DD358200863A7D /* SyncService.swift */,
 				F87A06D729DE923E002CC7EF /* SyncMessage.swift */,
-				F863496229E03ED800C49D0B /* DBQueue.swift */,
+				F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */,
+				F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */,
 			);
 			path = SyncService;
 			sourceTree = "<group>";
@@ -692,13 +696,14 @@
 				F82EC64929D54B62009C46BE /* BulletView.swift in Sources */,
 				F8EA1EC729E1DE9200931810 /* SyncStatusIconView.swift in Sources */,
 				F82EC64A29D54B62009C46BE /* BlockType.swift in Sources */,
-				F863496429E03ED800C49D0B /* DBQueue.swift in Sources */,
+				F863496429E03ED800C49D0B /* SyncServiceDBPushQueue.swift in Sources */,
 				F82EC64B29D54B62009C46BE /* EmptyBlockView.swift in Sources */,
 				F82EC64C29D54B62009C46BE /* PromptField.swift in Sources */,
 				F82EC64D29D54B62009C46BE /* BodyView.swift in Sources */,
 				F82EC64E29D54B62009C46BE /* HeadingView.swift in Sources */,
 				F82EC64F29D54B62009C46BE /* BlockView.swift in Sources */,
 				F82EC65029D54B62009C46BE /* DocumentView.swift in Sources */,
+				F88313B029EB739F0073658A /* SyncServiceDBPullQueue.swift in Sources */,
 				F82EC65129D54B62009C46BE /* ArrowView.swift in Sources */,
 				F82EC65229D54B62009C46BE /* TreeBulletView.swift in Sources */,
 				F87A06DC29DEAFDE002CC7EF /* SyncMessageEntity.swift in Sources */,
@@ -759,7 +764,7 @@
 				F8A6B6E129D0E40200140A53 /* Workspace.swift in Sources */,
 				F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */,
 				F807C8C529C9170500B7B239 /* CheckmarkIconView.swift in Sources */,
-				F863496329E03ED800C49D0B /* DBQueue.swift in Sources */,
+				F863496329E03ED800C49D0B /* SyncServiceDBPushQueue.swift in Sources */,
 				F84D088029C809FE00410C10 /* HeadingView.swift in Sources */,
 				F8BF73CA29C7F54900BA826E /* DocumentEntity.swift in Sources */,
 				F88D5EF129D9D4060088338F /* AuthService.swift in Sources */,
@@ -827,6 +832,7 @@
 				F87A06D829DE923E002CC7EF /* SyncMessage.swift in Sources */,
 				F8BF73B429C7EA2200BA826E /* ToolbarView.swift in Sources */,
 				F8BF73B129C7E91900BA826E /* Spacing.swift in Sources */,
+				F88313AF29EB739F0073658A /* SyncServiceDBPullQueue.swift in Sources */,
 				F8EA1ECF29E219F500931810 /* SyncMessageIDEntity.swift in Sources */,
 				F87A06DE29DEB11F002CC7EF /* SyncMessageRepo.swift in Sources */,
 				F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */,
