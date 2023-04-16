@@ -47,7 +47,7 @@ class SyncService: ObservableObject {
         case get
     }
     
-    let syncInterval = 1.0
+    let syncInterval = 0.5
     let fetchInterval = 2.0
     @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
