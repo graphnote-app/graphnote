@@ -170,7 +170,6 @@ class SyncService: ObservableObject {
                             try! repo.create(id: queueItem.id, isApplied: true)
                         }
                         
-                        
                         self.applyQueue?.remove(id: queueItem.id)
 
                     } else {
@@ -499,12 +498,10 @@ class SyncService: ObservableObject {
     
     private func processPushQueue(user: User) {
         // Push messages
-        
-        if !processingPushQueue {
-            processingPushQueue = true
-            
             self.pushQueue?.fetchQueue()
             if let queueItem = self.pushQueue?.peek() {
+                if !processingPushQueue {
+                processingPushQueue = true
                 if queueItem.isSynced == true {
                     self.pushQueue?.remove(id: queueItem.id)
                     processingPushQueue = false
