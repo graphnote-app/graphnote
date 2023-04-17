@@ -72,29 +72,36 @@ struct WorkspaceRepo {
         }
     }
     
-    func create(label: Label) -> Bool {
-        do {
-            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: label.workspace, moc: moc) else {
-                return false
-            }
-            
-            let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
-            labelEntity.id = label.id
-            labelEntity.createdAt = label.createdAt
-            labelEntity.modifiedAt = label.modifiedAt
-            labelEntity.title = label.title
-            labelEntity.color = label.color.rawValue
-            labelEntity.workspace = workspaceEntity
-            
-            try moc.save()
-            
-            return true
-
-        } catch let error {
-            print(error)
-            return false
-        }
-    }
+//    func create(label: Label) -> Bool {
+//        do {
+//            guard let workspaceEntity = try WorkspaceEntity.getEntity(id: label.workspace, moc: moc) else {
+//                print("NO WORKSPACE")
+//                return false
+//            }
+//            
+//            guard let userEntity = try UserEntity.getEntity(id: label.user, moc: moc) else {
+//                print("NO USER")
+//                return false
+//            }
+//            
+//            let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
+//            labelEntity.id = label.id
+//            labelEntity.createdAt = label.createdAt
+//            labelEntity.modifiedAt = label.modifiedAt
+//            labelEntity.title = label.title
+//            labelEntity.color = label.color.rawValue
+//            labelEntity.workspace = workspaceEntity
+//            labelEntity.user = userEntity
+//            
+//            try moc.save()
+//            
+//            return true
+//
+//        } catch let error {
+//            print(error)
+//            return false
+//        }
+//    }
     
     func readAll() throws -> [Workspace] {
         do {
@@ -102,12 +109,22 @@ struct WorkspaceRepo {
             fetchRequest.predicate = NSPredicate(format: "user.id == %@", user.id)
             let workspaces = try moc.fetch(fetchRequest)
             return workspaces.map { workspaceEntity in
-                let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                let labels: [Label] = (workspaceEntity.labels.allObjects as! [LabelEntity]).compactMap { (labelEntity: LabelEntity) in
+                    if let workspace = labelEntity.workspace, let user = labelEntity.user {
+                        return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: workspace.id, user: user.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                    } else {
+                        print("workspace / user is nil: \(labelEntity.workspace) \(labelEntity.user)")
+                        return nil
+                    }
                 }
                 
-                return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                    Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
+                return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).compactMap {
+                    if let workspace = $0.workspace {
+                        return Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: workspace.id)
+                    } else {
+                        print("workspace is nil")
+                        return nil
+                    }
                 })
             }
             
@@ -120,15 +137,29 @@ struct WorkspaceRepo {
     func read(workspace: UUID) throws -> Workspace? {
         do {
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace, moc: moc) else {
+                print("worksace entity does not exists")
+                fatalError()
                 return nil
             }
         
-            let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).map { (labelEntity: LabelEntity) in
-                return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: labelEntity.workspace.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+            let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).compactMap { (labelEntity: LabelEntity) in
+                if let user = labelEntity.user, let workspace = labelEntity.workspace {
+                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: workspace.id, user: user.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                } else {
+                    print("user or workspace is nil: \(labelEntity.user) \(labelEntity.workspace)")
+                    fatalError()
+                    return nil
+                }
             }
             
-            return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).map {
-                Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: $0.workspace.id)
+            return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).compactMap {
+                if let workspace = $0.workspace {
+                    return Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: workspace.id)
+                } else {
+                    print("workspace is nil")
+                    fatalError()
+                    return nil
+                }
             })
             
         } catch let error {
@@ -143,11 +174,16 @@ struct WorkspaceRepo {
                 return nil
             }
             
-            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: documentEntity.workspace.id)
+            guard let workspace = documentEntity.workspace else {
+                return nil
+            }
+            
+            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace.id)
             return document
             
         } catch let error {
             print(error)
+            fatalError()
             throw error
         }
     }
@@ -165,6 +201,7 @@ struct WorkspaceRepo {
             try moc.save()
         } catch let error {
             print(error)
+            fatalError()
             throw error
         }
     }
@@ -179,6 +216,7 @@ struct WorkspaceRepo {
             
         } catch let error {
             print(error)
+            fatalError()
             throw error
         }
         
@@ -195,6 +233,7 @@ struct WorkspaceRepo {
             
         } catch let error {
             print(error)
+            fatalError()
             throw error
         }
     }

@@ -18,6 +18,7 @@ enum DataServiceError: Error {
     case labelCreateFailed
     case labelEncodeFailed
     case labelLinkEncodeFailed
+    case attachmentExists
 }
 
 enum DataServiceNotification: String {
@@ -41,39 +42,42 @@ class DataService: ObservableObject {
     @Published private(set) var error: SyncServiceError? = nil
     @Published private(set) var statusCode: Int = 201
     
-    func attachLabel(user: User, label: Label, document: Document, sync: Bool = true) throws {
+    func attachLabel(user: User, label: Label, document: Document, workspace: Workspace, sync: Bool = true) throws {
         let workspaceRepo = WorkspaceRepo(user: user)
-        if let workspace = try? workspaceRepo.read(workspace: label.workspace) {
-            let documentRepo = DocumentRepo(user: user, workspace: workspace)
-            if let link = documentRepo.attach(label: label, document: document) {
-                
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        
+        if (try documentRepo.attachExists(label: label, document: document)) == false {
+//                if let link = documentRepo.attach(label: label, document: document) {
+                let link = LabelLink(id: UUID(), label: label.id, document: document.id, workspace: workspace.id, createdAt: .now, modifiedAt: .now)
                 postNotification(.labelLinkCreated)
                 
-                if sync {
-                    guard let data = encodeLabelLink(link: link) else {
-                        throw DataServiceError.labelLinkEncodeFailed
-                    }
-                    
-                    guard let message = packageMessage(id: user.id, type: .labelLink, action: .create, contents: data) else {
-                        throw DataServiceError.messagePackFailed
-                    }
-                    
-                    saveMessage(message, user: user)
+                guard let data = encodeLabelLink(link: link) else {
+                    throw DataServiceError.labelLinkEncodeFailed
                 }
-            }
+                
+                guard let message = packageMessage(id: user.id, type: .labelLink, action: .create, contents: data, isApplied: false) else {
+                    throw DataServiceError.messagePackFailed
+                }
+                
+                
+                if sync {
+                    pushMessage(message, user: user)
+                }
+//                } else {
+//                    throw DataServiceError.attachmentExists
+//                }
+        } else {
+            throw DataServiceError.attachmentExists
         }
     }
     
-    func createLabel(user: User, label: Label, sync: Bool = true) throws {
+    func createLabel(user: User, label: Label, workspace: Workspace, sync: Bool = true) throws {
         let workspaceRepo = WorkspaceRepo(user: user)
-        guard let workspace = try? workspaceRepo.read(workspace: label.workspace) else {
-            throw DataServiceError.labelCreateFailed
-        }
         
         let labelRepo = LabelRepo(user: user, workspace: workspace)
         
         if try labelRepo.exists(label: label) == nil {
-            if workspaceRepo.create(label: label) == false {
+            if try labelRepo.create(label: label) == nil {
                 throw DataServiceError.labelCreateFailed
             }
             
@@ -84,11 +88,11 @@ class DataService: ObservableObject {
                     throw DataServiceError.labelEncodeFailed
                 }
                 
-                guard let message = packageMessage(id: user.id, type: .label, action: .create, contents: data) else {
+                guard let message = packageMessage(id: user.id, type: .label, action: .create, contents: data, isApplied: true) else {
                     throw DataServiceError.messagePackFailed
                 }
                 
-                saveMessage(message, user: user)
+                pushMessage(message, user: user)
             }
         }
     }
@@ -107,11 +111,11 @@ class DataService: ObservableObject {
                 throw DataServiceError.documentEncodeFailed
             }
             
-            guard let message = packageMessage(id: user.id, type: .document, action: .create, contents: data) else {
+            guard let message = packageMessage(id: user.id, type: .document, action: .create, contents: data, isApplied: true) else {
                 throw DataServiceError.messagePackFailed
             }
             
-            saveMessage(message, user: user)
+            pushMessage(message, user: user)
 
         }
     }
@@ -130,12 +134,11 @@ class DataService: ObservableObject {
                 throw DataServiceError.workspaceEncodeFailed
             }
             
-            guard let message = packageMessage(id: user.id, type: .workspace, action: .create, contents: data) else {
+            guard let message = packageMessage(id: user.id, type: .workspace, action: .create, contents: data, isApplied: true) else {
                 throw DataServiceError.messagePackFailed
             }
             
-            saveMessage(message, user: user)
-
+            pushMessage(message, user: user)
         }
     }
     
@@ -149,11 +152,11 @@ class DataService: ObservableObject {
                 throw DataServiceError.userEncodeFailed
             }
             
-            guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data) else {
+            guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data, isApplied: true) else {
                 throw DataServiceError.messagePackFailed
             }
             
-            saveMessage(message, user: user)
+            pushMessage(message, user: user)
                 
         }
     }
@@ -175,8 +178,8 @@ class DataService: ObservableObject {
         self.postNotification(.documentUpdatedLocally)
         
         // Sync to server
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
-        syncService.createMessage(user: user, message: message)
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, isApplied: true, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
+        syncService.pushMessage(user: user, message: message)
     }
     
     func startWatching(user: User) {
@@ -207,7 +210,7 @@ class DataService: ObservableObject {
         NotificationCenter.default.post(name: Notification.Name(notification.rawValue), object: nil)
     }
     
-    private func packageMessage(id: String, type: SyncMessageType, action: SyncMessageAction, contents: Data) -> SyncMessage? {
+    private func packageMessage(id: String, type: SyncMessageType, action: SyncMessageAction, contents: Data, isApplied: Bool = false) -> SyncMessage? {
         guard let contents = String(data: contents, encoding: .utf8) else {
             return nil
         }
@@ -219,12 +222,18 @@ class DataService: ObservableObject {
             type: type,
             action: action,
             isSynced: false,
+            isApplied: isApplied,
             contents: contents
         )
     }
     
-    private func saveMessage(_ message: SyncMessage, user: User) {
-        syncService.createMessage(user: user, message: message)
+    private func pushMessage(_ message: SyncMessage, user: User) {
+        syncService.pushMessage(user: user, message: message)
+    }
+    
+    private func saveMessage(_ message: SyncMessage, user: User) -> Bool {
+//        return syncService.createMessage(user: user, message: message)
+        return false
     }
     
     private var decoder: JSONDecoder {

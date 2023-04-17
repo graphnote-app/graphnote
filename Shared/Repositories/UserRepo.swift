@@ -12,38 +12,38 @@ struct UserRepo {
     
     private let moc = DataController.shared.container.viewContext
 
-    func create(workspace: Workspace, for user: User) -> Bool {
-        do {
-            guard let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
-                return false
-            }
-            
-            let workspaceEntity = WorkspaceEntity(entity: WorkspaceEntity.entity(), insertInto: moc)
-            workspaceEntity.id = workspace.id
-            workspaceEntity.user = userEntity
-            workspaceEntity.createdAt = workspace.createdAt
-            workspaceEntity.modifiedAt = workspace.modifiedAt
-            workspaceEntity.title = workspace.title
-            workspaceEntity.labels = NSSet(array: workspace.labels.map {
-                let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
-                labelEntity.id = $0.id
-                labelEntity.title = $0.title
-                labelEntity.createdAt = $0.createdAt
-                labelEntity.modifiedAt = $0.modifiedAt
-                labelEntity.color = $0.color.rawValue
-                labelEntity.workspace = workspaceEntity
-                return labelEntity
-            })
-            
-            try moc.save()
-            
-            return true
-            
-        } catch let error {
-            print(error)
-            return false
-        }
-    }
+//    func create(workspace: Workspace, for user: User) -> Bool {
+//        do {
+//            guard let userEntity = try UserEntity.getEntity(id: user.id, moc: moc) else {
+//                return false
+//            }
+//            
+//            let workspaceEntity = WorkspaceEntity(entity: WorkspaceEntity.entity(), insertInto: moc)
+//            workspaceEntity.id = workspace.id
+//            workspaceEntity.user = userEntity
+//            workspaceEntity.createdAt = workspace.createdAt
+//            workspaceEntity.modifiedAt = workspace.modifiedAt
+//            workspaceEntity.title = workspace.title
+//            workspaceEntity.labels = NSSet(array: workspace.labels.map {
+//                let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
+//                labelEntity.id = $0.id
+//                labelEntity.title = $0.title
+//                labelEntity.createdAt = $0.createdAt
+//                labelEntity.modifiedAt = $0.modifiedAt
+//                labelEntity.color = $0.color.rawValue
+//                labelEntity.workspace = workspaceEntity
+//                return labelEntity
+//            })
+//            
+//            try moc.save()
+//            
+//            return true
+//            
+//        } catch let error {
+//            print(error)
+//            return false
+//        }
+//    }
     
     func read(id: String) -> User? {
         do {

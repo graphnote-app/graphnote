@@ -16,7 +16,8 @@ class DataController: ObservableObject {
     static let shared = DataController()
     
     private init() {
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
         self.load()
     }
     
@@ -32,9 +33,25 @@ class DataController: ObservableObject {
     }
     
     func dropDatabase() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = UserEntity.fetchRequest()
+        softCleanDatabase()
+    }
+    
+    func dropTable(fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         try! self.container.viewContext.execute(deleteRequest)
         try! self.container.viewContext.save()
     }
+    
+    func softCleanDatabase() {
+//        dropTable(fetchRequest: UserEntity.fetchRequest())
+        dropTable(fetchRequest: WorkspaceEntity.fetchRequest())
+        dropTable(fetchRequest: DocumentEntity.fetchRequest())
+        dropTable(fetchRequest: BlockEntity.fetchRequest())
+        dropTable(fetchRequest: LabelEntity.fetchRequest())
+        dropTable(fetchRequest: LabelLinkEntity.fetchRequest())
+        dropTable(fetchRequest: SyncMessageEntity.fetchRequest())
+        dropTable(fetchRequest: SyncMessageIDEntity.fetchRequest())
+        dropTable(fetchRequest: LastSyncTimeEntity.fetchRequest())
+    }
+    
 }

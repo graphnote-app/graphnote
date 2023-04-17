@@ -22,7 +22,6 @@ class ContentViewVM: NSObject, ObservableObject {
                         let documentRepo = DocumentRepo(user: user, workspace: workspace)
                         if let documents = try? documentRepo.readAll(), let document = documents.first {
                             selectedDocument = document
-                            fetch()
                             if let selectedDocument, let selectedWorkspace {
                                 selectedSubItem = TreeDocumentIdentifier(label: ALL_ID, document: selectedDocument.id, workspace: selectedWorkspace.id)
                             }
@@ -149,7 +148,7 @@ class ContentViewVM: NSObject, ObservableObject {
                         
                         let workspaceRepo = WorkspaceRepo(user: user)
                         let labelLinks = try? workspaceRepo.readLabelLinks(workspace: curWorkspace).filter {
-                            $0.label == label.id
+                            return $0.label == label.id
                         }
                         
                         let subItems = labelLinks?.compactMap { labelLink in

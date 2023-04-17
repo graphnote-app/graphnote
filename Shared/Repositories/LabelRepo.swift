@@ -11,6 +11,7 @@ import SwiftUI
 
 enum LabelRepoError: Error {
     case workspaceFailed
+    case userFailed
 }
 
 struct LabelRepo {
@@ -28,16 +29,28 @@ struct LabelRepo {
         if let labelEntity = try? LabelEntity.getEntity(title: label.title, workspace: workspace, moc: moc) {
             return labelEntity
         } else {
-            let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
-            labelEntity.title = label.title
-            labelEntity.id = label.id
-            labelEntity.modifiedAt = label.modifiedAt
-            labelEntity.createdAt = label.createdAt
-            labelEntity.workspace = workspaceEntity
-            labelEntity.color = label.color.rawValue
+            do {
+                guard let userEntity = try? UserEntity.getEntity(id: label.user, moc: moc) else {
+                    throw LabelRepoError.userFailed
+                }
+                
+                let labelEntity = LabelEntity(entity: LabelEntity.entity(), insertInto: moc)
+                labelEntity.title = label.title
+                labelEntity.id = label.id
+                labelEntity.modifiedAt = label.modifiedAt
+                labelEntity.createdAt = label.createdAt
+                labelEntity.workspace = workspaceEntity
+                labelEntity.color = label.color.rawValue
+                labelEntity.user = userEntity
+                
+                try moc.save()
+                return labelEntity
+                
+            } catch let error {
+                print(error)
+                return nil
+            }
             
-            try? moc.save()
-            return nil
         }
     }
     
@@ -47,15 +60,22 @@ struct LabelRepo {
                 return nil
             }
             
-            let label = Label(
-                id: labelEntity.id,
-                title: labelEntity.title,
-                color: LabelPalette(rawValue: labelEntity.color)!,
-                workspace: workspace.id,
-                createdAt: labelEntity.createdAt,
-                modifiedAt: labelEntity.modifiedAt
-            )
-            return label
+            if let user = labelEntity.user {
+                let label = Label(
+                    id: labelEntity.id,
+                    title: labelEntity.title,
+                    color: LabelPalette(rawValue: labelEntity.color)!,
+                    workspace: workspace.id,
+                    user: user.id,
+                    createdAt: labelEntity.createdAt,
+                    modifiedAt: labelEntity.modifiedAt
+                )
+                return label
+                
+            } else {
+                return nil
+            }
+            
             
         } catch let error {
             print(error)
@@ -66,7 +86,7 @@ struct LabelRepo {
     func exists(label: Label) throws -> UUID? {
         do {
             let fetchRequest = LabelEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "title == %@", label.title)
+            fetchRequest.predicate = NSPredicate(format: "title == %@ || id == %@", label.title, label.id.uuidString)
             let result = try moc.fetch(fetchRequest)
             
             if let first = result.first {

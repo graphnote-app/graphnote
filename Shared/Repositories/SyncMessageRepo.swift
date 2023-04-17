@@ -8,23 +8,41 @@
 import Foundation
 import CoreData
 
+
+enum SyncMessageRepoError: Error {
+    case contentParseFailed
+    case messageExists
+    case messageIDExists
+    case linkExists
+}
+
 struct SyncMessageRepo {
     let user: User
     
     private let moc = DataController.shared.container.viewContext
-    
-    enum SyncMessaegRepoError: Error {
-        case contentParseFailed
-    }
-    
+
     func has(id: UUID) -> Bool {
         do {
-            let fetchRequest = SyncMessageEntity.fetchRequest()
+            let fetchRequest = SyncMessageIDEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
             guard let syncMessage = try moc.fetch(fetchRequest).first else {
                 return false
             }
-            return syncMessage.id == id            
+            return syncMessage.id == id
+        } catch let error {
+            print(error)
+            return false
+        }
+    }
+    
+    func has(message: SyncMessage) -> Bool {
+        do {
+            let fetchRequest = SyncMessageEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", message.id.uuidString)
+            guard let syncMessage = try moc.fetch(fetchRequest).first else {
+                return false
+            }
+            return syncMessage.id == message.id
         } catch let error {
             print(error)
             return false
@@ -35,29 +53,13 @@ struct SyncMessageRepo {
         do {
             guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
                 // Add throw error here
+                
                 print("couldn't get SyncMessageIDEntity")
+                fatalError()
                 return
             }
 
             messageEntity.isSynced = true
-
-            try moc.save()
-
-        } catch let error {
-            print(error)
-            throw error
-        }
-    }
-    
-    func setAppliedOnMessageID(id: UUID) throws {
-        do {
-            guard let messageEntity = try SyncMessageIDEntity.getEntity(id: id, moc: moc) else {
-                // Add throw error here
-                print("couldn't get SyncMessageIDEntity")
-                return
-            }
-
-            messageEntity.isApplied = true
 
             try moc.save()
 
@@ -80,12 +82,29 @@ struct SyncMessageRepo {
         }
     }
     
-    func create(id: UUID) throws {
+    func create(id: UUID, isApplied: Bool = false) throws {
+        if has(id: id) {
+            throw SyncMessageRepoError.messageIDExists
+        }
+
         do {
+            let link = try SyncMessageIDEntity.getEntity(id: id, moc: moc)
+            if link != nil {
+                link?.isSynced = true
+                if isApplied {
+                    link?.isApplied = true
+                }
+                try moc.save()
+                throw SyncMessageRepoError.linkExists
+            }
 
             let syncMessageIdEntity = SyncMessageIDEntity(entity: SyncMessageIDEntity.entity(), insertInto: moc)
             syncMessageIdEntity.id = id
             syncMessageIdEntity.isSynced = false
+            
+            if isApplied {
+                syncMessageIdEntity.isApplied = true
+            }
             
             try moc.save()
             
@@ -96,6 +115,11 @@ struct SyncMessageRepo {
     }
     
     func create(message: SyncMessage) throws {
+        if has(message: message) {
+            fatalError()
+            throw SyncMessageRepoError.messageExists
+        }
+        
         do {
             let encoder = JSONEncoder()
             
@@ -108,15 +132,17 @@ struct SyncMessageRepo {
                 messageEntity.action = message.action.rawValue
                 messageEntity.contents = data
                 messageEntity.isSynced = message.isSynced
-                
+                messageEntity.isApplied = message.isApplied
+                print("isApplied: \(message.isApplied)")
                 try moc.save()
             } else {
-                throw SyncMessaegRepoError.contentParseFailed
+                throw SyncMessageRepoError.contentParseFailed
             }
             
             
         } catch let error {
             print(error)
+            fatalError()
             throw error
         }
     }
@@ -176,6 +202,33 @@ struct SyncMessageRepo {
                                    type: SyncMessageType(rawValue: $0.type)!,
                                    action: SyncMessageAction(rawValue: $0.action)!,
                                    isSynced: $0.isSynced,
+                                   isApplied: false,
+                                   contents: contents
+                )
+            }
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func readAllWhere(isApplied: Bool) throws -> [SyncMessage] {
+        do {
+            let fetchRequest = SyncMessageEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "user == %@ && isApplied == %@", user.id, NSNumber(value: isApplied))
+            let messageEntities = try moc.fetch(fetchRequest)
+            let decoder = JSONDecoder()
+                        
+            return messageEntities.map {
+                let contents = try! decoder.decode(String.self, from: $0.contents)
+                return SyncMessage(id: $0.id,
+                                   user: $0.user,
+                                   timestamp: $0.timestamp,
+                                   type: SyncMessageType(rawValue: $0.type)!,
+                                   action: SyncMessageAction(rawValue: $0.action)!,
+                                   isSynced: $0.isSynced,
+                                   isApplied: isApplied,
                                    contents: contents
                 )
             }
@@ -189,10 +242,26 @@ struct SyncMessageRepo {
     func updateToIsSynced(id: UUID) throws {
         do {
             guard let messageEntity = try SyncMessageEntity.getEntity(id: id, moc: moc) else {
-                fatalError("message not found to update")
+                fatalError("message not found to update: \(id)")
             }
             
             messageEntity.isSynced = true
+            
+            try moc.save()
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func updateToIsApplied(id: UUID) throws {
+        do {
+            guard let messageEntity = try SyncMessageEntity.getEntity(id: id, moc: moc) else {
+                fatalError("message not found to update")
+            }
+            
+            messageEntity.isApplied = true
             
             try moc.save()
             

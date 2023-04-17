@@ -17,6 +17,7 @@ struct Label: Equatable, Hashable, Codable {
     let title: String
     let color: LabelPalette
     let workspace: UUID
+    let user: String
     let createdAt: Date
     let modifiedAt: Date
     

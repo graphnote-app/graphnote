@@ -18,7 +18,7 @@ struct UserBuilder {
         userEntity.givenName = user.givenName
         userEntity.createdAt = user.createdAt
         userEntity.modifiedAt = user.modifiedAt
-        
+
         do {
             try moc.save()
             return true

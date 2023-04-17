@@ -124,6 +124,8 @@
 		F88313AA29EAA9C20073658A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313A829EAA9C20073658A /* UserService.swift */; };
 		F88313AF29EB739F0073658A /* SyncServiceDBPullQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */; };
 		F88313B029EB739F0073658A /* SyncServiceDBPullQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */; };
+		F88313B229EB7D990073658A /* SyncServiceDBApplyQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313B129EB7D990073658A /* SyncServiceDBApplyQueue.swift */; };
+		F88313B329EB7D990073658A /* SyncServiceDBApplyQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88313B129EB7D990073658A /* SyncServiceDBApplyQueue.swift */; };
 		F88550AC29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550AD29D9B51200EE458C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550AB29D9B51200EE458C /* SignInView.swift */; };
 		F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
@@ -223,6 +225,7 @@
 		F880664329AB2EB3002A457D /* PromptField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptField.swift; sourceTree = "<group>"; };
 		F88313A829EAA9C20073658A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserService.swift; path = Shared/Services/UserService.swift; sourceTree = SOURCE_ROOT; };
 		F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServiceDBPullQueue.swift; sourceTree = "<group>"; };
+		F88313B129EB7D990073658A /* SyncServiceDBApplyQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServiceDBApplyQueue.swift; sourceTree = "<group>"; };
 		F88550AB29D9B51200EE458C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGlobalUIState.swift; sourceTree = "<group>"; };
 		F88550B629D9BC3A00EE458C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -402,6 +405,7 @@
 				F8AAD1F429DD358200863A7D /* SyncService.swift */,
 				F87A06D729DE923E002CC7EF /* SyncMessage.swift */,
 				F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */,
+				F88313B129EB7D990073658A /* SyncServiceDBApplyQueue.swift */,
 				F88313AE29EB739F0073658A /* SyncServiceDBPullQueue.swift */,
 			);
 			path = SyncService;
@@ -729,6 +733,7 @@
 				F82EC66329D54B62009C46BE /* User.swift in Sources */,
 				F88D5EEF29D9CE5B0088338F /* LoadingSpinnerView.swift in Sources */,
 				F82EC66429D54B62009C46BE /* Graphnote.xcdatamodeld in Sources */,
+				F88313B329EB7D990073658A /* SyncServiceDBApplyQueue.swift in Sources */,
 				F82EC66529D54B62009C46BE /* DataController.swift in Sources */,
 				F82EC66629D54B62009C46BE /* LabelEntity.swift in Sources */,
 				F82EC66729D54B62009C46BE /* LabelLinkEntity.swift in Sources */,
@@ -809,6 +814,7 @@
 				F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */,
 				F84D087D29C809FE00410C10 /* EmptyBlockView.swift in Sources */,
 				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,
+				F88313B229EB7D990073658A /* SyncServiceDBApplyQueue.swift in Sources */,
 				F84D087729C808B100410C10 /* DocumentView.swift in Sources */,
 				F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */,
 				F8BF73BF29C7F52500BA826E /* TreeBulletView.swift in Sources */,

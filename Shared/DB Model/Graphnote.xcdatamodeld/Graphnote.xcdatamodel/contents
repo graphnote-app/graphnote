@@ -6,7 +6,12 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="type" attributeType="String"/>
-        <relationship name="document" maxCount="1" deletionRule="Nullify" destinationEntity="DocumentEntity" inverseName="blocks" inverseEntity="DocumentEntity"/>
+        <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DocumentEntity" inverseName="blocks" inverseEntity="DocumentEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="DocumentEntity" representedClassName=".DocumentEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
@@ -14,8 +19,13 @@
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
         <relationship name="blocks" toMany="YES" deletionRule="Cascade" destinationEntity="BlockEntity" inverseName="document" inverseEntity="BlockEntity"/>
-        <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="documents" inverseEntity="UserEntity"/>
-        <relationship name="workspace" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="documents" inverseEntity="WorkspaceEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="UserEntity" inverseName="documents" inverseEntity="UserEntity"/>
+        <relationship name="workspace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="documents" inverseEntity="WorkspaceEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="LabelEntity" representedClassName=".LabelEntity" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
@@ -23,7 +33,13 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="workspace" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="labels" inverseEntity="WorkspaceEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="UserEntity"/>
+        <relationship name="workspace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkspaceEntity" inverseName="labels" inverseEntity="WorkspaceEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="LabelLinkEntity" representedClassName=".LabelLinkEntity" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -32,6 +48,11 @@
         <attribute name="label" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="workspace" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="LastSyncTimeEntity" representedClassName="LastSyncTimeEntity" syncable="YES" codeGenerationType="class">
         <attribute name="lastSyncTime" attributeType="Date" usesScalarValueType="NO"/>
@@ -40,15 +61,26 @@
         <attribute name="action" attributeType="String"/>
         <attribute name="contents" attributeType="Binary"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isApplied" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isSynced" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="type" attributeType="String"/>
         <attribute name="user" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="SyncMessageIDEntity" representedClassName=".SyncMessageIDEntity" syncable="YES">
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isApplied" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isSynced" attributeType="Boolean" usesScalarValueType="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
@@ -57,8 +89,13 @@
         <attribute name="givenName" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DocumentEntity" inverseName="user" inverseEntity="DocumentEntity"/>
+        <relationship name="documents" toMany="YES" deletionRule="Cascade" destinationEntity="DocumentEntity" inverseName="user" inverseEntity="DocumentEntity"/>
         <relationship name="workspaces" toMany="YES" deletionRule="Cascade" destinationEntity="WorkspaceEntity" inverseName="user" inverseEntity="WorkspaceEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="WorkspaceEntity" representedClassName=".WorkspaceEntity" syncable="YES">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
@@ -67,6 +104,11 @@
         <attribute name="title" attributeType="String"/>
         <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DocumentEntity" inverseName="workspace" inverseEntity="DocumentEntity"/>
         <relationship name="labels" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LabelEntity" inverseName="workspace" inverseEntity="LabelEntity"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="workspaces" inverseEntity="UserEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="UserEntity" inverseName="workspaces" inverseEntity="UserEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
 </model>

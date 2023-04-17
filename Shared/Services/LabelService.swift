@@ -15,7 +15,7 @@ struct LabelService {
         let labelRepo = LabelRepo(user: user, workspace: workspace)
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
-        var label = Label(id: UUID(), title: title, color: color, workspace: workspace.id, createdAt: .now, modifiedAt: .now)
+        var label = Label(id: UUID(), title: title, color: color, workspace: workspace.id, user: user.id, createdAt: .now, modifiedAt: .now)
         
         let existingLabelUUID = try? labelRepo.exists(label: label)
 
@@ -29,21 +29,18 @@ struct LabelService {
                 throw error
             }
             
-            if let labelAttachmentExists = try? documentRepo.attachExists(label: label, document: document) {
-                if labelAttachmentExists {
-                    print("Attachment exists and label exists")
-                    return false
-                } else {
-                    try DataService.shared.attachLabel(user: user, label: label, document: document)
-                    return true
-                }
-            } else {
+            let labelAttachmentExists = try documentRepo.attachExists(label: label, document: document)
+            if labelAttachmentExists {
+                print("Attachment exists and label exists")
                 return false
+            } else {
+                try DataService.shared.attachLabel(user: user, label: label, document: document, workspace: workspace)
+                return true
             }
-            
+
         } else {
-            try DataService.shared.createLabel(user: user, label: label)
-            try DataService.shared.attachLabel(user: user, label: label, document: document)
+            try DataService.shared.createLabel(user: user, label: label, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label, document: document, workspace: workspace)
             return true
         }
         

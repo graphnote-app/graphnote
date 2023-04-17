@@ -12,6 +12,8 @@ import UIKit
 
 import Combine
 
+let seed = false
+
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
 //    @Environment(\.scenePhase) private var scenePhase
@@ -24,6 +26,9 @@ struct ContentView: View {
     @State private var menuOpen = false
     #endif
     @State private var initialized = false
+    
+    @State private var seeding = false
+    @State private var seeded = false
     
     @State private var globalUIState = AppGlobalUIState.loading
     @State private var newDocFailedAlert = false
@@ -51,7 +56,6 @@ struct ContentView: View {
                 DispatchQueue.main.async {
                     if state == .authorized {
                         globalUIState = .doc
-                        vm.fetch()
                         DataService.shared.startWatching(user: user)
                     } else {
                         globalUIState = .signIn
@@ -71,18 +75,25 @@ struct ContentView: View {
                     if success {
                         vm.initializeUser()
                         if let user = vm.user {
-                            if isSignUp {
-                                if DataSeeder.seed(userId: user.id, email: user.email) {
+//                            if isSignUp {
+                            if seed {
+                                DataService.shared.startWatching(user: user)
+                                seeding = true
+                                if DataSeeder.seed(user: user) {
                                     vm.initializeUserWorkspaces()
                                     vm.fetch()
-
+                                    
                                 } else {
                                     print("seed failed")
                                 }
-                            } else {
-                                vm.initializeUserWorkspaces()
-                                vm.fetch()
+                                
+                                seeding = false
                             }
+                                
+//                            } else {
+//                                vm.initializeUserWorkspaces()
+//                                vm.fetch()
+//                            }
                             DataService.shared.fetchMessageIDs(user: user)
                             self.initialized = true
                             checkAuthStatus(user: user)
@@ -202,6 +213,7 @@ struct ContentView: View {
                 .onAppear {
                     if let user = vm.user {
                         DataService.shared.fetchMessageIDs(user: user)
+                        vm.fetch()
                     }
                 }
             }
@@ -275,7 +287,9 @@ struct ContentView: View {
             syncStatus = .failed
         }
         .onReceive(NotificationCenter.default.publisher(for: workspaceCreatedNotification)) { notification in
-            vm.fetch()
+            if !seeding && seeded {
+                vm.fetch()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: networkSyncSuccessNotification)) { notification in
             syncStatus = .success
@@ -295,6 +309,20 @@ struct ContentView: View {
                 
                 if !initialized {
                     vm.initializeUser()
+                    
+                    
+                    if seed {
+                        if let user = vm.user {
+                            DataService.shared.startWatching(user: user)
+                            seeding = true
+                            if !DataSeeder.seed(user: user) {
+                                print("seed failed")
+                                fatalError()
+                            }
+                            seeding = false
+                            seeded = true
+                        }
+                    }
                     
                     vm.initializeUserWorkspaces()
                     if let user = vm.user {

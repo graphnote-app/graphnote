@@ -19,6 +19,7 @@ public class SyncMessageEntity: NSManagedObject {
     @NSManaged public var timestamp: Date
     @NSManaged public var contents: Data
     @NSManaged public var isSynced: Bool
+    @NSManaged public var isApplied: Bool
 }
 
 extension SyncMessageEntity {

@@ -9,6 +9,10 @@ import Foundation
 import CoreData
 import SwiftUI
 
+enum DocumentRepoError: Error {
+    case nilWorkspace
+}
+
 struct DocumentRepo {
     let user: User
     let workspace: Workspace
@@ -41,11 +45,16 @@ struct DocumentRepo {
     
     func readAll() throws -> [Document] {
         do {
+            
             let fetchRequest = DocumentEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id.uuidString)
             let documentEntities = try moc.fetch(fetchRequest)
-            return documentEntities.map { documentEntity in
-                Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: documentEntity.workspace.id)
+            return try documentEntities.map { documentEntity in
+                guard let workspace = documentEntity.workspace else {
+                    throw DocumentRepoError.nilWorkspace
+                }
+                
+                return Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace.id)
             }
             
         } catch let error {
@@ -59,8 +68,12 @@ struct DocumentRepo {
             let fetchRequest = DocumentEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
             let documentEntities = try moc.fetch(fetchRequest)
-            return documentEntities.first.map { entity in
-                Document(id: entity.id, title: entity.title, createdAt: entity.createdAt, modifiedAt: entity.modifiedAt, workspace: entity.workspace.id)
+            return try documentEntities.first.map { entity in
+                guard let workspace = entity.workspace else {
+                    throw DocumentRepoError.nilWorkspace
+                }
+                
+                return Document(id: entity.id, title: entity.title, createdAt: entity.createdAt, modifiedAt: entity.modifiedAt, workspace: workspace.id)
             }
             
         } catch let error {
@@ -109,7 +122,8 @@ struct DocumentRepo {
             labelLink.id = UUID()
             labelLink.createdAt = .now
             labelLink.modifiedAt = .now
-            
+            print(workspace.id)
+            print(label.workspace)
             try moc.save()
             
             return LabelLink(id: labelLink.id,
@@ -155,12 +169,14 @@ struct DocumentRepo {
         }
         
         let labels = labelLinks.compactMap {
-            if let labelEntity = try? LabelEntity.getEntity(id: $0.label, moc: moc) {
+            if let labelEntity = try? LabelEntity.getEntity(id: $0.label, moc: moc),
+               let workspace = labelEntity.workspace, let user = labelEntity.user {
                 return Label(
                     id: labelEntity.id,
                     title: labelEntity.title,
                     color: LabelPalette(rawValue: labelEntity.color)!,
-                    workspace: labelEntity.workspace.id,
+                    workspace: workspace.id,
+                    user: user.id,
                     createdAt: labelEntity.createdAt,
                     modifiedAt: labelEntity.modifiedAt
                 )

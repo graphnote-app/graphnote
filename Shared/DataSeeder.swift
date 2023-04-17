@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct DataSeeder{
-    static func seed(userId: String, email: String) -> Bool {
+    static func seed(user: User) -> Bool {
         // Delete the database
         DataController.shared.dropDatabase()
         
         // Info
         let now = Date.now
         
-        let user = User(id: userId, email: email, givenName: nil, familyName: nil, createdAt: now, modifiedAt: now)
-        
         let workspace = Workspace(id: UUID(), title: "Personal", createdAt: now, modifiedAt: now, user: user.id, labels: [], documents: [])
         let workspace1 = Workspace(id: UUID(), title: "XYZ", createdAt: now, modifiedAt: now, user: user.id, labels: [], documents: [])
-        let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
-        let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
-        let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
-        let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, createdAt: now, modifiedAt: now)
-        let label5 = Label(id: UUID(), title: "Graphnote ፨", color: LabelPalette.primary, workspace: workspace.id, createdAt: now, modifiedAt: now)
+        let label = Label(id: UUID(), title: "Web 🖥️", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now)
+        let label2 = Label(id: UUID(), title: "Stuff", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now)
+        let label3 = Label(id: UUID(), title: "Work in progress", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now)
+        let label4 = Label(id: UUID(), title: "Project X ❤️", color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now)
+        let label5 = Label(id: UUID(), title: "Graphnote ፨", color: LabelPalette.primary, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now)
         
         let document0 = Document(id: UUID(), title: "Welcome!", createdAt: now, modifiedAt: now, workspace: workspace.id)
         let welcomeBlock0 = Block(id: UUID(), type: BlockType.heading3, content: "Thanks for trying Graphnote", createdAt: now, modifiedAt: now, document: document0)
@@ -49,8 +47,9 @@ struct DataSeeder{
         
         do {
 
-            try! DataService.shared.createUser(user: user)
-            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+            if UserRepo().read(id: user.id) == nil {
+                try! DataService.shared.createUser(user: user)
+            }
             
             for workspace in workspaces {
                 try! DataService.shared.createWorkspace(user: user, workspace: workspace)
@@ -61,9 +60,10 @@ struct DataSeeder{
             }
             
             for label in labels {
-                try! DataService.shared.createLabel(user: user, label: label)
+                try! DataService.shared.createLabel(user: user, label: label, workspace: workspace)
             }
             
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
             for i in 0..<blocks.count {
                 let block = blocks[i]
                 if try !documentRepo.create(block: block) {
@@ -72,16 +72,17 @@ struct DataSeeder{
                 }
             }
             
-            try! DataService.shared.attachLabel(user: user, label: label, document: document1)
-            try! DataService.shared.attachLabel(user: user, label: label5, document: document1)
-            try! DataService.shared.attachLabel(user: user, label: label2, document: document2)
-            try! DataService.shared.attachLabel(user: user, label: label4, document: document1)
-            try! DataService.shared.attachLabel(user: user, label: label5, document: document0)
-            try! DataService.shared.attachLabel(user: user, label: label2, document: document0)
-            try! DataService.shared.attachLabel(user: user, label: label3, document: document0)
-            try! DataService.shared.attachLabel(user: user, label: label4, document: document0)
+            try! DataService.shared.attachLabel(user: user, label: label, document: document1, workspace: workspace)
+            try! DataService.shared.attachLabel(user: user, label: label5, document: document1, workspace: workspace)
+            try! DataService.shared.attachLabel(user: user, label: label2, document: document2, workspace: workspace)
+            try! DataService.shared.attachLabel(user: user, label: label4, document: document1, workspace: workspace)
+            try! DataService.shared.attachLabel(user: user, label: label5, document: document0, workspace: workspace)
+            try! DataService.shared.attachLabel(user: user, label: label2, document: document0, workspace: workspace)
+            try! DataService.shared.attachLabel(user: user, label: label3, document: document0, workspace: workspace)
+            try! DataService.shared.attachLabel(user: user, label: label4, document: document0, workspace: workspace)
             
             return true
+         
         
         } catch let error {
             print(error)

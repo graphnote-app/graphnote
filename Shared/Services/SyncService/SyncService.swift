@@ -69,9 +69,12 @@ class SyncService: ObservableObject {
     private var fetchTimer: Timer? = nil
     private var requestIDs: Set<UUID> = Set()
     private var processingPullQueue: [UUID : Bool] = [:]
+    private var processingApplyQueue = false
+    private var processingPushQueue = false
     
     private var pushQueue: SyncServiceDBPushQueue? = nil
     private var pullQueue: SyncServiceDBPullQueue? = nil
+    private var applyQueue: SyncServiceDBApplyQueue? = nil
     
     private func getLastSyncTime(user: User) -> Date? {
         let syncMessageRepo = SyncMessageRepo(user: user)
@@ -85,6 +88,10 @@ class SyncService: ObservableObject {
         
         if pullQueue == nil {
             self.pullQueue = SyncServiceDBPullQueue(user: user)
+        }
+        
+        if applyQueue == nil {
+            self.applyQueue = SyncServiceDBApplyQueue(user: user)
         }
         
         // Invalidate timer always so we don't get runaway timers
@@ -110,6 +117,8 @@ class SyncService: ObservableObject {
         }) {
             self.processPullQueue(user: user)
         }
+        
+        self.processApplyQueue(user: user)
     }
     
     func stopQueue() {
@@ -126,12 +135,63 @@ class SyncService: ObservableObject {
         }
     }
     
+    func processApplyQueue(user: User) {
+        if !self.processingApplyQueue {
+            processingApplyQueue = true
+            var i = 0
+            
+            self.applyQueue?.fetchQueue()
+            while self.applyQueue?.count ?? 0 > 0 && i < 100 {
+                self.applyQueue?.fetchQueue()
+                if let queueItem = self.applyQueue?.peek(offset: i) {
+                    print("IS_APPLIED: \(queueItem.isApplied)")
+                    var success = false
+                    if let contentsData = queueItem.contents.data(using: .utf8) {
+                        switch queueItem.type {
+                        case .user:
+                            success = self.syncMessageUser(user: user, message: queueItem, data: contentsData)
+                        case .document:
+                            success = self.syncMessageDocument(user: user, message: queueItem, data: contentsData)
+                        case .workspace:
+                            success = self.syncMessageWorkspace(user: user, message: queueItem, data: contentsData)
+                        case .label:
+                            success = self.syncMessageLabel(user: user, message: queueItem, data: contentsData)
+                        case .labelLink:
+                            success = self.syncMessageLabelLink(user: user, message: queueItem, data: contentsData)
+                        }
+                    }
+                    
+                    if success {
+//                        if i > 0 {
+//                            i -= 1
+//                        }
+                        let repo = SyncMessageRepo(user: user)
+                        if !repo.has(id: queueItem.id) {
+                            try! repo.create(id: queueItem.id, isApplied: true)
+                        }
+                        
+                        
+                        self.applyQueue?.remove(id: queueItem.id)
+
+                    } else {
+                        i += 1
+                    }
+                }
+            }
+            
+            processingApplyQueue = false
+        }
+    }
+    
     func processPullQueue(user: User) {
-        for i in 0..<10 {
-            if let queueUUID = self.pullQueue?.peek(offset: i) {
-                if !(self.processingPullQueue[queueUUID] == true) {
+//        for i in 0..<10 {
+            self.pullQueue?.fetchQueue()
+            if let queueUUID = self.pullQueue?.peek() {
+                if !(processingPullQueue[queueUUID] ?? false) {
+                    self.processingPullQueue[queueUUID] = true
                     var request = URLRequest(url: baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
                     request.httpMethod = "GET"
+                    print(request)
                     let task = URLSession.shared.dataTask(with: request) { data, response, error in
                         DispatchQueue.main.async {
                             if let error = error as? URLError {
@@ -164,8 +224,16 @@ class SyncService: ObservableObject {
                                 return
                             }
                             
-                            if let _ = response as? HTTPURLResponse {
-                                self.error = nil
+                            if let response = response as? HTTPURLResponse {
+                                switch response.statusCode {
+                                case 200:
+                                    self.error = nil
+                                default:
+                                    self.error = .unknown
+                                    self.processingPullQueue[queueUUID] = false
+                                    return
+                                }
+
                             }
                             
                             if let data {
@@ -179,51 +247,44 @@ class SyncService: ObservableObject {
                                 do {
                                     let syncMessage = try decoder.decode(SyncMessage.self, from: data)
                                     let repo = SyncMessageRepo(user: user)
-                                    
-                                    if !repo.has(id: syncMessage.id) {
-                                        try repo.create(message: syncMessage)
-                                        try repo.updateToIsSynced(id: syncMessage.id)
-                                        
-                                        var success = false
-                                        if let contentsData = syncMessage.contents.data(using: .utf8) {
-                                            switch syncMessage.type {
-                                            case .user:
-                                                success = self.syncMessageUser(user: user, message: syncMessage, data: contentsData)
-                                            case .document:
-                                                success = self.syncMessageDocument(user: user, message: syncMessage, data: contentsData)
-                                            case .workspace:
-                                                success = self.syncMessageWorkspace(user: user, message: syncMessage, data: contentsData)
-                                            case .label:
-                                                success = self.syncMessageLabel(user: user, message: syncMessage, data: contentsData)
-                                            case .labelLink:
-                                                success = self.syncMessageLabelLink(user: user, message: syncMessage, data: contentsData)
-                                            }
-                                        }
-                                        
-                                        if success {
-                                            self.pullQueue?.remove(id: syncMessage.id)
-                                        }
-                                    } else {
-                                        try repo.updateToIsSynced(id: syncMessage.id)
+                                    if repo.has(message: syncMessage) {
                                         self.pullQueue?.remove(id: syncMessage.id)
+                                        self.processingPullQueue[queueUUID] = false
+                                        return
                                     }
                                     
-                                    self.processingPullQueue[queueUUID] = false
+                                    try repo.create(message: syncMessage)
+                                    if self.applyQueue?.add(message: syncMessage) ?? false {
+                                        self.pullQueue?.remove(id: syncMessage.id)
+                                    } else {
+                                        try repo.setSyncedOnMessageID(id: syncMessage.id)
+                                    }
+//                                    if !repo.has(message: syncMessage) {
+//                                        if self.applyQueue?.add(message: syncMessage) ?? false {
+//                                            self.pullQueue?.remove(id: syncMessage.id)
+//                                            try repo.setSyncedOnMessageID(id: syncMessage.id)
+//                                        }
+//                                    } else {
+//                                        self.pullQueue?.remove(id: syncMessage.id)
+//                                        try repo.setSyncedOnMessageID(id: syncMessage.id)
+//                                    }
+////
                                     
                                 } catch let error {
                                     print(error)
+                                    fatalError()
                                     self.error = .unknown
-                                    self.processingPullQueue[queueUUID] = false
                                 }
                             }
+                            
+                            self.processingPullQueue[queueUUID] = false
                         }
                     }
                     
                     task.resume()
-                    self.processingPullQueue[queueUUID] = true
                 }
             }
-        }
+//        }
     }
     
     var decoder: JSONDecoder {
@@ -237,26 +298,25 @@ class SyncService: ObservableObject {
     }
     
     private func syncMessageUser(user: User, message: SyncMessage, data: Data) -> Bool {
-//        switch message.action {
-//        case .create:
-//            let user = try! decoder.decode(User.self, from: data)
-//            return false
-//        case .update:
-//            break
-//        case .delete:
-//            break
-//        case .read:
-//            break
-//        }
-        
-        return false
+        return true
     }
     
     private func syncMessageLabelLink(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
             let labelLink = try! decoder.decode(LabelLink.self, from: data)
-            return self.processLabelLink(labelLink, user: user)
+            if self.processLabelLink(labelLink, user: user) {
+                do {
+                    let repo = SyncMessageRepo(user: user)
+                    try repo.updateToIsApplied(id: message.id)
+                    return true
+                } catch let error {
+                    print(error)
+                    return false
+                }
+            } else {
+                return false
+            }
         case .update:
             break
         case .delete:
@@ -272,7 +332,11 @@ class SyncService: ObservableObject {
         switch message.action {
         case .create:
             let label = try! decoder.decode(Label.self, from: data)
-            return self.processLabel(label, user: user)
+            guard let workspace = try? WorkspaceRepo(user: user).read(workspace: label.workspace) else {
+                return false
+            }
+            
+            return self.processLabel(label, user: user, workspace: workspace)
         case .update:
             break
         case .delete:
@@ -367,7 +431,9 @@ class SyncService: ObservableObject {
     
     private func processLabelLink(_ labelLink: LabelLink, user: User) -> Bool {
         do {
+            print(labelLink.workspace)
             let workspaceRepo = WorkspaceRepo(user: user)
+            print(try workspaceRepo.readAll())
             guard let workspace = try? workspaceRepo.read(workspace: labelLink.workspace) else {
                 print("Couldn't read workspace: \(labelLink.workspace)")
                 return false
@@ -378,12 +444,15 @@ class SyncService: ObservableObject {
             print(labelLink)
             if let document = try documentRepo.read(id: labelLink.document),
                let label = try labelRepo.read(id: labelLink.label) {
-                if documentRepo.attach(label: label, document: document) != nil {
-                    self.postSyncNotification(.labelLinkCreated)
-                    return true
-                } else {
-                    print("LabelLink creation failed")
-                    return false
+                let exists = try documentRepo.attachExists(label: label, document: document)
+                if !exists {
+                    if documentRepo.attach(label: label, document: document) != nil {
+                        self.postSyncNotification(.labelLinkCreated)
+                        return true
+                    } else {
+                        print("LabelLink creation failed")
+                        return false
+                    }
                 }
             }
 
@@ -395,9 +464,9 @@ class SyncService: ObservableObject {
         return false
     }
     
-    private func processLabel(_ label: Label, user: User) -> Bool {
-        let workspaceRepo = WorkspaceRepo(user: user)
-        if workspaceRepo.create(label: label) {
+    private func processLabel(_ label: Label, user: User, workspace: Workspace) -> Bool {
+        let labelRepo = LabelRepo(user: user, workspace: workspace)
+        if try! labelRepo.create(label: label) != nil {
             self.postSyncNotification(.labelCreated)
             return true
         } else {
@@ -418,8 +487,8 @@ class SyncService: ObservableObject {
     }
     
     private func processWorkspace(_ workspace: Workspace, user: User) -> Bool {
-        let userRepo = UserRepo()
-        if userRepo.create(workspace: workspace, for: user) {
+        let workspaceRepo = WorkspaceRepo(user: user)
+        if workspaceRepo.create(workspace: workspace) {
             self.postSyncNotification(.workspaceCreated)
             return true
         } else {
@@ -430,75 +499,106 @@ class SyncService: ObservableObject {
     
     private func processPushQueue(user: User) {
         // Push messages
-        if let queueItem = self.pushQueue?.peek() {
-            if queueItem.isSynced == true {
-                self.pushQueue?.remove(id: queueItem.id)
-                return
-            }
+        
+        if !processingPushQueue {
+            processingPushQueue = true
             
-            if !self.requestIDs.contains(queueItem.id) {
-                self.requestIDs.insert(queueItem.id)
-                self.request(message: queueItem) { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success(let response):
-                            print(response.statusCode)
-                            switch response.statusCode {
-                                
-                            case 201, 409:
-                                // Drop the item from the queue
-                                if self.pushQueue?.remove(id: queueItem.id) == true {
-                                    self.syncStatus = .success
-                                    print(queueItem)
-                                    self.postSyncNotification(.networkSyncSuccess)
+            self.pushQueue?.fetchQueue()
+            if let queueItem = self.pushQueue?.peek() {
+                if queueItem.isSynced == true {
+                    self.pushQueue?.remove(id: queueItem.id)
+                    processingPushQueue = false
+                    return
+                }
+                
+                if !self.requestIDs.contains(queueItem.id) {
+                    self.requestIDs.insert(queueItem.id)
+                    
+                    self.request(message: queueItem) { result in
+                        DispatchQueue.main.async {
+                            switch result {
+                            case .success(let response):
+                                print(response.statusCode)
+                                switch response.statusCode {
+                                    
+                                case 201, 409:
+                                    // Drop the item from the queue
+                                    print("dropping \(queueItem.id)")
+                                    if self.pushQueue?.remove(id: queueItem.id) == true {
+                                        self.syncStatus = .success
+                                        //                                        print(queueItem)
+                                        self.postSyncNotification(.networkSyncSuccess)
+                                    } else {
+                                        fatalError()
+                                    }
+                                    break
+                                case 500:
+                                    print("Server error: \(response.statusCode)")
+                                    self.postSyncNotification(.networkSyncFailed)
+                                    self.syncStatus = .failed
+                                    break
+                                default:
+                                    print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                                    self.postSyncNotification(.networkSyncFailed)
+                                    self.syncStatus = .failed
+                                    break
                                 }
+                                
+                                self.statusCode = response.statusCode
+                                self.error = nil
+                                
                                 break
-                            case 500:
-                                print("Server error: \(response.statusCode)")
-                                self.postSyncNotification(.networkSyncFailed)
-                                self.syncStatus = .failed
-                                break
-                            default:
-                                print("generic request method in processQueue returned statusCode: \(response.statusCode)")
+                            case .failure(let error):
+                                print(error)
+                                self.stopQueue()
+                                self.error = error
                                 self.postSyncNotification(.networkSyncFailed)
                                 self.syncStatus = .failed
                                 break
                             }
                             
-                            self.statusCode = response.statusCode
-                            self.error = nil
-                            
-                            break
-                        case .failure(let error):
-                            print(error)
-                            self.stopQueue()
-                            self.error = error
-                            self.postSyncNotification(.networkSyncFailed)
-                            self.syncStatus = .failed
-                            break
+                            self.requestIDs.remove(queueItem.id)
+                            self.processingPushQueue = false
                         }
-                        
-                        self.requestIDs.remove(queueItem.id)
                     }
                 }
             }
         }
     }
     
-    func createMessage(user: User, message: SyncMessage) {
-        self.pushQueue?.add(message: message)
+    func pushMessage(user: User, message: SyncMessage) {
+        if self.pushQueue != nil {
+            if self.pushQueue!.add(message: message) == false {
+                fatalError("push queu add failed")
+            }
+        } else {
+            fatalError("Remove if let block and replace with ?")
+        }
     }
+    
+//    func createMessage(user: User, message: SyncMessage) -> Bool {
+//        do {
+//            let repo = SyncMessageRepo(user: user)
+//            if !repo.has(message: message) {
+//                try repo.create(message: message)
+//                return true
+//            }
+//        } catch let error {
+//            print(error)
+//        }
+//
+//        return false
+//    }
     
     func createWorkspace(user: User, workspace: Workspace) {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
         let contents = try! encoder.encode(workspace)
         print("contents: \(contents)")
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .workspace, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .workspace, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
         
-        // Save message to local queue
-        print(self.pushQueue?.add(message: message))
-        processWorkspace(workspace, user: user)
+        pushMessage(user: user, message: message)
+//        processWorkspace(workspace, user: user)
     }
     
     func request(message: SyncMessage, callback: @escaping (_ result: Result<HTTPURLResponse, SyncServiceError>) -> Void) {
@@ -557,11 +657,10 @@ class SyncService: ObservableObject {
         encoder.dateEncodingStrategy = .millisecondsSince1970
         let contents = try! encoder.encode(user)
         
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
-        let repo = SyncMessageRepo(user: user)
-        try? repo.create(message: message)
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
+//        createMessage(user: user, message: message)
         // Save message to local queue
-        print(self.pushQueue?.add(message: message))
+        pushMessage(user: user, message: message)
         
     }
     
@@ -570,12 +669,11 @@ class SyncService: ObservableObject {
         encoder.dateEncodingStrategy = .millisecondsSince1970
         let contents = try! encoder.encode(document)
 
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, contents: String(data: contents, encoding: .utf8)!)
-        let repo = SyncMessageRepo(user: user)
-        try? repo.create(message: message)
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
+//        createMessage(user: user, message: message)
         // Save message to local queue
-        print(self.pushQueue?.add(message: message))
-        processDocument(document, user: user)
+        pushMessage(user: user, message: message)
+//        processDocument(document, user: user)
         
     }
     
@@ -637,13 +735,14 @@ class SyncService: ObservableObject {
                         let lastSyncTime = syncMessageIDsResult.lastSyncTime
                         let lastSyncDate = Date(timeIntervalSince1970: lastSyncTime)
                         let ids = syncMessageIDsResult.ids
-                                                
+                        print("ids: \(ids)")
                         // Save ids then set sync time if successful
                         do {
                             for id in ids {
                                 let uuid = UUID(uuidString: id)!
-                                try syncMessageRepo.create(id: uuid)
-                                self.pullQueue?.add(id: uuid)
+                                if !syncMessageRepo.has(id: uuid) {
+                                    self.pullQueue?.add(id: uuid)
+                                }
                             }
                             
                             try syncMessageRepo.setLastSyncTime(time: lastSyncDate)

@@ -16,7 +16,8 @@ class LabelEntity: NSManagedObject {
     @NSManaged var id: UUID
     @NSManaged var title: String
     @NSManaged var color: String
-    @NSManaged var workspace: WorkspaceEntity
+    @NSManaged var workspace: WorkspaceEntity?
+    @NSManaged var user: UserEntity?
     @NSManaged var createdAt: Date
     @NSManaged var modifiedAt: Date
 }

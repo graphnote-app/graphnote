@@ -15,10 +15,10 @@ public class DocumentEntity: NSManagedObject {
     
     @NSManaged public var id: UUID
     @NSManaged public var title: String
-    @NSManaged public var workspace: WorkspaceEntity
+    @NSManaged public var workspace: WorkspaceEntity?
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
-    @NSManaged public var user: UserEntity
+    @NSManaged public var user: UserEntity?
 }
 
 extension DocumentEntity : Comparable {

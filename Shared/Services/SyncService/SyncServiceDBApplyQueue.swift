@@ -1,5 +1,5 @@
 //
-//  SyncServiceDBPushQueue.swift
+//  SyncServiceDBApplyQueue.swift
 //  Graphnote
 //
 //  Created by Hayden Pennington on 4/7/23.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-class SyncServiceDBPushQueue {
+class SyncServiceDBApplyQueue {
     let user: User
     
-    private var queue = [SyncMessage]()
+    var queue = [SyncMessage]()
     
     private lazy var syncMessageRepo = {
         return SyncMessageRepo(user: user)
@@ -25,11 +25,9 @@ class SyncServiceDBPushQueue {
     }
     
     func add(message: SyncMessage) -> Bool {
-        // Add to DB
         do {
-            print("Adding: \(message.id)")
-            try syncMessageRepo.create(message: message)
-            // Add to runtime queue if successful
+//            try syncMessageRepo.create(id: message.id)
+            // Add to runtime queue
             self.queue.append(message)
             return true
         } catch let error {
@@ -41,7 +39,7 @@ class SyncServiceDBPushQueue {
     func remove(id: UUID) -> Bool {
         // remove from DB
         do {
-            try syncMessageRepo.updateToIsSynced(id: id)
+            try syncMessageRepo.updateToIsApplied(id: id)
             // Remove from runtime queue if successful
             self.queue = self.queue.filter {
                 $0.id != id
@@ -76,9 +74,9 @@ class SyncServiceDBPushQueue {
     }
     
     func fetchQueue() {
-        if let queue = try? syncMessageRepo.readAllWhere(isSynced: false) {
+        if let queue = try? syncMessageRepo.readAllWhere(isApplied: false) {
             self.queue = queue
-            print("ADDED: \(self.queue.map{$0.id})")
+//            print(self.queue)
         }
     }
 }

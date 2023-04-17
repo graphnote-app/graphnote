@@ -29,6 +29,7 @@ struct SyncMessage: Codable {
     let type: SyncMessageType
     let action: SyncMessageAction
     let isSynced: Bool
+    let isApplied: Bool
     let contents: String
 }
 
