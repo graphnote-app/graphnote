@@ -49,7 +49,7 @@ class SyncService: ObservableObject {
         case get
     }
     
-    let syncInterval = 0.5
+    let syncInterval = 0.125
     let fetchInterval = 2.0
     @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
@@ -187,9 +187,9 @@ class SyncService: ObservableObject {
     }
     
     func processPullQueue(user: User) {
-//        for i in 0..<10 {
+        for i in 0..<10 {
             self.pullQueue?.fetchQueue()
-            if let queueUUID = self.pullQueue?.peek() {
+            if let queueUUID = self.pullQueue?.peek(offset: i) {
                 if !(processingPullQueue[queueUUID] ?? false) {
                     self.processingPullQueue[queueUUID] = true
                     var request = URLRequest(url: baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
@@ -287,7 +287,7 @@ class SyncService: ObservableObject {
                     task.resume()
                 }
             }
-//        }
+        }
     }
     
     var decoder: JSONDecoder {
