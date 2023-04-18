@@ -297,7 +297,16 @@ class SyncService: ObservableObject {
     }
     
     private func syncMessageUser(user: User, message: SyncMessage, data: Data) -> Bool {
-        return true
+        switch message.action {
+        case .create:
+            if UserBuilder.create(user: user) {
+                return true
+            }
+        default:
+            break
+        }
+        
+        return false
     }
     
     private func syncMessageLabelLink(user: User, message: SyncMessage, data: Data) -> Bool {

@@ -12,8 +12,6 @@ import UIKit
 
 import Combine
 
-let seed = false
-
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
 //    @Environment(\.scenePhase) private var scenePhase
@@ -75,8 +73,7 @@ struct ContentView: View {
                     if success {
                         vm.initializeUser()
                         if let user = vm.user {
-//                            if isSignUp {
-                            if seed {
+                            if isSignUp {
                                 DataService.shared.startWatching(user: user)
                                 seeding = true
                                 if DataSeeder.seed(user: user) {
@@ -88,12 +85,11 @@ struct ContentView: View {
                                 }
                                 
                                 seeding = false
-                            }
                                 
-//                            } else {
-//                                vm.initializeUserWorkspaces()
-//                                vm.fetch()
-//                            }
+                            } else {
+                                vm.initializeUserWorkspaces()
+                                vm.fetch()
+                            }
                             DataService.shared.fetchMessageIDs(user: user)
                             self.initialized = true
                             checkAuthStatus(user: user)
@@ -311,18 +307,20 @@ struct ContentView: View {
                     vm.initializeUser()
                     
                     
-                    if seed {
-                        if let user = vm.user {
-                            DataService.shared.startWatching(user: user)
-                            seeding = true
-                            if !DataSeeder.seed(user: user) {
-                                print("seed failed")
-                                fatalError()
-                            }
-                            seeding = false
-                            seeded = true
-                        }
-                    }
+//                    if seed {
+//                        if let user = vm.user {
+//                            DataService.shared.startWatching(user: user)
+//                            seeding = true
+//                            if !DataSeeder.seed(user: user) {
+//                                print("seed failed")
+//                                #if DEBUG
+//                                fatalError()
+//                                #endif
+//                            }
+//                            seeding = false
+//                            seeded = true
+//                        }
+//                    }
                     
                     vm.initializeUserWorkspaces()
                     if let user = vm.user {

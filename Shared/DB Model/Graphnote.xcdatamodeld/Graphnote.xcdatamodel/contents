@@ -5,6 +5,7 @@
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="modifiedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="order" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" attributeType="String"/>
         <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DocumentEntity" inverseName="blocks" inverseEntity="DocumentEntity"/>
         <uniquenessConstraints>

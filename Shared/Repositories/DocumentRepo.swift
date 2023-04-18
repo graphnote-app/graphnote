@@ -30,6 +30,7 @@ struct DocumentRepo {
             blockEntity.type = block.type.rawValue
             blockEntity.content = block.content
             blockEntity.createdAt = block.createdAt
+            blockEntity.order = block.order
             blockEntity.modifiedAt = block.modifiedAt
             blockEntity.document = documentEntity
             
@@ -86,16 +87,38 @@ struct DocumentRepo {
     func readBlocks(document: Document) throws -> [Block]? {
         do {
             let fetchRequest = BlockEntity.fetchRequest()
+            let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
             fetchRequest.predicate = NSPredicate(format: "document.id == %@", document.id.uuidString)
+            fetchRequest.sortDescriptors = [sortDescriptor]
             let blockEntities = try moc.fetch(fetchRequest)
             return blockEntities.map { blockEntity in
-                Block(id: blockEntity.id, type: BlockType(rawValue: blockEntity.type)!, content: blockEntity.content, createdAt: blockEntity.createdAt, modifiedAt: blockEntity.modifiedAt, document: document)
+                Block(id: blockEntity.id, type: BlockType(rawValue: blockEntity.type)!, content: blockEntity.content, order: blockEntity.order, createdAt: blockEntity.createdAt, modifiedAt: blockEntity.modifiedAt, document: document)
             }
             
         } catch let error {
             print(error)
             throw error
         }
+    }
+    
+    func readAllWhere(orderEqualsOrGreaterThan: Int) throws -> [Block]? {
+        do {
+            let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
+            let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            
+            let blockEntities = try moc.fetch(fetchRequest)
+            return try blockEntities.compactMap {
+                try Block(from: $0)
+            }.sorted(by: { blockA, blockB in
+                blockA.order < blockB.order
+            })
+            
+        } catch let error {
+            print(error)
+        }
+        
+        return nil
     }
     
     func update(document: Document) -> Bool {
@@ -118,6 +141,7 @@ struct DocumentRepo {
             if let blockEntity = try BlockEntity.getEntity(id: block.id, moc: moc) {
                 blockEntity.content = block.content
                 blockEntity.modifiedAt = block.modifiedAt
+                blockEntity.order = block.order
                 try moc.save()
             }
             
@@ -202,5 +226,24 @@ struct DocumentRepo {
         }
         
         return labels
+    }
+    
+    func getLastIndex(document: Document) -> Int? {
+        do {
+            let sortDescriptor = NSSortDescriptor(key: "order", ascending: false)
+            let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "document == %@", document.id.uuidString)
+            fetchRequest.fetchLimit = 1
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            
+            if let blockEntity = try moc.fetch(fetchRequest).first {
+                return blockEntity.order
+            }
+            
+        } catch let error {
+            print(error)
+        }
+        
+        return nil
     }
 }

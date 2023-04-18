@@ -13,11 +13,17 @@ struct BlockViewContainer: View {
     let document: Document
     let blocks: [Block]
     
+    @StateObject private var vm = BlockViewContainerVM()
+    
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(blocks, id: \.id) { block in
+            ForEach(0..<blocks.count) { i in
+                let block = blocks.sorted(by: { blockA, blockB in
+                    blockA.order < blockB.order
+                })[i]
+                
                 BlockView(user: user, workspace: workspace, document: document, block: block) {
-                    
+                    vm.insertBlock(index: i + 1, user: user, workspace: workspace, document: document)
                 }
                 
             }

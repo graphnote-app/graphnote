@@ -21,6 +21,8 @@ enum DataServiceError: Error {
     case attachmentExists
     case blockEncodeFailed
     case blockCreateFailed
+    case blockFetchFailed
+    case blockUpdateFailed
 }
 
 enum DataServiceNotification: String {
@@ -105,6 +107,21 @@ class DataService: ObservableObject {
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
         do {
+            // Push all blocks order past index by one
+            guard let blocksAfter = try documentRepo.readAllWhere(orderEqualsOrGreaterThan: block.order) else {
+                throw DataServiceError.blockFetchFailed
+            }
+            
+            for after in blocksAfter.sorted(by: { blockA, blockB in
+                blockA.order > blockB.order
+            }) {
+                let block = Block(id: after.id, type: after.type, content: after.content, order: after.order + 1, createdAt: after.createdAt, modifiedAt: .now, document: after.document)
+                print(block.order)
+                if !documentRepo.update(block: block) {
+                    throw DataServiceError.blockUpdateFailed
+                }
+            }
+            
             if try documentRepo.create(block: block) == false {
                 throw DataServiceError.blockCreateFailed
             }
@@ -194,6 +211,11 @@ class DataService: ObservableObject {
         }
     }
     
+    func getLastIndex(user: User, workspace: Workspace, document: Document) -> Int? {
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        return documentRepo.getLastIndex(document: document)
+    }
+    
     func getUser(id: String) -> User? {
         let userRepo = UserRepo()
         return userRepo.read(id: id)
@@ -219,7 +241,7 @@ class DataService: ObservableObject {
         // Local updates
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
-        let updatedBlock = Block(id: block.id, type: block.type, content: content, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
+        let updatedBlock = Block(id: block.id, type: block.type, content: content, order: block.order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
         if !documentRepo.update(block: updatedBlock) {
             print("Failed to update block content: \(updatedBlock) content: \(content)")
             return
@@ -231,7 +253,7 @@ class DataService: ObservableObject {
         
         do {
             let encoder = JSONEncoder()
-            let localBlock = Block(id: block.id, type: block.type, content: content, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
+            let localBlock = Block(id: block.id, type: block.type, content: content, order: block.order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
             let contentsData = try encoder.encode(localBlock)
 
             let contents = String(data: contentsData, encoding: .utf8)!

@@ -55,58 +55,61 @@ struct BlockView: View {
     #endif
     
     var body: some View {
-//        VStack(alignment: .leading) {
-//            ForEach(blocks, id: \.id) { block in
-                switch BlockType(rawValue: block.type.rawValue) {
-                case .body:
-                    BodyView(text: block.content) { newValue in
-                        vm.content = newValue
-                        print("Update block: \(block.id) with newValue: \(newValue)")
+        Group {
+        //        VStack(alignment: .leading) {
+        //            ForEach(blocks, id: \.id) { block in
+        switch BlockType(rawValue: block.type.rawValue) {
+        case .body:
+            BodyView(text: block.content) { newValue in
+                vm.content = newValue
+                print("Update block: \(block.id) with newValue: \(newValue)")
+            }
+        case .heading1:
+            HeadingView(size: .heading1, text: block.content) { newValue in
+                vm.content = newValue
+                print("Update block: \(block.id) with newValue: \(newValue)")
+            }
+        case .heading2:
+            HeadingView(size: .heading2, text: block.content) { newValue in
+                vm.content = newValue
+                print("Update block: \(block.id) with newValue: \(newValue)")
+            }
+        case .heading3:
+            HeadingView(size: .heading3, text: block.content) { newValue in
+                vm.content = newValue
+                print("Update block: \(block.id) with newValue: \(newValue)")
+            }
+        case .heading4:
+            HeadingView(size: .heading4, text: block.content) { newValue in
+                vm.content = newValue
+                print("Update block: \(block.id) with newValue: \(newValue)")
+            }
+        case .empty:
+            EmptyBlockView()
+        case .bullet:
+            BulletView(text: block.content)
+        case .prompt:
+            PromptField(placeholder: "Press '/' for commands...", text: $value)
+                .font(.title3)
+                .foregroundColor(ColorPalette.primaryText)
+            
+                .onAppear {
+                    #if os(macOS)
+                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                        self.keyDown(with: $0)
+                        return $0
                     }
-                case .heading1:
-                    HeadingView(size: .heading1, text: block.content) { newValue in
-                        vm.content = newValue
-                        print("Update block: \(block.id) with newValue: \(newValue)")
-                    }
-                case .heading2:
-                    HeadingView(size: .heading2, text: block.content) { newValue in
-                        vm.content = newValue
-                        print("Update block: \(block.id) with newValue: \(newValue)")
-                    }
-                case .heading3:
-                    HeadingView(size: .heading3, text: block.content) { newValue in
-                        vm.content = newValue
-                        print("Update block: \(block.id) with newValue: \(newValue)")
-                    }
-                case .heading4:
-                    HeadingView(size: .heading4, text: block.content) { newValue in
-                        vm.content = newValue
-                        print("Update block: \(block.id) with newValue: \(newValue)")
-                    }
-                case .empty:
-                    EmptyBlockView()
-                case .bullet:
-                    BulletView(text: block.content)
-                case .prompt:
-                    PromptField(placeholder: "Press '/' for commands...", text: $value)
-                        .font(.title3)
-                        .foregroundColor(ColorPalette.primaryText)
-                        .onSubmit {
-                            if value == "" {
-                                print("on submit")
-                                onEnter()
+                    #endif
                             }
-                        }
-                        .onAppear {
-                            #if os(macOS)
-                            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                                self.keyDown(with: $0)
-                                return $0
-                            }
-                            #endif
-                        }
-                case .none:
-                    EmptyView()
+                    case .none:
+                        EmptyView()
+                    }
+                }
+                .onSubmit {
+                    if value == "" {
+                        print("on submit")
+                        onEnter()
+                    }
                 }
                 BlockSpacer()
 //            }.fixedSize(horizontal: false, vertical: true)

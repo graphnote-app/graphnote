@@ -21,6 +21,8 @@ struct DocumentView: View {
     let fetch: () -> Void
     let onRefresh: () -> Void
     
+    @StateObject private var vm = DocumentViewVM()
+    
     var content: some View {
         Group {
             VStack(alignment: .center, spacing: pad) {
@@ -36,7 +38,13 @@ struct DocumentView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks)
+                    VStack {
+                        BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks)
+//                        PromptField(placeholder: "Press '/'", text: .constant(""))
+//                            .onSubmit {
+//                                vm.appendBlock(user: user, workspace: workspace, document: document)
+//                            }
+                    }
                     
                     Spacer()
                 }

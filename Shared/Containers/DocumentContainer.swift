@@ -19,6 +19,7 @@ struct DocumentContainer: View {
     
     private let labelLinkCreatedNotification = Notification.Name(SyncServiceNotification.labelLinkCreated.rawValue)
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
+    private let blockCreatedNotification = Notification.Name(SyncServiceNotification.blockCreated.rawValue)
     
     init(user: User, workspace: Workspace, document: Document, onRefresh: @escaping () -> Void) {
         self.user = user
@@ -42,6 +43,9 @@ struct DocumentContainer: View {
             vm.fetch(user: user, workspace: workspace, document: document)
         }
         .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
+            vm.fetch(user: user, workspace: workspace, document: document)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
             vm.fetch(user: user, workspace: workspace, document: document)
         }
         .onChange(of: document) { _ in

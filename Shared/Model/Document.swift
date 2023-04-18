@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum DocumentError: Error {
+    case noWorkspace
+}
+
 public struct Document: Equatable, Codable, Hashable {
     public let id: UUID
     public let title: String
@@ -18,6 +22,26 @@ public struct Document: Equatable, Codable, Hashable {
         hasher.combine(id)
         hasher.combine(title)
         hasher.combine(workspace)
+    }
+    
+    public init(id: UUID, title: String, createdAt: Date, modifiedAt: Date, workspace: UUID) {
+        self.id = id
+        self.title = title
+        self.createdAt = createdAt
+        self.modifiedAt = modifiedAt
+        self.workspace = workspace
+    }
+    
+    public init(from: DocumentEntity) throws {
+        if let workspace = from.workspace {
+            self.id = from.id
+            self.title = from.title
+            self.createdAt = from.createdAt
+            self.modifiedAt = from.modifiedAt
+            self.workspace = workspace.id
+        } else {
+            throw DocumentError.noWorkspace
+        }
     }
 }
 
