@@ -61,7 +61,6 @@ class DocumentContainerVM: ObservableObject {
         do {
             if let blocks = try documentRepo.readBlocks(document: document) {
                 self.blocks = blocks
-                print(blocks)
             }
         } catch let error {
             print(error)

@@ -78,7 +78,6 @@ class SyncServiceDBPushQueue {
     func fetchQueue() {
         if let queue = try? syncMessageRepo.readAllWhere(isSynced: false) {
             self.queue = queue
-            print("ADDED: \(self.queue.map{$0.id})")
         }
     }
 }

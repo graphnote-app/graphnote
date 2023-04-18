@@ -77,7 +77,6 @@ class SyncServiceDBPullQueue {
     func fetchQueue() {
         if let queue = syncMessageRepo.readAllIDsNotSynced() {
             self.queue = queue
-            print(self.queue)
         } else {
             print("No queue")
         }

@@ -146,7 +146,6 @@ class SyncService: ObservableObject {
             while self.applyQueue?.count ?? 0 > 0 && i < 100 {
                 self.applyQueue?.fetchQueue()
                 if let queueItem = self.applyQueue?.peek(offset: i) {
-                    print("IS_APPLIED: \(queueItem.isApplied)")
                     var success = false
                     if let contentsData = queueItem.contents.data(using: .utf8) {
                         switch queueItem.type {
@@ -166,9 +165,6 @@ class SyncService: ObservableObject {
                     }
                     
                     if success {
-//                        if i > 0 {
-//                            i -= 1
-//                        }
                         let repo = SyncMessageRepo(user: user)
                         if !repo.has(id: queueItem.id) {
                             try! repo.create(id: queueItem.id, isApplied: true)
@@ -459,9 +455,7 @@ class SyncService: ObservableObject {
     
     private func processLabelLink(_ labelLink: LabelLink, user: User) -> Bool {
         do {
-            print(labelLink.workspace)
             let workspaceRepo = WorkspaceRepo(user: user)
-            print(try workspaceRepo.readAll())
             guard let workspace = try? workspaceRepo.read(workspace: labelLink.workspace) else {
                 print("Couldn't read workspace: \(labelLink.workspace)")
                 return false
@@ -469,7 +463,6 @@ class SyncService: ObservableObject {
             
             let labelRepo = LabelRepo(user: user, workspace: workspace)
             let documentRepo = DocumentRepo(user: user, workspace: workspace)
-            print(labelLink)
             if let document = try documentRepo.read(id: labelLink.document),
                let label = try labelRepo.read(id: labelLink.label) {
                 let exists = try documentRepo.attachExists(label: label, document: document)
@@ -645,11 +638,9 @@ class SyncService: ObservableObject {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
         let contents = try! encoder.encode(workspace)
-        print("contents: \(contents)")
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .workspace, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
         
         pushMessage(user: user, message: message)
-//        processWorkspace(workspace, user: user)
     }
     
     func request(message: SyncMessage, callback: @escaping (_ result: Result<HTTPURLResponse, SyncServiceError>) -> Void) {
@@ -693,10 +684,6 @@ class SyncService: ObservableObject {
                 callback(.success(response))
                 return
             }
-            
-//            if let data {
-//                print(data)
-//            }
         }
         
         task.resume()
@@ -709,7 +696,6 @@ class SyncService: ObservableObject {
         let contents = try! encoder.encode(user)
         
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
-//        createMessage(user: user, message: message)
         // Save message to local queue
         pushMessage(user: user, message: message)
         
@@ -721,11 +707,9 @@ class SyncService: ObservableObject {
         let contents = try! encoder.encode(document)
 
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
-//        createMessage(user: user, message: message)
+
         // Save message to local queue
         pushMessage(user: user, message: message)
-//        processDocument(document, user: user)
-        
     }
     
     func fetchMessageIDs(user: User) {
@@ -786,7 +770,6 @@ class SyncService: ObservableObject {
                         let lastSyncTime = syncMessageIDsResult.lastSyncTime
                         let lastSyncDate = Date(timeIntervalSince1970: lastSyncTime)
                         let ids = syncMessageIDsResult.ids
-                        print("ids: \(ids)")
                         // Save ids then set sync time if successful
                         do {
                             for id in ids {
