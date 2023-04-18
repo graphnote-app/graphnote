@@ -13,6 +13,7 @@ enum SyncMessageType: String, Codable {
     case document
     case label
     case labelLink
+    case block
 }
 
 enum SyncMessageAction: String, Codable {

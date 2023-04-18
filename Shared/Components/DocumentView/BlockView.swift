@@ -8,24 +8,39 @@
 import SwiftUI
 
 struct BlockView: View {
-    let blocks: [Block]
+    let user: User
+    let workspace: Workspace
+    let document: Document
+    let block: Block
     let onEnter: (() -> Void)
+    
+    @StateObject private var vm: BlockViewVM
+    
+    init(user: User, workspace: Workspace, document: Document, block: Block, onEnter: @escaping () -> Void) {
+        self.user = user
+        self.workspace = workspace
+        self.document = document
+        self.block = block
+        self.onEnter = onEnter
+        self._vm = StateObject(wrappedValue: BlockViewVM(text: block.content, user: user, workspace: workspace, document: document, block: block))
+    }
     
     @State private var value = ""
     @State private var nTopSpacers = 0
     @FocusState var isFocused: Bool
-    @State private var postContentEmptiesSelectedStatus = [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-    ]
+//    @State private var postContentEmptiesSelectedStatus = [
+//        true,
+//        false,
+//        false,
+//        false,
+//        false,
+//        false,
+//        false,
+//        false,
+//        false,
+//        false,
+//    ]
+    
     
     private let PROMPT_ID = UUID()
 
@@ -40,27 +55,32 @@ struct BlockView: View {
     #endif
     
     var body: some View {
-        VStack(alignment: .leading) {
-            ForEach(blocks, id: \.id) { block in
+//        VStack(alignment: .leading) {
+//            ForEach(blocks, id: \.id) { block in
                 switch BlockType(rawValue: block.type.rawValue) {
                 case .body:
                     BodyView(text: block.content) { newValue in
+                        vm.content = newValue
                         print("Update block: \(block.id) with newValue: \(newValue)")
                     }
                 case .heading1:
                     HeadingView(size: .heading1, text: block.content) { newValue in
+                        vm.content = newValue
                         print("Update block: \(block.id) with newValue: \(newValue)")
                     }
                 case .heading2:
                     HeadingView(size: .heading2, text: block.content) { newValue in
+                        vm.content = newValue
                         print("Update block: \(block.id) with newValue: \(newValue)")
                     }
                 case .heading3:
                     HeadingView(size: .heading3, text: block.content) { newValue in
+                        vm.content = newValue
                         print("Update block: \(block.id) with newValue: \(newValue)")
                     }
                 case .heading4:
                     HeadingView(size: .heading4, text: block.content) { newValue in
+                        vm.content = newValue
                         print("Update block: \(block.id) with newValue: \(newValue)")
                     }
                 case .empty:
@@ -89,7 +109,7 @@ struct BlockView: View {
                     EmptyView()
                 }
                 BlockSpacer()
-            }.fixedSize(horizontal: false, vertical: true)
+//            }.fixedSize(horizontal: false, vertical: true)
 //            ForEach(0..<postContentEmptiesSelectedStatus.count, id: \.self) { index in
 //                let status = postContentEmptiesSelectedStatus[index]
 //
@@ -131,6 +151,7 @@ struct BlockView: View {
 //                BulletView(text: "Bullet point number three")
 //                BulletView(text: "Bullet point number four")
 //            }
-        }.submitScope()
+//        }
+//        .submitScope()
     }
 }

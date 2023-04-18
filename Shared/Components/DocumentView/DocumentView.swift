@@ -36,10 +36,7 @@ struct DocumentView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockView(blocks: blocks) {
-                        print("hello")
-                        
-                    }
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks)
                     
                     Spacer()
                 }

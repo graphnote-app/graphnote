@@ -58,8 +58,14 @@ class DocumentContainerVM: ObservableObject {
             self.labels = labels
         }
         
-        if let blocks = try? documentRepo.readBlocks(document: document) {
-            self.blocks = blocks
+        do {
+            if let blocks = try documentRepo.readBlocks(document: document) {
+                self.blocks = blocks
+                print(blocks)
+            }
+        } catch let error {
+            print(error)
+            return
         }
         
         self.user = user

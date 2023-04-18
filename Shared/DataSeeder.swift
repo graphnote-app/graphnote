@@ -43,7 +43,8 @@ struct DataSeeder{
         let workspaces = [workspace, workspace1]
         let labels = [label, label2, label3, label4, label5]
         let documents = [document0, document1, document2]
-        let blocks = [welcomeBlock0, welcomeBlock1, welcomeBlock2, block0, block1, block2, block3, block4, block5]
+        let welcomeBlocks = [welcomeBlock0, welcomeBlock1, welcomeBlock2]
+        let otherBlocks = [block0, block1, block2, block3, block4, block5]
         
         do {
 
@@ -63,13 +64,9 @@ struct DataSeeder{
                 try! DataService.shared.createLabel(user: user, label: label, workspace: workspace)
             }
             
-            let documentRepo = DocumentRepo(user: user, workspace: workspace)
-            for i in 0..<blocks.count {
-                let block = blocks[i]
-                if try !documentRepo.create(block: block) {
-                    print("failed to create block: \(block)")
-                    return false
-                }
+            for i in 0..<welcomeBlocks.count {
+                let block = welcomeBlocks[i]
+                try! DataService.shared.createBlock(user: user, workspace: workspace, document: document0, block: block)
             }
             
             try! DataService.shared.attachLabel(user: user, label: label, document: document1, workspace: workspace)

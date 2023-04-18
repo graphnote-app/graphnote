@@ -33,7 +33,7 @@ struct DocumentRepo {
             blockEntity.modifiedAt = block.modifiedAt
             blockEntity.document = documentEntity
             
-            try? moc.save()
+            try moc.save()
             
             return true
             
@@ -103,6 +103,21 @@ struct DocumentRepo {
             if let documentEntity = try DocumentEntity.getEntity(id: document.id, moc: moc) {
                 documentEntity.title = document.title
                 documentEntity.modifiedAt = document.modifiedAt
+                try moc.save()
+            }
+            
+            return true
+        } catch let error {
+            print(error)
+            return false
+        }
+    }
+    
+    func update(block: Block) -> Bool {
+        do {
+            if let blockEntity = try BlockEntity.getEntity(id: block.id, moc: moc) {
+                blockEntity.content = block.content
+                blockEntity.modifiedAt = block.modifiedAt
                 try moc.save()
             }
             

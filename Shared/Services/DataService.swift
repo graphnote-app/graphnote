@@ -19,6 +19,8 @@ enum DataServiceError: Error {
     case labelEncodeFailed
     case labelLinkEncodeFailed
     case attachmentExists
+    case blockEncodeFailed
+    case blockCreateFailed
 }
 
 enum DataServiceNotification: String {
@@ -27,6 +29,8 @@ enum DataServiceNotification: String {
     case documentCreated
     case labelCreated
     case labelLinkCreated
+    case blockUpdatedLocally
+    case blockCreated
 }
 
 class DataService: ObservableObject {
@@ -94,6 +98,35 @@ class DataService: ObservableObject {
                 
                 pushMessage(message, user: user)
             }
+        }
+    }
+    
+    func createBlock(user: User, workspace: Workspace, document: Document, block: Block, sync: Bool = true) throws {
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        
+        do {
+            if try documentRepo.create(block: block) == false {
+                throw DataServiceError.blockCreateFailed
+            }
+
+        } catch let error {
+            print(error)
+            throw error
+        }
+        
+        postNotification(.blockCreated)
+        
+        if sync {
+            guard let data = encodeBlock(block: block) else {
+                throw DataServiceError.blockEncodeFailed
+            }
+            
+            guard let message = packageMessage(id: user.id, type: .block, action: .create, contents: data, isApplied: true) else {
+                throw DataServiceError.messagePackFailed
+            }
+            
+            pushMessage(message, user: user)
+
         }
     }
     
@@ -182,6 +215,34 @@ class DataService: ObservableObject {
         syncService.pushMessage(user: user, message: message)
     }
     
+    func updateBlock(user: User, workspace: Workspace, document: Document, block: Block, content: String) {
+        // Local updates
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        
+        let updatedBlock = Block(id: block.id, type: block.type, content: content, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
+        if !documentRepo.update(block: updatedBlock) {
+            print("Failed to update block content: \(updatedBlock) content: \(content)")
+            return
+        }
+        
+        self.postNotification(.blockUpdatedLocally)
+        
+        // Sync to server
+        
+        do {
+            let encoder = JSONEncoder()
+            let localBlock = Block(id: block.id, type: block.type, content: content, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
+            let contentsData = try encoder.encode(localBlock)
+
+            let contents = String(data: contentsData, encoding: .utf8)!
+
+            let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .block, action: .update, isSynced: false, isApplied: true, contents: contents)
+            syncService.pushMessage(user: user, message: message)
+        } catch let error {
+            print(error)
+        }
+    }
+    
     func startWatching(user: User) {
         _ = syncService.$syncStatus.sink { value in
             self.syncStatus = value
@@ -261,6 +322,15 @@ class DataService: ObservableObject {
     private func encodeLabel(label: Label) -> Data? {
         do {
             return try encoder.encode(label)
+        } catch let error {
+            print(error)
+            return nil
+        }
+    }
+    
+    private func encodeBlock(block: Block) -> Data? {
+        do {
+            return try encoder.encode(block)
         } catch let error {
             print(error)
             return nil

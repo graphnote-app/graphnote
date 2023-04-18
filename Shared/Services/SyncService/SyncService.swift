@@ -30,6 +30,8 @@ enum SyncServiceNotification: String {
     case documentUpdateReceived
     case labelCreated
     case labelLinkCreated
+    case blockUpdated
+    case blockCreated
 }
 
 enum SyncServiceStatus {
@@ -158,6 +160,8 @@ class SyncService: ObservableObject {
                             success = self.syncMessageLabel(user: user, message: queueItem, data: contentsData)
                         case .labelLink:
                             success = self.syncMessageLabelLink(user: user, message: queueItem, data: contentsData)
+                        case .block:
+                            success = self.syncMessageBlock(user: user, message: queueItem, data: contentsData)
                         }
                     }
                     
@@ -327,6 +331,31 @@ class SyncService: ObservableObject {
         return false
     }
     
+    private func syncMessageBlock(user: User, message: SyncMessage, data: Data) -> Bool {
+        switch message.action {
+        case .create:
+            let block = try! decoder.decode(Block.self, from: data)
+            guard let workspace = try? WorkspaceRepo(user: user).read(workspace: block.document.workspace) else {
+                return false
+            }
+            
+            return self.processBlock(block, workspace: workspace, user: user)
+        case .update:
+            let block = try! decoder.decode(Block.self, from: data)
+            guard let workspace = try? WorkspaceRepo(user: user).read(workspace: block.document.workspace) else {
+                return false
+            }
+            
+            return self.updateBlock(block, workspace: workspace, user: user)
+        case .delete:
+            break
+        case .read:
+            break
+        }
+        
+        return false
+    }
+    
     private func syncMessageLabel(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
@@ -483,6 +512,31 @@ class SyncService: ObservableObject {
             print("Document creation failed")
             return false
         }
+    }
+    
+    private func updateBlock(_ block: Block, workspace: Workspace, user: User) -> Bool {
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        if documentRepo.update(block: block) {
+            self.postSyncNotification(.blockUpdated)
+            return true
+        } else {
+            print("Block update failed")
+            return false
+        }
+    }
+    
+    private func processBlock(_ block: Block, workspace: Workspace, user: User) -> Bool {
+        do {
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+            if try documentRepo.create(block: block) {
+                self.postSyncNotification(.blockCreated)
+                return true
+            }
+        } catch let error {
+            print(error)
+        }
+        
+        return false
     }
     
     private func processWorkspace(_ workspace: Workspace, user: User) -> Bool {

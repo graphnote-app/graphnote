@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Block {
+struct Block: Codable {
     let id: UUID
     let type: BlockType
     let content: String
