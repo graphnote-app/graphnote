@@ -12,6 +12,8 @@ import UIKit
 
 import Combine
 
+let seed = false
+
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
 //    @Environment(\.scenePhase) private var scenePhase
@@ -307,20 +309,20 @@ struct ContentView: View {
                     vm.initializeUser()
                     
                     
-//                    if seed {
-//                        if let user = vm.user {
-//                            DataService.shared.startWatching(user: user)
-//                            seeding = true
-//                            if !DataSeeder.seed(user: user) {
-//                                print("seed failed")
-//                                #if DEBUG
-//                                fatalError()
-//                                #endif
-//                            }
-//                            seeding = false
-//                            seeded = true
-//                        }
-//                    }
+                    if seed {
+                        if let user = vm.user {
+                            DataService.shared.startWatching(user: user)
+                            seeding = true
+                            if !DataSeeder.seed(user: user) {
+                                print("seed failed")
+                                #if DEBUG
+                                fatalError()
+                                #endif
+                            }
+                            seeding = false
+                            seeded = true
+                        }
+                    }
                     
                     vm.initializeUserWorkspaces()
                     if let user = vm.user {

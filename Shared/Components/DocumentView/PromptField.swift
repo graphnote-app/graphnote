@@ -13,6 +13,7 @@ fileprivate let bodyFontSize: CGFloat = 18.0
 struct PromptField: View {
     let placeholder: String
     @Binding var text: String
+    let onSubmit: () -> Void
     
     var body: some View {
         TextField(placeholder, text: $text, axis: .vertical)
@@ -20,13 +21,17 @@ struct PromptField: View {
             .disableAutocorrection(true)
             .textFieldStyle(.plain)
             .multilineTextAlignment(.leading)
+            .onSubmit(onSubmit)
     }
 }
 
 #else
 
 class GNTextField: UITextField {
-    init() {
+    let onSubmit: () -> Void
+    
+    init(onSubmit: @escaping () -> Void) {
+        self.onSubmit = onSubmit
         super.init(frame: .zero)
         self.delegate = self
     }
@@ -43,7 +48,7 @@ class GNTextField: UITextField {
 
 extension GNTextField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("Return")
+        self.onSubmit()
         return true
     }
 }
@@ -74,13 +79,14 @@ struct GNTextFieldView: UIViewRepresentable {
 struct PromptField: UIViewRepresentable {
     let placeholder: String
     @Binding var text: String
+    let onSubmit: () -> Void
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
         
     }
     
     func makeUIView(context: Context) -> some UITextField {
-        let textField = GNTextField()
+        let textField = GNTextField(onSubmit: onSubmit)
         textField.placeholder = placeholder
         return textField
     }

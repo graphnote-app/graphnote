@@ -12,23 +12,32 @@ struct BlockViewContainer: View {
     let workspace: Workspace
     let document: Document
     let blocks: [Block]
+    let action: () -> Void
     
     @StateObject private var vm = BlockViewContainerVM()
-    
+
+    private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
+    private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
+
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(0..<blocks.count) { i in
-                let block = blocks.sorted(by: { blockA, blockB in
-                    blockA.order < blockB.order
-                })[i]
-                
+            ForEach(blocks.sorted(by: { a, b in
+                a.order < b.order
+            }), id: \.id) { block in
                 BlockView(user: user, workspace: workspace, document: document, block: block) {
-                    vm.insertBlock(index: i + 1, user: user, workspace: workspace, document: document)
+                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document)
+                    action()
                 }
-                
+                .id(block.id)
             }
-            
         }
+        .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
+            action()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
+            action()
+        }
+
         .fixedSize(horizontal: false, vertical: true)
         .submitScope()
     }

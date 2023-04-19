@@ -11,8 +11,8 @@ class BlockViewVM: ObservableObject {
     private let saveInterval = 2.0
     private var timer: Timer? = nil
     
-    @Published var content: String = ""
-    private var prevContent: String = ""
+    @Published var content: String = "INIT"
+    private var prevContent: String = "INIT"
     
     let user: User
     let workspace: Workspace
@@ -38,6 +38,25 @@ class BlockViewVM: ObservableObject {
         if content != prevContent && content != block.content {
             DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block, content: content)
             prevContent = content
+            fetch()
         }
+    }
+    
+    func fetch() {
+        if let block = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: block.id) {
+            if block.content != content {
+                content = block.content
+                
+                prevContent = content
+            }
+        } else {
+            #if DEBUG
+            fatalError()
+            #endif
+        }
+    }
+    
+    func deleteBlock(id: UUID) {
+        print("delete: \(id)")
     }
 }

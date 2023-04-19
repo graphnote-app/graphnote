@@ -13,6 +13,5 @@ enum BlockType: String, Codable {
     case heading4
     case empty
     case bullet
-    case prompt
 }
 

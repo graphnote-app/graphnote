@@ -139,6 +139,7 @@ struct WorkspaceRepo {
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace, moc: moc) else {
                 print("worksace entity does not exists")
                 #if DEBUG
+
                 fatalError()
                 #endif
                 return nil

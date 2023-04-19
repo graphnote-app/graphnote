@@ -15,13 +15,17 @@ struct DocumentView: View {
     @Binding var title: String
     @Binding var labels: [Label]
     @Binding var blocks: [Block]
+    
     let user: User
     let workspace: Workspace
     let document: Document
     let fetch: () -> Void
+    let fetchBlocks: () -> Void
     let onRefresh: () -> Void
     
+    
     @StateObject private var vm = DocumentViewVM()
+    @State private var promptText = ""
     
     var content: some View {
         Group {
@@ -39,11 +43,15 @@ struct DocumentView: View {
                 }
                 HStack() {
                     VStack {
-                        BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks)
-//                        PromptField(placeholder: "Press '/'", text: .constant(""))
-//                            .onSubmit {
-//                                vm.appendBlock(user: user, workspace: workspace, document: document)
-//                            }
+                        BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks) {
+                            fetchBlocks()
+                        }
+                        
+                        PromptField(placeholder: "Press '/'", text: $promptText) {
+                            vm.appendBlock(user: user, workspace: workspace, document: document, text: promptText)
+                            promptText = ""
+                            fetchBlocks()
+                        }
                     }
                     
                     Spacer()

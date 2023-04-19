@@ -108,7 +108,7 @@ class DataService: ObservableObject {
         
         do {
             // Push all blocks order past index by one
-            guard let blocksAfter = try documentRepo.readAllWhere(orderEqualsOrGreaterThan: block.order) else {
+            guard let blocksAfter = try documentRepo.readAllWhere(document: document, orderEqualsOrGreaterThan: block.order) else {
                 throw DataServiceError.blockFetchFailed
             }
             
@@ -125,6 +125,8 @@ class DataService: ObservableObject {
             if try documentRepo.create(block: block) == false {
                 throw DataServiceError.blockCreateFailed
             }
+            
+            // - TODO: Should I sync now?
 
         } catch let error {
             print(error)
@@ -219,6 +221,32 @@ class DataService: ObservableObject {
     func getUser(id: String) -> User? {
         let userRepo = UserRepo()
         return userRepo.read(id: id)
+    }
+    
+    func readBlock(user: User, workspace: Workspace, document: Document, block: UUID) -> Block? {
+        do {
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+            return try documentRepo.readBlock(document: document, block: block)
+        } catch let error {
+            print(error)
+            #if DEBUG
+            fatalError()
+            #endif
+            return nil
+        }
+    }
+    
+    func readBlocks(user: User, workspace: Workspace, document: Document) -> [Block]? {
+        do {
+            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+            return try documentRepo.readBlocks(document: document)
+        } catch let error {
+            print(error)
+            #if DEBUG
+            fatalError()
+            #endif
+            return nil
+        }
     }
     
     func updateDocumentTitle(user: User, workspace: Workspace, document: Document, title: String) {

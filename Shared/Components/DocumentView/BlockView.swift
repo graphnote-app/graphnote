@@ -25,30 +25,22 @@ struct BlockView: View {
         self._vm = StateObject(wrappedValue: BlockViewVM(text: block.content, user: user, workspace: workspace, document: document, block: block))
     }
     
-    @State private var value = ""
-    @State private var nTopSpacers = 0
+    private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
+    private let blockCreatedNotification = Notification.Name(SyncServiceNotification.blockCreated.rawValue)
+    
     @FocusState var isFocused: Bool
-//    @State private var postContentEmptiesSelectedStatus = [
-//        true,
-//        false,
-//        false,
-//        false,
-//        false,
-//        false,
-//        false,
-//        false,
-//        false,
-//        false,
-//    ]
+    @State private var prevContent = "INIT"
+    @State private var isKeyDown = false
     
-    
-    private let PROMPT_ID = UUID()
-
     #if os(macOS)
     private func keyDown(with event: NSEvent) {
         if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
-            if value == "" && nTopSpacers > 0 {
-                nTopSpacers -= 1
+            if self.isKeyDown == false {
+                self.isKeyDown = true
+                if vm.content == "" {
+                    vm.deleteBlock(id: block.id)
+                }
+                prevContent = vm.content
             }
         }
     }
@@ -56,105 +48,59 @@ struct BlockView: View {
     
     var body: some View {
         Group {
-        //        VStack(alignment: .leading) {
-        //            ForEach(blocks, id: \.id) { block in
-        switch BlockType(rawValue: block.type.rawValue) {
-        case .body:
-            BodyView(text: block.content) { newValue in
-                vm.content = newValue
-                print("Update block: \(block.id) with newValue: \(newValue)")
-            }
-        case .heading1:
-            HeadingView(size: .heading1, text: block.content) { newValue in
-                vm.content = newValue
-                print("Update block: \(block.id) with newValue: \(newValue)")
-            }
-        case .heading2:
-            HeadingView(size: .heading2, text: block.content) { newValue in
-                vm.content = newValue
-                print("Update block: \(block.id) with newValue: \(newValue)")
-            }
-        case .heading3:
-            HeadingView(size: .heading3, text: block.content) { newValue in
-                vm.content = newValue
-                print("Update block: \(block.id) with newValue: \(newValue)")
-            }
-        case .heading4:
-            HeadingView(size: .heading4, text: block.content) { newValue in
-                vm.content = newValue
-                print("Update block: \(block.id) with newValue: \(newValue)")
-            }
-        case .empty:
-            EmptyBlockView()
-        case .bullet:
-            BulletView(text: block.content)
-        case .prompt:
-            PromptField(placeholder: "Press '/' for commands...", text: $value)
-                .font(.title3)
-                .foregroundColor(ColorPalette.primaryText)
-            
-                .onAppear {
-                    #if os(macOS)
-                    NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                        self.keyDown(with: $0)
-                        return $0
-                    }
-                    #endif
-                            }
-                    case .none:
-                        EmptyView()
-                    }
+            switch BlockType(rawValue: block.type.rawValue) {
+            case .body:
+                BodyView(text: vm.content) { newValue in
+                    vm.content = newValue
+                    print("Update block: \(block.id) with newValue: \(newValue)")
                 }
-                .onSubmit {
-                    if value == "" {
-                        print("on submit")
-                        onEnter()
-                    }
+            case .heading1:
+                HeadingView(size: .heading1, text: vm.content) { newValue in
+                    vm.content = newValue
+                    print("Update block: \(block.id) with newValue: \(newValue)")
                 }
-                BlockSpacer()
-//            }.fixedSize(horizontal: false, vertical: true)
-//            ForEach(0..<postContentEmptiesSelectedStatus.count, id: \.self) { index in
-//                let status = postContentEmptiesSelectedStatus[index]
-//
-//                if status == true {
-//                    PromptField(placeholder: "Press '/' for commands...", text: $value)
-//                           .font(.title3)
-//                           .focused($isFocused)
-//                           .foregroundColor(ColorPalette.primaryText)
-//                           .onSubmit {
-//                               if value == "" {
-//                                   print("on submit")
-//                                   onEnter()
-//                               }
-//                           }
-//                           .onAppear {
-//                               #if os(macOS)
-//                               NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-//                                   self.keyDown(with: $0)
-//                                   return $0
-//                               }
-//                               #endif
-//                           }
-//                } else {
-//                    EmptyBlockView()
-//                        .onTapGesture {
-//                            for localIndex in 0..<postContentEmptiesSelectedStatus.count {
-//                                postContentEmptiesSelectedStatus[localIndex] = false
-//                            }
-//
-//                            postContentEmptiesSelectedStatus[index] = true
-//                            isFocused = true
-//                        }
-//                }
-//
-//            }
-//            Group {
-//                BulletView(text: "Bullet point number one")
-//                BulletView(text: "Bullet point number two")
-//                BulletView(text: "Bullet point number three")
-//                BulletView(text: "Bullet point number four")
-//            }
-//        }
-//        .submitScope()
+            case .heading2:
+                HeadingView(size: .heading2, text: vm.content) { newValue in
+                    vm.content = newValue
+                    print("Update block: \(block.id) with newValue: \(newValue)")
+                }
+            case .heading3:
+                HeadingView(size: .heading3, text: vm.content) { newValue in
+                    vm.content = newValue
+                    print("Update block: \(block.id) with newValue: \(newValue)")
+                }
+            case .heading4:
+                HeadingView(size: .heading4, text: vm.content) { newValue in
+                    vm.content = newValue
+                    print("Update block: \(block.id) with newValue: \(newValue)")
+                }
+            case .empty:
+                EmptyBlockView()
+            case .bullet:
+                BulletView(text: block.content)
+            case .none:
+                EmptyView()
+            }
+        }
+        .onSubmit {
+            onEnter()
+        }
+        .onAppear {
+            #if os(macOS)
+            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                self.isKeyDown = false
+                self.keyDown(with: $0)
+                return $0
+            }
+            #endif
+        }
+        .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
+            vm.fetch()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
+            vm.fetch()
+        }
+        .id("\(block.content):\(block.order)")
+        BlockSpacer()
     }
 }

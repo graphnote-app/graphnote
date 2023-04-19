@@ -51,6 +51,19 @@ class DocumentContainerVM: ObservableObject {
     var workspace: Workspace? = nil
     var user: User? = nil
     
+    func fetchBlocks(user: User, workspace: Workspace, document: Document) {
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        
+        do {
+            if let blocks = try documentRepo.readBlocks(document: document) {
+                self.blocks = blocks
+            }
+        } catch let error {
+            print(error)
+            return
+        }
+    }
+    
     func fetch(user: User, workspace: Workspace, document: Document) {
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         

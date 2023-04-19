@@ -101,10 +101,26 @@ struct DocumentRepo {
         }
     }
     
-    func readAllWhere(orderEqualsOrGreaterThan: Int) throws -> [Block]? {
+    func readBlock(document: Document, block: UUID) throws -> Block? {
+        do {
+            let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", block.uuidString)
+            let blockEntities = try moc.fetch(fetchRequest)
+            return blockEntities.compactMap { blockEntity in
+                try? Block(from: blockEntity)
+            }.first
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
+    func readAllWhere(document: Document, orderEqualsOrGreaterThan: Int) throws -> [Block]? {
         do {
             let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
             let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "document.id == %@ && order > %@", document.id.uuidString, NSNumber(value: orderEqualsOrGreaterThan))
             fetchRequest.sortDescriptors = [sortDescriptor]
             
             let blockEntities = try moc.fetch(fetchRequest)
@@ -232,7 +248,7 @@ struct DocumentRepo {
         do {
             let sortDescriptor = NSSortDescriptor(key: "order", ascending: false)
             let fetchRequest = BlockEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "document == %@", document.id.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "document.id == %@", document.id.uuidString)
             fetchRequest.fetchLimit = 1
             fetchRequest.sortDescriptors = [sortDescriptor]
             
