@@ -47,7 +47,7 @@ struct ContentView: View {
     private let workspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
     private let labelLinkCreatedNotification = Notification.Name(DataServiceNotification.labelLinkCreated.rawValue)
     private let labelCreatedNotification = Notification.Name(DataServiceNotification.labelCreated.rawValue)
-//    private let documentCreatedNotification = Notification.Name(SyncServiceNotification.documentCreated.rawValue)
+    private let userCreatedNotification = Notification.Name(DataServiceNotification.userCreated.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
@@ -92,9 +92,12 @@ struct ContentView: View {
                                 seeding = false
                                 
                             } else {
+                                DataService.shared.setup(user: user)
+                                DataService.shared.startWatching(user: user)
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
                             }
+                            
                             DataService.shared.fetchMessageIDs(user: user)
                             self.initialized = true
                             checkAuthStatus(user: user)
@@ -271,6 +274,14 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: labelCreatedNotification)) { notification in
             DispatchQueue.main.async {
                 vm.fetch()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: userCreatedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.initializeUser()
+                vm.initializeUserWorkspaces()
+                vm.fetch()
+                vm.fetchDocument()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in

@@ -33,6 +33,7 @@ enum DataServiceNotification: String {
     case labelLinkCreated
     case blockUpdatedLocally
     case blockCreated
+    case userCreated
 }
 
 class DataService: ObservableObject {
@@ -205,6 +206,18 @@ class DataService: ObservableObject {
         }
     }
     
+    func createUserMessage(user: User) throws {
+        guard let data = encodeUser(user: user) else {
+            throw DataServiceError.userEncodeFailed
+        }
+        
+        guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data, isApplied: true) else {
+            throw DataServiceError.messagePackFailed
+        }
+        
+        pushMessage(message, user: user)
+    }
+    
     func createUser(user: User, sync: Bool = true) throws {
         if UserBuilder.create(user: user) == false {
             #if DEBUG
@@ -213,42 +226,19 @@ class DataService: ObservableObject {
             throw DataServiceError.userCreateFailed
         }
         
+        postNotification(.userCreated)
+        
         if sync {
             guard let data = encodeUser(user: user) else {
-                #if DEBUG
-                fatalError()
-                #endif
                 throw DataServiceError.userEncodeFailed
             }
             
             guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data, isApplied: true) else {
-                #if DEBUG
-                fatalError()
-                #endif
                 throw DataServiceError.messagePackFailed
             }
             
             pushMessage(message, user: user)
-                
         }
-    }
-    
-    func createUserMessage(user: User) throws {
-        guard let data = encodeUser(user: user) else {
-            #if DEBUG
-            fatalError()
-            #endif
-            throw DataServiceError.userEncodeFailed
-        }
-        
-        guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data, isApplied: true) else {
-            #if DEBUG
-            fatalError()
-            #endif
-            throw DataServiceError.messagePackFailed
-        }
-        
-        pushMessage(message, user: user)
     }
     
     func getLastIndex(user: User, workspace: Workspace, document: Document) -> Int? {

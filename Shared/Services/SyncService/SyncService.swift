@@ -150,6 +150,13 @@ class SyncService: ObservableObject {
             while self.applyQueue?.count ?? 0 > 0 && i < 100 {
                 self.applyQueue?.fetchQueue()
                 if let queueItem = self.applyQueue?.peek(offset: i) {
+                    if queueItem.isApplied == true {
+                        #if DEBUG
+                        fatalError()
+                        #endif
+                        return
+                    }
+                    
                     var success = false
                     if let contentsData = queueItem.contents.data(using: .utf8) {
                         switch queueItem.type {
@@ -303,9 +310,7 @@ class SyncService: ObservableObject {
     private func syncMessageUser(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
-            if UserBuilder.create(user: user) {
-                return true
-            }
+            return UserBuilder.create(user: user)
         default:
             break
         }
@@ -702,17 +707,17 @@ class SyncService: ObservableObject {
         task.resume()
     }
     
-    func createUser(user: User) {
-        // Create message
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .millisecondsSince1970
-        let contents = try! encoder.encode(user)
-        
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
-        // Save message to local queue
-        pushMessage(user: user, message: message)
-        
-    }
+//    func createUser(user: User) {
+//        // Create message
+//        let encoder = JSONEncoder()
+//        encoder.dateEncodingStrategy = .millisecondsSince1970
+//        let contents = try! encoder.encode(user)
+//        
+//        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
+//        // Save message to local queue
+//        pushMessage(user: user, message: message)
+//
+//    }
     
     func createDocument(user: User, document: Document) {
         let encoder = JSONEncoder()

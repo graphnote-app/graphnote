@@ -49,7 +49,7 @@ struct DataSeeder{
         
         do {
             
-            try! DataService.shared.createUser(user: user)
+            try! DataService.shared.createUserMessage(user: user)
             
             for workspace in workspaces {
                 try! DataService.shared.createWorkspace(user: user, workspace: workspace)

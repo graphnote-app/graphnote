@@ -31,8 +31,11 @@ class SyncServiceDBPushQueue {
             print("Type: \(message.type)")
             print("Action: \(message.action)")
             try syncMessageRepo.create(message: message)
+            
             // Add to runtime queue if successful
-            self.queue.append(message)
+            if message.isApplied == false {
+                self.queue.append(message)
+            }
             return true
         } catch let error {
             print(error)
