@@ -32,6 +32,7 @@ enum SyncServiceNotification: String {
     case labelLinkCreated
     case blockUpdated
     case blockCreated
+    case userSyncCreated
 }
 
 enum SyncServiceStatus {
@@ -310,7 +311,11 @@ class SyncService: ObservableObject {
     private func syncMessageUser(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
-            return UserBuilder.create(user: user)
+            let success = UserBuilder.create(user: user)
+            if success {
+                self.postSyncNotification(.userSyncCreated)
+            }
+            return success
         default:
             break
         }

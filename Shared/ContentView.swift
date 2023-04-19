@@ -47,7 +47,7 @@ struct ContentView: View {
     private let workspaceCreatedNotification = Notification.Name(SyncServiceNotification.workspaceCreated.rawValue)
     private let labelLinkCreatedNotification = Notification.Name(DataServiceNotification.labelLinkCreated.rawValue)
     private let labelCreatedNotification = Notification.Name(DataServiceNotification.labelCreated.rawValue)
-    private let userCreatedNotification = Notification.Name(DataServiceNotification.userCreated.rawValue)
+    private let userCreatedNotification = Notification.Name(SyncServiceNotification.userSyncCreated.rawValue)
     
     func checkAuthStatus(user: User) {
         AuthService.checkAuthStatus(user: user) { state in
