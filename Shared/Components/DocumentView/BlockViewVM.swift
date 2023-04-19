@@ -46,14 +46,14 @@ class BlockViewVM: ObservableObject {
         if let block = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: block.id) {
             if block.content != content {
                 content = block.content
-                
                 prevContent = content
             }
-        } else {
-            #if DEBUG
-            fatalError()
-            #endif
         }
+//        } else {
+//            #if DEBUG
+//            fatalError()
+//            #endif
+//        }
     }
     
     func deleteBlock(id: UUID) {

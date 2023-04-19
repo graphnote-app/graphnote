@@ -23,6 +23,7 @@ enum DataServiceError: Error {
     case blockCreateFailed
     case blockFetchFailed
     case blockUpdateFailed
+    case workspaceReadFailed
 }
 
 enum DataServiceNotification: String {
@@ -120,7 +121,7 @@ class DataService: ObservableObject {
         
         do {
             // Push all blocks order past index by one
-            guard let blocksAfter = try documentRepo.readAllWhere(document: document, orderEqualsOrGreaterThan: block.order) else {
+            guard let blocksAfter = try documentRepo.readAllWhere(document: document, orderEqualsOrGreaterThan: block.order - 1) else {
                 throw DataServiceError.blockFetchFailed
             }
             
@@ -168,7 +169,17 @@ class DataService: ObservableObject {
             throw DataServiceError.documentCreateFailed
         }
         
+        guard let workspace = try workpaceRepo.read(workspace: document.workspace) else {
+            throw DataServiceError.workspaceReadFailed
+        }
+        
+        let now = Date.now
+        let prompt = Block(id: UUID(), type: .prompt, content: "", order: 0, createdAt: now, modifiedAt: now, document: document)
+        
+        try createBlock(user: user, workspace: workspace, document: document, block: prompt)
+        
         postNotification(.documentCreated)
+        postNotification(.blockCreated)
         
         if sync {
             guard let data = encodeDocument(document: document) else {

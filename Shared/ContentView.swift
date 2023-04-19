@@ -279,9 +279,13 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: userCreatedNotification)) { notification in
             DispatchQueue.main.async {
                 vm.initializeUser()
-                vm.initializeUserWorkspaces()
-                vm.fetch()
-                vm.fetchDocument()
+                if let user = vm.user {
+                    DataService.shared.setup(user: user)
+                    DataService.shared.startWatching(user: user)
+                    vm.initializeUserWorkspaces()
+                    vm.fetch()
+                    vm.fetchDocument()
+                }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: networkMessageIDsFetchedNotification)) { notification in

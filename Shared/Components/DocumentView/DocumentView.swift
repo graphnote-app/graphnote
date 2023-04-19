@@ -42,16 +42,8 @@ struct DocumentView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    VStack {
-                        BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks) {
-                            fetchBlocks()
-                        }
-                        
-                        PromptField(placeholder: "Press '/'", text: $promptText) {
-                            vm.appendBlock(user: user, workspace: workspace, document: document, text: promptText)
-                            promptText = ""
-                            fetchBlocks()
-                        }
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: $blocks) {
+                        fetchBlocks()
                     }
                     
                     Spacer()

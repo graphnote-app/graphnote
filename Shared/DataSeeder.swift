@@ -37,6 +37,7 @@ struct DataSeeder{
         let block3 = Block(id: UUID(), type: BlockType.body, content: "The minimal viable product?", order: 0, createdAt: now, modifiedAt: now, document: document2)
         let block4 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", order: 1, createdAt: now, modifiedAt: now, document: document2)
         let block5 = Block(id: UUID(), type: BlockType.body, content: "Hello Graphnote!", order: 2, createdAt: now, modifiedAt: now, document: document2)
+
         
 //        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
         
@@ -77,6 +78,14 @@ struct DataSeeder{
                 let block = doc3Blocks[i]
                 try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: block)
             }
+            
+            let prompt0 = Block(id: UUID(), type: .prompt, content: "", order: 3, createdAt: now, modifiedAt: now, document: document0)
+            let prompt1 = Block(id: UUID(), type: .prompt, content: "", order: 3, createdAt: now, modifiedAt: now, document: document1)
+            let prompt2 = Block(id: UUID(), type: .prompt, content: "", order: 3, createdAt: now, modifiedAt: now, document: document2)
+            
+            try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: prompt0)
+            try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: prompt1)
+            try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: prompt2)
             
             try! DataService.shared.attachLabel(user: user, label: label, document: document1, workspace: workspace)
             try! DataService.shared.attachLabel(user: user, label: label5, document: document1, workspace: workspace)

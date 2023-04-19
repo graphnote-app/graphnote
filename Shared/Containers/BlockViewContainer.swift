@@ -11,22 +11,27 @@ struct BlockViewContainer: View {
     let user: User
     let workspace: Workspace
     let document: Document
-    let blocks: [Block]
+    @Binding var blocks: [Block]
     let action: () -> Void
     
     @StateObject private var vm = BlockViewContainerVM()
+    @State private var promptText = ""
 
     private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
-
+    let PROMPT_SENTINEL = UUID()
+    
     var body: some View {
         VStack(alignment: .leading) {
             ForEach(blocks.sorted(by: { a, b in
                 a.order < b.order
             }), id: \.id) { block in
-                BlockView(user: user, workspace: workspace, document: document, block: block) {
-                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document)
+                BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText) {
+                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
                     action()
+                } save: {
+//                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
+//                    action()
                 }
                 .id(block.id)
             }

@@ -12,16 +12,20 @@ struct BlockView: View {
     let workspace: Workspace
     let document: Document
     let block: Block
+    @Binding var promptText: String
     let onEnter: (() -> Void)
+    let save: (() -> Void)
     
     @StateObject private var vm: BlockViewVM
     
-    init(user: User, workspace: Workspace, document: Document, block: Block, onEnter: @escaping () -> Void) {
+    init(user: User, workspace: Workspace, document: Document, block: Block, promptText: Binding<String>, onEnter: @escaping () -> Void, save: @escaping () -> Void) {
         self.user = user
         self.workspace = workspace
         self.document = document
         self.block = block
+        self._promptText = promptText
         self.onEnter = onEnter
+        self.save = save
         self._vm = StateObject(wrappedValue: BlockViewVM(text: block.content, user: user, workspace: workspace, document: document, block: block))
     }
     
@@ -78,6 +82,13 @@ struct BlockView: View {
                 EmptyBlockView()
             case .bullet:
                 BulletView(text: block.content)
+            case .prompt:
+                PromptField(placeholder: "Press '/'", text: $promptText) {
+//                    vm.appendBlock(user: user, workspace: workspace, document: document, text: promptText)
+                    promptText = ""
+//                    fetchBlocks()
+                    save()
+                }
             case .none:
                 EmptyView()
             }

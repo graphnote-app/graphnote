@@ -8,10 +8,10 @@
 import SwiftUI
 
 class BlockViewContainerVM: ObservableObject {
-    func insertBlock(index: Int, user: User, workspace: Workspace, document: Document) {
+    func insertBlock(index: Int, user: User, workspace: Workspace, document: Document, promptText: String) {
         do {
             let now = Date.now
-            let block = Block(id: UUID(), type: .body, content: "New block", order: index, createdAt: now, modifiedAt: now, document: document)
+            let block = Block(id: UUID(), type: .body, content: promptText, order: index, createdAt: now, modifiedAt: now, document: document)
             
             try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block)
         } catch let error {
