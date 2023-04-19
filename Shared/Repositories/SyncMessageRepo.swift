@@ -116,7 +116,9 @@ struct SyncMessageRepo {
     
     func create(message: SyncMessage) throws {
         if has(message: message) {
+            #if DEBUG
             fatalError()
+            #endif
             throw SyncMessageRepoError.messageExists
         }
         
@@ -136,13 +138,18 @@ struct SyncMessageRepo {
                 print("isApplied: \(message.isApplied)")
                 try moc.save()
             } else {
+                #if DEBUG
+                fatalError()
+                #endif
                 throw SyncMessageRepoError.contentParseFailed
             }
             
             
         } catch let error {
             print(error)
+            #if DEBUG
             fatalError()
+            #endif
             throw error
         }
     }

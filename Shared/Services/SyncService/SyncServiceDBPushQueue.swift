@@ -28,12 +28,17 @@ class SyncServiceDBPushQueue {
         // Add to DB
         do {
             print("Adding: \(message.id)")
+            print("Type: \(message.type)")
+            print("Action: \(message.action)")
             try syncMessageRepo.create(message: message)
             // Add to runtime queue if successful
             self.queue.append(message)
             return true
         } catch let error {
             print(error)
+            #if DEBUG
+            fatalError()
+            #endif
             return false
         }
     }
@@ -76,8 +81,15 @@ class SyncServiceDBPushQueue {
     }
     
     func fetchQueue() {
-        if let queue = try? syncMessageRepo.readAllWhere(isSynced: false) {
+        do {
+            let queue = try syncMessageRepo.readAllWhere(isSynced: false)
             self.queue = queue
+            
+        } catch let error {
+            print(error)
+            #if DEBUG
+            fatalError()
+            #endif
         }
     }
 }

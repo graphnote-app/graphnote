@@ -19,9 +19,8 @@ class DocumentViewVM: ObservableObject {
                 let block = Block(id: UUID(), type: .body, content: text, order: index + 1, createdAt: now, modifiedAt: now, document: document)
                 try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block)
             } else {
-                #if DEBUG
-                fatalError()
-                #endif
+                let block = Block(id: UUID(), type: .body, content: text, order: 0, createdAt: now, modifiedAt: now, document: document)
+                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block)
             }
         } catch let error {
             print(error)

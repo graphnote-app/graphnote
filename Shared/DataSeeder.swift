@@ -48,10 +48,8 @@ struct DataSeeder{
         let doc3Blocks = [block3, block4, block5]
         
         do {
-
-            if UserRepo().read(id: user.id) == nil {
-                try! DataService.shared.createUser(user: user)
-            }
+            
+            try! DataService.shared.createUser(user: user)
             
             for workspace in workspaces {
                 try! DataService.shared.createWorkspace(user: user, workspace: workspace)

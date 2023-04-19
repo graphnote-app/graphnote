@@ -95,6 +95,7 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
+                <constraint value="email"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

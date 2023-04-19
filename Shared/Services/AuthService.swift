@@ -44,7 +44,7 @@ final class AuthService: NSObject {
         }
     }
     
-    func process(authorization: ASAuthorization, callback: @escaping (Bool, AuthServiceError?) -> Void) {
+    func process(authorization: ASAuthorization, callback: @escaping (Bool, User?, AuthServiceError?) -> Void) {
         let credential = authorization.credential as! ASAuthorizationAppleIDCredential
         
         // Check if user exists locally and remotely if possible (with internet)
@@ -67,34 +67,41 @@ final class AuthService: NSObject {
             let familyName = fullName?.familyName
             
             let user = User(id: id, email: email, givenName: givenName, familyName: familyName, createdAt: .now, modifiedAt: .now)
-            
-            if !DataService.shared.watching {
-                DataService.shared.startWatching(user: user)
+            DispatchQueue.main.async {
+                callback(true, user, nil)
             }
             
-            do {
-                try DataService.shared.createUser(user: user)
-            } catch let error {
-                print(error)
-                callback(true, AuthServiceError.createUserFailed)
-                return
-            }
-            
-            
-            
-            _ = DataService.shared.$statusCode.sink { statusCode in
-                print("statusCode: \(statusCode)")
-                switch statusCode {
-                case 201, 409:
-                    DispatchQueue.main.async {
-                        callback(true, nil)
-                    }
-                default:
-                    DispatchQueue.main.async {
-                        callback(true, AuthServiceError.unknown)
-                    }
-                }
-            }
+//            DataService.shared.setup(user: user)
+//
+//            if let watching = DataService.shared.watching {
+//                if !watching {
+//                    DataService.shared.startWatching(user: user)
+//                }
+//            }
+//
+//            do {
+//                try DataService.shared.createUser(user: user)
+//            } catch let error {
+//                print(error)
+//                callback(true, AuthServiceError.createUserFailed)
+//                return
+//            }
+//
+//            _ = DataService.shared.$statusCode.sink { statusCode in
+//                print("statusCode: \(statusCode)")
+//                switch statusCode {
+//                case 0:
+//                    break
+//                case 201, 409:
+//                    DispatchQueue.main.async {
+//                        callback(true, nil)
+//                    }
+//                default:
+//                    DispatchQueue.main.async {
+//                        callback(true, AuthServiceError.unknown)
+//                    }
+//                }
+//            }
             
         } else {
             print("SIGN IN")
@@ -103,7 +110,7 @@ final class AuthService: NSObject {
             if let user = userRepo.read(id: id) {
                 print(user)
                 DispatchQueue.main.async {
-                    callback(false, nil)
+                    callback(false, user, nil)
                 }
                 return
             } else {
@@ -113,7 +120,7 @@ final class AuthService: NSObject {
                     if let error {
                         print(error.localizedDescription)
                         DispatchQueue.main.async {
-                            callback(false, AuthServiceError.fetchFailed)
+                            callback(false, nil, AuthServiceError.fetchFailed)
                         }
                         return
                     }
@@ -123,13 +130,13 @@ final class AuthService: NSObject {
             
                         if UserBuilder.create(user: user) == false {
                             DispatchQueue.main.async {
-                                callback(false, AuthServiceError.createUserFailed)
+                                callback(false, nil, AuthServiceError.createUserFailed)
                             }
                             return
                         }
                         
                         DispatchQueue.main.async {
-                            callback(false, nil)
+                            callback(false, user, nil)
                         }
                         
                         return
@@ -139,7 +146,7 @@ final class AuthService: NSObject {
                         print("SyncService couldn't find the user")
                         print("Failure in system. Please contact use for human support!")
                         DispatchQueue.main.async {
-                            callback(false, AuthServiceError.userNotFound)
+                            callback(false, nil, AuthServiceError.userNotFound)
                         }
                         return
                     }

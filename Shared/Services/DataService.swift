@@ -38,15 +38,26 @@ enum DataServiceNotification: String {
 class DataService: ObservableObject {
     static let shared = DataService()
     
-    private let syncService = SyncService()
+    var isSetup = false
     
-    var watching: Bool {
-        return syncService.watching
+    private var syncService: SyncService? = nil
+    private var user: User? = nil
+    
+    var watching: Bool? {
+        return syncService?.watching
     }
     
     @Published private(set) var syncStatus: SyncServiceStatus = .paused
     @Published private(set) var error: SyncServiceError? = nil
-    @Published private(set) var statusCode: Int = 201
+    @Published private(set) var statusCode: Int = 0
+    
+    func setup(user: User) {
+        if !isSetup {
+            self.user = user
+            self.syncService = SyncService(user: user)
+            self.isSetup = true
+        }
+    }
     
     func attachLabel(user: User, label: Label, document: Document, workspace: Workspace, sync: Bool = true) throws {
         let workspaceRepo = WorkspaceRepo(user: user)
@@ -196,21 +207,48 @@ class DataService: ObservableObject {
     
     func createUser(user: User, sync: Bool = true) throws {
         if UserBuilder.create(user: user) == false {
+            #if DEBUG
+            fatalError()
+            #endif
             throw DataServiceError.userCreateFailed
         }
         
         if sync {
             guard let data = encodeUser(user: user) else {
+                #if DEBUG
+                fatalError()
+                #endif
                 throw DataServiceError.userEncodeFailed
             }
             
             guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data, isApplied: true) else {
+                #if DEBUG
+                fatalError()
+                #endif
                 throw DataServiceError.messagePackFailed
             }
             
             pushMessage(message, user: user)
                 
         }
+    }
+    
+    func createUserMessage(user: User) throws {
+        guard let data = encodeUser(user: user) else {
+            #if DEBUG
+            fatalError()
+            #endif
+            throw DataServiceError.userEncodeFailed
+        }
+        
+        guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data, isApplied: true) else {
+            #if DEBUG
+            fatalError()
+            #endif
+            throw DataServiceError.messagePackFailed
+        }
+        
+        pushMessage(message, user: user)
     }
     
     func getLastIndex(user: User, workspace: Workspace, document: Document) -> Int? {
@@ -262,7 +300,7 @@ class DataService: ObservableObject {
         
         // Sync to server
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, isApplied: true, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
-        syncService.pushMessage(user: user, message: message)
+        syncService?.pushMessage(user: user, message: message)
     }
     
     func updateBlock(user: User, workspace: Workspace, document: Document, block: Block, content: String) {
@@ -287,34 +325,35 @@ class DataService: ObservableObject {
             let contents = String(data: contentsData, encoding: .utf8)!
 
             let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .block, action: .update, isSynced: false, isApplied: true, contents: contents)
-            syncService.pushMessage(user: user, message: message)
+            syncService?.pushMessage(user: user, message: message)
         } catch let error {
             print(error)
         }
     }
     
     func startWatching(user: User) {
-        _ = syncService.$syncStatus.sink { value in
+        
+        _ = syncService?.$syncStatus.sink { value in
             self.syncStatus = value
         }
         
-        _ = syncService.$statusCode.sink { value in
+        _ = syncService?.$statusCode.sink { value in
             self.statusCode = value
         }
         
-        _ = syncService.$error.sink { value in
+        _ = syncService?.$error.sink { value in
             self.error = value
         }
         
-        syncService.startQueue(user: user)
+        syncService?.startQueue()
     }
     
     func stopWatching() {
-        syncService.stopQueue()
+        syncService?.stopQueue()
     }
 
     func fetchMessageIDs(user: User) {
-        syncService.fetchMessageIDs(user: user)
+        syncService?.fetchMessageIDs(user: user)
     }
     
     private func postNotification(_ notification: DataServiceNotification) {
@@ -323,6 +362,9 @@ class DataService: ObservableObject {
     
     private func packageMessage(id: String, type: SyncMessageType, action: SyncMessageAction, contents: Data, isApplied: Bool = false) -> SyncMessage? {
         guard let contents = String(data: contents, encoding: .utf8) else {
+            #if DEBUG
+            fatalError()
+            #endif
             return nil
         }
         
@@ -339,7 +381,7 @@ class DataService: ObservableObject {
     }
     
     private func pushMessage(_ message: SyncMessage, user: User) {
-        syncService.pushMessage(user: user, message: message)
+        syncService?.pushMessage(user: user, message: message)
     }
     
     private func saveMessage(_ message: SyncMessage, user: User) -> Bool {

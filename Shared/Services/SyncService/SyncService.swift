@@ -67,6 +67,7 @@ class SyncService: ObservableObject {
     @Published private(set) var syncStatus: SyncServiceStatus = .success
     @Published private(set) var watching = false
     
+    private let user: User
     private var timer: Timer? = nil
     private var fetchTimer: Timer? = nil
     private var requestIDs: Set<UUID> = Set()
@@ -83,7 +84,8 @@ class SyncService: ObservableObject {
         return try? syncMessageRepo.readLastSyncTime()
     }
     
-    func startQueue(user: User) {
+    init(user: User) {
+        self.user = user
         if pushQueue == nil {
             self.pushQueue = SyncServiceDBPushQueue(user: user)
         }
@@ -95,18 +97,20 @@ class SyncService: ObservableObject {
         if applyQueue == nil {
             self.applyQueue = SyncServiceDBApplyQueue(user: user)
         }
-        
+    }
+    
+    func startQueue() {
         // Invalidate timer always so we don't get runaway timers
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: syncInterval, repeats: true) { timer in
-            self.processQueues(user: user)
+            self.processQueues(user: self.user)
         }
         
         self.fetchTimer?.invalidate()
         self.fetchTimer = nil
         self.fetchTimer = Timer.scheduledTimer(withTimeInterval: fetchInterval, repeats: true) { timer in
-            self.fetchMessageIDs(user: user)
+            self.fetchMessageIDs(user: self.user)
         }
 
         watching = true
@@ -554,9 +558,9 @@ class SyncService: ObservableObject {
     
     private func processPushQueue(user: User) {
         // Push messages
-            self.pushQueue?.fetchQueue()
-            if let queueItem = self.pushQueue?.peek() {
-                if !processingPushQueue {
+        self.pushQueue?.fetchQueue()
+        if let queueItem = self.pushQueue?.peek() {
+            if !processingPushQueue {
                 processingPushQueue = true
                 if queueItem.isSynced == true {
                     self.pushQueue?.remove(id: queueItem.id)

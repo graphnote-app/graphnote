@@ -24,6 +24,9 @@ struct UserBuilder {
             return true
         } catch let error {
             print(error)
+            #if DEBUG
+            fatalError()
+            #endif
             return false
         }
         

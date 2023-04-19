@@ -71,14 +71,17 @@ struct ContentView: View {
             case .loading:
                 LoadingView()
             case .signIn:
-                SignInView { isSignUp, success in
+                SignInView { isSignUp, user, success in
                     if success {
-                        vm.initializeUser()
-                        if let user = vm.user {
+                        
+                        if let user = user {
                             if isSignUp {
+                                DataService.shared.setup(user: user)
                                 DataService.shared.startWatching(user: user)
+                                
                                 seeding = true
                                 if DataSeeder.seed(user: user) {
+                                    vm.initializeUser()
                                     vm.initializeUserWorkspaces()
                                     vm.fetch()
                                     
@@ -308,10 +311,11 @@ struct ContentView: View {
                 if !initialized {
                     vm.initializeUser()
                     
-                    
-                    if seed {
-                        if let user = vm.user {
-                            DataService.shared.startWatching(user: user)
+                    if let user = vm.user {
+                        DataService.shared.setup(user: user)
+                        DataService.shared.startWatching(user: user)
+                        if seed {
+                       
                             seeding = true
                             if !DataSeeder.seed(user: user) {
                                 print("seed failed")
@@ -322,10 +326,9 @@ struct ContentView: View {
                             seeding = false
                             seeded = true
                         }
-                    }
-                    
-                    vm.initializeUserWorkspaces()
-                    if let user = vm.user {
+                        
+                        vm.initializeUserWorkspaces()
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {
                             checkAuthStatus(user: user)
                         }
