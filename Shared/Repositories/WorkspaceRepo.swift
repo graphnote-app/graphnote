@@ -138,10 +138,6 @@ struct WorkspaceRepo {
         do {
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace, moc: moc) else {
                 print("worksace entity does not exists")
-                #if DEBUG
-
-                fatalError()
-                #endif
                 return nil
             }
         
@@ -150,9 +146,6 @@ struct WorkspaceRepo {
                     return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: workspace.id, user: user.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
                 } else {
                     print("user or workspace is nil: \(labelEntity.user) \(labelEntity.workspace)")
-                    #if DEBUG
-                    fatalError()
-                    #endif
                     return nil
                 }
             }
@@ -162,9 +155,6 @@ struct WorkspaceRepo {
                     return Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: workspace.id)
                 } else {
                     print("workspace is nil")
-                    #if DEBUG
-                    fatalError()
-                    #endif
                     return nil
                 }
             })

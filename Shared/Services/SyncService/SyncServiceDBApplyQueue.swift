@@ -76,7 +76,6 @@ class SyncServiceDBApplyQueue {
     func fetchQueue() {
         if let queue = try? syncMessageRepo.readAllWhere(isApplied: false) {
             self.queue = queue
-//            print(self.queue)
         }
     }
 }

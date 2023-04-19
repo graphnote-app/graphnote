@@ -67,23 +67,77 @@ final class AuthService: NSObject {
             let familyName = fullName?.familyName
             
             let user = User(id: id, email: email, givenName: givenName, familyName: familyName, createdAt: .now, modifiedAt: .now)
-            DispatchQueue.main.async {
-                do {
-                    if !UserBuilder.create(user: user) {
-                        callback(true, nil, AuthServiceError.createUserFailed)
+           
+            UserService().fetchUser(id: id) { (_user, error) in
+                if let error {
+                    print(error.localizedDescription)
+                    DispatchQueue.main.async {
+                        do {
+                            if !UserBuilder.create(user: user) {
+                                callback(true, nil, AuthServiceError.createUserFailed)
+                            }
+                            
+                            callback(true, user, nil)
+                        } catch let error {
+                            print(error)
+                            
+                            callback(false, nil, AuthServiceError.createUserFailed)
+                            
+                            #if DEBUG
+                            fatalError()
+                            #endif
+                            
+                            return
+                        }
+                    }
+                    return
+                }
+                
+                if let _user {
+                    print(user)
+    
+                    DispatchQueue.main.async {
+                        do {
+                            try DataService.shared.createUserMessage(user: user)
+                            
+                        } catch let error {
+                            print(error)
+                            DispatchQueue.main.async {
+                                callback(false, nil, AuthServiceError.createUserFailed)
+                            }
+                            
+                            #if DEBUG
+                            fatalError()
+                            #endif
+                            
+                            return
+                        }
+                        
+                        callback(false, user, nil)
+                        return
                     }
                     
-                    callback(true, user, nil)
-                } catch let error {
-                    print(error)
                     
-                    callback(false, nil, AuthServiceError.createUserFailed)
-                    
-                    #if DEBUG
-                    fatalError()
-                    #endif
-                    
-                    return
+                } else {
+                    DispatchQueue.main.async {
+                        do {
+                            if !UserBuilder.create(user: user) {
+                                callback(true, nil, AuthServiceError.createUserFailed)
+                            }
+                            
+                            callback(true, user, nil)
+                        } catch let error {
+                            print(error)
+                            
+                            callback(false, nil, AuthServiceError.createUserFailed)
+                            
+                            #if DEBUG
+                            fatalError()
+                            #endif
+                            
+                            return
+                        }
+                    }
                 }
             }
             

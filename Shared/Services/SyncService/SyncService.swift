@@ -41,7 +41,7 @@ enum SyncServiceStatus {
     case success
 }
 
-let baseURL = URL(string: "http://10.0.0.207:3000/")!
+let baseURL = URL(string: "http://localhost:3000/")!
 
 class SyncService: ObservableObject {    
     
@@ -150,6 +150,7 @@ class SyncService: ObservableObject {
             self.applyQueue?.fetchQueue()
             while self.applyQueue?.count ?? 0 > 0 && i < 100 {
                 self.applyQueue?.fetchQueue()
+                // - TODO: Verify this works for larger than 100 messages
                 if let queueItem = self.applyQueue?.peek(offset: i) {
                     if queueItem.isApplied == true {
                         #if DEBUG
@@ -270,16 +271,6 @@ class SyncService: ObservableObject {
                                     } else {
                                         try repo.setSyncedOnMessageID(id: syncMessage.id)
                                     }
-//                                    if !repo.has(message: syncMessage) {
-//                                        if self.applyQueue?.add(message: syncMessage) ?? false {
-//                                            self.pullQueue?.remove(id: syncMessage.id)
-//                                            try repo.setSyncedOnMessageID(id: syncMessage.id)
-//                                        }
-//                                    } else {
-//                                        self.pullQueue?.remove(id: syncMessage.id)
-//                                        try repo.setSyncedOnMessageID(id: syncMessage.id)
-//                                    }
-////
                                     
                                 } catch let error {
                                     print(error)
@@ -724,16 +715,16 @@ class SyncService: ObservableObject {
 //
 //    }
     
-    func createDocument(user: User, document: Document) {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .millisecondsSince1970
-        let contents = try! encoder.encode(document)
-
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
-
-        // Save message to local queue
-        pushMessage(user: user, message: message)
-    }
+//    func createDocument(user: User, document: Document) {
+//        let encoder = JSONEncoder()
+//        encoder.dateEncodingStrategy = .millisecondsSince1970
+//        let contents = try! encoder.encode(document)
+//
+//        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
+//
+//        // Save message to local queue
+//        pushMessage(user: user, message: message)
+//    }
     
     func fetchMessageIDs(user: User) {
         let syncMessageRepo = SyncMessageRepo(user: user)
