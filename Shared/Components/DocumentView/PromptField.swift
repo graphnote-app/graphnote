@@ -15,6 +15,8 @@ struct PromptField: View {
     @Binding var text: String
     let onSubmit: () -> Void
     
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
         TextField(placeholder, text: $text, axis: .vertical)
             .font(.system(size: bodyFontSize))
@@ -22,6 +24,12 @@ struct PromptField: View {
             .textFieldStyle(.plain)
             .multilineTextAlignment(.leading)
             .onSubmit(onSubmit)
+            .focused($isFocused)
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.125) {
+                    isFocused = true
+                }
+            }
     }
 }
 

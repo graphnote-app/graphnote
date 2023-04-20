@@ -19,7 +19,6 @@ struct BlockViewContainer: View {
 
     private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
-    let PROMPT_SENTINEL = UUID()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -32,6 +31,9 @@ struct BlockViewContainer: View {
                 } save: {
 //                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
 //                    action()
+                } onEmptyClick: { index in
+                    vm.movePromptToEmptySpace(index: index, user: user, workspace: workspace, document: document, block: block)
+                    action()
                 }
                 .id(block.id)
             }

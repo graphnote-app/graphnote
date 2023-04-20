@@ -15,10 +15,19 @@ struct BlockView: View {
     @Binding var promptText: String
     let onEnter: (() -> Void)
     let save: (() -> Void)
+    let onEmptyClick: (_ index: Int) -> Void
     
     @StateObject private var vm: BlockViewVM
     
-    init(user: User, workspace: Workspace, document: Document, block: Block, promptText: Binding<String>, onEnter: @escaping () -> Void, save: @escaping () -> Void) {
+    init(user: User,
+        workspace: Workspace,
+        document: Document,
+        block: Block,
+        promptText: Binding<String>,
+        onEnter: @escaping () -> Void,
+        save: @escaping () -> Void,
+        onEmptyClick: @escaping (Int) -> Void
+    ) {
         self.user = user
         self.workspace = workspace
         self.document = document
@@ -26,13 +35,19 @@ struct BlockView: View {
         self._promptText = promptText
         self.onEnter = onEnter
         self.save = save
+        self.onEmptyClick = onEmptyClick
         self._vm = StateObject(wrappedValue: BlockViewVM(text: block.content, user: user, workspace: workspace, document: document, block: block))
     }
     
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
     private let blockCreatedNotification = Notification.Name(SyncServiceNotification.blockCreated.rawValue)
     
-    @FocusState var isFocused: Bool
+    enum FocusedField {
+        case prompt
+    }
+    
+    @FocusState private var focusedField: FocusedField?
+    @FocusState private var isFocused: Bool
     @State private var prevContent = "INIT"
     @State private var isKeyDown = false
     
@@ -79,7 +94,9 @@ struct BlockView: View {
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
             case .empty:
-                EmptyBlockView()
+                EmptyBlockView {
+                    onEmptyClick(block.order)
+                }
             case .bullet:
                 BulletView(text: block.content)
             case .prompt:
@@ -89,6 +106,10 @@ struct BlockView: View {
 //                    fetchBlocks()
                     save()
                 }
+                .onAppear {
+                    isFocused = true
+                }
+                .focused($focusedField, equals: .prompt)
             case .none:
                 EmptyView()
             }

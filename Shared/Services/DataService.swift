@@ -304,11 +304,14 @@ class DataService: ObservableObject {
         syncService?.pushMessage(user: user, message: message)
     }
     
-    func updateBlock(user: User, workspace: Workspace, document: Document, block: Block, content: String) {
+    func updateBlock(user: User, workspace: Workspace, document: Document, block: Block, content: String? = nil, order: Int? = nil) {
         // Local updates
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
-        let updatedBlock = Block(id: block.id, type: block.type, content: content, order: block.order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
+        let content = content ?? block.content
+        let order = order ?? block.order
+        
+        let updatedBlock = Block(id: block.id, type: block.type, content: content, order: order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
         if !documentRepo.update(block: updatedBlock) {
             print("Failed to update block content: \(updatedBlock) content: \(content)")
             return
@@ -320,13 +323,52 @@ class DataService: ObservableObject {
         
         do {
             let encoder = JSONEncoder()
-            let localBlock = Block(id: block.id, type: block.type, content: content, order: block.order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
+            let localBlock = Block(id: block.id, type: block.type, content: content, order: order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
             let contentsData = try encoder.encode(localBlock)
 
             let contents = String(data: contentsData, encoding: .utf8)!
 
             let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .block, action: .update, isSynced: false, isApplied: true, contents: contents)
             syncService?.pushMessage(user: user, message: message)
+        } catch let error {
+            print(error)
+        }
+    }
+    
+    func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, block: Block, order: Int) {
+        // Local updates
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        
+        do {
+            // Remove empty block
+            try documentRepo.deleteBlock(id: block.id)
+            guard let promptBlock = try documentRepo.readPromptBlock(document: document) else {
+                #if DEBUG
+                fatalError()
+                #endif
+                return
+            }
+            
+            
+            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
+            if !documentRepo.update(block: updatedBlock) {
+                print("Failed to update block order: \(updatedBlock)")
+                return
+            }
+            
+            self.postNotification(.blockUpdatedLocally)
+            
+            // Sync to server
+            
+            let encoder = JSONEncoder()
+            let localBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: promptBlock.document)
+            let contentsData = try encoder.encode(localBlock)
+
+            let contents = String(data: contentsData, encoding: .utf8)!
+
+            let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .block, action: .update, isSynced: false, isApplied: true, contents: contents)
+            syncService?.pushMessage(user: user, message: message)
+            
         } catch let error {
             print(error)
         }

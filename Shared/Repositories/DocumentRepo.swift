@@ -64,6 +64,21 @@ struct DocumentRepo {
         }
     }
     
+    func readPromptBlock(document: Document) throws -> Block? {
+        do {
+            let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "type == %@ && document.id == %@", "prompt", document.id.uuidString)
+            if let blockEntity = try moc.fetch(fetchRequest).first {
+                return try Block(from: blockEntity)
+            } else {
+                return nil
+            }
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     func read(id: UUID) throws -> Document? {
         do {
             let fetchRequest = DocumentEntity.fetchRequest()
@@ -261,5 +276,19 @@ struct DocumentRepo {
         }
         
         return nil
+    }
+    
+    func deleteBlock(id: UUID) throws {
+        do {
+            let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
+        
+            try moc.execute(deleteRequest)
+            try moc.save()
+        } catch let error {
+            print(error)
+            throw error
+        }
     }
 }
