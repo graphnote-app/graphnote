@@ -7,25 +7,57 @@
 
 import SwiftUI
 
-fileprivate let pad: Double = 30
-
+///
+/// The main document editor for the application.
+///
+/// # Overview
+/// This component is responsible for viewing and editing documents, and everything that comes with docs.
+///
+/// Use the DocumentView as such:
+///
+/// ```swift
+///     DocumentView(
+///         title: $vm.title,
+///         labels: $vm.labels,
+///         blocks: $vm.blocks,
+///         user: $vm.user,
+///         workspace: $vm.workspace,
+///         document: $vm.document
+///     ) {
+///
+///     } fetchBlocks: {
+///
+///     } onRefresh: {
+///
+///     }
+/// ```
+///
 struct DocumentView: View {
     @Environment(\.colorScheme) private var colorScheme
     
+    /// A binding to the title label
     @Binding var title: String
+    /// The binding to an array of label model objects.
     @Binding var labels: [Label]
+    /// The binding to an array of block model objects.
     @Binding var blocks: [Block]
     
+    /// The logged in user.
     let user: User
+    /// The current selected workspace.
     let workspace: Workspace
+    /// The current selected document within the workspace.
     let document: Document
+    /// The fetch method is called whenver the entire document contents need updating.
     let fetch: () -> Void
+    /// This method is for when only the blocks within the documnet need updating (no title, etc).
     let fetchBlocks: () -> Void
+    /// Called when "pull to refresh" is invoked to refresh the whole documnet.
     let onRefresh: () -> Void
-    
     
     @StateObject private var vm = DocumentViewVM()
     @State private var promptText = ""
+    private let pad: Double = 30
     
     var content: some View {
         Group {

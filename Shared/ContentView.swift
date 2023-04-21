@@ -329,19 +329,6 @@ struct ContentView: View {
                     if let user = vm.user {
                         DataService.shared.setup(user: user)
                         DataService.shared.startWatching(user: user)
-                        if seed {
-                       
-                            seeding = true
-                            if !DataSeeder.seed(user: user) {
-                                print("seed failed")
-                                #if DEBUG
-                                fatalError()
-                                #endif
-                            }
-                            seeding = false
-                            seeded = true
-                        }
-                        
                         vm.initializeUserWorkspaces()
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + loadingDelay) {

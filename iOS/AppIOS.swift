@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct AppIOS: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @Environment(\.colorScheme) private var colorScheme
     
     var body: some Scene {
@@ -19,4 +21,11 @@ struct AppIOS: App {
                 .scrollDismissesKeyboard(.interactively)
         }
     }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseApp.configure()
+    return true
+  }
 }

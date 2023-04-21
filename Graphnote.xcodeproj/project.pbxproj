@@ -118,6 +118,10 @@
 		F851295629EDD5BB0027CDF2 /* BlockViewVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851295429EDD5BB0027CDF2 /* BlockViewVM.swift */; };
 		F851295829EDDA170027CDF2 /* BlockViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851295729EDDA170027CDF2 /* BlockViewContainer.swift */; };
 		F851295929EDDA170027CDF2 /* BlockViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F851295729EDDA170027CDF2 /* BlockViewContainer.swift */; };
+		F861849A29F266850092C728 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = F861849929F266850092C728 /* FirebaseCrashlytics */; };
+		F861849C29F2669B0092C728 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = F861849B29F2669B0092C728 /* FirebaseCrashlytics */; };
+		F861849E29F26C880092C728 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F861849D29F26C880092C728 /* GoogleService-Info.plist */; };
+		F861849F29F26C880092C728 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F861849D29F26C880092C728 /* GoogleService-Info.plist */; };
 		F863496329E03ED800C49D0B /* SyncServiceDBPushQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */; };
 		F863496429E03ED800C49D0B /* SyncServiceDBPushQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */; };
 		F86D892129DBCABC008C707C /* LabelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86D892029DBCABC008C707C /* LabelService.swift */; };
@@ -227,6 +231,7 @@
 		F84D857C29CBEA35006538EA /* LabelContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContextMenu.swift; sourceTree = "<group>"; };
 		F851295429EDD5BB0027CDF2 /* BlockViewVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockViewVM.swift; sourceTree = "<group>"; };
 		F851295729EDDA170027CDF2 /* BlockViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockViewContainer.swift; sourceTree = "<group>"; };
+		F861849D29F26C880092C728 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F863496229E03ED800C49D0B /* SyncServiceDBPushQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServiceDBPushQueue.swift; sourceTree = "<group>"; };
 		F86978C829A88398002D9570 /* BlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockView.swift; sourceTree = "<group>"; };
 		F86D892029DBCABC008C707C /* LabelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelService.swift; sourceTree = "<group>"; };
@@ -303,6 +308,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F861849C29F2669B0092C728 /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +316,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F861849A29F266850092C728 /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +540,7 @@
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
+				F861849D29F26C880092C728 /* GoogleService-Info.plist */,
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F84D088A29C81DA100410C10 /* iOS */,
 				F8EA407F279CFF55001F74B5 /* macOS */,
@@ -595,12 +603,16 @@
 				F8403DDF29D54A5A0027A196 /* Sources */,
 				F8403DE029D54A5A0027A196 /* Frameworks */,
 				F8403DE129D54A5A0027A196 /* Resources */,
+				F86184A129F26E350092C728 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Graphnote (iOS)";
+			packageProductDependencies = (
+				F861849B29F2669B0092C728 /* FirebaseCrashlytics */,
+			);
 			productName = "Graphnote (iOS)";
 			productReference = F8403DE329D54A5A0027A196 /* Graphnote (iOS).app */;
 			productType = "com.apple.product-type.application";
@@ -612,6 +624,7 @@
 				F8EA407A279CFF55001F74B5 /* Sources */,
 				F8EA407B279CFF55001F74B5 /* Frameworks */,
 				F8EA407C279CFF55001F74B5 /* Resources */,
+				F86184A029F26D820092C728 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -619,6 +632,7 @@
 			);
 			name = "Graphnote (macOS)";
 			packageProductDependencies = (
+				F861849929F266850092C728 /* FirebaseCrashlytics */,
 			);
 			productName = "Graphnote (macOS)";
 			productReference = F8EA407E279CFF55001F74B5 /* Graphnote.app */;
@@ -652,6 +666,7 @@
 			);
 			mainGroup = F8EA406B279CFF54001F74B5;
 			packageReferences = (
+				F861849829F266850092C728 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = F8EA4079279CFF55001F74B5 /* Products */;
 			projectDirPath = "";
@@ -668,6 +683,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F861849F29F26C880092C728 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,10 +692,52 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8EA409E279CFF55001F74B5 /* Assets.xcassets in Resources */,
+				F861849E29F26C880092C728 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F86184A029F26D820092C728 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+		F86184A129F26E350092C728 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F8403DDF29D54A5A0027A196 /* Sources */ = {
@@ -890,6 +948,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
 				ENABLE_PREVIEWS = YES;
@@ -1085,6 +1144,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3EZ5UQTGVP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1174,6 +1234,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F861849829F266850092C728 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F861849929F266850092C728 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F861849829F266850092C728 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		F861849B29F2669B0092C728 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F861849829F266850092C728 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */ = {
