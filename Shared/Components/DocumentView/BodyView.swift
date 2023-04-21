@@ -33,6 +33,7 @@ struct BodyView: View {
             .onChange(of: content) { newValue in
                 textDidChange(newValue)
             }
+        
         #else
         TextField("", text: $content, axis: .vertical)
             .onAppear {

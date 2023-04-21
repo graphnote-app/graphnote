@@ -25,7 +25,6 @@ class BlockViewContainerVM: ObservableObject {
     }
     
     func movePromptToEmptySpace(index: Int, user: User, workspace: Workspace, document: Document, block: Block) {
-        let _block = Block(id: block.id, type: block.type, content: block.content, order: index, createdAt: block.createdAt, modifiedAt: .now, document: document)
-        DataService.shared.movePromptToEmptySpace(user: user, workspace: workspace, document: document, block: _block, order: index)
+        DataService.shared.movePromptToEmptySpace(user: user, workspace: workspace, document: document, emptyBlock: block, order: index)
     }
 }

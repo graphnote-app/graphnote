@@ -21,12 +21,12 @@ struct BlockViewContainer: View {
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: .zero) {
             ForEach(blocks.sorted(by: { a, b in
                 a.order < b.order
             }), id: \.id) { block in
                 BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText) {
-                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
+                    vm.insertBlock(index: block.type == .prompt ? block.order - 1 : block.order, user: user, workspace: workspace, document: document, promptText: promptText)
                     action()
                 } save: {
 //                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)

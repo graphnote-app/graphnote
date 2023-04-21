@@ -79,14 +79,6 @@ struct DataSeeder{
                 try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: block)
             }
             
-            let prompt0 = Block(id: UUID(), type: .prompt, content: "", order: 3, createdAt: now, modifiedAt: now, document: document0)
-            let prompt1 = Block(id: UUID(), type: .prompt, content: "", order: 3, createdAt: now, modifiedAt: now, document: document1)
-            let prompt2 = Block(id: UUID(), type: .prompt, content: "", order: 3, createdAt: now, modifiedAt: now, document: document2)
-            
-            try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: prompt0)
-            try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: prompt1)
-            try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: prompt2)
-            
             try! DataService.shared.attachLabel(user: user, label: label, document: document1, workspace: workspace)
             try! DataService.shared.attachLabel(user: user, label: label5, document: document1, workspace: workspace)
             try! DataService.shared.attachLabel(user: user, label: label2, document: document2, workspace: workspace)

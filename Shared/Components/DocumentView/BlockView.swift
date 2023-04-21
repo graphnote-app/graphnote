@@ -73,32 +73,39 @@ struct BlockView: View {
                     vm.content = newValue
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
+                .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .heading1:
                 HeadingView(size: .heading1, text: vm.content) { newValue in
                     vm.content = newValue
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
+                .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .heading2:
                 HeadingView(size: .heading2, text: vm.content) { newValue in
                     vm.content = newValue
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
+                .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .heading3:
                 HeadingView(size: .heading3, text: vm.content) { newValue in
                     vm.content = newValue
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
+                .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .heading4:
                 HeadingView(size: .heading4, text: vm.content) { newValue in
                     vm.content = newValue
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
+                .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .empty:
                 EmptyBlockView {
                     onEmptyClick(block.order)
                 }
+                .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .bullet:
                 BulletView(text: block.content)
+                    .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .prompt:
                 PromptField(placeholder: "Press '/'", text: $promptText) {
 //                    vm.appendBlock(user: user, workspace: workspace, document: document, text: promptText)
@@ -106,6 +113,7 @@ struct BlockView: View {
 //                    fetchBlocks()
                     save()
                 }
+                .padding([.top, .bottom], Spacing.spacing2.rawValue)
                 .onAppear {
                     isFocused = true
                 }
@@ -133,6 +141,5 @@ struct BlockView: View {
             vm.fetch()
         }
         .id("\(block.content):\(block.order)")
-        BlockSpacer()
     }
 }

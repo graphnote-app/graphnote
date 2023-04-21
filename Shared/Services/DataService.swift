@@ -121,7 +121,7 @@ class DataService: ObservableObject {
         
         do {
             // Push all blocks order past index by one
-            guard let blocksAfter = try documentRepo.readAllWhere(document: document, orderEqualsOrGreaterThan: block.order - 1) else {
+            guard let blocksAfter = try documentRepo.readAllWhere(document: document, orderEqualsOrGreaterThan: block.order) else {
                 throw DataServiceError.blockFetchFailed
             }
             
@@ -335,13 +335,13 @@ class DataService: ObservableObject {
         }
     }
     
-    func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, block: Block, order: Int) {
+    func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, emptyBlock: Block, order: Int) {
         // Local updates
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
         do {
             // Remove empty block
-            try documentRepo.deleteBlock(id: block.id)
+            try documentRepo.deleteBlock(id: emptyBlock.id)
             guard let promptBlock = try documentRepo.readPromptBlock(document: document) else {
                 #if DEBUG
                 fatalError()
@@ -349,10 +349,18 @@ class DataService: ObservableObject {
                 return
             }
             
-            
-            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
+//            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order < block.order ? order : order == block.order ? order : order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
+            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: emptyBlock.order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
             if !documentRepo.update(block: updatedBlock) {
                 print("Failed to update block order: \(updatedBlock)")
+                return
+            }
+            
+            let now = Date.now
+//            let emptySpace = Block(id: UUID(), type: .empty, content: "", order: order < block.order ? block.order : order - 1, createdAt: now, modifiedAt: now, document: document)
+            let emptySpace = Block(id: UUID(), type: .empty, content: "", order: promptBlock.order, createdAt: now, modifiedAt: now, document: document)
+            if try !documentRepo.create(block: emptySpace) {
+                print("Failed to create emptry block: \(emptySpace)")
                 return
             }
             
