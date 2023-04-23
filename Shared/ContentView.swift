@@ -72,8 +72,8 @@ struct ContentView: View {
                 LoadingView()
             case .signIn:
                 SignInView { isSignUp, user, success in
+                    
                     if success {
-                        
                         if let user = user {
                             if isSignUp {
                                 DataService.shared.setup(user: user)
@@ -94,6 +94,7 @@ struct ContentView: View {
                             } else {
                                 DataService.shared.setup(user: user)
                                 DataService.shared.startWatching(user: user)
+                                vm.initializeUser()
                                 vm.initializeUserWorkspaces()
                                 vm.fetch()
                             }
@@ -322,7 +323,6 @@ struct ContentView: View {
 //        }
         .onAppear {
             if DataController.shared.loaded {
-                
                 if !initialized {
                     vm.initializeUser()
                     
@@ -351,6 +351,7 @@ struct ContentView: View {
         }
         .onDisappear {
             DataService.shared.stopWatching()
+            AuthService.signOut()
         }
     }
 }

@@ -116,7 +116,7 @@ class DataService: ObservableObject {
         }
     }
     
-    func createBlock(user: User, workspace: Workspace, document: Document, block: Block, sync: Bool = true) throws {
+    func createBlock(user: User, workspace: Workspace, document: Document, block: Block, sync: Bool = true) throws -> Block {
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
         do {
@@ -160,6 +160,8 @@ class DataService: ObservableObject {
             pushMessage(message, user: user)
 
         }
+        
+        return block
     }
     
     func createDocument(user: User, document: Document, sync: Bool = true) throws {
@@ -230,6 +232,11 @@ class DataService: ObservableObject {
     }
     
     func createUser(user: User, sync: Bool = true) throws {
+        if UserRepo().read(id: user.id) != nil {
+            print("user exists")
+            return
+        }
+    
         if UserBuilder.create(user: user) == false {
             #if DEBUG
             fatalError()
@@ -243,11 +250,11 @@ class DataService: ObservableObject {
             guard let data = encodeUser(user: user) else {
                 throw DataServiceError.userEncodeFailed
             }
-            
+
             guard let message = packageMessage(id: user.id, type: .user, action: .create, contents: data, isApplied: true) else {
                 throw DataServiceError.messagePackFailed
             }
-            
+
             pushMessage(message, user: user)
         }
     }
@@ -350,7 +357,7 @@ class DataService: ObservableObject {
             }
             
 //            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order < block.order ? order : order == block.order ? order : order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
-            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: emptyBlock.order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
+            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
             if !documentRepo.update(block: updatedBlock) {
                 print("Failed to update block order: \(updatedBlock)")
                 return

@@ -41,7 +41,7 @@ enum SyncServiceStatus {
     case success
 }
 
-let baseURL = URL(string: "http://localhost:3000/")!
+let baseURL = URL(string: "http://10.0.0.207:3000/")!
 
 class SyncService: ObservableObject {    
     
@@ -50,7 +50,7 @@ class SyncService: ObservableObject {
         case get
     }
     
-    let syncInterval = 0.125
+    let syncInterval = 0.25
     let fetchInterval = 2.0
     @Published private(set) var statusCode: Int = 201
     @Published private(set) var error: SyncServiceError? = nil {
@@ -73,7 +73,7 @@ class SyncService: ObservableObject {
     private var fetchTimer: Timer? = nil
     private var requestIDs: Set<UUID> = Set()
     private var processingPullQueue: [UUID : Bool] = [:]
-    private var processingApplyQueue = false
+    private var processingApplyQueue: [UUID : Bool] = [:]
     private var processingPushQueue = false
     
     private var pushQueue: SyncServiceDBPushQueue? = nil
@@ -105,7 +105,9 @@ class SyncService: ObservableObject {
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: syncInterval, repeats: true) { timer in
-            self.processQueues(user: self.user)
+//            DispatchQueue.global(qos: .userInitiated).async {
+                self.processQueues(user: self.user)
+//            }
         }
         
         self.fetchTimer?.invalidate()
@@ -143,55 +145,75 @@ class SyncService: ObservableObject {
     }
     
     func processApplyQueue(user: User) {
-        if !self.processingApplyQueue {
-            processingApplyQueue = true
-            var i = 0
-            
-            self.applyQueue?.fetchQueue()
-            while self.applyQueue?.count ?? 0 > 0 && i < 100 {
-                self.applyQueue?.fetchQueue()
-                // - TODO: Verify this works for larger than 100 messages
-                if let queueItem = self.applyQueue?.peek(offset: i) {
-                    if queueItem.isApplied == true {
-                        #if DEBUG
-                        fatalError()
-                        #endif
-                        return
-                    }
-                    
-                    var success = false
-                    if let contentsData = queueItem.contents.data(using: .utf8) {
-                        switch queueItem.type {
-                        case .user:
-                            success = self.syncMessageUser(user: user, message: queueItem, data: contentsData)
-                        case .document:
-                            success = self.syncMessageDocument(user: user, message: queueItem, data: contentsData)
-                        case .workspace:
-                            success = self.syncMessageWorkspace(user: user, message: queueItem, data: contentsData)
-                        case .label:
-                            success = self.syncMessageLabel(user: user, message: queueItem, data: contentsData)
-                        case .labelLink:
-                            success = self.syncMessageLabelLink(user: user, message: queueItem, data: contentsData)
-                        case .block:
-                            success = self.syncMessageBlock(user: user, message: queueItem, data: contentsData)
-                        }
-                    }
-                    
-                    if success {
-                        let repo = SyncMessageRepo(user: user)
-                        if !repo.has(id: queueItem.id) {
-                            try! repo.create(id: queueItem.id, isApplied: true)
-                        }
+        var i = 0
+        
+        guard let applyQueue else {
+            #if DEBUG
+            fatalError()
+            #endif
+            return
+        }
+        
+        applyQueue.fetchQueue()
+        
+        var count = applyQueue.count
+        
+        while count > 0 && i < count {
+            applyQueue.fetchQueue()
+            count = applyQueue.count
                         
-                        self.applyQueue?.remove(id: queueItem.id)
+            if let queueItem = self.applyQueue?.peek(offset: i) {
+                if processingApplyQueue[queueItem.id] == true {
+                    return
+                }
+                
+                processingApplyQueue[queueItem.id] = true
+                if queueItem.isApplied == true {
+                    #if DEBUG
+                    fatalError()
+                    #endif
+                    return
+                }
+                
+                var success = false
+                if let contentsData = queueItem.contents.data(using: .utf8) {
+                    switch queueItem.type {
+                    case .user:
+                        success = self.syncMessageUser(user: user, message: queueItem, data: contentsData)
+                    case .document:
+                        success = self.syncMessageDocument(user: user, message: queueItem, data: contentsData)
+                    case .workspace:
+                        success = self.syncMessageWorkspace(user: user, message: queueItem, data: contentsData)
+                    case .label:
+                        success = self.syncMessageLabel(user: user, message: queueItem, data: contentsData)
+                    case .labelLink:
+                        success = self.syncMessageLabelLink(user: user, message: queueItem, data: contentsData)
+                    case .block:
+                        success = self.syncMessageBlock(user: user, message: queueItem, data: contentsData)
+                    }
+                }
+                
+                if success {
+                    let repo = SyncMessageRepo(user: user)
+                    if !repo.has(id: queueItem.id) {
+                        try! repo.create(id: queueItem.id, isApplied: true)
+                    }
+                    
+                    if applyQueue.remove(id: queueItem.id) {
+                        processingApplyQueue[queueItem.id] = false
+                    }
 
+                } else {
+                    
+                    if i == count - 1 {
+                        i = 0
                     } else {
                         i += 1
                     }
+                    
+                    processingApplyQueue[queueItem.id] = false
                 }
             }
-            
-            processingApplyQueue = false
         }
     }
     
@@ -302,6 +324,10 @@ class SyncService: ObservableObject {
     private func syncMessageUser(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
+            if UserRepo().read(id: user.id) != nil {
+                return true
+            }
+            
             let success = UserBuilder.create(user: user)
             if success {
                 self.postSyncNotification(.userSyncCreated)
@@ -634,20 +660,6 @@ class SyncService: ObservableObject {
         }
     }
     
-//    func createMessage(user: User, message: SyncMessage) -> Bool {
-//        do {
-//            let repo = SyncMessageRepo(user: user)
-//            if !repo.has(message: message) {
-//                try repo.create(message: message)
-//                return true
-//            }
-//        } catch let error {
-//            print(error)
-//        }
-//
-//        return false
-//    }
-    
     func createWorkspace(user: User, workspace: Workspace) {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
@@ -702,29 +714,6 @@ class SyncService: ObservableObject {
         
         task.resume()
     }
-    
-//    func createUser(user: User) {
-//        // Create message
-//        let encoder = JSONEncoder()
-//        encoder.dateEncodingStrategy = .millisecondsSince1970
-//        let contents = try! encoder.encode(user)
-//        
-//        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .user, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
-//        // Save message to local queue
-//        pushMessage(user: user, message: message)
-//
-//    }
-    
-//    func createDocument(user: User, document: Document) {
-//        let encoder = JSONEncoder()
-//        encoder.dateEncodingStrategy = .millisecondsSince1970
-//        let contents = try! encoder.encode(document)
-//
-//        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .create, isSynced: false, isApplied: true, contents: String(data: contents, encoding: .utf8)!)
-//
-//        // Save message to local queue
-//        pushMessage(user: user, message: message)
-//    }
     
     func fetchMessageIDs(user: User) {
         let syncMessageRepo = SyncMessageRepo(user: user)

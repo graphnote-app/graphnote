@@ -13,9 +13,9 @@ struct BlockView: View {
     let document: Document
     let block: Block
     @Binding var promptText: String
-    let onEnter: (() -> Void)
-    let save: (() -> Void)
-    let onEmptyClick: (_ index: Int) -> Void
+    let onPromptEnter: (_ index: Int) -> Void
+    let onEmptyEnter: (_ index: Int) -> Void
+    let onEmptyClick: (Int) -> Void
     
     @StateObject private var vm: BlockViewVM
     
@@ -24,8 +24,8 @@ struct BlockView: View {
         document: Document,
         block: Block,
         promptText: Binding<String>,
-        onEnter: @escaping () -> Void,
-        save: @escaping () -> Void,
+        onPromptEnter: @escaping (Int) -> Void,
+        onEmptyEnter: @escaping (Int) -> Void,
         onEmptyClick: @escaping (Int) -> Void
     ) {
         self.user = user
@@ -33,8 +33,8 @@ struct BlockView: View {
         self.document = document
         self.block = block
         self._promptText = promptText
-        self.onEnter = onEnter
-        self.save = save
+        self.onPromptEnter = onPromptEnter
+        self.onEmptyEnter = onEmptyEnter
         self.onEmptyClick = onEmptyClick
         self._vm = StateObject(wrappedValue: BlockViewVM(text: block.content, user: user, workspace: workspace, document: document, block: block))
     }
@@ -74,6 +74,9 @@ struct BlockView: View {
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
+                .onSubmit {
+                    onEmptyEnter(block.order)
+                }
             case .heading1:
                 HeadingView(size: .heading1, text: vm.content) { newValue in
                     vm.content = newValue
@@ -108,12 +111,12 @@ struct BlockView: View {
                     .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .prompt:
                 PromptField(placeholder: "Press '/'", text: $promptText) {
-//                    vm.appendBlock(user: user, workspace: workspace, document: document, text: promptText)
                     promptText = ""
-//                    fetchBlocks()
-                    save()
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
+                .onSubmit {
+                    onPromptEnter(block.order + 1)
+                }
                 .onAppear {
                     isFocused = true
                 }
@@ -121,9 +124,6 @@ struct BlockView: View {
             case .none:
                 EmptyView()
             }
-        }
-        .onSubmit {
-            onEnter()
         }
         .onAppear {
             #if os(macOS)

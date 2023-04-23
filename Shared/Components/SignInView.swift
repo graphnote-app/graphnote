@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AuthenticationServices
+import CryptoKit
 
 enum SignInError: LocalizedError {
     case signInNoUser
@@ -39,6 +40,7 @@ struct SignInView: View {
     @State private var imageSizeScaler = 0.25
     @State private var isFailureAlertOpen = false
     @State private var isFailureAlertMessage: SignInError? = nil
+    @State private var currentNonce: String? = nil
     
     private let duration = 2.0
     private let imageWidth = 140.0
@@ -46,6 +48,37 @@ struct SignInView: View {
     
     init(callback: @escaping (_ isSignUp: Bool, _ user: User?, _ success: Bool) -> Void) {
         self.callback = callback
+    }
+    
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+
+        let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+
+        let nonce = randomBytes.map { byte in
+        // Pick a random character from the set, wrapping around if needed.
+        charset[Int(byte) % charset.count]
+        }
+
+        return String(nonce)
+    }
+    
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+        String(format: "%02x", $0)
+        }.joined()
+
+        return hashString
     }
     
     var body: some View {
@@ -83,10 +116,23 @@ struct SignInView: View {
                     .opacity(getStartedOpacity)
                 SignInWithAppleButton { request in
                     request.requestedScopes = [.fullName, .email]
+                    currentNonce = randomNonceString()
+                    guard let nonce = currentNonce else  {
+                        return
+                    }
+                    
+                    request.nonce = sha256(nonce)
                 } onCompletion: { result in
                     switch result {
                     case .success(let authorization):
-                        authService.process(authorization: authorization, callback: { isSignUp, user, error in
+                        guard let nonce = currentNonce else {
+                            #if DEBUG
+                            fatalError()
+                            #endif
+                            return
+                        }
+                        
+                        authService.process(authorization: authorization, currentNonce: nonce, callback: { isSignUp, user, error in
                             if let error {
                                 switch error {
                                 case .createUserFailed:
@@ -99,17 +145,18 @@ struct SignInView: View {
                                     isFailureAlertMessage = SignInError.unknown
                                 }
                                 print(error)
-                                
+
                                 isFailureAlertOpen = true
                                 callback(isSignUp, nil, false)
                             }
-                            
+
                             callback(isSignUp, user, true)
 
                         })
 
                     case .failure(let error):
                         print(error)
+                        callback(false, nil, false)
                     }
                 }
                 .frame(width: 220, height: 40)

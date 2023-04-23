@@ -135,7 +135,7 @@ struct DocumentRepo {
         do {
             let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
             let fetchRequest = BlockEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "document.id == %@ && order > %@", document.id.uuidString, NSNumber(value: orderEqualsOrGreaterThan))
+            fetchRequest.predicate = NSPredicate(format: "document.id == %@ && order >= %@", document.id.uuidString, NSNumber(value: orderEqualsOrGreaterThan))
             fetchRequest.sortDescriptors = [sortDescriptor]
             
             let blockEntities = try moc.fetch(fetchRequest)

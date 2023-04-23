@@ -146,6 +146,9 @@ struct WorkspaceRepo {
                     return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: workspace.id, user: user.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
                 } else {
                     print("user or workspace is nil: \(labelEntity.user) \(labelEntity.workspace)")
+                    #if DEBUG
+                    fatalError()
+                    #endif
                     return nil
                 }
             }

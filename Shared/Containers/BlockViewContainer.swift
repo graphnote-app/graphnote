@@ -25,13 +25,17 @@ struct BlockViewContainer: View {
             ForEach(blocks.sorted(by: { a, b in
                 a.order < b.order
             }), id: \.id) { block in
-                BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText) {
-                    vm.insertBlock(index: block.type == .prompt ? block.order - 1 : block.order, user: user, workspace: workspace, document: document, promptText: promptText)
+                BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText) { index in
+                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
                     action()
-                } save: {
-//                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
-//                    action()
+                } onEmptyEnter: { index in
+                    if let emptyBlock = vm.insertBlock(index: block.order + 1, user: user, workspace: workspace, document: document, promptText: promptText) {
+                        vm.movePromptToEmptySpace(index: emptyBlock.order, user: user, workspace: workspace, document: document, block: emptyBlock)
+                        action()
+                    }
+                    
                 } onEmptyClick: { index in
+                    vm.insertBlock(index: index, user: user, workspace: workspace, document: document, promptText: promptText)
                     vm.movePromptToEmptySpace(index: index, user: user, workspace: workspace, document: document, block: block)
                     action()
                 }
