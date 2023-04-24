@@ -78,20 +78,22 @@ struct BlockView: View {
         Group {
             switch BlockType(rawValue: block.type.rawValue) {
             case .contentLink:
-                BodyView(text: vm.getBlockText(id: UUID(uuidString: block.content)!), textDidChange: { _ in
-                })
-                .overlay {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.accentColor)
-                        
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.accentColor.opacity(0.05))
+                if let id = UUID(uuidString: block.content), let text = vm.getBlockText(id: id) {
+                    BodyView(text: text, textDidChange: { _ in
+                    })
+                    .overlay {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.accentColor)
+                            
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.accentColor.opacity(0.05))
+                        }
+                        .padding(-12)
                     }
-                    .padding(-12)
+                    .padding([.leading, .trailing], 12)
+                    .padding([.top, .bottom], 24)
                 }
-                .padding([.leading, .trailing], 12)
-                .padding([.top, .bottom], 24)
             case .body:
                 BodyView(text: vm.content, editable: editable) { newValue in
                     vm.content = newValue
