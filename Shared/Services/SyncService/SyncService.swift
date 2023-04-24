@@ -343,19 +343,23 @@ class SyncService: ObservableObject {
     private func syncMessageLabelLink(user: User, message: SyncMessage, data: Data) -> Bool {
         switch message.action {
         case .create:
-            let labelLink = try! decoder.decode(LabelLink.self, from: data)
-            if self.processLabelLink(labelLink, user: user) {
-                do {
-                    let repo = SyncMessageRepo(user: user)
-                    try repo.updateToIsApplied(id: message.id)
-                    return true
-                } catch let error {
-                    print(error)
+            if let labelLink = try? decoder.decode(LabelLink.self, from: data) {
+                if self.processLabelLink(labelLink, user: user) {
+                    do {
+                        let repo = SyncMessageRepo(user: user)
+                        try repo.updateToIsApplied(id: message.id)
+                        return true
+                    } catch let error {
+                        print(error)
+                        return false
+                    }
+                } else {
                     return false
                 }
             } else {
-                return false
+                 return false
             }
+            
         case .update:
             break
         case .delete:
