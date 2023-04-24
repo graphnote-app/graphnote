@@ -21,14 +21,16 @@ struct LabelField: View {
     
     let fetch: () -> Void
     @Binding var labels: [Label]
+    let allLabels: [Label]
     let user: User
     let workspace: Workspace
     let document: Document
     
-    init(fetch: @escaping () -> Void, labels: Binding<[Label]>, user: User, workspace: Workspace, document: Document) {
+    init(fetch: @escaping () -> Void, labels: Binding<[Label]>, allLabels: [Label], user: User, workspace: Workspace, document: Document) {
         self.labelService = LabelService(user: user, workspace: workspace)
         self.fetch = fetch
         self._labels = labels
+        self.allLabels = allLabels
         self.user = user
         self.workspace = workspace
         self.document = document
@@ -53,30 +55,33 @@ struct LabelField: View {
                 .frame(width: Spacing.spacing1.rawValue)
             AddIconView()
                 .sheet(isPresented: $showAddSheet, content: {
-                    AddLabelView(save: { (title, color) in
-                        
+                    AddLabelView(user: user, workspace: workspace, allLabels: allLabels) { labels in
                         do {
-                            let added = try labelService.addLabel(title: title, color: color, document: document)
-                            if added {
-                                newLabelNotification()
-                                fetch()
-                                self.showAddSheet = false
-                                
-                            } else {
-                                self.showAddSheet = false
-                                DispatchQueue.main.async {
-                                    labelExistsAlertOpen = true
+                            for label in labels {
+                                let title = label.title
+                                let color = label.color
+                                let added = try labelService.addLabel(title: title, color: color, document: document)
+                                if added {
+                                    newLabelNotification()
+                                    fetch()
+                                    self.showAddSheet = false
+                                    
+                                } else {
+                                    self.showAddSheet = false
+                                    DispatchQueue.main.async {
+                                        labelExistsAlertOpen = true
+                                    }
                                 }
                             }
+                            
                             
                         } catch let error {
                             print(error)
                             return
                         }
-                        
-                    }, close: {
+                    } close: {
                         self.showAddSheet = false
-                    })
+                    }
                     .id(document.id)
                     .presentationDetents([.medium, .large])
                 })

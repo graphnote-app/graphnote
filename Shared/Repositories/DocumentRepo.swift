@@ -238,25 +238,22 @@ struct DocumentRepo {
             return nil
         }
         
-        let labels = labelLinks.compactMap {
-            if let labelEntity = try? LabelEntity.getEntity(id: $0.label, moc: moc),
-               let workspace = labelEntity.workspace, let user = labelEntity.user {
-                return Label(
-                    id: labelEntity.id,
-                    title: labelEntity.title,
-                    color: LabelPalette(rawValue: labelEntity.color)!,
-                    workspace: workspace.id,
-                    user: user.id,
-                    createdAt: labelEntity.createdAt,
-                    modifiedAt: labelEntity.modifiedAt
-                )
-            } else {
-                return nil
+        do {
+            let labels = try labelLinks.compactMap {
+                if let labelEntity = try? LabelEntity.getEntity(id: $0.label, moc: moc),
+                   let workspace = labelEntity.workspace, let user = labelEntity.user {
+                    return try Label(from: labelEntity)
+                } else {
+                    return nil
+                }
+                
             }
             
+            return labels
+        } catch let error {
+            print(error)
+            return nil
         }
-        
-        return labels
     }
     
     func getLastIndex(document: Document) -> Int? {

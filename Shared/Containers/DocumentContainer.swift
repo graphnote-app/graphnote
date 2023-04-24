@@ -27,7 +27,7 @@ struct DocumentContainer: View {
     }
     
     var body: some View {
-        DocumentView(title: $vm.title, labels: $vm.labels, blocks: $vm.blocks, user: user, workspace: workspace, document: document) {
+        DocumentView(title: $vm.title, labels: $vm.labels, allLabels: vm.allLabels, blocks: $vm.blocks, user: user, workspace: workspace, document: document) {
             vm.fetch(user: user, workspace: workspace, document: document)
         } fetchBlocks: {
             vm.fetchBlocks(user: user, workspace: workspace, document: document)

@@ -27,5 +27,24 @@ struct Label: Equatable, Hashable, Codable {
         hasher.combine(title)
     }
     
+    init(id: UUID, title: String, color: LabelPalette, workspace: UUID, user: String, createdAt: Date, modifiedAt: Date) {
+        self.id = id
+        self.title = title
+        self.color = color
+        self.workspace = workspace
+        self.user = user
+        self.createdAt = createdAt
+        self.modifiedAt = modifiedAt
+    }
+    
+    init(from: LabelEntity) throws {
+        self.id = from.id
+        self.title = from.title
+        self.color = LabelPalette(rawValue: from.color)!
+        self.workspace = from.workspace!.id
+        self.user = from.user!.id
+        self.createdAt = from.createdAt
+        self.modifiedAt = from.modifiedAt
+    }
 
 }

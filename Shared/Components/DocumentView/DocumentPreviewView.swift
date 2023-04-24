@@ -39,7 +39,7 @@ struct DocumentPreviewView: View {
     let title: String
     /// The binding to an array of label model objects.
     let labels: [Label]
-    /// The binding to an array of block model objects.
+    /// All the labels in the workspace for suggestions.
     let blocks: [Block]
     
     /// The logged in user.
@@ -75,7 +75,7 @@ struct DocumentPreviewView: View {
                             .textFieldStyle(.plain)
                         Spacer()
                             .frame(height: 20)
-                        LabelField(fetch: fetch, labels: .constant(labels), user: user, workspace: workspace, document: document)
+                        LabelField(fetch: fetch, labels: .constant(labels), allLabels: [], user: user, workspace: workspace, document: document)
                     }
                     .foregroundColor(.primary)
                 }

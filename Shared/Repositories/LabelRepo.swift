@@ -61,15 +61,7 @@ struct LabelRepo {
             }
             
             if let user = labelEntity.user {
-                let label = Label(
-                    id: labelEntity.id,
-                    title: labelEntity.title,
-                    color: LabelPalette(rawValue: labelEntity.color)!,
-                    workspace: workspace.id,
-                    user: user.id,
-                    createdAt: labelEntity.createdAt,
-                    modifiedAt: labelEntity.modifiedAt
-                )
+                let label = try Label(from: labelEntity)
                 return label
                 
             } else {

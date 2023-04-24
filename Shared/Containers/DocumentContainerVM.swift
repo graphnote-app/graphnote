@@ -37,6 +37,7 @@ class DocumentContainerVM: ObservableObject {
     @Published var title = ""
     @Published var labels = [Label]()
     @Published var blocks = [Block]()
+    @Published var allLabels = [Label]()
     
     var document: Document? = nil {
         didSet {
@@ -72,6 +73,8 @@ class DocumentContainerVM: ObservableObject {
         }
         
         do {
+            self.allLabels = try WorkspaceRepo(user: user).readAllLabels(workspace: workspace)
+            
             if let blocks = try documentRepo.readBlocks(document: document) {
                 self.blocks = blocks
             }

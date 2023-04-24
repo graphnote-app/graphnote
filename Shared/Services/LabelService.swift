@@ -15,7 +15,7 @@ struct LabelService {
         let labelRepo = LabelRepo(user: user, workspace: workspace)
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
-        var label = Label(id: UUID(), title: title, color: color, workspace: workspace.id, user: user.id, createdAt: .now, modifiedAt: .now)
+        var label = Label(id: UUID(), title: title, color: color, workspace: workspace.id, user: user.id, createdAt: Date.now, modifiedAt: Date.now)
         
         let existingLabelUUID = try? labelRepo.exists(label: label)
 

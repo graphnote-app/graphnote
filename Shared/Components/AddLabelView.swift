@@ -8,26 +8,32 @@
 import SwiftUI
 
 struct AddLabelView: View {
-    let save: (_ title: String, LabelPalette) -> Void
+    let user: User
+    let workspace: Workspace
+    let allLabels: [Label]
+    let save: (_ labels: [Label]) -> Void
     let close: () -> Void
     
     @State private var isEmpty = true
     @State private var color = LabelPalette.allCases().randomElement()!
+    @State private var title = ""
     
-    @State private var title: String = ""
+    @State private var labels: [Label] = []
     
     var body: some View {
         VStack {
             #if os(macOS)
             VStack(alignment: .leading) {
-                TextField("name", text: $title)
-                    .padding([.top, .bottom])
-                    .textFieldStyle(.roundedBorder)
-                    .frame(width: 220)
+                AddLabelField(user: user, workspace: workspace, labels: labels, allLabels: allLabels) { label in
+                    labels.append(label)
+                }
+                .padding([.top, .bottom])
+                .textFieldStyle(.roundedBorder)
+                .frame(width: 220)
             }
             .padding()
             .cornerRadius(24)
-            .onChange(of: title, perform: { newValue in
+            .onChange(of: labels, perform: { newValue in
                 if newValue.count == .zero {
                     isEmpty = true
                 } else {
@@ -36,14 +42,14 @@ struct AddLabelView: View {
             })
             #else
             List {
-                TextField("name", text: $title)
+                AddLabelField(labels: labels, allLabel: allLabels)
                     .padding([.top, .bottom])
                     .textFieldStyle(.roundedBorder)
             }
             .listStyle(.insetGrouped)
             .padding()
             .cornerRadius(24)
-            .onChange(of: title, perform: { newValue in
+            .onChange(of: labels, perform: { newValue in
                 if newValue.count == .zero {
                     isEmpty = true
                 } else {
@@ -61,7 +67,7 @@ struct AddLabelView: View {
                 .padding()
                 Spacer()
                 Button("Add") {
-                    save(title, color)
+                    save(labels)
                 }
                 .disabled(isEmpty)
                 .foregroundColor(isEmpty ? Color.gray : Color.accentColor)
@@ -69,16 +75,5 @@ struct AddLabelView: View {
                 .padding()
             }.padding()
         }
-    }
-}
-
-struct AddLabelView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddLabelView { title, color in
-            
-        } close: {
-            
-        }
-
     }
 }

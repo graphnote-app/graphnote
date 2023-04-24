@@ -108,10 +108,10 @@ struct WorkspaceRepo {
             let fetchRequest = WorkspaceEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "user.id == %@", user.id)
             let workspaces = try moc.fetch(fetchRequest)
-            return workspaces.map { workspaceEntity in
-                let labels: [Label] = (workspaceEntity.labels.allObjects as! [LabelEntity]).compactMap { (labelEntity: LabelEntity) in
+            return try workspaces.map { workspaceEntity in
+                let labels: [Label] = try (workspaceEntity.labels.allObjects as! [LabelEntity]).compactMap { (labelEntity: LabelEntity) in
                     if let workspace = labelEntity.workspace, let user = labelEntity.user {
-                        return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: workspace.id, user: user.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+                        return try Label(from: labelEntity)
                     } else {
                         print("workspace / user is nil: \(labelEntity.workspace) \(labelEntity.user)")
                         return nil
@@ -134,6 +134,21 @@ struct WorkspaceRepo {
         }
     }
     
+    func readAllLabels(workspace: Workspace) throws -> [Label] {
+        do {
+            let fetchRequest = LabelEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "workspace.id == %@", workspace.id.uuidString)
+            let labels = try moc.fetch(fetchRequest)
+            return try labels.map { labelEntity in
+                return try Label(from: labelEntity)
+            }
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     func read(workspace: UUID) throws -> Workspace? {
         do {
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace, moc: moc) else {
@@ -141,9 +156,9 @@ struct WorkspaceRepo {
                 return nil
             }
         
-            let labels = (workspaceEntity.labels.allObjects as! [LabelEntity]).compactMap { (labelEntity: LabelEntity) in
-                if let user = labelEntity.user, let workspace = labelEntity.workspace {
-                    return Label(id: labelEntity.id, title: labelEntity.title, color: LabelPalette(rawValue: labelEntity.color)!, workspace: workspace.id, user: user.id, createdAt: labelEntity.createdAt, modifiedAt: labelEntity.modifiedAt)
+            let labels = try (workspaceEntity.labels.allObjects as! [LabelEntity]).compactMap { (labelEntity: LabelEntity) in
+                if let user = try labelEntity.user, let workspace = labelEntity.workspace {
+                    return try Label(from: labelEntity)
                 } else {
                     print("user or workspace is nil: \(labelEntity.user) \(labelEntity.workspace)")
                     #if DEBUG

@@ -39,6 +39,8 @@ struct DocumentView: View {
     @Binding var title: String
     /// The binding to an array of label model objects.
     @Binding var labels: [Label]
+    /// All labels for suggestions
+    let allLabels: [Label]
     /// The binding to an array of block model objects.
     @Binding var blocks: [Block]
     
@@ -73,7 +75,7 @@ struct DocumentView: View {
                             .textFieldStyle(.plain)
                         Spacer()
                             .frame(height: 20)
-                        LabelField(fetch: fetch, labels: $labels, user: user, workspace: workspace, document: document)
+                        LabelField(fetch: fetch, labels: $labels, allLabels: allLabels, user: user, workspace: workspace, document: document)
                     }
                     .foregroundColor(.primary)
                 }
