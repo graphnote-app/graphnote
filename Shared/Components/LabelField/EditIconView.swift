@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddIconView: View {
     var body: some View {
-        Image(systemName: "pencil")
+        Image(systemName: "tag")
             .renderingMode(.template)
             .resizable()
             .frame(width: GlobalDimensionIOS.iconSmall, height: GlobalDimensionIOS.iconSmall)

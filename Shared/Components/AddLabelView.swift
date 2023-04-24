@@ -16,25 +16,6 @@ struct AddLabelView: View {
     
     @State private var title: String = ""
     
-    var menu: some View {
-        Menu {
-            ForEach(LabelPalette.allCases(), id: \.self) { color in
-                Button(color.rawValue) {
-                    self.color = color
-                }
-            }
-        } label: {
-            Text(self.color.rawValue)
-        }
-        .onChange(of: title, perform: { newValue in
-            if newValue.count == .zero {
-                isEmpty = true
-            } else {
-                isEmpty = false
-            }
-        })
-    }
-    
     var body: some View {
         VStack {
             #if os(macOS)
@@ -43,24 +24,32 @@ struct AddLabelView: View {
                     .padding([.top, .bottom])
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 220)
-                menu
-                    .menuStyle(.borderedButton)
-
             }
             .padding()
             .cornerRadius(24)
+            .onChange(of: title, perform: { newValue in
+                if newValue.count == .zero {
+                    isEmpty = true
+                } else {
+                    isEmpty = false
+                }
+            })
             #else
             List {
                 TextField("name", text: $title)
                     .padding([.top, .bottom])
                     .textFieldStyle(.roundedBorder)
-                
-                menu
-                    .menuStyle(.borderlessButton)
             }
             .listStyle(.insetGrouped)
             .padding()
             .cornerRadius(24)
+            .onChange(of: title, perform: { newValue in
+                if newValue.count == .zero {
+                    isEmpty = true
+                } else {
+                    isEmpty = false
+                }
+            })
             #endif
             Spacer()
             HStack {
