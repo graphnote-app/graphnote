@@ -41,7 +41,7 @@ struct DataSeeder{
         
 //        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
         
-        let workspaces = [workspace, workspace1]
+        let workspaces = [workspace]
         let labels = [label, label2, label3, label4, label5]
         let documents = [document0, document1, document2]
         let doc1Blocks = [welcomeBlock0, welcomeBlock1, welcomeBlock2]
