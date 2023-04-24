@@ -14,4 +14,8 @@ struct GlobalDimensionIOS {
 //    static let minDocumentContentWidth = 200.0
     static let minDocumentContentHeight = 300.00
     static let iconSmall = 16.0
+    static let modalWidth = 300.0
+    static let modalHeight = 450.0
+    static let minDocumentPreviewContentWidth = 250.0
+    static let maxDocumentPreviewContentWidth = 450.0
 }

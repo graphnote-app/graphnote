@@ -11,38 +11,51 @@ fileprivate let bodyFontSize: CGFloat = 18.0
 
 struct BodyView: View {
     let text: String
+    let editable: Bool
     let textDidChange: (_ text: String) -> Void
     
     @State private var content: String
     
-    init(text: String, textDidChange: @escaping (_: String) -> Void) {
+    init(text: String, editable: Bool = true, textDidChange: @escaping (_: String) -> Void) {
         self.text = text
+        self.editable = editable
         self.textDidChange = textDidChange
         self.content = text
     }
     
     var body: some View {
-        #if os(macOS)
-        TextField("", text: $content, axis: .vertical)
-            .frame(maxWidth: .infinity)
-            .textFieldStyle(.plain)
-            .font(.system(size: bodyFontSize))
-            .onAppear {
-                content = text
-            }
-            .onChange(of: content) { newValue in
-                textDidChange(newValue)
-            }
+        if editable {
+            #if os(macOS)
+            TextField("", text: $content, axis: .vertical)
+                .frame(maxWidth: .infinity)
+                .textFieldStyle(.plain)
+                .font(.system(size: bodyFontSize))
+                .onAppear {
+                    content = text
+                }
+                .onChange(of: content) { newValue in
+                    textDidChange(newValue)
+                }
+            
+            #else
+            TextField("", text: $content, axis: .vertical)
+                .onAppear {
+                    content = text
+                }
+                .onChange(of: content) { newValue in
+                    textDidChange(newValue)
+                }
+            #endif
+        } else {
+            Text(content)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(Spacing.spacing2.rawValue)
+                .font(.system(size: bodyFontSize))
+                .onAppear {
+                    content = text
+                }
+        }
         
-        #else
-        TextField("", text: $content, axis: .vertical)
-            .onAppear {
-                content = text
-            }
-            .onChange(of: content) { newValue in
-                textDidChange(newValue)
-            }
-        #endif
     }
 }
 

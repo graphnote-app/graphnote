@@ -128,18 +128,12 @@ class DataService: ObservableObject {
             for after in blocksAfter.sorted(by: { blockA, blockB in
                 blockA.order > blockB.order
             }) {
-                let block = Block(id: after.id, type: after.type, content: after.content, order: after.order + 1, createdAt: after.createdAt, modifiedAt: .now, document: after.document)
-                print(block.order)
-                if !documentRepo.update(block: block) {
-                    throw DataServiceError.blockUpdateFailed
-                }
+                updateBlock(user: user, workspace: workspace, document: document, block: after, order: after.order + 1)
             }
             
             if try documentRepo.create(block: block) == false {
                 throw DataServiceError.blockCreateFailed
             }
-            
-            // - TODO: Should I sync now?
 
         } catch let error {
             print(error)
@@ -175,13 +169,7 @@ class DataService: ObservableObject {
             throw DataServiceError.workspaceReadFailed
         }
         
-        let now = Date.now
-        let prompt = Block(id: UUID(), type: .prompt, content: "", order: 0, createdAt: now, modifiedAt: now, document: document)
-        
-        try createBlock(user: user, workspace: workspace, document: document, block: prompt)
-        
         postNotification(.documentCreated)
-        postNotification(.blockCreated)
         
         if sync {
             guard let data = encodeDocument(document: document) else {
@@ -341,6 +329,7 @@ class DataService: ObservableObject {
             print(error)
         }
     }
+
     
     func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, emptyBlock: Block, order: Int) {
         // Local updates

@@ -13,9 +13,13 @@ struct GlobalDimensionMacOS {
     static let maxDocumentContentWidth = 800.0
     static let minDocumentContentWidth = 400.0
     static let minDocumentContentHeight = 300.0
+    static let minDocumentPreviewContentWidth = 450.0
+    static let maxDocumentPreviewContentWidth = 250.0
     static let windowMinimumWidth = 850.0
     static let windowMinimumHeight = 550.0
     static let windowDefaultWidth = 1038.0
     static let windowDefaultHeight = 600.0
     static let iconSmall = 16.0
+    static let modalWidth = 550.0
+    static let modalHeight = 525.0
 }

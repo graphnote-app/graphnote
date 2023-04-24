@@ -13,6 +13,9 @@ struct BlockView: View {
     let document: Document
     let block: Block
     @Binding var promptText: String
+    let editable: Bool
+    @Binding var selectedLink: UUID?
+    @Binding var selectedIndex: Int?
     let onPromptEnter: (_ index: Int) -> Void
     let onEmptyEnter: (_ index: Int) -> Void
     let onEmptyClick: (Int) -> Void
@@ -24,6 +27,9 @@ struct BlockView: View {
         document: Document,
         block: Block,
         promptText: Binding<String>,
+        editable: Bool,
+        selectedLink: Binding<UUID?>,
+        selectedIndex: Binding<Int?>,
         onPromptEnter: @escaping (Int) -> Void,
         onEmptyEnter: @escaping (Int) -> Void,
         onEmptyClick: @escaping (Int) -> Void
@@ -33,6 +39,9 @@ struct BlockView: View {
         self.document = document
         self.block = block
         self._promptText = promptText
+        self.editable = editable
+        self._selectedLink = selectedLink
+        self._selectedIndex = selectedIndex
         self.onPromptEnter = onPromptEnter
         self.onEmptyEnter = onEmptyEnter
         self.onEmptyClick = onEmptyClick
@@ -68,14 +77,47 @@ struct BlockView: View {
     var body: some View {
         Group {
             switch BlockType(rawValue: block.type.rawValue) {
+            case .contentLink:
+                BodyView(text: vm.getBlockText(id: UUID(uuidString: block.content)!), textDidChange: { _ in
+                })
+                .overlay {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.accentColor)
+                        
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.accentColor.opacity(0.05))
+                    }
+                    .padding(-12)
+                }
+                .padding([.leading, .trailing], 12)
+                .padding([.top, .bottom], 24)
             case .body:
-                BodyView(text: vm.content) { newValue in
+                BodyView(text: vm.content, editable: editable) { newValue in
                     vm.content = newValue
                     print("Update block: \(block.id) with newValue: \(newValue)")
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
                 .onSubmit {
                     onEmptyEnter(block.order)
+                }
+                .onTapGesture {
+                    selectedLink = block.id
+                    selectedIndex = block.order
+                }
+                .overlay {
+                    if let selectedLink {
+                        if selectedLink == block.id {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.accentColor)
+                                
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.accentColor.opacity(0.05))
+                            }
+                            .padding(-8)
+                        }
+                    }
                 }
             case .heading1:
                 HeadingView(size: .heading1, text: vm.content) { newValue in

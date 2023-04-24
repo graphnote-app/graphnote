@@ -53,11 +53,15 @@ struct DataSeeder{
             try! DataService.shared.createUserMessage(user: user)
             
             for workspace in workspaces {
-                try! DataService.shared.createWorkspace(user: user, workspace: workspace)
+                try DataService.shared.createWorkspace(user: user, workspace: workspace)
             }
             
             for document in documents {
-                try! DataService.shared.createDocument(user: user, document: document)
+                try DataService.shared.createDocument(user: user, document: document)
+                let now = Date.now
+                let prompt = Block(id: UUID(), type: .prompt, content: "", order: 0, createdAt: now, modifiedAt: now, document: document)
+                
+                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: prompt)
             }
             
             for label in labels {
@@ -66,27 +70,27 @@ struct DataSeeder{
             
             for i in 0..<doc1Blocks.count {
                 let block = doc1Blocks[i]
-                try! DataService.shared.createBlock(user: user, workspace: workspace, document: document0, block: block)
+                try DataService.shared.createBlock(user: user, workspace: workspace, document: document0, block: block)
             }
             
             for i in 0..<doc2Blocks.count {
                 let block = doc2Blocks[i]
-                try! DataService.shared.createBlock(user: user, workspace: workspace, document: document1, block: block)
+                try DataService.shared.createBlock(user: user, workspace: workspace, document: document1, block: block)
             }
             
             for i in 0..<doc3Blocks.count {
                 let block = doc3Blocks[i]
-                try! DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: block)
+                try DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: block)
             }
             
-            try! DataService.shared.attachLabel(user: user, label: label, document: document1, workspace: workspace)
-            try! DataService.shared.attachLabel(user: user, label: label5, document: document1, workspace: workspace)
-            try! DataService.shared.attachLabel(user: user, label: label2, document: document2, workspace: workspace)
-            try! DataService.shared.attachLabel(user: user, label: label4, document: document1, workspace: workspace)
-            try! DataService.shared.attachLabel(user: user, label: label5, document: document0, workspace: workspace)
-            try! DataService.shared.attachLabel(user: user, label: label2, document: document0, workspace: workspace)
-            try! DataService.shared.attachLabel(user: user, label: label3, document: document0, workspace: workspace)
-            try! DataService.shared.attachLabel(user: user, label: label4, document: document0, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label, document: document1, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label5, document: document1, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label2, document: document2, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label4, document: document1, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label5, document: document0, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label2, document: document0, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label3, document: document0, workspace: workspace)
+            try DataService.shared.attachLabel(user: user, label: label4, document: document0, workspace: workspace)
             
             return true
          

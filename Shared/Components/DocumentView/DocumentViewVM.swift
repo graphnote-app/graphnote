@@ -11,6 +11,18 @@ class DocumentViewVM: ObservableObject {
     private func getLastIndex(user: User, workspace: Workspace, document: Document) -> Int? {
         return DataService.shared.getLastIndex(user: user, workspace: workspace, document: document)
     }
+    
+    @Published var documents: [Document] = []
+    
+    func fetchDocuments(user: User, workspace: Workspace) {
+        do {
+            let repo = DocumentRepo(user: user, workspace: workspace)
+            let docs = try repo.readAll()
+            documents = docs
+        } catch let error {
+            print(error)
+        }
+    }
 
     func appendBlock(user: User, workspace: Workspace, document: Document, text: String = "New block") {
         do {

@@ -56,6 +56,11 @@ class BlockViewVM: ObservableObject {
 //        }
     }
     
+    func getBlockText(id: UUID) -> String {
+        let block = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: id)!
+        return block.content
+    }
+    
     func deleteBlock(id: UUID) {
         print("delete: \(id)")
     }

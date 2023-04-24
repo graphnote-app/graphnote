@@ -12,11 +12,15 @@ struct BlockViewContainer: View {
     let workspace: Workspace
     let document: Document
     @Binding var blocks: [Block]
+    @Binding var promptMenuOpen: Bool
+    let editable: Bool
+    @Binding var selectedLink: UUID?
+    @Binding var selectedIndex: Int?
     let action: () -> Void
     
     @StateObject private var vm = BlockViewContainerVM()
     @State private var promptText = ""
-
+    
     private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
     
@@ -25,7 +29,7 @@ struct BlockViewContainer: View {
             ForEach(blocks.sorted(by: { a, b in
                 a.order < b.order
             }), id: \.id) { block in
-                BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText) { index in
+                BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText, editable: editable, selectedLink: $selectedLink, selectedIndex: $selectedIndex) { index in
                     vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
                     action()
                 } onEmptyEnter: { index in
@@ -40,7 +44,9 @@ struct BlockViewContainer: View {
                     action()
                 }
                 .id(block.id)
+
             }
+            
         }
         .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
             action()
@@ -48,7 +54,13 @@ struct BlockViewContainer: View {
         .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
             action()
         }
-
+        .onChange(of: promptText) { newValue in
+            if newValue == "/" {
+                promptMenuOpen = true
+            } else if newValue == "" {
+                promptMenuOpen = false
+            }
+        }
         .fixedSize(horizontal: false, vertical: true)
         .submitScope()
     }

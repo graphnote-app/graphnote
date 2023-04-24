@@ -25,3 +25,24 @@ struct HorizontalFlexView: View {
         .padding([.top, .bottom])
     }
 }
+
+struct HorizontalFlexPreviewView: View {
+    let content: () -> any View
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            #if os(macOS)
+            AnyView(content())
+                .frame(maxWidth: .infinity)
+//                .frame(minWidth: GlobalDimension.minDocumentPreviewContentWidth)
+//                .frame(maxWidth: GlobalDimensio/n.maxDocumentPreviewContentWidth)
+            #else
+            AnyView(content())
+            #endif
+            Spacer()
+        }
+        .padding([.top, .bottom])
+    }
+}
+

@@ -189,6 +189,14 @@
 		F8BF73D429C7FD1C00BA826E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D329C7FD1C00BA826E /* ContentView.swift */; };
 		F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF73D629C7FDFD00BA826E /* SidebarView.swift */; };
 		F8D92886279FCEB9009CC9B9 /* Graphnote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8D92883279FCEB9009CC9B9 /* Graphnote.xcdatamodeld */; };
+		F8D947BC29F5D8DA003AE4DE /* PromptMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947BB29F5D8DA003AE4DE /* PromptMenu.swift */; };
+		F8D947BD29F5D8DA003AE4DE /* PromptMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947BB29F5D8DA003AE4DE /* PromptMenu.swift */; };
+		F8D947BF29F5DFAA003AE4DE /* ContentLinkModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947BE29F5DFAA003AE4DE /* ContentLinkModal.swift */; };
+		F8D947C029F5DFAA003AE4DE /* ContentLinkModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947BE29F5DFAA003AE4DE /* ContentLinkModal.swift */; };
+		F8D947C229F5E62E003AE4DE /* DocumentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947C129F5E62E003AE4DE /* DocumentPreviewView.swift */; };
+		F8D947C329F5E62E003AE4DE /* DocumentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947C129F5E62E003AE4DE /* DocumentPreviewView.swift */; };
+		F8D947C529F5EB26003AE4DE /* ContentLinkModalVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947C429F5EB26003AE4DE /* ContentLinkModalVM.swift */; };
+		F8D947C629F5EB26003AE4DE /* ContentLinkModalVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D947C429F5EB26003AE4DE /* ContentLinkModalVM.swift */; };
 		F8EA1EC329E1D6ED00931810 /* TreeDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */; };
 		F8EA1EC429E1D6ED00931810 /* TreeDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */; };
 		F8EA1EC629E1DE9200931810 /* SyncStatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */; };
@@ -285,6 +293,10 @@
 		F8D92887279FD05B009CC9B9 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		F8D9288A27A23686009CC9B9 /* TreeViewAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewAddView.swift; sourceTree = "<group>"; };
 		F8D9289327A24688009CC9B9 /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
+		F8D947BB29F5D8DA003AE4DE /* PromptMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptMenu.swift; sourceTree = "<group>"; };
+		F8D947BE29F5DFAA003AE4DE /* ContentLinkModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLinkModal.swift; sourceTree = "<group>"; };
+		F8D947C129F5E62E003AE4DE /* DocumentPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPreviewView.swift; sourceTree = "<group>"; };
+		F8D947C429F5EB26003AE4DE /* ContentLinkModalVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLinkModalVM.swift; sourceTree = "<group>"; };
 		F8E19E5629A8669000BD0BB9 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -392,6 +404,9 @@
 				F86978C829A88398002D9570 /* BlockView.swift */,
 				F851295429EDD5BB0027CDF2 /* BlockViewVM.swift */,
 				F84D087629C808B100410C10 /* DocumentView.swift */,
+				F8D947C129F5E62E003AE4DE /* DocumentPreviewView.swift */,
+				F8D947BE29F5DFAA003AE4DE /* ContentLinkModal.swift */,
+				F8D947C429F5EB26003AE4DE /* ContentLinkModalVM.swift */,
 				F807F97B29EE2DC500D9B327 /* DocumentViewVM.swift */,
 			);
 			path = DocumentView;
@@ -544,6 +559,7 @@
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
+				F8D947BB29F5D8DA003AE4DE /* PromptMenu.swift */,
 				F861849D29F26C880092C728 /* GoogleService-Info.plist */,
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F84D088A29C81DA100410C10 /* iOS */,
@@ -759,8 +775,10 @@
 				F82EC68229D54EEE009C46BE /* GlobalDimension.swift in Sources */,
 				F82EC68129D54EDC009C46BE /* ToolbarView.swift in Sources */,
 				F82EC68029D54EC1009C46BE /* SplitView.swift in Sources */,
+				F8D947C329F5E62E003AE4DE /* DocumentPreviewView.swift in Sources */,
 				F82EC67D29D54CD5009C46BE /* GlobalDimensionIOS.swift in Sources */,
 				F82EC67A29D54C26009C46BE /* GNColor.swift in Sources */,
+				F8D947C629F5EB26003AE4DE /* ContentLinkModalVM.swift in Sources */,
 				F82EC63C29D54B62009C46BE /* DocumentContainer.swift in Sources */,
 				F807F97D29EE2DC500D9B327 /* DocumentViewVM.swift in Sources */,
 				F82EC63D29D54B62009C46BE /* DocumentContainerVM.swift in Sources */,
@@ -769,6 +787,7 @@
 				F82EC64029D54B62009C46BE /* LabelField.swift in Sources */,
 				F82EC64129D54B62009C46BE /* EditIconView.swift in Sources */,
 				F8EA1EC429E1D6ED00931810 /* TreeDocView.swift in Sources */,
+				F8D947C029F5DFAA003AE4DE /* ContentLinkModal.swift in Sources */,
 				F88313AA29EAA9C20073658A /* UserService.swift in Sources */,
 				F82EC64229D54B62009C46BE /* CheckmarkIconView.swift in Sources */,
 				F82EC64329D54B62009C46BE /* XMarkIconView.swift in Sources */,
@@ -805,6 +824,7 @@
 				F82EC65B29D54B62009C46BE /* WorkspaceMenu.swift in Sources */,
 				F807F97A29EE2A0E00D9B327 /* BlockViewContainerVM.swift in Sources */,
 				F82EC65C29D54B62009C46BE /* LoadingView.swift in Sources */,
+				F8D947BD29F5D8DA003AE4DE /* PromptMenu.swift in Sources */,
 				F896E90529DA3BC500296073 /* AddLabelView.swift in Sources */,
 				F82EC65D29D54B62009C46BE /* MenuCardView.swift in Sources */,
 				F82EC65E29D54B62009C46BE /* Workspace.swift in Sources */,
@@ -850,6 +870,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8BF73C629C7F54900BA826E /* DataController.swift in Sources */,
+				F8D947BC29F5D8DA003AE4DE /* PromptMenu.swift in Sources */,
 				F8A6B6E129D0E40200140A53 /* Workspace.swift in Sources */,
 				F832C8ED29CA5FE600ECA57B /* TreeViewSubline.swift in Sources */,
 				F807C8C529C9170500B7B239 /* CheckmarkIconView.swift in Sources */,
@@ -874,6 +895,7 @@
 				F88550AC29D9B51200EE458C /* SignInView.swift in Sources */,
 				F84D088429C817E900410C10 /* GlobalDimensionMacOS.swift in Sources */,
 				F8BF73D729C7FDFD00BA826E /* SidebarView.swift in Sources */,
+				F8D947C229F5E62E003AE4DE /* DocumentPreviewView.swift in Sources */,
 				F8A6B6F629D10C6400140A53 /* UserBuilder.swift in Sources */,
 				F8A6B6EE29D0F0D300140A53 /* WorkspaceRepo.swift in Sources */,
 				F8A6B6F229D1008200140A53 /* UserRepo.swift in Sources */,
@@ -915,9 +937,11 @@
 				F832C8F329CAA43400ECA57B /* SettingsView.swift in Sources */,
 				F8BF73CF29C7F57400BA826E /* TreeDocumentIdentifier.swift in Sources */,
 				F8BF73C329C7F52500BA826E /* TreeTagView.swift in Sources */,
+				F8D947BF29F5DFAA003AE4DE /* ContentLinkModal.swift in Sources */,
 				F8BF73C529C7F52500BA826E /* CheckmarkView.swift in Sources */,
 				F8403DD829D521610027A196 /* DocumentContainer.swift in Sources */,
 				F807F97C29EE2DC500D9B327 /* DocumentViewVM.swift in Sources */,
+				F8D947C529F5EB26003AE4DE /* ContentLinkModalVM.swift in Sources */,
 				F8BF73B629C7EA5300BA826E /* ColorPalette.swift in Sources */,
 				F8A6B6E929D0EAFD00140A53 /* Label.swift in Sources */,
 				F8BF73AB29C7E52200BA826E /* AppMacOS.swift in Sources */,

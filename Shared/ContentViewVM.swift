@@ -102,10 +102,16 @@ class ContentViewVM: NSObject, ObservableObject {
     }
     
     func addDocument(_ document: Document) -> Bool {
-        if let user {
+        if let user, let selectedWorkspace {
             do {
                 try DataService.shared.createDocument(user: user, document: document)
-                if let selected = selectedSubItem, let selectedWorkspace {
+                let now = Date.now
+                let prompt = Block(id: UUID(), type: .prompt, content: "", order: 0, createdAt: now, modifiedAt: now, document: document)
+                if try DataService.shared.createBlock(user: user, workspace: selectedWorkspace, document: document, block: prompt) == nil {
+                    return false
+                }
+                
+                if let selected = selectedSubItem {
                     selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id, workspace: selectedWorkspace.id)
                 }
                 return true
