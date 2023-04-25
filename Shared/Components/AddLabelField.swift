@@ -16,8 +16,39 @@ struct AddLabelField: View {
     
     private let pad = 8.0
     @State private var addLabelText = ""
+    @State private var isSuggestionsPopoverPresented = false
     
     var body: some View {
+        TextField("Add label", text: $addLabelText)
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(.gray)
+            .onChange(of: addLabelText) { newValue in
+                if allLabels.filter({$0.title.contains(addLabelText)}).first != nil {
+                    isSuggestionsPopoverPresented = true
+                }
+            }
+            .onSubmit {
+                if !addLabelText.isEmpty {
+                    let now = Date.now
+                    addLabel(Label(id: UUID(), title: addLabelText, color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now))
+                }
+                
+            }
+            .popover(isPresented: $isSuggestionsPopoverPresented, arrowEdge: .bottom) {
+                if let suggestion = allLabels.filter {$0.title.contains(addLabelText)}.first {
+                    LabelView(label: suggestion) { _ in
+                        
+                    }
+                    .padding()
+                    .onTapGesture {
+                        addLabel(suggestion)
+                        addLabelText = ""
+                        isSuggestionsPopoverPresented = false
+                    }
+                    .fixedSize()
+                }
+            }
         GeometryReader { proxy in
             ScrollView(.horizontal) {
                 HStack {
@@ -36,23 +67,7 @@ struct AddLabelField: View {
         
         
         .foregroundColor(.black)
-        TextField("Add label", text: $addLabelText)
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundColor(.gray)
-            .searchable(text: $addLabelText)
-            .searchSuggestions({
-                ForEach(allLabels, id: \.id) { label in
-                    Text(label.title).searchCompletion(label.title)
-                }
-            })
-            .onSubmit {
-                if !addLabelText.isEmpty {
-                    let now = Date.now
-                    addLabel(Label(id: UUID(), title: addLabelText, color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now))
-                }
-                
-            }
+        
         Spacer()
 
     }

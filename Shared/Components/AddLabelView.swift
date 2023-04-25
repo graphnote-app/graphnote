@@ -29,7 +29,7 @@ struct AddLabelView: View {
                 }
                 .padding([.top, .bottom])
                 .textFieldStyle(.roundedBorder)
-                .frame(width: 220)
+//                .frame(width: 220)
             }
             .padding()
             .cornerRadius(24)
@@ -41,12 +41,12 @@ struct AddLabelView: View {
                 }
             })
             #else
-            List {
-                AddLabelField(labels: labels, allLabel: allLabels)
-                    .padding([.top, .bottom])
-                    .textFieldStyle(.roundedBorder)
+
+            AddLabelField(user: user, workspace: workspace, labels: labels, allLabels: allLabels) { label in
+                labels.append(label)
             }
-            .listStyle(.insetGrouped)
+            .padding([.top, .bottom])
+            .textFieldStyle(.roundedBorder)
             .padding()
             .cornerRadius(24)
             .onChange(of: labels, perform: { newValue in

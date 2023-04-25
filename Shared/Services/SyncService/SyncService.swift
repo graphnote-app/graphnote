@@ -491,6 +491,7 @@ class SyncService: ObservableObject {
                 }
             } else {
                 print("Dropping document")
+                return true
             }
         }
         

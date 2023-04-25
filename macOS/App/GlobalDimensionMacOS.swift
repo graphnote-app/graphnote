@@ -22,4 +22,6 @@ struct GlobalDimensionMacOS {
     static let iconSmall = 16.0
     static let modalWidth = 550.0
     static let modalHeight = 525.0
+    static let labelModalWidth = 500.0
+    static let labelModalHeight = 400.0
 }

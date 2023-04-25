@@ -18,4 +18,6 @@ struct GlobalDimensionIOS {
     static let modalHeight = 450.0
     static let minDocumentPreviewContentWidth = 250.0
     static let maxDocumentPreviewContentWidth = 450.0
+    static let labelModalHeight = 500.0
+    static let labelModalWidth = 400.0
 }
