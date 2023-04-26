@@ -57,22 +57,6 @@ struct BlockView: View {
     
     @FocusState private var focusedField: FocusedField?
     @FocusState private var isFocused: Bool
-    @State private var prevContent = "INIT"
-    @State private var isKeyDown = false
-    
-    #if os(macOS)
-    private func keyDown(with event: NSEvent) {
-        if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
-            if self.isKeyDown == false {
-                self.isKeyDown = true
-                if vm.content == "" {
-                    vm.deleteBlock(id: block.id)
-                }
-                prevContent = vm.content
-            }
-        }
-    }
-    #endif
     
     var body: some View {
         Group {
@@ -168,15 +152,6 @@ struct BlockView: View {
             case .none:
                 EmptyView()
             }
-        }
-        .onAppear {
-            #if os(macOS)
-            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                self.isKeyDown = false
-                self.keyDown(with: $0)
-                return $0
-            }
-            #endif
         }
         .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
             vm.fetch()

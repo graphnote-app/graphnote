@@ -20,9 +20,29 @@ struct BlockViewContainer: View {
     
     @StateObject private var vm = BlockViewContainerVM()
     @State private var promptText = ""
+    @State private var isKeyDown = false
+    @State private var id: UUID? = nil
+    @State private var prevContent = "INIT"
     
     private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
+    private let blockDeletedNotification = Notification.Name(DataServiceNotification.blockDeleted.rawValue)
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
+    
+    #if os(macOS)
+    private func keyDown(with event: NSEvent) {
+        if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
+            if self.isKeyDown == false {
+                self.isKeyDown = true
+                if promptText == "" {
+                    if let id {
+                        vm.backspaceOnEmpty(user: user, workspace: workspace, document: document, id: id)
+                    }
+                }
+                prevContent = promptText
+            }
+        }
+    }
+    #endif
     
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
@@ -43,12 +63,29 @@ struct BlockViewContainer: View {
                     vm.movePromptToEmptySpace(index: index, user: user, workspace: workspace, document: document, block: block)
                     action()
                 }
+                .onAppear {
+                    if block.type == .prompt {
+                        id = block.id
+                    }
+                }
                 .id(block.id)
 
             }
             
         }
+        .onAppear {
+            #if os(macOS)
+            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                self.isKeyDown = false
+                self.keyDown(with: $0)
+                return $0
+            }
+            #endif
+        }
         .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
+            action()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: blockDeletedNotification)) { notification in
             action()
         }
         .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
@@ -65,9 +102,3 @@ struct BlockViewContainer: View {
         .submitScope()
     }
 }
-
-//struct BlockViewContainer_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BlockViewContainer()
-//    }
-//}

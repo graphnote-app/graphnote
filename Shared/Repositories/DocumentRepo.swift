@@ -44,6 +44,22 @@ struct DocumentRepo {
         }
     }
     
+    func readAllBlocks(document: Document) throws -> [Block] {
+        do {
+            
+            let fetchRequest = BlockEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "document.id == %@", document.id.uuidString)
+            let blockEntities = try moc.fetch(fetchRequest)
+            return try blockEntities.map { blockEntity in
+                try Block(from: blockEntity)
+            }
+            
+        } catch let error {
+            print(error)
+            throw error
+        }
+    }
+    
     func readAll() throws -> [Document] {
         do {
             

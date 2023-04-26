@@ -35,6 +35,7 @@ enum DataServiceNotification: String {
     case blockUpdatedLocally
     case blockCreated
     case userCreated
+    case blockDeleted
 }
 
 class DataService: ObservableObject {
@@ -330,6 +331,15 @@ class DataService: ObservableObject {
         }
     }
 
+    func deleteBlock(user: User, workspace: Workspace, id: UUID) {
+        do {
+            let repo = DocumentRepo(user: user, workspace: workspace)
+            try repo.deleteBlock(id: id)
+            self.postNotification(.blockDeleted)
+        } catch let error {
+            print(error)
+        }
+    }
     
     func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, emptyBlock: Block, order: Int) {
         // Local updates
