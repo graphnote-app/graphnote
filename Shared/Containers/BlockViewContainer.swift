@@ -36,6 +36,7 @@ struct BlockViewContainer: View {
                 if promptText == "" {
                     if let id {
                         vm.backspaceOnEmpty(user: user, workspace: workspace, document: document, id: id)
+                        action()
                     }
                 }
                 prevContent = promptText
@@ -59,7 +60,6 @@ struct BlockViewContainer: View {
                     }
                     
                 } onEmptyClick: { index in
-                    vm.insertBlock(index: index, user: user, workspace: workspace, document: document, promptText: promptText)
                     vm.movePromptToEmptySpace(index: index, user: user, workspace: workspace, document: document, block: block)
                     action()
                 }

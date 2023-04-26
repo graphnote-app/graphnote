@@ -63,7 +63,7 @@ struct BlockView: View {
             switch BlockType(rawValue: block.type.rawValue) {
             case .contentLink:
                 if let id = UUID(uuidString: block.content), let text = vm.getBlockText(id: id) {
-                    BodyView(text: text, textDidChange: { _ in
+                    BodyView(text: "\(block.order) \(text)", textDidChange: { _ in
                     })
                     .overlay {
                         ZStack {
@@ -130,7 +130,7 @@ struct BlockView: View {
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .empty:
-                EmptyBlockView {
+                EmptyBlockView(order: block.order) {
                     onEmptyClick(block.order)
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
@@ -138,7 +138,7 @@ struct BlockView: View {
                 BulletView(text: block.content)
                     .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .prompt:
-                PromptField(placeholder: "Press '/'", text: $promptText) {
+                PromptField(placeholder: "\(block.order) Press '/'", text: $promptText) {
                     promptText = ""
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)

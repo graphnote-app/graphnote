@@ -9,12 +9,12 @@ import SwiftUI
 
 struct EmptyBlockView: View {
     @Environment(\.colorScheme) var colorScheme
-    
+    let order: Int
     let action: () -> Void
     
     var body: some View {
-        Rectangle()
-            .foregroundColor(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+        Text(String(order))
+//            .foregroundColor(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
             .frame(height: Spacing.spacing7.rawValue)
             .contentShape(Rectangle())
             .onTapGesture(perform: action)

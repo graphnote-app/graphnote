@@ -46,6 +46,15 @@ class BlockViewContainerVM: ObservableObject {
                         DataService.shared.deleteBlock(user: user, workspace: workspace, id: beforeBlock.id)
                         
                         // - TODO: Update afterBlocks ordering
+                        let blocksAfter = allBlocks.filter {
+                            $0.order >= prompt.order
+                        }
+                        
+                        for after in blocksAfter {
+                            let block = Block(id: after.id, type: after.type, content: after.content, order: after.order - 1, createdAt: after.createdAt, modifiedAt: .now, document: after.document)
+                            print(block.order)
+                            DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block)
+                        }
                     } else {
                         
                         // - TODO: Focus previous text
