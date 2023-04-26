@@ -32,6 +32,7 @@ struct AddLabelField: View {
                 if !addLabelText.isEmpty {
                     let now = Date.now
                     addLabel(Label(id: UUID(), title: addLabelText, color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now))
+                    addLabelText = ""
                 }
                 
             }
