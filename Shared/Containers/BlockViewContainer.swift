@@ -16,10 +16,10 @@ struct BlockViewContainer: View {
     let editable: Bool
     @Binding var selectedLink: UUID?
     @Binding var selectedIndex: Int?
+    @Binding var promptText: String
     let action: () -> Void
     
     @StateObject private var vm = BlockViewContainerVM()
-    @State private var promptText = ""
     @State private var isKeyDown = false
     @State private var id: UUID? = nil
     @State private var prevContent = "INIT"

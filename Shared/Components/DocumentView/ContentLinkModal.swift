@@ -16,6 +16,7 @@ struct ContentLinkModal: View {
     let documents: [Document]
     @Binding var selectedIndex: Int?
     @Binding var selectedLink: UUID?
+    @Binding var open: Bool
     
     @State private var _document: Document?
     
@@ -55,12 +56,13 @@ struct ContentLinkModal: View {
                 Button("Cancel") {
                     selectedLink = nil
                     
-                    // - TODO: Close menu
+                    open = false
                 }
                 Spacer()
                 Button("Create link") {
                     if let selectedLink, let selectedIndex {
                         vm.createLink(user: user, workspace: workspace, document: document, content: selectedLink, order: selectedIndex)
+                        open = false
                     }
                 }
                 .buttonStyle(.borderedProminent)

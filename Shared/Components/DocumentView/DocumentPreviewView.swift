@@ -80,7 +80,7 @@ struct DocumentPreviewView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: .constant(blocks), promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex) {
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: .constant(blocks), promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, promptText: .constant("")) {
                         fetchBlocks()
                     }
                     

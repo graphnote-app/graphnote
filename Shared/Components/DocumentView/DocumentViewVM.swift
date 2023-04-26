@@ -41,4 +41,19 @@ class DocumentViewVM: ObservableObject {
             #endif
         }
     }
+    
+//    func clearPrompt(user: User, workspace: Workspace, document: Document) {
+//        do {
+//            let repo = DocumentRepo(user: user, workspace: workspace)
+//            if let prompt = try repo.readPromptBlock(document: document) {
+//                let block = Block(id: prompt.id, type: prompt.type, content: "", order: prompt.order, createdAt: prompt.createdAt, modifiedAt: .now, document: document)
+//                repo.update(block: prompt)
+//            }
+//        } catch let error {
+//            print(error)
+//            #if DEBUG
+//            fatalError()
+//            #endif
+//        }
+//    }
 }
