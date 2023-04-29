@@ -142,12 +142,10 @@ struct BlockView: View {
                     .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .prompt:
                 PromptField(placeholder: "Press '/'", text: $promptText) {
+                    onPromptEnter(block.id)
                     promptText = ""
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
-                .onSubmit {
-                    onPromptEnter(block.id)
-                }
                 .onAppear {
                     isFocused = true
                 }

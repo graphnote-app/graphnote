@@ -40,34 +40,31 @@ class BlockViewContainerVM: ObservableObject {
         do {
             let repo = DocumentRepo(user: user, workspace: workspace)
             if let prompt = try repo.readBlock(document: document, block: id) {
-                let allBlocks = try repo.readAllBlocks(document: document)
-//                    .sorted(by: { a, b in
-//                    a.order < b.order
-//                })
-                
-                let beforeBlock = allBlocks.filter({
-                    $0.next == nil
-                }).last
-                  
-                if let beforeBlock {
-                    if beforeBlock.content == "" {
-                        DataService.shared.deleteBlock(user: user, workspace: workspace, id: beforeBlock.id)
-                        
-                        // - TODO: Update afterBlocks ordering
-//                        let blocksAfter = allBlocks.filter {
-//                            $0.order >= prompt.order
-//                        }
-//                        
-//                        for after in blocksAfter {
-//                            let block = Block(id: after.id, type: after.type, content: after.content, order: after.order - 1, createdAt: after.createdAt, modifiedAt: .now, document: after.document)
-//                            print(block.order)
-//                            DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block)
-//                        }
-                    } else {
-                        
-                        // - TODO: Focus previous text
+                if let allBlocks = try repo.readBlocks(document: document) {
+                    let beforeBlock = allBlocks.filter({
+                        $0.next == nil
+                    }).last
+                      
+                    if let beforeBlock {
+                        if beforeBlock.content == "" {
+                            DataService.shared.deleteBlock(user: user, workspace: workspace, id: beforeBlock.id)
+                            
+                            // - TODO: Update afterBlocks ordering
+    //                        let blocksAfter = allBlocks.filter {
+    //                            $0.order >= prompt.order
+    //                        }
+    //
+    //                        for after in blocksAfter {
+    //                            let block = Block(id: after.id, type: after.type, content: after.content, order: after.order - 1, createdAt: after.createdAt, modifiedAt: .now, document: after.document)
+    //                            print(block.order)
+    //                            DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block)
+    //                        }
+                        } else {
+                            
+                            // - TODO: Focus previous text
+                        }
                     }
-                }
+                }                
             }
         } catch let error {
             print(error)

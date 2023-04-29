@@ -528,6 +528,7 @@
 				F84D087829C808B500410C10 /* DocumentView */,
 				F81CC936279D108400A1F693 /* TreeView */,
 				F8158FCE29C7D348004E56C1 /* WorkspaceMenu.swift */,
+				F8D947BB29F5D8DA003AE4DE /* PromptMenu.swift */,
 				F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */,
 				F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */,
 				F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */,
@@ -566,7 +567,6 @@
 		F8EA406B279CFF54001F74B5 = {
 			isa = PBXGroup;
 			children = (
-				F8D947BB29F5D8DA003AE4DE /* PromptMenu.swift */,
 				F861849D29F26C880092C728 /* GoogleService-Info.plist */,
 				F8EA4070279CFF54001F74B5 /* Shared */,
 				F84D088A29C81DA100410C10 /* iOS */,
