@@ -16,7 +16,8 @@ public class BlockEntity: NSManagedObject {
     @NSManaged public var id: UUID
     @NSManaged public var type: String
     @NSManaged public var content: String
-    @NSManaged public var order: Int
+    @NSManaged public var prev: UUID?
+    @NSManaged public var next: UUID?
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
     @NSManaged public var document: DocumentEntity?

@@ -16,16 +16,18 @@ struct Block: Codable {
     let id: UUID
     let type: BlockType
     let content: String
-    let order: Int
+    let prev: UUID?
+    let next: UUID?
     let createdAt: Date
     let modifiedAt: Date
     let document: Document
     
-    init(id: UUID, type: BlockType, content: String, order: Int, createdAt: Date, modifiedAt: Date, document: Document) {
+    init(id: UUID, type: BlockType, content: String, prev: UUID?, next: UUID?, createdAt: Date, modifiedAt: Date, document: Document) {
         self.id = id
         self.type = type
         self.content = content
-        self.order = order
+        self.prev = prev
+        self.next = next
         self.createdAt = createdAt
         self.modifiedAt = modifiedAt
         self.document = document
@@ -37,7 +39,8 @@ struct Block: Codable {
                 self.id = from.id
                 self.type = BlockType(rawValue: from.type)!
                 self.content = from.content
-                self.order = from.order
+                self.prev = from.prev
+                self.next = from.next
                 self.createdAt = from.createdAt
                 self.modifiedAt = from.modifiedAt
                 self.document = try Document(from: document)

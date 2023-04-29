@@ -12,6 +12,10 @@ class ContentLinkModalVM: ObservableObject {
     @Published var labels: [Label] = []
     @Published var title = ""
     
+    private func blockSort(_ a: Block, _ b: Block) -> Bool {
+        return true
+    }
+    
     func fetchDocument(user: User, workspace: Workspace, document: Document) {
         let repo = DocumentRepo(user: user, workspace: workspace)
         do {
@@ -19,6 +23,10 @@ class ContentLinkModalVM: ObservableObject {
                 self.blocks = blocks.filter {
                     $0.type != .prompt
                 }
+                .sorted(by: { a, b in
+                    blockSort(a, b)
+                })
+                
             }
             
             if let labels = repo.readLabels(document: document) {
@@ -32,11 +40,12 @@ class ContentLinkModalVM: ObservableObject {
         }
     }
     
-    func createLink(user: User, workspace: Workspace, document: Document, content: UUID, order: Int) {
+    func createLink(user: User, workspace: Workspace, document: Document, content: UUID, prev: UUID?, next: UUID?) {
         let now = Date.now
-        let link = Block(id: UUID(), type: .contentLink, content: content.uuidString, order: order, createdAt: now, modifiedAt: now, document: document)
+        // - TODO: BLOCK PREV NEXT
+        let link = Block(id: UUID(), type: .contentLink, content: content.uuidString, prev: prev, next: next, createdAt: now, modifiedAt: now, document: document)
         do {
-            _ = try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: link)
+            _ = try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: link, prev: prev, next: next)
         } catch let error {
             #if DEBUG
             fatalError()

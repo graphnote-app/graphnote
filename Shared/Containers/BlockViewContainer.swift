@@ -47,20 +47,65 @@ struct BlockViewContainer: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
-            ForEach(blocks.sorted(by: { a, b in
-                a.order < b.order
-            }), id: \.id) { block in
-                BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText, editable: editable, selectedLink: $selectedLink, selectedIndex: $selectedIndex) { index in
-                    vm.insertBlock(index: block.order, user: user, workspace: workspace, document: document, promptText: promptText)
-                    action()
-                } onEmptyEnter: { index in
-                    if let emptyBlock = vm.insertBlock(index: block.order + 1, user: user, workspace: workspace, document: document, promptText: promptText) {
-                        vm.movePromptToEmptySpace(index: emptyBlock.order, user: user, workspace: workspace, document: document, block: emptyBlock)
-                        action()
+            // - TODO: Sort!
+            ForEach(blocks, id: \.id) { block in
+                BlockView(user: user, workspace: workspace, document: document, block: block, promptText: $promptText, editable: editable, selectedLink: $selectedLink, selectedIndex: $selectedIndex) { id in
+                    if let index = blocks.firstIndex { block in
+                        block.id == id
+                    } {
+                        do {
+                            // block == prompt
+                            #if DEBUG
+                            assert(block.type == .prompt)
+                            #endif
+                            
+                            // If first block insert at zero if not first block insert at index of prompt - 1
+                            
+                            guard let index = blocks.firstIndex(where: { block in
+                                block.id == id
+                            }) else {
+                                return
+                            }
+                            
+                            if index == 0 {
+                                if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: nil, next: block.id) {
+                                    vm.updateBlock(block, user: user, workspace: workspace, document: document, prev: newBlock.id)
+                                }
+                            } else {
+                                if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.prev, next: block.id) {
+                                    vm.updateBlock(block, user: user, workspace: workspace, document: document, prev: newBlock.id)
+                                    vm.updateBlock(blocks[index - 1], user: user, workspace: workspace, document: document, next: newBlock.id)
+                                }
+                            }
+                            
+                            
+                            
+//                            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+//
+//                            if let prev = block.prev, let lastBlock = try documentRepo.readBlock(document: document, block: prev) {
+//                                if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: lastBlock.prev, next: lastBlock.id) {
+//                                    vm.updateBlock(lastBlock, user: user, workspace: workspace, document: document, prev: newBlock.id)
+//                                }
+//                            } else {
+//                                if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.prev, next: block.id) {
+//                                    vm.updateBlock(block, user: user, workspace: workspace, document: document, prev: newBlock.id)
+//                                }
+//                            }
+//
+                            action()
+                        } catch let error {
+                            print(error)
+                        }
                     }
+                } onEmptyEnter: { index in
+                    // - TODO: BLOCK PREV NEXT
+//                    if let emptyBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText) {
+//                        vm.movePromptToEmptySpace(user: user, workspace: workspace, document: document, block: emptyBlock)
+//                        action()
+//                    }
                     
                 } onEmptyClick: { index in
-                    vm.movePromptToEmptySpace(index: index, user: user, workspace: workspace, document: document, block: block)
+                    vm.movePromptToEmptySpace(user: user, workspace: workspace, document: document, block: block)
                     action()
                 }
                 .onAppear {

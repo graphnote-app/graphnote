@@ -37,17 +37,25 @@ struct AddLabelField: View {
                 
             }
             .popover(isPresented: $isSuggestionsPopoverPresented, arrowEdge: .bottom) {
-                if let suggestion = allLabels.filter {$0.title.contains(addLabelText)}.first {
-                    LabelView(label: suggestion) { _ in
-                        
+                if let suggestionLabels = allLabels.filter {$0.title.contains(addLabelText)} {
+                    
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(suggestionLabels, id: \.id) { suggestion in
+                                LabelView(label: suggestion) { _ in
+                                    
+                                }
+                                .padding()
+                                .onTapGesture {
+                                    addLabel(suggestion)
+                                    addLabelText = ""
+                                    isSuggestionsPopoverPresented = false
+                                }
+                                .fixedSize()
+                            }
+                        }
                     }
-                    .padding()
-                    .onTapGesture {
-                        addLabel(suggestion)
-                        addLabelText = ""
-                        isSuggestionsPopoverPresented = false
-                    }
-                    .fixedSize()
+                    
                 }
             }
         GeometryReader { proxy in

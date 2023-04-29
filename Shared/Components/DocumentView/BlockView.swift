@@ -16,7 +16,7 @@ struct BlockView: View {
     let editable: Bool
     @Binding var selectedLink: UUID?
     @Binding var selectedIndex: Int?
-    let onPromptEnter: (_ index: Int) -> Void
+    let onPromptEnter: (UUID) -> Void
     let onEmptyEnter: (_ index: Int) -> Void
     let onEmptyClick: (Int) -> Void
     
@@ -30,7 +30,7 @@ struct BlockView: View {
         editable: Bool,
         selectedLink: Binding<UUID?>,
         selectedIndex: Binding<Int?>,
-        onPromptEnter: @escaping (Int) -> Void,
+        onPromptEnter: @escaping (UUID) -> Void,
         onEmptyEnter: @escaping (Int) -> Void,
         onEmptyClick: @escaping (Int) -> Void
     ) {
@@ -63,13 +63,13 @@ struct BlockView: View {
             switch BlockType(rawValue: block.type.rawValue) {
             case .contentLink:
                 if let id = UUID(uuidString: block.content), let text = vm.getBlockText(id: id) {
-                    BodyView(text: "\(block.order) \(text)", textDidChange: { _ in
+                    BodyView(text: text, textDidChange: { _ in
                     })
                     .overlay {
                         ZStack {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.accentColor)
-                            
+
                             RoundedRectangle(cornerRadius: 8)
                                 .fill(Color.accentColor.opacity(0.05))
                         }
@@ -85,11 +85,13 @@ struct BlockView: View {
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
                 .onSubmit {
-                    onEmptyEnter(block.order)
+                    if vm.content.isEmpty {
+//                        onEmptyEnter(block.order)
+                    }
                 }
                 .onTapGesture {
                     selectedLink = block.id
-                    selectedIndex = block.order
+//                    selectedIndex = block.order
                 }
                 .overlay {
                     if let selectedLink {
@@ -97,7 +99,7 @@ struct BlockView: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(Color.accentColor)
-                                
+
                                 RoundedRectangle(cornerRadius: 8)
                                     .fill(Color.accentColor.opacity(0.05))
                             }
@@ -130,26 +132,29 @@ struct BlockView: View {
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .empty:
-                EmptyBlockView(order: block.order) {
-                    onEmptyClick(block.order)
+                EmptyBlockView {
+//                    onEmptyClick(block.order)
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
+
             case .bullet:
                 BulletView(text: block.content)
                     .padding([.top, .bottom], Spacing.spacing2.rawValue)
             case .prompt:
-                PromptField(placeholder: "\(block.order) Press '/'", text: $promptText) {
+                PromptField(placeholder: "Press '/'", text: $promptText) {
                     promptText = ""
                 }
                 .padding([.top, .bottom], Spacing.spacing2.rawValue)
                 .onSubmit {
-                    onPromptEnter(block.order + 1)
+                    onPromptEnter(block.id)
                 }
                 .onAppear {
                     isFocused = true
                 }
                 .focused($focusedField, equals: .prompt)
             case .none:
+                EmptyView()
+            default:
                 EmptyView()
             }
         }
@@ -159,6 +164,6 @@ struct BlockView: View {
         .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
             vm.fetch()
         }
-        .id("\(block.content):\(block.order)")
+        .id("\(block.content)")
     }
 }

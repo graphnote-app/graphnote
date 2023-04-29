@@ -117,20 +117,12 @@ class DataService: ObservableObject {
         }
     }
     
-    func createBlock(user: User, workspace: Workspace, document: Document, block: Block, sync: Bool = true) throws -> Block {
+    func createBlock(user: User, workspace: Workspace, document: Document, block: Block, prev: UUID?, next: UUID?, sync: Bool = true) throws -> Block {
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
         do {
-            // Push all blocks order past index by one
-            guard let blocksAfter = try documentRepo.readAllWhere(document: document, orderEqualsOrGreaterThan: block.order) else {
-                throw DataServiceError.blockFetchFailed
-            }
-            
-            for after in blocksAfter.sorted(by: { blockA, blockB in
-                blockA.order > blockB.order
-            }) {
-                updateBlock(user: user, workspace: workspace, document: document, block: after, order: after.order + 1)
-            }
+            // Adjust prev and next on block
+            updateBlock(user: user, workspace: workspace, document: document, block: block, prev: prev, next: next)
             
             if try documentRepo.create(block: block) == false {
                 throw DataServiceError.blockCreateFailed
@@ -248,9 +240,9 @@ class DataService: ObservableObject {
         }
     }
     
-    func getLastIndex(user: User, workspace: Workspace, document: Document) -> Int? {
+    func getLastBlock(user: User, workspace: Workspace, document: Document) -> Block? {
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
-        return documentRepo.getLastIndex(document: document)
+        return documentRepo.getLastBlock(document: document)
     }
     
     func getUser(id: String) -> User? {
@@ -300,14 +292,15 @@ class DataService: ObservableObject {
         syncService?.pushMessage(user: user, message: message)
     }
     
-    func updateBlock(user: User, workspace: Workspace, document: Document, block: Block, content: String? = nil, order: Int? = nil) {
+    func updateBlock(user: User, workspace: Workspace, document: Document, block: Block, content: String? = nil, prev: UUID? = nil, next: UUID? = nil) {
         // Local updates
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
         let content = content ?? block.content
-        let order = order ?? block.order
+        let prev = prev ?? block.prev
+        let next = next ?? block.next
         
-        let updatedBlock = Block(id: block.id, type: block.type, content: content, order: order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
+        let updatedBlock = Block(id: block.id, type: block.type, content: content, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
         if !documentRepo.update(block: updatedBlock) {
             print("Failed to update block content: \(updatedBlock) content: \(content)")
             return
@@ -319,7 +312,7 @@ class DataService: ObservableObject {
         
         do {
             let encoder = JSONEncoder()
-            let localBlock = Block(id: block.id, type: block.type, content: content, order: order, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
+            let localBlock = Block(id: block.id, type: block.type, content: content, prev: block.prev, next: block.next, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
             let contentsData = try encoder.encode(localBlock)
 
             let contents = String(data: contentsData, encoding: .utf8)!
@@ -341,7 +334,7 @@ class DataService: ObservableObject {
         }
     }
     
-    func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, emptyBlock: Block, order: Int) {
+    func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, emptyBlock: Block) {
         // Local updates
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
@@ -356,7 +349,7 @@ class DataService: ObservableObject {
             }
             
 //            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order < block.order ? order : order == block.order ? order : order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
-            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
+            let updatedBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, prev: promptBlock.prev, next: promptBlock.next, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: document)
             if !documentRepo.update(block: updatedBlock) {
                 print("Failed to update block order: \(updatedBlock)")
                 return
@@ -364,7 +357,7 @@ class DataService: ObservableObject {
             
             let now = Date.now
 //            let emptySpace = Block(id: UUID(), type: .empty, content: "", order: order < block.order ? block.order : order - 1, createdAt: now, modifiedAt: now, document: document)
-            let emptySpace = Block(id: UUID(), type: .empty, content: "", order: promptBlock.order, createdAt: now, modifiedAt: now, document: document)
+            let emptySpace = Block(id: UUID(), type: .empty, content: "", prev: promptBlock.prev, next: promptBlock.next, createdAt: now, modifiedAt: now, document: document)
             if try !documentRepo.create(block: emptySpace) {
                 print("Failed to create emptry block: \(emptySpace)")
                 return
@@ -375,7 +368,7 @@ class DataService: ObservableObject {
             // Sync to server
             
             let encoder = JSONEncoder()
-            let localBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, order: order, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: promptBlock.document)
+            let localBlock = Block(id: promptBlock.id, type: promptBlock.type, content: promptBlock.content, prev: promptBlock.prev, next: promptBlock.next, createdAt: promptBlock.createdAt, modifiedAt: promptBlock.modifiedAt, document: promptBlock.document)
             let contentsData = try encoder.encode(localBlock)
 
             let contents = String(data: contentsData, encoding: .utf8)!

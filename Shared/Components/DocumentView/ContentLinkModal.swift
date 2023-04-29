@@ -61,7 +61,7 @@ struct ContentLinkModal: View {
                 Spacer()
                 Button("Create link") {
                     if let selectedLink, let selectedIndex {
-                        vm.createLink(user: user, workspace: workspace, document: document, content: selectedLink, order: selectedIndex)
+                        vm.createLink(user: user, workspace: workspace, document: document, content: selectedLink, prev: nil, next: nil)
                         open = false
                     }
                 }

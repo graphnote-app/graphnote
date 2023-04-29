@@ -8,8 +8,8 @@
 import SwiftUI
 
 class DocumentViewVM: ObservableObject {
-    private func getLastIndex(user: User, workspace: Workspace, document: Document) -> Int? {
-        return DataService.shared.getLastIndex(user: user, workspace: workspace, document: document)
+    private func getLastIndex(user: User, workspace: Workspace, document: Document) -> Block? {
+        return DataService.shared.getLastBlock(user: user, workspace: workspace, document: document)
     }
     
     @Published var documents: [Document] = []
@@ -24,23 +24,25 @@ class DocumentViewVM: ObservableObject {
         }
     }
 
-    func appendBlock(user: User, workspace: Workspace, document: Document, text: String = "New block") {
-        do {
-            let now = Date.now
-            if let index = getLastIndex(user: user, workspace: workspace, document: document) {
-                let block = Block(id: UUID(), type: .body, content: text, order: index + 1, createdAt: now, modifiedAt: now, document: document)
-                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block)
-            } else {
-                let block = Block(id: UUID(), type: .body, content: text, order: 0, createdAt: now, modifiedAt: now, document: document)
-                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block)
-            }
-        } catch let error {
-            print(error)
-            #if DEBUG
-            fatalError()
-            #endif
-        }
-    }
+//    func appendBlock(user: User, workspace: Workspace, document: Document, text: String = "New block") {
+//        do {
+//            let now = Date.now
+//            if let block = getLastIndex(user: user, workspace: workspace, document: document) {
+//                // - TODO: BLOCK PREV NEXT
+////                let block = Block(id: UUID(), type: .body, content: text, prev: nil, next: nil, createdAt: now, modifiedAt: now, document: document)
+//                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block, prev: nil, next: nil)
+//            } else {
+//                // - TODO: BLOCK PREV NEXT
+//                let block = Block(id: UUID(), type: .body, content: text, prev: nil, next: nil, createdAt: now, modifiedAt: now, document: document)
+//                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block, prev: nil, next: nil)
+//            }
+//        } catch let error {
+//            print(error)
+//            #if DEBUG
+//            fatalError()
+//            #endif
+//        }
+//    }
     
 //    func clearPrompt(user: User, workspace: Workspace, document: Document) {
 //        do {

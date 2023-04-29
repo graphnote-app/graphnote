@@ -48,7 +48,7 @@ class DocumentContainerVM: ObservableObject {
             }
         }
     }
-    
+
     var workspace: Workspace? = nil
     var user: User? = nil
     
