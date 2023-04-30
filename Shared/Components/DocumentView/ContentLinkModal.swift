@@ -36,18 +36,14 @@ struct ContentLinkModal: View {
             .padding()
             
             List {
-                if let document {
+                DocumentPreviewView(title: vm.title, labels: vm.labels, blocks: vm.blocks, user: user, workspace: workspace, document: document, selectedLink: $selectedLink, selectedIndex: $selectedIndex) {
                     
-                    DocumentPreviewView(title: vm.title, labels: vm.labels, blocks: vm.blocks, user: user, workspace: workspace, document: document, selectedLink: $selectedLink, selectedIndex: $selectedIndex) {
-                        
-                    } fetchBlocks: {
-                        
-                    } onRefresh: {
-                        
-                    }
-                    .frame(maxWidth: .infinity)
+                } fetchBlocks: {
+                    
+                } onRefresh: {
                     
                 }
+                .frame(maxWidth: .infinity)
             }
             .scrollContentBackground(.hidden)
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)

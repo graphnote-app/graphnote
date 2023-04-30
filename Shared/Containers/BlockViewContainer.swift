@@ -72,7 +72,7 @@ struct BlockViewContainer: View {
                     
                     if index == 0 {
                         if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: nil, next: block.id) {
-                            vm.updateBlock(block, user: user, workspace: workspace, document: document, prev: newBlock.id)
+                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, prev: newBlock.id)
                         }
                     } else {
                         if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.prev, next: block.id) {
