@@ -124,7 +124,7 @@ struct ContentView: View {
                             selectedSubItem: $vm.selectedSubItem,
                             allID: vm.ALL_ID
                         ) {
-                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
+                            let document = Document(id: UUID(), title: "New Doc", focused: vm.selectedDocument?.focused, createdAt: .now, modifiedAt: .now, workspace: workspace.id)
                             if !vm.addDocument(document) {
                                 newDocFailedAlert = true
                             } else {
@@ -199,6 +199,9 @@ struct ContentView: View {
                     } else if let user = vm.user, let workspace = vm.selectedWorkspace, let document = vm.selectedDocument {
                         return DocumentContainer(user: user, workspace: workspace, document: document, onRefresh: {
                             vm.fetch()
+                        })
+                        .onChange(of: document, perform: { newValue in
+                            print("DOC changed")
                         })
                         .id(vm.selectedDocument.hashValue)
                     } else {

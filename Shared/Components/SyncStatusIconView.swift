@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SyncStatusIconView: View {
-    let diameter = Spacing.spacing4.rawValue
+    @Environment(\.colorScheme) var colorScheme
+    let diameter = Spacing.spacing5.rawValue
     let status: SyncServiceStatus
     
     var color: Color {

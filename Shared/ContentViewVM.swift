@@ -12,8 +12,13 @@ class ContentViewVM: NSObject, ObservableObject {
     let ALL_ID = UUID()
     
     @Published var treeItems: [TreeViewItem] = []
-    @Published var selectedDocument: Document? = nil
+    @Published var selectedDocument: Document? = nil {
+        didSet {
+            print("SELECTED DOCUMENT DID SET")
+        }
+    }
     @Published var workspaces: [Workspace]? = nil
+    
     @Published var selectedWorkspace: Workspace? = nil {
         didSet {
             if selectedWorkspace != oldValue {
@@ -106,10 +111,12 @@ class ContentViewVM: NSObject, ObservableObject {
             do {
                 try DataService.shared.createDocument(user: user, document: document)
                 let now = Date.now
-                let prompt = Block(id: UUID(), type: .prompt, content: "", prev: nil, next: nil, createdAt: now, modifiedAt: now, document: document)
+                let prompt = Block(id: UUID(), type: .body, content: "", prev: nil, next: nil, createdAt: now, modifiedAt: now, document: document)
                 if try DataService.shared.createBlock(user: user, workspace: selectedWorkspace, document: document, block: prompt, prev: nil, next: nil) == nil {
                     return false
                 }
+                
+                DataService.shared.updateDocumentFocused(user: user, workspace: selectedWorkspace, document: document, focused: prompt.id)
                 
                 if let selected = selectedSubItem {
                     selectedSubItem = TreeDocumentIdentifier(label: selected.label, document: document.id, workspace: selectedWorkspace.id)

@@ -10,50 +10,55 @@ import SwiftUI
 fileprivate let bodyFontSize: CGFloat = 18.0
 
 struct BodyView: View {
+    let id: UUID
     let text: String
     let editable: Bool
+    @Binding var focused: UUID?
+    let onPromptEnter: ((UUID) -> Void)?
     let textDidChange: (_ text: String) -> Void
+    let focusChanged: (_ isFocused: Bool) -> Void
     
-    @State private var content: String
+    @State private var content: String = ""
+    @FocusState private var isFocused: Bool
     
-    init(text: String, editable: Bool = true, textDidChange: @escaping (_: String) -> Void) {
+    init(id: UUID, text: String, editable: Bool = true, focused: Binding<UUID?>, onPromptEnter: ((UUID) -> Void)? = nil, textDidChange: @escaping (_: String) -> Void, focusChanged: @escaping (Bool) -> Void) {
+        self.id = id
         self.text = text
         self.editable = editable
+        self._focused = focused
+        self.onPromptEnter = onPromptEnter
         self.textDidChange = textDidChange
+        self.focusChanged = focusChanged
         self.content = text
     }
     
     var body: some View {
-        if editable {
-            #if os(macOS)
-            TextField("", text: $content, axis: .vertical)
-                .frame(maxWidth: .infinity)
-                .textFieldStyle(.plain)
-                .font(.system(size: bodyFontSize))
-                .onAppear {
-                    content = text
+        Group {
+            if editable {
+                PromptField(placeholder: "Press '/'", id: id, text: $content, focused: $focused) {
+                    self.onPromptEnter?(self.id)
+                } focusChanged: { isFocused in
+                    focusChanged(isFocused)
                 }
+                .id(id)
                 .onChange(of: content) { newValue in
                     textDidChange(newValue)
+                    
+                    if newValue.isEmpty {
+                        focused = id
+                    }
                 }
-            
-            #else
-            TextField("", text: $content, axis: .vertical)
-                .onAppear {
-                    content = text
-                }
-                .onChange(of: content) { newValue in
-                    textDidChange(newValue)
-                }
-            #endif
-        } else {
-            Text(content)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(Spacing.spacing2.rawValue)
-                .font(.system(size: bodyFontSize))
-                .onAppear {
-                    content = text
-                }
+            } else {
+                Text(content)
+                    .focused($isFocused)
+                    .defaultFocus($isFocused, true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(Spacing.spacing2.rawValue)
+                    .font(.system(size: bodyFontSize))
+            }
+        }
+        .onAppear {
+            content = text
         }
         
     }
@@ -61,7 +66,9 @@ struct BodyView: View {
 
 struct BodyView_Previews: PreviewProvider {
     static var previews: some View {
-        BodyView(text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.") { _ in 
+        BodyView(id: UUID(), text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", focused: .constant(nil)) { _ in
+            
+        } focusChanged: { isFocused in
             
         }
     }

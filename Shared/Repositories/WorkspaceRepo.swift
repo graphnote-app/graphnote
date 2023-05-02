@@ -120,7 +120,7 @@ struct WorkspaceRepo {
                 
                 return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).compactMap {
                     if let workspace = $0.workspace {
-                        return Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: workspace.id)
+                        return Document(id: $0.id, title: $0.title, focused: $0.focused, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: workspace.id)
                     } else {
                         print("workspace is nil")
                         return nil
@@ -170,7 +170,7 @@ struct WorkspaceRepo {
             
             return Workspace(id: workspaceEntity.id, title: workspaceEntity.title, createdAt: workspaceEntity.createdAt, modifiedAt: workspaceEntity.modifiedAt, user: user.id, labels: labels, documents: (workspaceEntity.documents.allObjects as! [DocumentEntity]).compactMap {
                 if let workspace = $0.workspace {
-                    return Document(id: $0.id, title: $0.title, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: workspace.id)
+                    return Document(id: $0.id, title: $0.title, focused: $0.focused, createdAt: $0.createdAt, modifiedAt: $0.modifiedAt, workspace: workspace.id)
                 } else {
                     print("workspace is nil")
                     return nil
@@ -193,7 +193,7 @@ struct WorkspaceRepo {
                 return nil
             }
             
-            let document = Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace.id)
+            let document = Document(id: documentEntity.id, title: documentEntity.title, focused: documentEntity.focused, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace.id)
             return document
             
         } catch let error {

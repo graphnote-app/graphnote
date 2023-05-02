@@ -14,6 +14,7 @@ enum DocumentError: Error {
 public struct Document: Equatable, Codable, Hashable {
     public let id: UUID
     public let title: String
+    public let focused: UUID?
     public let createdAt: Date
     public let modifiedAt: Date
     public let workspace: UUID
@@ -24,9 +25,10 @@ public struct Document: Equatable, Codable, Hashable {
         hasher.combine(workspace)
     }
     
-    public init(id: UUID, title: String, createdAt: Date, modifiedAt: Date, workspace: UUID) {
+    public init(id: UUID, title: String, focused: UUID?, createdAt: Date, modifiedAt: Date, workspace: UUID) {
         self.id = id
         self.title = title
+        self.focused = focused
         self.createdAt = createdAt
         self.modifiedAt = modifiedAt
         self.workspace = workspace
@@ -36,6 +38,7 @@ public struct Document: Equatable, Codable, Hashable {
         if let workspace = from.workspace {
             self.id = from.id
             self.title = from.title
+            self.focused = from.focused
             self.createdAt = from.createdAt
             self.modifiedAt = from.modifiedAt
             self.workspace = workspace.id

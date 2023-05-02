@@ -11,7 +11,7 @@ struct BlockViewContainer: View {
     let user: User
     let workspace: Workspace
     let document: Document
-    @Binding var blocks: [Block]
+    let blocks: [Block]
     @Binding var promptMenuOpen: Bool
     let editable: Bool
     @Binding var selectedLink: UUID?
@@ -23,6 +23,7 @@ struct BlockViewContainer: View {
     @State private var isKeyDown = false
     @State private var id: UUID? = nil
     @State private var prevContent = "INIT"
+    @State private var focused: UUID? = nil
     
     private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
     private let blockDeletedNotification = Notification.Name(DataServiceNotification.blockDeleted.rawValue)
@@ -55,56 +56,77 @@ struct BlockViewContainer: View {
                           block: block,
                           promptText: $promptText,
                           editable: editable,
+                          focused: $focused,
                           selectedLink: $selectedLink,
                           selectedIndex: $selectedIndex
                 ) { id in
-                    
-                    // block == prompt
-                    #if DEBUG
-                    assert(block.type == .prompt)
-                    #endif
-                    
-                    // If first block insert at zero if not first block insert at index of prompt - 1
                     
                     guard let index = blocks.firstIndex(where: { $0.id == id }) else {
                         return
                     }
                     
                     if index == 0 {
-                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: nil, next: block.id) {
-                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, prev: newBlock.id)
+                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.id, next: nil) {
+                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id)
+                            DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document, focused: newBlock.id)
+                            focused = newBlock.id
+                            
                         }
                     } else {
-                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.prev, next: block.id) {
-                            vm.updateBlock(block, user: user, workspace: workspace, document: document, prev: newBlock.id)
-                            vm.updateBlock(blocks[index - 1], user: user, workspace: workspace, document: document, next: newBlock.id)
+                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.id, next: block.next) {
+                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id)
+                            DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document, focused: newBlock.id)
+                            focused = newBlock.id
                         }
                     }
                     
                     action()
-                
-                } onEmptyEnter: { index in
-                    // - TODO: BLOCK PREV NEXT
-//                    if let emptyBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText) {
-//                        vm.movePromptToEmptySpace(user: user, workspace: workspace, document: document, block: emptyBlock)
-//                        action()
-//                    }
-                    
-                } onEmptyClick: { index in
-                    vm.movePromptToEmptySpace(user: user, workspace: workspace, document: document, block: block)
-                    action()
-                }
-                .onAppear {
-                    if block.type == .prompt {
-                        id = block.id
+                } focusChanged: { isFocused in
+                    if isFocused == false {
+                        focused = nil
                     }
                 }
                 .id(block.id)
+//            onEmptyEnter: { id in
+//
+//                    if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.prev, next: block.id) {
+//                        vm.updateBlock(block, user: user, workspace: workspace, document: document, prev: newBlock.id)
+//                        guard let index = blocks.firstIndex(where: { $0.id == id }) else {
+//                            return
+//                        }
+//
+//                        if index - 1 < blocks.count && index - 1 >= 0 {
+//                            vm.updateBlock(blocks[index - 1], user: user, workspace: workspace, document: document, next: newBlock.id)
+//                        }
+//
+//                        vm.updateBlock(block, user: user, workspace: workspace, document: document, type: .body)
+//                    }
+
+////                    action()
+//
+//                } onEmptyClick: { id in
+////                    guard let index = blocks.firstIndex(where: { $0.type == .body && $0.content.isEmpty}) else {
+////                        return
+////                    }
+////
+////                    if index >= 0 && index < blocks.count {
+////                        vm.updateBlock(blocks[index], user: user, workspace: workspace, document: document, type: .body)
+////                    }
+////
+////                    vm.updateBlock(block, user: user, workspace: workspace, document: document, type: .body)
+////                    action()
+//                }
+                .onAppear {
+                    if block.type == .body {
+                        id = block.id
+                    }
+                }
 
             }
-            
         }
         .onAppear {
+            focused = document.focused
+            
             #if os(macOS)
             NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
                 self.isKeyDown = false

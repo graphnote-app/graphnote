@@ -20,10 +20,7 @@ class ContentLinkModalVM: ObservableObject {
         let repo = DocumentRepo(user: user, workspace: workspace)
         do {
             if let blocks = try repo.readBlocks(document: document) {
-                self.blocks = blocks.filter {
-                    $0.type != .prompt
-                }
-                .sorted(by: { a, b in
+                self.blocks = blocks.sorted(by: { a, b in
                     blockSort(a, b)
                 })
                 

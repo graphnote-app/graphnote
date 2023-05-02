@@ -27,15 +27,21 @@ struct DocumentContainer: View {
     }
     
     var body: some View {
-        DocumentView(title: $vm.title, labels: $vm.labels, allLabels: vm.allLabels, blocks: $vm.blocks, user: user, workspace: workspace, document: document) {
-            vm.fetch(user: user, workspace: workspace, document: document)
-        } fetchBlocks: {
-            vm.fetchBlocks(user: user, workspace: workspace, document: document)
-        } onRefresh: {
-            vm.fetch(user: user, workspace: workspace, document: document)
+        Group {
+//            if let document = document {
+            DocumentView(title: vm.title, labels: vm.labels, allLabels: vm.allLabels, blocks: vm.blocks, user: user, workspace: workspace, document: document) {
+//                DocumentView(title: $vm.title, labels: $vm.labels, allLabels: vm.allLabels, blocks: $vm.blocks, user: user, workspace: workspace, document: document) {
+                    vm.fetch(user: user, workspace: workspace, document: document)
+                } fetchBlocks: {
+                    vm.fetchBlocks(user: user, workspace: workspace, document: document)
+                } onRefresh: {
+                    vm.fetch(user: user, workspace: workspace, document: document)
+                }
+                .id(document.id)
+                .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
+                
+//            }
         }
-        .id(document.id)
-        .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         .onAppear {
             vm.fetch(user: user, workspace: workspace, document: document)
         }
@@ -48,5 +54,7 @@ struct DocumentContainer: View {
         .onDisappear {
             vm.save()
         }
+        
+        
     }
 }

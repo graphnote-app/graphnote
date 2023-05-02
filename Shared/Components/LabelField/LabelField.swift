@@ -20,16 +20,16 @@ struct LabelField: View {
     private let labelService: LabelService
     
     let fetch: () -> Void
-    @Binding var labels: [Label]
+    let labels: [Label]
     let allLabels: [Label]
     let user: User
     let workspace: Workspace
     let document: Document
     
-    init(fetch: @escaping () -> Void, labels: Binding<[Label]>, allLabels: [Label], user: User, workspace: Workspace, document: Document) {
+    init(fetch: @escaping () -> Void, labels: [Label], allLabels: [Label], user: User, workspace: Workspace, document: Document) {
         self.labelService = LabelService(user: user, workspace: workspace)
         self.fetch = fetch
-        self._labels = labels
+        self.labels = labels
         self.allLabels = allLabels
         self.user = user
         self.workspace = workspace

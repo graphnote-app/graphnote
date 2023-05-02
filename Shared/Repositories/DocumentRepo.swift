@@ -72,7 +72,7 @@ struct DocumentRepo {
                     throw DocumentRepoError.nilWorkspace
                 }
                 
-                return Document(id: documentEntity.id, title: documentEntity.title, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace.id)
+                return Document(id: documentEntity.id, title: documentEntity.title, focused: documentEntity.focused, createdAt: documentEntity.createdAt, modifiedAt: documentEntity.modifiedAt, workspace: workspace.id)
             }
             
         } catch let error {
@@ -106,7 +106,7 @@ struct DocumentRepo {
                     throw DocumentRepoError.nilWorkspace
                 }
                 
-                return Document(id: entity.id, title: entity.title, createdAt: entity.createdAt, modifiedAt: entity.modifiedAt, workspace: workspace.id)
+                return Document(id: entity.id, title: entity.title, focused: entity.focused, createdAt: entity.createdAt, modifiedAt: entity.modifiedAt, workspace: workspace.id)
             }
             
         } catch let error {
@@ -137,7 +137,16 @@ struct DocumentRepo {
 
                 curr = blocks.first(where: {$0.id == curr?.next})
             }
+            
+            let blocksOutSet = Set(blocksOut)
+            
+            let blocksSet = Set(blocks)
 
+            let diffSet = blocksSet.subtracting(blocksOutSet)
+            
+            blocksOut.append(Block(id: UUID(), type: .body, content: "SINTINEL BLOCK", prev: blocksOut.last?.id, next: diffSet.first?.id, createdAt: .now, modifiedAt: .now, document: document))
+            blocksOut.append(contentsOf: diffSet)
+            
             return blocksOut
 
         } catch let error {
@@ -187,6 +196,7 @@ struct DocumentRepo {
         do {
             if let documentEntity = try DocumentEntity.getEntity(id: document.id, moc: moc) {
                 documentEntity.title = document.title
+                documentEntity.focused = document.focused
                 documentEntity.modifiedAt = document.modifiedAt
                 try moc.save()
             }
@@ -205,6 +215,7 @@ struct DocumentRepo {
                 blockEntity.modifiedAt = block.modifiedAt
                 blockEntity.prev = block.prev
                 blockEntity.next = block.next
+                blockEntity.type = block.type.rawValue
                 try moc.save()
             }
             

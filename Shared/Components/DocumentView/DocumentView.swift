@@ -35,15 +35,15 @@ import SwiftUI
 struct DocumentView: View {
     @Environment(\.colorScheme) private var colorScheme
     
-    /// A binding to the title label
-    @Binding var title: String
-    /// The binding to an array of label model objects.
-    @Binding var labels: [Label]
-    /// All labels for suggestions
+//    /// A binding to the title label
+    let title: String
+//    /// The binding to an array of label model objects.
+    let labels: [Label]
+//    /// All labels for suggestions
     let allLabels: [Label]
-    /// The binding to an array of block model objects.
-    @Binding var blocks: [Block]
-    
+//    /// The binding to an array of block model objects.
+    let blocks: [Block]
+
     /// The logged in user.
     let user: User
     /// The current selected workspace.
@@ -68,31 +68,34 @@ struct DocumentView: View {
     
     var content: some View {
         Group {
-//            LinkedListView(nodes: blocks.map {
-//                return NodeView(id: $0.id, type: $0.type.rawValue, content: $0.content, prev: $0.prev, next: $0.next)
-//            })
+            LinkedListView(nodes: blocks.map {
+                return NodeView(id: $0.id, type: $0.type.rawValue, content: $0.content, prev: $0.prev, next: $0.next)
+            })
             VStack(alignment: .center, spacing: pad) {
                 HStack() {
                     VStack(alignment: .leading) {
-                        TextField("", text: $title)
+                        TextField("", text: .constant(title))
                             .font(.largeTitle)
                             .textFieldStyle(.plain)
                         Spacer()
                             .frame(height: 20)
-                        LabelField(fetch: fetch, labels: $labels, allLabels: allLabels, user: user, workspace: workspace, document: document)
+                        LabelField(fetch: fetch, labels: labels, allLabels: allLabels, user: user, workspace: workspace, document: document)
                     }
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: $blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), selectedIndex: .constant(nil), promptText: $promptText) {
-                        fetchBlocks()
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), selectedIndex: .constant(nil), promptText: $promptText) {
+                        fetch()
                     }
-                    
+
                     Spacer()
                 }
                 Spacer()
             }
-            
+
+        }
+        .onAppear {
+            promptText = title
         }
         .padding(.trailing, GlobalDimension.toolbarWidth)
     }

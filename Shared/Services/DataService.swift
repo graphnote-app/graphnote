@@ -279,7 +279,7 @@ class DataService: ObservableObject {
     func updateDocumentTitle(user: User, workspace: Workspace, document: Document, title: String) {
         // Local updates
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
-        let updatedDoc = Document(id: document.id, title: title, createdAt: document.createdAt, modifiedAt: .now, workspace: workspace.id)
+        let updatedDoc = Document(id: document.id, title: title, focused: document.focused, createdAt: document.createdAt, modifiedAt: .now, workspace: workspace.id)
         if !documentRepo.update(document: updatedDoc) {
             print("Failed to update document title: \(updatedDoc) title: \(title)")
             return
@@ -289,6 +289,21 @@ class DataService: ObservableObject {
         
         // Sync to server
         let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, isApplied: true, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"title\": \"\(title)\"}}")
+        syncService?.pushMessage(user: user, message: message)
+    }
+    
+    func updateDocumentFocused(user: User, workspace: Workspace, document: Document, focused: UUID?) {
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        let updatedDoc = Document(id: document.id, title: document.title, focused: focused, createdAt: document.createdAt, modifiedAt: .now, workspace: workspace.id)
+        if !documentRepo.update(document: updatedDoc) {
+            print("Failed to update document focused: \(updatedDoc) focused: \(document.focused)")
+            return
+        }
+        
+        self.postNotification(.documentUpdatedLocally)
+        
+        // Sync to server
+        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, isApplied: true, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"focused\": \"\(focused)\"}}")
         syncService?.pushMessage(user: user, message: message)
     }
     
@@ -357,7 +372,7 @@ class DataService: ObservableObject {
             
             let now = Date.now
 //            let emptySpace = Block(id: UUID(), type: .empty, content: "", order: order < block.order ? block.order : order - 1, createdAt: now, modifiedAt: now, document: document)
-            let emptySpace = Block(id: UUID(), type: .empty, content: "", prev: promptBlock.prev, next: promptBlock.next, createdAt: now, modifiedAt: now, document: document)
+            let emptySpace = Block(id: UUID(), type: .body, content: "", prev: promptBlock.prev, next: promptBlock.next, createdAt: now, modifiedAt: now, document: document)
             if try !documentRepo.create(block: emptySpace) {
                 print("Failed to create emptry block: \(emptySpace)")
                 return

@@ -25,7 +25,6 @@ class DocumentContainerVM: ObservableObject {
     @objc
     func save() {
         if self.title != self.previousTitle && previousId == self.document?.id {
-//            print("title: \(self.title) previousTitle: \(previousTitle) id: \(document?.id) previousId: \(previousId)")
             if let document = self.document, let workspace = self.workspace, let user = self.user {
                 DataService.shared.updateDocumentTitle(user: user, workspace: workspace, document: document, title: self.title)
             }
@@ -41,10 +40,12 @@ class DocumentContainerVM: ObservableObject {
     
     var document: Document? = nil {
         didSet {
-            self.previousId = oldValue?.id
-            if let document {
-                self.title = document.title
-                self.previousTitle = self.title
+            if document?.title != oldValue?.title || document?.id != oldValue?.id {
+                self.previousId = oldValue?.id
+                if let document {
+                    self.title = document.title
+                    self.previousTitle = self.title
+                }
             }
         }
     }
@@ -69,14 +70,22 @@ class DocumentContainerVM: ObservableObject {
         let documentRepo = DocumentRepo(user: user, workspace: workspace)
         
         if let labels = documentRepo.readLabels(document: document) {
-            self.labels = labels
+            if labels != self.labels {
+                self.labels = labels
+            }
         }
         
         do {
-            self.allLabels = try WorkspaceRepo(user: user).readAllLabels(workspace: workspace)
+            
+            let allLabels = try WorkspaceRepo(user: user).readAllLabels(workspace: workspace)
+            if allLabels != self.allLabels {
+                self.allLabels = allLabels
+            }
             
             if let blocks = try documentRepo.readBlocks(document: document) {
-                self.blocks = blocks
+                if blocks != self.blocks {
+                    self.blocks = blocks
+                }
             }
         } catch let error {
             print(error)
@@ -85,8 +94,19 @@ class DocumentContainerVM: ObservableObject {
         
         self.user = user
         self.workspace = workspace
-        self.document = document
-        self.title = document.title
+        
+        do {
+            if let doc = try documentRepo.read(id: document.id) {
+                self.document = doc
+            }
+        } catch let error {
+            print(error)
+            return
+        }
+        
+        if document.title != self.title {
+            self.title = document.title
+        }
         
         if self.previousId == nil  {
             self.previousId = document.id

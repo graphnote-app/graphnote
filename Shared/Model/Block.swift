@@ -12,7 +12,7 @@ enum BlockError: Error {
     case noDocument
 }
 
-struct Block: Codable {
+struct Block: Codable, Hashable {
     let id: UUID
     let type: BlockType
     let content: String

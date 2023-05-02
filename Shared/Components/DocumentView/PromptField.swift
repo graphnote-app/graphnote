@@ -10,26 +10,67 @@ import SwiftUI
 //#if os(macOS)
 fileprivate let bodyFontSize: CGFloat = 18.0
 
+enum PromptFieldNotification: String {
+    case focusChanged
+}
+
 struct PromptField: View {
     let placeholder: String
+    let id: UUID
     @Binding var text: String
+    @Binding var focused: UUID?
     let onSubmit: () -> Void
+    let focusChanged: (_ isFocused: Bool) -> Void
     
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        TextField(placeholder, text: $text, axis: .vertical)
-            .font(.system(size: bodyFontSize))
-            .disableAutocorrection(true)
-            .textFieldStyle(.plain)
-            .multilineTextAlignment(.leading)
-            .onSubmit(onSubmit)
-            .focused($isFocused)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.125) {
-                    isFocused = true
-                }
+        Group {
+            if focused == id {
+                TextField(placeholder, text: $text, axis: .vertical)
+                    .font(.system(size: bodyFontSize))
+                    .disableAutocorrection(true)
+                    .textFieldStyle(.plain)
+                    .multilineTextAlignment(.leading)
+                    .onSubmit(onSubmit)
+                    .focused($isFocused)
+                    .onAppear {
+                        if focused == id {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.0125) {
+                                isFocused = true
+                            }
+                        }
+                    }
+                    .onChange(of: focused) { newValue in
+                        if newValue == id {
+                            isFocused = true
+                        } else {
+                            isFocused = false
+                        }
+                    }
+
+            } else {
+                TextField("", text: $text, axis: .vertical)
+                    .font(.system(size: bodyFontSize))
+                    .disableAutocorrection(true)
+                    .textFieldStyle(.plain)
+                    .multilineTextAlignment(.leading)
+                    .focused($isFocused)
+                    .onChange(of: isFocused) { newValue in
+                        if newValue == true {
+                            focused = id
+                        }
+                    }
+                    .onChange(of: focused) { newValue in
+                        if newValue == id {
+                            isFocused = true
+                        } else {
+                            isFocused = false
+                        }
+                    }
             }
+        }
+            
     }
 }
 

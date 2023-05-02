@@ -75,12 +75,12 @@ struct DocumentPreviewView: View {
                             .textFieldStyle(.plain)
                         Spacer()
                             .frame(height: 20)
-                        LabelField(fetch: fetch, labels: .constant(labels), allLabels: [], user: user, workspace: workspace, document: document)
+                        LabelField(fetch: fetch, labels: labels, allLabels: [], user: user, workspace: workspace, document: document)
                     }
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: .constant(blocks), promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, promptText: .constant("")) {
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, promptText: .constant("")) {
                         fetchBlocks()
                     }
                     

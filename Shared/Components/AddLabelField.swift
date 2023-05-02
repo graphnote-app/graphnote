@@ -34,7 +34,6 @@ struct AddLabelField: View {
                     addLabel(Label(id: UUID(), title: addLabelText, color: LabelPalette.allCases().randomElement()!, workspace: workspace.id, user: user.id, createdAt: now, modifiedAt: now))
                     addLabelText = ""
                 }
-                
             }
             .popover(isPresented: $isSuggestionsPopoverPresented, arrowEdge: .bottom) {
                 let suggestionLabels = allLabels.filter {$0.title.contains(addLabelText)}
@@ -71,11 +70,8 @@ struct AddLabelField: View {
             .frame(width: proxy.size.width - pad * 2, height: Spacing.spacing6.rawValue)
             .padding(pad)
         }
-        
-        
         .foregroundColor(.black)
         
         Spacer()
-
     }
 }

@@ -469,6 +469,7 @@ class SyncService: ObservableObject {
                             let updatedDocument = Document(
                                 id: document.id,
                                 title: title,
+                                focused: document.focused,
                                 createdAt: document.createdAt,
                                 modifiedAt: message.timestamp,
                                 workspace: document.workspace

@@ -12,7 +12,7 @@ class BlockViewContainerVM: ObservableObject {
         do {
             let now = Date.now
             
-            let type: BlockType = promptText.count == 0 ? .empty : .body
+            let type: BlockType = .body
             let block = Block(id: UUID(), type: type, content: promptText, prev: prev, next: next, createdAt: now, modifiedAt: now, document: document)
             
             return try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block, prev: prev, next: next)
@@ -25,10 +25,11 @@ class BlockViewContainerVM: ObservableObject {
         }
     }
     
-    func updateBlock(_ block: Block, user: User, workspace: Workspace, document: Document, prev: UUID? = nil, next: UUID? = nil) {
+    func updateBlock(_ block: Block, user: User, workspace: Workspace, document: Document, prev: UUID? = nil, next: UUID? = nil, type: BlockType? = nil) {
         let next = next ?? block.next
         let prev = prev ?? block.prev
-        let updatedBlock = Block(id: block.id, type: block.type, content: block.content, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: .now, document: document)
+        let type = type ?? block.type
+        let updatedBlock = Block(id: block.id, type: type, content: block.content, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: .now, document: document)
         try DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: updatedBlock)
     }
     

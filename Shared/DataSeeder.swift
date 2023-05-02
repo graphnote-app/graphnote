@@ -27,7 +27,7 @@ struct DataSeeder{
         let welcomeBlock1ID = UUID()
         let welcomeBlock2ID = UUID()
         
-        let document0 = Document(id: UUID(), title: "Welcome!", createdAt: now, modifiedAt: now, workspace: workspace.id)
+        let document0 = Document(id: UUID(), title: "Welcome!", focused: nil, createdAt: now, modifiedAt: now, workspace: workspace.id)
         let welcomeBlock0 = Block(id: welcomeBlock0ID, type: BlockType.heading3, content: "Thanks for trying Graphnote", prev: nil, next: welcomeBlock1ID, createdAt: now, modifiedAt: now, document: document0)
         let welcomeBlock1 = Block(id: welcomeBlock1ID, type: BlockType.heading3, content: "You can create a new document or edit this one!", prev: welcomeBlock0ID, next: welcomeBlock2ID, createdAt: now, modifiedAt: now, document: document0)
         let welcomeBlock2 = Block(id: welcomeBlock2ID, type: BlockType.body, content: "Please reach out with any questions or feedback to graphnote.io@gmail.com", prev: welcomeBlock1ID, next: nil, createdAt: now, modifiedAt: now, document: document0)
@@ -39,20 +39,20 @@ struct DataSeeder{
         let block4ID = UUID()
         let block5ID = UUID()
         
-        let document1 = Document(id: UUID(), title: "Tech blog", createdAt: now, modifiedAt: now, workspace: workspace.id)
+        let document1 = Document(id: UUID(), title: "Tech blog", focused: nil, createdAt: now, modifiedAt: now, workspace: workspace.id)
         let block0 = Block(id: block0ID, type: BlockType.body, content: "Hello Graphnote!", prev: nil, next: block1ID, createdAt: now, modifiedAt: now, document: document1)
         let block1 = Block(id: block1ID, type: BlockType.body, content: "Thanks for stopping by!", prev: block0ID, next: block2ID, createdAt: now, modifiedAt: now, document: document1)
         let block2 = Block(id: block2ID, type: BlockType.body, content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", prev: block1ID, next: nil, createdAt: now, modifiedAt: now, document: document1)
         
-        let document2 = Document(id: UUID(), title: "MVP", createdAt: now, modifiedAt: now, workspace: workspace.id)
+        let document2 = Document(id: UUID(), title: "MVP", focused: nil, createdAt: now, modifiedAt: now, workspace: workspace.id)
         let block3 = Block(id: block3ID, type: BlockType.body, content: "The minimal viable product?", prev: nil, next: block4ID, createdAt: now, modifiedAt: now, document: document2)
         let block4 = Block(id: block4ID, type: BlockType.body, content: "Hello Graphnote!", prev: block3ID, next: block5ID, createdAt: now, modifiedAt: now, document: document2)
         let block5 = Block(id: block5ID, type: BlockType.body, content: "Hello Graphnote!", prev: block4ID, next: nil, createdAt: now, modifiedAt: now, document: document2)
         
 //        let blockEmpty = Block(id: UUID(), type: BlockType.empty, content: "", createdAt: now, modifiedAt: now, document: document3)
-        let prompt0 = Block(id: UUID(), type: .prompt, content: "", prev: welcomeBlock2.id, next: nil, createdAt: now, modifiedAt: now, document: document0)
-        let prompt1 = Block(id: UUID(), type: .prompt, content: "", prev: block2.id, next: nil, createdAt: now, modifiedAt: now, document: document1)
-        let prompt2 = Block(id: UUID(), type: .prompt, content: "", prev: block5.id, next: nil, createdAt: now, modifiedAt: now, document: document2)
+        let prompt0 = Block(id: UUID(), type: .body, content: "", prev: welcomeBlock2.id, next: nil, createdAt: now, modifiedAt: now, document: document0)
+        let prompt1 = Block(id: UUID(), type: .body, content: "", prev: block2.id, next: nil, createdAt: now, modifiedAt: now, document: document1)
+        let prompt2 = Block(id: UUID(), type: .body, content: "", prev: block5.id, next: nil, createdAt: now, modifiedAt: now, document: document2)
         let workspaces = [workspace]
         let labels = [label, label2, label3, label4, label5]
         let documents = [document0, document1, document2]
@@ -87,6 +87,8 @@ struct DataSeeder{
                 try DataService.shared.createBlock(user: user, workspace: workspace, document: document0, block: block, prev: before, next: after)
             }
             
+            DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document0, focused: doc1Blocks.last?.id)
+            
             for i in 0..<doc2Blocks.count {
                 let block = doc2Blocks[i]
                 let before = (i - 1) >= 0 && (i - 1) < doc2Blocks.count ? doc2Blocks[i - 1].id : nil
@@ -94,12 +96,16 @@ struct DataSeeder{
                 try DataService.shared.createBlock(user: user, workspace: workspace, document: document1, block: block, prev: before, next: after)
             }
             
+            DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document1, focused: doc2Blocks.last?.id)
+            
             for i in 0..<doc3Blocks.count {
                 let block = doc3Blocks[i]
                 let before = (i - 1) >= 0 && (i - 1) < doc3Blocks.count ? doc3Blocks[i - 1].id : nil
                 let after = (i + 1) >= 0 && (i + 1) < doc3Blocks.count ? doc3Blocks[i + 1].id : nil
                 try DataService.shared.createBlock(user: user, workspace: workspace, document: document2, block: block, prev: before, next: after)
             }
+            
+            DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document2, focused: doc3Blocks.last?.id)
             
             try DataService.shared.attachLabel(user: user, label: label, document: document1, workspace: workspace)
             try DataService.shared.attachLabel(user: user, label: label5, document: document1, workspace: workspace)
