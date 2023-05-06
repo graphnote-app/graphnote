@@ -7,126 +7,63 @@
 
 import SwiftUI
 
-//#if os(macOS)
-fileprivate let bodyFontSize: CGFloat = 18.0
+struct PromptFontDimensions {
+    static let bodyFontSize: CGFloat = 20.0
+}
 
 enum PromptFieldNotification: String {
     case focusChanged
 }
 
 struct PromptField: View {
-    let placeholder: String
     let id: UUID
-    @Binding var text: String
-    @Binding var focused: UUID?
+    let type: BlockType
+    let block: Block
+//    @Binding var text: String
+    @Binding var focused: FocusedPrompt
     let onSubmit: () -> Void
-    let focusChanged: (_ isFocused: Bool) -> Void
     
     @FocusState private var isFocused: Bool
     
-    var body: some View {
-        Group {
-            if focused == id {
-                TextField(placeholder, text: $text, axis: .vertical)
-                    .font(.system(size: bodyFontSize))
-                    .disableAutocorrection(true)
-                    .textFieldStyle(.plain)
-                    .multilineTextAlignment(.leading)
-                    .onSubmit(onSubmit)
-                    .focused($isFocused)
-                    .onAppear {
-                        if focused == id {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.0125) {
-                                isFocused = true
-                            }
-                        }
-                    }
-                    .onChange(of: focused) { newValue in
-                        if newValue == id {
-                            isFocused = true
-                        } else {
-                            isFocused = false
-                        }
-                    }
-
-            } else {
-                TextField("", text: $text, axis: .vertical)
-                    .font(.system(size: bodyFontSize))
-                    .disableAutocorrection(true)
-                    .textFieldStyle(.plain)
-                    .multilineTextAlignment(.leading)
-                    .focused($isFocused)
-                    .onChange(of: isFocused) { newValue in
-                        if newValue == true {
-                            focused = id
-                        }
-                    }
-                    .onChange(of: focused) { newValue in
-                        if newValue == id {
-                            isFocused = true
-                        } else {
-                            isFocused = false
-                        }
-                    }
-            }
+    private let placeholder = "Press '/'"
+    @State private var text = ""
+    
+    var font: Font {
+        switch type {
+        case .body:
+            return .custom("", size: PromptFontDimensions.bodyFontSize, relativeTo: .body)
+        default:
+            return .subheadline
         }
-            
+    }
+    
+    var body: some View {
+        TextField("", text: $text, prompt: Text(focused.uuid == id ? placeholder : ""), axis: .vertical)
+            .font(font)
+            .disableAutocorrection(true)
+            .textFieldStyle(.plain)
+            .multilineTextAlignment(.leading)
+            .padding([.top, .bottom])
+            .focused($isFocused)
+            .onSubmit(onSubmit)
+            .onAppear {
+                if focused.uuid == id {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.0125) {
+                        isFocused = true
+                    }
+                }
+            }
+            .onChange(of: focused.uuid) { newValue in
+                if newValue == id {
+                    isFocused = true
+                } else {
+                    isFocused = false
+                }
+            }
+            .onChange(of: isFocused) { newValue in
+                if newValue == true {
+                    focused = FocusedPrompt(uuid: id, text: block.content)
+                }
+            }
     }
 }
-
-//#else
-//
-//class GNTextField: UITextField {
-//    let onSubmit: () -> Void
-//    
-//    init(onSubmit: @escaping () -> Void) {
-//        self.onSubmit = onSubmit
-//        super.init(frame: .zero)
-//        self.delegate = self
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    override func deleteBackward() {
-//        print("Delete")
-//        super.deleteBackward()
-//    }
-//}
-//
-//extension GNTextField: UITextFieldDelegate {
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        self.onSubmit()
-//        return true
-//    }
-//    
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        
-//    }
-//}
-//
-//struct PromptField: UIViewRepresentable {
-//    let placeholder: String
-//    @Binding var text: String
-//    let onSubmit: () -> Void
-//    
-//    init(placeholder: String, text: Binding<String>, onSubmit: @escaping () -> Void) {
-//        self.placeholder = placeholder
-//        self._text = text
-//        self.onSubmit = onSubmit
-//    }
-//    
-//    func updateUIView(_ uiView: UIViewType, context: Context) {
-//        uiView.text = text
-//    }
-//    
-//    func makeUIView(context: Context) -> some UITextField {
-//        let textField = GNTextField(onSubmit: onSubmit)
-//        textField.placeholder = placeholder
-//        textField.text = text
-//        return textField
-//    }
-//}
-//
-//#endif

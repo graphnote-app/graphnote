@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+struct FocusedPrompt {
+    let uuid: UUID?
+    let text: String
+}
+
 struct BlockViewContainer: View {
     let user: User
     let workspace: Workspace
@@ -23,7 +28,7 @@ struct BlockViewContainer: View {
     @State private var isKeyDown = false
     @State private var id: UUID? = nil
     @State private var prevContent = "INIT"
-    @State private var focused: UUID? = nil
+    @State private var focused: FocusedPrompt = FocusedPrompt(uuid: nil, text: "")
     
     private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
     private let blockDeletedNotification = Notification.Name(DataServiceNotification.blockDeleted.rawValue)
@@ -48,7 +53,6 @@ struct BlockViewContainer: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
-            // - TODO: Sort!
             ForEach(blocks, id: \.id) { block in
                 BlockView(user: user,
                           workspace: workspace,
@@ -69,63 +73,30 @@ struct BlockViewContainer: View {
                         if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.id, next: nil) {
                             vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id)
                             DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document, focused: newBlock.id)
-                            focused = newBlock.id
+                            focused = FocusedPrompt(uuid: newBlock.id, text: newBlock.content)
                             
                         }
                     } else {
                         if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.id, next: block.next) {
                             vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id)
                             DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document, focused: newBlock.id)
-                            focused = newBlock.id
+                            focused = FocusedPrompt(uuid: newBlock.id, text: newBlock.content)
                         }
                     }
                     
                     action()
-                } focusChanged: { isFocused in
-                    if isFocused == false {
-                        focused = nil
-                    }
                 }
                 .id(block.id)
-//            onEmptyEnter: { id in
-//
-//                    if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.prev, next: block.id) {
-//                        vm.updateBlock(block, user: user, workspace: workspace, document: document, prev: newBlock.id)
-//                        guard let index = blocks.firstIndex(where: { $0.id == id }) else {
-//                            return
-//                        }
-//
-//                        if index - 1 < blocks.count && index - 1 >= 0 {
-//                            vm.updateBlock(blocks[index - 1], user: user, workspace: workspace, document: document, next: newBlock.id)
-//                        }
-//
-//                        vm.updateBlock(block, user: user, workspace: workspace, document: document, type: .body)
-//                    }
-
-////                    action()
-//
-//                } onEmptyClick: { id in
-////                    guard let index = blocks.firstIndex(where: { $0.type == .body && $0.content.isEmpty}) else {
-////                        return
-////                    }
-////
-////                    if index >= 0 && index < blocks.count {
-////                        vm.updateBlock(blocks[index], user: user, workspace: workspace, document: document, type: .body)
-////                    }
-////
-////                    vm.updateBlock(block, user: user, workspace: workspace, document: document, type: .body)
-////                    action()
-//                }
-                .onAppear {
-                    if block.type == .body {
-                        id = block.id
-                    }
-                }
-
             }
         }
         .onAppear {
-            focused = document.focused
+            focused = FocusedPrompt(uuid: document.focused, text: "")
+            
+            if focused.uuid != nil {
+                if let content = blocks.first(where: {$0.id == focused.uuid})?.content {
+                    promptText = content
+                }
+            }
             
             #if os(macOS)
             NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
@@ -144,11 +115,23 @@ struct BlockViewContainer: View {
         .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
             action()
         }
+//        .onChange(of: focused, perform: { newValue in
+//            if newValue != nil {
+//                if let content = blocks.first(where: {$0.id == focused})?.content {
+//                    promptText = content
+//                }
+//            }
+//        })
         .onChange(of: promptText) { newValue in
             if newValue == "/" {
-                promptMenuOpen = true
+                withAnimation {
+                    promptMenuOpen = true
+                }
+                
             } else if newValue == "" {
-                promptMenuOpen = false
+                withAnimation {
+                    promptMenuOpen = false
+                }
             }
         }
         .fixedSize(horizontal: false, vertical: true)
