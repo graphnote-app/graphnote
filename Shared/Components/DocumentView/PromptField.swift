@@ -34,7 +34,7 @@ struct PromptField: View {
     @State private var numMonitor: Any? = nil
 
     #if os(macOS)
-    private func keyDown(with event: NSEvent) -> Bool { [self]
+    private func keyDown(with event: NSEvent) -> Bool {
         if event.charactersIgnoringModifiers == "\r" && event.isARepeat == true {
             return false
         }
@@ -85,8 +85,10 @@ struct PromptField: View {
                     }
                     #endif
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.0125) {
-                        isFocused = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.125) {
+                        if isFocused == false {
+                            isFocused = true
+                        }
                     }
                 }
             }
