@@ -250,7 +250,7 @@ struct ContentView: View {
         })
         .onReceive(NotificationCenter.default.publisher(for: localDocumentUpdatedNotification)) { notification in
             DispatchQueue.main.async {
-                vm.fetchDocument()
+                vm.fetch()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: localWorkspaceCreatedNotification)) { notification in

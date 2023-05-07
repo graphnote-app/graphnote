@@ -35,7 +35,7 @@ struct DocumentContainer: View {
                 vm.fetch(user: user, workspace: workspace, document: document)
             } save: { title in
                 vm.save(title: title, force: true)
-                vm.fetch(user: user, workspace: workspace, document: document)
+                vm.fetchBlocks(user: user, workspace: workspace, document: document)
             }
             .id(document.id)
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)

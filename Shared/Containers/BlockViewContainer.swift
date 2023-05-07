@@ -33,23 +33,6 @@ struct BlockViewContainer: View {
     private let blockDeletedNotification = Notification.Name(DataServiceNotification.blockDeleted.rawValue)
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
     
-//    #if os(macOS)
-//    private func keyDown(with event: NSEvent) {
-//        if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
-//            if self.isKeyDown == false {
-//                self.isKeyDown = true
-//                if promptText == "" {
-//                    if let id {
-//                        vm.backspaceOnEmpty(user: user, workspace: workspace, document: document, id: id)
-//                        action()
-//                    }
-//                }
-//                prevContent = promptText
-//            }
-//        }
-//    }
-//    #endif
-    
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
             ForEach(blocks, id: \.id) { block in
@@ -91,19 +74,6 @@ struct BlockViewContainer: View {
         }
         .onAppear {
             focused = FocusedPrompt(uuid: document.focused, text: "")
-            
-            if focused.uuid != nil {
-                if let content = blocks.first(where: {$0.id == focused.uuid})?.content {
-                }
-            }
-            
-//            #if os(macOS)
-//            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-//                self.isKeyDown = false
-//                self.keyDown(with: $0)
-//                return $0
-//            }
-//            #endif
         }
         .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
             action()
@@ -114,13 +84,6 @@ struct BlockViewContainer: View {
         .onReceive(NotificationCenter.default.publisher(for: blockUpdatedNotification)) { notification in
             action()
         }
-//        .onChange(of: focused, perform: { newValue in
-//            if newValue != nil {
-//                if let content = blocks.first(where: {$0.id == focused})?.content {
-//                    promptText = content
-//                }
-//            }
-//        })
         .fixedSize(horizontal: false, vertical: true)
         .submitScope()
     }

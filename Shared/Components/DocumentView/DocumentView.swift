@@ -43,7 +43,6 @@ struct DocumentView: View {
     let allLabels: [Label]
     /// The binding to an array of block model objects.
     let blocks: [Block]
-
     /// The logged in user.
     let user: User
     /// The current selected workspace.
@@ -71,9 +70,9 @@ struct DocumentView: View {
     
     var content: some View {
         Group {
-//            LinkedListView(nodes: blocks.map {
-//                return NodeView(id: $0.id, type: $0.type.rawValue, content: $0.content, prev: $0.prev, next: $0.next)
-//            })
+            LinkedListView(nodes: blocks.map {
+                return NodeView(id: $0.id, type: $0.type.rawValue, content: $0.content, prev: $0.prev, next: $0.next)
+            })
             VStack(alignment: .center, spacing: pad) {
                 HStack() {
                     VStack(alignment: .leading) {
@@ -84,7 +83,7 @@ struct DocumentView: View {
                             .onChange(of: isFocused) { [title] newValue in
                                 if newValue == false {
                                     save(title)
-                                    self.title = title
+//                                    self.title = title
                                 }
                             }
                             .onSubmit {
@@ -127,7 +126,9 @@ struct DocumentView: View {
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         }
         .onAppear {
-            vm.fetchDocuments(user: user, workspace: workspace)
+//            vm.fetchDocuments(user: user, workspace: workspace)
+            save(title)
+            onRefresh()
         }
         .onTapGesture {
             promptMenuOpen = false

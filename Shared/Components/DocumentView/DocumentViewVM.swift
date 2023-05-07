@@ -23,39 +23,4 @@ class DocumentViewVM: ObservableObject {
             print(error)
         }
     }
-
-//    func appendBlock(user: User, workspace: Workspace, document: Document, text: String = "New block") {
-//        do {
-//            let now = Date.now
-//            if let block = getLastIndex(user: user, workspace: workspace, document: document) {
-//                // - TODO: BLOCK PREV NEXT
-////                let block = Block(id: UUID(), type: .body, content: text, prev: nil, next: nil, createdAt: now, modifiedAt: now, document: document)
-//                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block, prev: nil, next: nil)
-//            } else {
-//                // - TODO: BLOCK PREV NEXT
-//                let block = Block(id: UUID(), type: .body, content: text, prev: nil, next: nil, createdAt: now, modifiedAt: now, document: document)
-//                try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block, prev: nil, next: nil)
-//            }
-//        } catch let error {
-//            print(error)
-//            #if DEBUG
-//            fatalError()
-//            #endif
-//        }
-//    }
-    
-//    func clearPrompt(user: User, workspace: Workspace, document: Document) {
-//        do {
-//            let repo = DocumentRepo(user: user, workspace: workspace)
-//            if let prompt = try repo.readPromptBlock(document: document) {
-//                let block = Block(id: prompt.id, type: prompt.type, content: "", order: prompt.order, createdAt: prompt.createdAt, modifiedAt: .now, document: document)
-//                repo.update(block: prompt)
-//            }
-//        } catch let error {
-//            print(error)
-//            #if DEBUG
-//            fatalError()
-//            #endif
-//        }
-//    }
 }

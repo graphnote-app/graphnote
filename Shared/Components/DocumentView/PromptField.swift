@@ -67,9 +67,6 @@ struct PromptField: View {
             .onAppear {
                 if id == block.id {
                     text = block.content
-//                    if id == focused.uuid {
-//                        focusedPromptText = block.content
-//                    }
                 }
                 
                 if focused.uuid == id {
@@ -109,7 +106,30 @@ struct PromptField: View {
             }
             .onChange(of: isFocused) { newValue in
                 if newValue == true {
+                    
                     focused = FocusedPrompt(uuid: id, text: block.content)
+                    
+                    if focused.uuid == id {
+                        #if os(macOS)
+                        if let numMonitor {
+                            NSEvent.removeMonitor(numMonitor)
+                            self.numMonitor = nil
+                        }
+                        self.numMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                        if self.isKeyDown == false {
+                                self.isKeyDown = true
+                                if self.keyDown(with: $0) == false {
+                                    self.isKeyDown = false
+                                    return nil
+                                }
+                                
+                                self.isKeyDown = false
+                            }
+                            
+                            return $0
+                        }
+                        #endif
+                    }
                     
                 } else {
                     #if os(macOS)

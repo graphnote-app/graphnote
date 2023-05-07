@@ -126,9 +126,9 @@ class DocumentContainerVM: ObservableObject {
             return
         }
         
-        if document.title != self.title {
-            self.title = document.title
-        }
+//        if document.title != self.title {
+//            self.title = document.title
+//        }
         
 //        if self.previousId == nil  {
 //            self.previousId = document.id
