@@ -155,7 +155,7 @@ struct ContentView: View {
                             selectedSubItem: $vm.selectedSubItem,
                             allID: vm.ALL_ID
                         ) {
-                            let document = Document(id: UUID(), title: "New Doc", createdAt: .now, modifiedAt: .now, workspace: workspace.id)
+                            let document = Document(id: UUID(), title: "New Doc", focused: vm.selectedDocument?.focused, createdAt: .now, modifiedAt: .now, workspace: workspace.id)
                            if !vm.addDocument(document) {
                                newDocFailedAlert = true
                            } else {

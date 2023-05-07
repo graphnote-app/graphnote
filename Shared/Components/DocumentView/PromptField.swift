@@ -97,10 +97,12 @@ struct PromptField: View {
                 }
             }
             .onDisappear {
+                #if os(macOS)
                 if let numMonitor {
                     NSEvent.removeMonitor(numMonitor)
                     self.numMonitor = nil
                 }
+                #endif
             }
             .onChange(of: focused.uuid) { newValue in
                 isFocused = newValue == id
@@ -110,10 +112,12 @@ struct PromptField: View {
                     focused = FocusedPrompt(uuid: id, text: block.content)
                     
                 } else {
+                    #if os(macOS)
                     if let numMonitor {
                         NSEvent.removeMonitor(numMonitor)
                         self.numMonitor = nil
                     }
+                    #endif
                 }
             }
             .onChange(of: text) { newValue in
