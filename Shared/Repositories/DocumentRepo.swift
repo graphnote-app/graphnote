@@ -138,14 +138,14 @@ struct DocumentRepo {
                 curr = blocks.first(where: {$0.id == curr?.next})
             }
             
-            let blocksOutSet = Set(blocksOut)
+//            let blocksOutSet = Set(blocksOut)
             
-            let blocksSet = Set(blocks)
+//            let blocksSet = Set(blocks)
 
-            let diffSet = blocksSet.subtracting(blocksOutSet)
+//            let diffSet = blocksSet.subtracting(blocksOutSet)
             
-            blocksOut.append(Block(id: UUID(), type: .body, content: "SINTINEL BLOCK", prev: blocksOut.last?.id, next: diffSet.first?.id, createdAt: .now, modifiedAt: .now, document: document))
-            blocksOut.append(contentsOf: diffSet)
+//            blocksOut.append(Block(id: UUID(), type: .body, content: "SENTINEL BLOCK", prev: blocksOut.last?.id, next: diffSet.first?.id, createdAt: .now, modifiedAt: .now, document: document))
+//            blocksOut.append(contentsOf: diffSet)
             
             return blocksOut
 

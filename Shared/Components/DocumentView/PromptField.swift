@@ -16,7 +16,7 @@ struct PromptField: View {
     let type: BlockType
     let block: Block
     @Binding var focused: FocusedPrompt
-    let onSubmit: () -> Void
+    let onSubmit: (_ id: UUID, _ text: String) -> Void
     let onBackspaceRemove: () -> Void
     
     @FocusState private var isFocused: Bool
@@ -60,8 +60,17 @@ struct PromptField: View {
             .multilineTextAlignment(.leading)
             .padding([.top, .bottom], Spacing.spacing2.rawValue)
             .focused($isFocused)
-            .onSubmit(onSubmit)
+            .onSubmit {
+                self.onSubmit(id, text)
+            }
             .onAppear {
+                if id == block.id {
+                    text = block.content
+//                    if id == focused.uuid {
+//                        focusedPromptText = block.content
+//                    }
+                }
+                
                 if focused.uuid == id {
                     #if os(macOS)
                     self.numMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {

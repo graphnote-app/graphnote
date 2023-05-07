@@ -64,22 +64,22 @@ struct BlockViewContainer: View {
                           selectedLink: $selectedLink,
                           selectedIndex: $selectedIndex,
                           fetch: action
-                ) { id in
+                ) { (id, text) in
                     
                     guard let index = blocks.firstIndex(where: { $0.id == id }) else {
                         return
                     }
                     
                     if index == 0 {
-                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.id, next: nil) {
-                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id)
+                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: "", prev: block.id, next: nil) {
+                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id, text: text)
                             DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document, focused: newBlock.id)
                             focused = FocusedPrompt(uuid: newBlock.id, text: newBlock.content)
                             
                         }
                     } else {
-                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: promptText, prev: block.id, next: block.next) {
-                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id)
+                        if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: "", prev: block.id, next: block.next) {
+                            vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id, text: text)
                             DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document, focused: newBlock.id)
                             focused = FocusedPrompt(uuid: newBlock.id, text: newBlock.content)
                         }

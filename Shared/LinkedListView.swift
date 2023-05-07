@@ -24,7 +24,7 @@ struct NodeView: View, Hashable {
         }
         .frame(width: 300, alignment: .leading)
         .padding()
-        .background(content == "SINTINEL BLOCK" ? Color.green : Color.accentColor)
+        .background(content == "SENTINEL BLOCK" ? Color.green : Color.accentColor)
         .cornerRadius(Spacing.spacing3.rawValue)
     }
 }

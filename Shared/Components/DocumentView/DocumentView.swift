@@ -110,9 +110,6 @@ struct DocumentView: View {
             }
 
         }
-        .onAppear {
-            promptText = title
-        }
         .padding(.trailing, GlobalDimension.toolbarWidth)
     }
 

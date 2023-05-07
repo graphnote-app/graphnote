@@ -22,7 +22,7 @@ struct BlockView: View {
     @Binding var selectedLink: UUID?
     @Binding var selectedIndex: Int?
     let fetch: () -> Void
-    let onEnter: (_ id: UUID) -> Void
+    let onEnter: (_ id: UUID, _ text: String) -> Void
     
     @StateObject private var vm: BlockViewVM
     
@@ -36,7 +36,7 @@ struct BlockView: View {
         selectedLink: Binding<UUID?>,
         selectedIndex: Binding<Int?>,
         fetch: @escaping () -> Void,
-        onEnter: @escaping (UUID) -> Void
+        onEnter: @escaping (UUID, String) -> Void
     ) {
         self.user = user
         self.workspace = workspace
@@ -64,8 +64,8 @@ struct BlockView: View {
     @State private var focusFieldPromptFlag = false
     
     var body: some View {
-        PromptField(id: block.id, type: .body, block: block, focused: $focused) {
-            self.onEnter(block.id)
+        PromptField(id: block.id, type: .body, block: block, focused: $focused) { (id, text) in
+            self.onEnter(id, text)
         } onBackspaceRemove: {
             do {
                 
@@ -87,11 +87,11 @@ struct BlockView: View {
                 print(error)
             }
         }
-        .onChange(of: focused.uuid, perform: { newValue in
-            if newValue == block.id {
-                promptText = block.content
-            }
-        })
+//        .onChange(of: focused.uuid, perform: { newValue in
+//            if newValue == block.id {
+//                promptText = block.content
+//            }
+//        })
         .id(block.id)
     }
 }

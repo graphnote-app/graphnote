@@ -25,50 +25,13 @@ class BlockViewContainerVM: ObservableObject {
         }
     }
     
-    func updateBlock(_ block: Block, user: User, workspace: Workspace, document: Document, prev: UUID? = nil, next: UUID? = nil, type: BlockType? = nil) {
+    func updateBlock(_ block: Block, user: User, workspace: Workspace, document: Document, prev: UUID? = nil, next: UUID? = nil, type: BlockType? = nil, text: String? = nil) {
         let next = next ?? block.next
         let prev = prev ?? block.prev
         let type = type ?? block.type
-        let updatedBlock = Block(id: block.id, type: type, content: block.content, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: .now, document: document)
+        let text = text ?? block.content
+        let updatedBlock = Block(id: block.id, type: type, content: text, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: .now, document: document)
         try DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: updatedBlock)
     }
-    
-    func movePromptToEmptySpace(user: User, workspace: Workspace, document: Document, block: Block) {
-        DataService.shared.movePromptToEmptySpace(user: user, workspace: workspace, document: document, emptyBlock: block)
-    }
-    
-    func backspaceOnEmpty(user: User, workspace: Workspace, document: Document, id: UUID) {
-        do {
-            let repo = DocumentRepo(user: user, workspace: workspace)
-            if let prompt = try repo.readBlock(document: document, block: id) {
-                if let allBlocks = try repo.readBlocks(document: document) {
-                    let beforeBlock = allBlocks.filter({
-                        $0.next == nil
-                    }).last
-                      
-                    if let beforeBlock {
-                        if beforeBlock.content == "" {
-                            DataService.shared.deleteBlock(user: user, workspace: workspace, id: beforeBlock.id)
-                            
-                            // - TODO: Update afterBlocks ordering
-    //                        let blocksAfter = allBlocks.filter {
-    //                            $0.order >= prompt.order
-    //                        }
-    //
-    //                        for after in blocksAfter {
-    //                            let block = Block(id: after.id, type: after.type, content: after.content, order: after.order - 1, createdAt: after.createdAt, modifiedAt: .now, document: after.document)
-    //                            print(block.order)
-    //                            DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block)
-    //                        }
-                        } else {
-                            
-                            // - TODO: Focus previous text
-                        }
-                    }
-                }                
-            }
-        } catch let error {
-            print(error)
-        }
-    }
+
 }
