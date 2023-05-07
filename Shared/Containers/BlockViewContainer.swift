@@ -34,22 +34,22 @@ struct BlockViewContainer: View {
     private let blockDeletedNotification = Notification.Name(DataServiceNotification.blockDeleted.rawValue)
     private let blockUpdatedNotification = Notification.Name(SyncServiceNotification.blockUpdated.rawValue)
     
-    #if os(macOS)
-    private func keyDown(with event: NSEvent) {
-        if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
-            if self.isKeyDown == false {
-                self.isKeyDown = true
-                if promptText == "" {
-                    if let id {
-                        vm.backspaceOnEmpty(user: user, workspace: workspace, document: document, id: id)
-                        action()
-                    }
-                }
-                prevContent = promptText
-            }
-        }
-    }
-    #endif
+//    #if os(macOS)
+//    private func keyDown(with event: NSEvent) {
+//        if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
+//            if self.isKeyDown == false {
+//                self.isKeyDown = true
+//                if promptText == "" {
+//                    if let id {
+//                        vm.backspaceOnEmpty(user: user, workspace: workspace, document: document, id: id)
+//                        action()
+//                    }
+//                }
+//                prevContent = promptText
+//            }
+//        }
+//    }
+//    #endif
     
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
@@ -62,7 +62,8 @@ struct BlockViewContainer: View {
                           editable: editable,
                           focused: $focused,
                           selectedLink: $selectedLink,
-                          selectedIndex: $selectedIndex
+                          selectedIndex: $selectedIndex,
+                          fetch: action
                 ) { id in
                     
                     guard let index = blocks.firstIndex(where: { $0.id == id }) else {
@@ -98,13 +99,13 @@ struct BlockViewContainer: View {
                 }
             }
             
-            #if os(macOS)
-            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                self.isKeyDown = false
-                self.keyDown(with: $0)
-                return $0
-            }
-            #endif
+//            #if os(macOS)
+//            NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+//                self.isKeyDown = false
+//                self.keyDown(with: $0)
+//                return $0
+//            }
+//            #endif
         }
         .onReceive(NotificationCenter.default.publisher(for: blockCreatedNotification)) { notification in
             action()

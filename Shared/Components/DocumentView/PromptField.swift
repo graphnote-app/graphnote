@@ -13,6 +13,8 @@ struct PromptFontDimensions {
 
 enum PromptFieldNotification: String {
     case focusChanged
+    case keyDown
+    case keyUp
 }
 
 struct PromptField: View {
@@ -21,6 +23,7 @@ struct PromptField: View {
     let block: Block
     @Binding var focused: FocusedPrompt
     let onSubmit: () -> Void
+    let onBackspaceRemove: () -> Void
     
     @FocusState private var isFocused: Bool
     
@@ -28,20 +31,24 @@ struct PromptField: View {
     @State private var text = ""
     
     @State private var isKeyDown = false
-    @State private var numMonitor: Any?
-       
+    @State private var numMonitor: Any? = nil
+
+    
     #if os(macOS)
-    private func keyDown(with event: NSEvent) {
-       if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) {
-           if self.isKeyDown == false {
-               self.isKeyDown = true
-               
-               if text.isEmpty {
-                   print("Backspace delete block")
-               }
-           }
+    private func keyDown(with event: NSEvent) -> Bool { [self]
+        if event.charactersIgnoringModifiers == "\r" && event.isARepeat == true {
+            return false
+        }
+        
+        if event.charactersIgnoringModifiers == String(UnicodeScalar(NSDeleteCharacter)!) && event.isARepeat == false {
+            if self.text.isEmpty {
+                self.onBackspaceRemove()
+            }
        }
+        
+       return true
     }
+    
     #endif
     
     var font: Font {
@@ -66,8 +73,16 @@ struct PromptField: View {
                 if focused.uuid == id {
                     #if os(macOS)
                     self.numMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                        self.isKeyDown = false
-                        self.keyDown(with: $0)
+                        if self.isKeyDown == false {
+                            self.isKeyDown = true
+                            if self.keyDown(with: $0) == false {
+                                self.isKeyDown = false
+                                return nil
+                            }
+                            
+                            self.isKeyDown = false
+                        }
+                        
                         return $0
                     }
                     #endif
@@ -80,6 +95,7 @@ struct PromptField: View {
             .onDisappear {
                 if let numMonitor {
                     NSEvent.removeMonitor(numMonitor)
+                    self.numMonitor = nil
                 }
             }
             .onChange(of: focused.uuid) { newValue in
@@ -93,17 +109,28 @@ struct PromptField: View {
                 if newValue == true {
                     focused = FocusedPrompt(uuid: id, text: block.content)
                     #if os(macOS)
-                    if self.numMonitor == nil {
-                        self.numMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                    
+                    if let numMonitor {
+                        NSEvent.removeMonitor(numMonitor)
+                        self.numMonitor = nil
+                    }
+                    
+                    self.numMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+                        self.isKeyDown = true
+                        if self.keyDown(with: $0) == false {
                             self.isKeyDown = false
-                            self.keyDown(with: $0)
-                            return $0
+                            return nil
                         }
+                        
+                        self.isKeyDown = false
+                    
+                        return $0
                     }
                     #endif
                 } else {
                     if let numMonitor {
                         NSEvent.removeMonitor(numMonitor)
+                        self.numMonitor = nil
                     }
                 }
             }
