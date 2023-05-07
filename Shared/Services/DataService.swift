@@ -303,8 +303,14 @@ class DataService: ObservableObject {
         self.postNotification(.documentUpdatedLocally)
         
         // Sync to server
-        let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, isApplied: true, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"focused\": \"\(focused?.uuidString)\"}}")
-        syncService?.pushMessage(user: user, message: message)
+        if let focused {
+            let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, isApplied: true, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"focused\": \"\(focused.uuidString)\"}}")
+            syncService?.pushMessage(user: user, message: message)
+        } else {
+            let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .document, action: .update, isSynced: false, isApplied: true, contents: "{\"id\": \"\(document.id.uuidString)\", \"workspace\": \"\(workspace.id.uuidString)\", \"content\": { \"focused\": \"\"}}")
+            syncService?.pushMessage(user: user, message: message)
+        }
+        
     }
     
     func updateBlock(user: User, workspace: Workspace, document: Document, block: Block, content: String? = nil, prev: UUID? = nil, next: UUID? = nil) {
