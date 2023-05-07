@@ -58,7 +58,7 @@ struct PromptField: View {
             .disableAutocorrection(true)
             .textFieldStyle(.plain)
             .multilineTextAlignment(.leading)
-            .padding([.top, .bottom])
+            .padding([.top, .bottom], Spacing.spacing2.rawValue)
             .focused($isFocused)
             .onSubmit(onSubmit)
             .onAppear {
