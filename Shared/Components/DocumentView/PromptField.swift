@@ -11,11 +11,11 @@ struct PromptFontDimensions {
     static let bodyFontSize: CGFloat = 20.0
 }
 
-enum PromptFieldNotification: String {
-    case focusChanged
-    case keyDown
-    case keyUp
-}
+//enum PromptFieldNotification: String {
+//    case focusChanged
+//    case keyDown
+//    case keyUp
+//}
 
 struct PromptField: View {
     let id: UUID
