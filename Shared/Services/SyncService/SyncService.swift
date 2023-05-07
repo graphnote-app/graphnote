@@ -463,6 +463,7 @@ class SyncService: ObservableObject {
             
             if document.modifiedAt < message.timestamp {
                 for diff in documentUpdate.content.keys {
+                    print(diff)
                     switch diff {
                     case "title":
                         if let title = documentUpdate.content["title"] {
@@ -484,10 +485,31 @@ class SyncService: ObservableObject {
                             }
                             
                         }
-                        
+                    case "focused":
+                        if let focused = documentUpdate.content["focused"] {
+                            let updatedDocument = Document(
+                                id: document.id,
+                                title: document.title,
+                                focused: UUID(uuidString: focused),
+                                createdAt: document.createdAt,
+                                modifiedAt: message.timestamp,
+                                workspace: document.workspace
+                            )
+                            
+                            if documentRepo.update(document: updatedDocument) {
+                                self.postSyncNotification(.documentUpdateSynced)
+                                return true
+                            } else {
+                                print("Document update failed")
+                                return false
+                            }
+                        }
                     default:
+                        #if DEBUG
+                        fatalError()
+                        #endif
                         return false
-                        break
+                        
                     }
                 }
             } else {
