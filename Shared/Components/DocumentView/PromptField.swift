@@ -33,7 +33,6 @@ struct PromptField: View {
     @State private var isKeyDown = false
     @State private var numMonitor: Any? = nil
 
-    
     #if os(macOS)
     private func keyDown(with event: NSEvent) -> Bool { [self]
         if event.charactersIgnoringModifiers == "\r" && event.isARepeat == true {
@@ -48,7 +47,6 @@ struct PromptField: View {
         
        return true
     }
-    
     #endif
     
     var font: Font {
@@ -99,11 +97,7 @@ struct PromptField: View {
                 }
             }
             .onChange(of: focused.uuid) { newValue in
-                if newValue == id {
-                    isFocused = true
-                } else {
-                    isFocused = false
-                }
+                isFocused = newValue == id
             }
             .onChange(of: isFocused) { newValue in
                 if newValue == true {
