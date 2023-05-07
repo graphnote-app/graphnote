@@ -62,6 +62,7 @@ struct DocumentPreviewView: View {
     @StateObject private var vm = DocumentViewVM()
     @State private var promptMenuOpen = false
     @State private var linkMenuOpen = false
+    @State private var focused: FocusedPrompt = FocusedPrompt(uuid: nil, text: "")
     
     private let pad: Double = 30
     
@@ -80,7 +81,7 @@ struct DocumentPreviewView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, promptText: .constant("")) {
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, promptText: .constant(""), focused: $focused) {
                         fetchBlocks()
                     }
                     

@@ -248,6 +248,11 @@ struct ContentView: View {
         }, message: {
             Text("Error: \(DataService.shared.error?.localizedDescription ?? "")\nOffline mode will continue until relaunch or tapping the wifi icon")
         })
+        .onReceive(NotificationCenter.default.publisher(for: localDocumentUpdatedNotification)) { notification in
+            DispatchQueue.main.async {
+                vm.fetchDocument()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: localWorkspaceCreatedNotification)) { notification in
             DispatchQueue.main.async {
                 vm.fetch()
@@ -264,11 +269,6 @@ struct ContentView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: documentUpdateSyncedNotification)) { notification in
-        }
-        .onReceive(NotificationCenter.default.publisher(for: localDocumentUpdatedNotification)) { notification in
-            DispatchQueue.main.async {
-                vm.fetch()
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: labelLinkCreatedNotification)) { notification in
             DispatchQueue.main.async {

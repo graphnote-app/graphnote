@@ -12,9 +12,10 @@ class DocumentContainerVM: ObservableObject {
     private var previousId: UUID? = nil
     private let saveInterval = 2.0
     private var timer: Timer? = nil
+    private var saving = false
     
     init() {
-        self.timer = Timer.scheduledTimer(timeInterval: saveInterval, target: self, selector: #selector(save), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: saveInterval, target: self, selector: #selector(_saveHandler), userInfo: nil, repeats: true)
     }
     
     deinit {
@@ -23,17 +24,38 @@ class DocumentContainerVM: ObservableObject {
     }
     
     @objc
-    func save() {
-        if self.title != self.previousTitle && previousId == self.document?.id {
-            if let document = self.document, let workspace = self.workspace, let user = self.user {
-                DataService.shared.updateDocumentTitle(user: user, workspace: workspace, document: document, title: self.title)
-            }
-            self.previousTitle = title
-            self.previousId = document?.id
+    func _saveHandler() {
+        if !saving {
+            self.save()
         }
     }
     
-    @Published var title = ""
+    func save(title: String? = nil, force: Bool = false) {
+        if let title {
+            if self.title != title {
+                self.title = title
+            }
+        }
+        
+        if !saving {
+            self.saving = true
+        
+            if (self.title != self.previousTitle && previousId == self.document?.id) || force {
+                if let document = self.document, let workspace = self.workspace, let user = self.user {
+                    DataService.shared.updateDocumentTitle(user: user, workspace: workspace, document: document, title: self.title)
+                }
+                self.previousId = document?.id
+            }
+            
+            self.saving = false
+        }
+    }
+    
+    @Published var title = "" {
+        didSet {
+            self.previousTitle = title
+        }
+    }
     @Published var labels = [Label]()
     @Published var blocks = [Block]()
     @Published var allLabels = [Label]()
@@ -43,8 +65,8 @@ class DocumentContainerVM: ObservableObject {
             if document?.title != oldValue?.title || document?.id != oldValue?.id {
                 self.previousId = oldValue?.id
                 if let document {
-                    self.title = document.title
                     self.previousTitle = self.title
+                    self.title = document.title
                 }
             }
         }
@@ -108,12 +130,12 @@ class DocumentContainerVM: ObservableObject {
             self.title = document.title
         }
         
-        if self.previousId == nil  {
-            self.previousId = document.id
-        }
+//        if self.previousId == nil  {
+//            self.previousId = document.id
+//        }
         
-        if self.previousTitle == nil {
-            self.previousTitle = document.title
-        }
+//        if self.previousTitle == nil {
+//            self.previousTitle = document.title
+//        }
     }
 }

@@ -35,13 +35,13 @@ import SwiftUI
 struct DocumentView: View {
     @Environment(\.colorScheme) private var colorScheme
     
-//    /// A binding to the title label
-    let title: String
-//    /// The binding to an array of label model objects.
+    /// A binding to the title label
+    @Binding var title: String
+    /// The binding to an array of label model objects.
     let labels: [Label]
-//    /// All labels for suggestions
+    /// All labels for suggestions
     let allLabels: [Label]
-//    /// The binding to an array of block model objects.
+    /// The binding to an array of block model objects.
     let blocks: [Block]
 
     /// The logged in user.
@@ -56,8 +56,12 @@ struct DocumentView: View {
     let fetchBlocks: () -> Void
     /// Called when "pull to refresh" is invoked to refresh the whole documnet.
     let onRefresh: () -> Void
+    /// Call to save the document state (title, etc) whenever the focused state becomes false on title.
+    let save: (String) -> Void
     
     @StateObject private var vm = DocumentViewVM()
+    @FocusState private var isFocused: Bool
+    @State private var focused: FocusedPrompt = FocusedPrompt(uuid: nil, text: "")
     @State private var promptMenuOpen = false
     @State private var linkMenuOpen = false
     @State private var selectedLink: UUID? = nil
@@ -74,9 +78,21 @@ struct DocumentView: View {
             VStack(alignment: .center, spacing: pad) {
                 HStack() {
                     VStack(alignment: .leading) {
-                        TextField("", text: .constant(title))
+                        TextField("", text: $title)
                             .font(.largeTitle)
                             .textFieldStyle(.plain)
+                            .focused($isFocused)
+                            .onChange(of: isFocused) { [title] newValue in
+                                if newValue == false {
+                                    save(title)
+                                    self.title = title
+                                }
+                            }
+                            .onSubmit {
+                                focused = FocusedPrompt(uuid: blocks.first?.id, text: blocks.first?.content ?? "")
+                                isFocused = false
+                            }
+                        
                         Spacer()
                             .frame(height: 20)
                         LabelField(fetch: fetch, labels: labels, allLabels: allLabels, user: user, workspace: workspace, document: document)
@@ -84,7 +100,7 @@ struct DocumentView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), selectedIndex: .constant(nil), promptText: $promptText) {
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), selectedIndex: .constant(nil), promptText: $promptText, focused: $focused) {
                         fetch()
                     }
 

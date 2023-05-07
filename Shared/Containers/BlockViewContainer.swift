@@ -22,13 +22,13 @@ struct BlockViewContainer: View {
     @Binding var selectedLink: UUID?
     @Binding var selectedIndex: Int?
     @Binding var promptText: String
+    @Binding var focused: FocusedPrompt
     let action: () -> Void
     
     @StateObject private var vm = BlockViewContainerVM()
     @State private var isKeyDown = false
     @State private var id: UUID? = nil
     @State private var prevContent = "INIT"
-    @State private var focused: FocusedPrompt = FocusedPrompt(uuid: nil, text: "")
     
     private let blockCreatedNotification = Notification.Name(DataServiceNotification.blockCreated.rawValue)
     private let blockDeletedNotification = Notification.Name(DataServiceNotification.blockDeleted.rawValue)
