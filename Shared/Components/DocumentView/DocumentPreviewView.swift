@@ -69,19 +69,19 @@ struct DocumentPreviewView: View {
     var content: some View {
         Group {
             VStack(alignment: .leading, spacing: pad) {
+//                HStack() {
+//                    VStack(alignment: .leading) {
+//                        TextField("", text: .constant(title))
+//                            .font(.largeTitle)
+//                            .textFieldStyle(.plain)
+//                        Spacer()
+//                            .frame(height: 20)
+//                        LabelField(fetch: fetch, labels: labels, allLabels: [], user: user, workspace: workspace, document: document)
+//                    }
+//                    .foregroundColor(.primary)
+//                }
                 HStack() {
-                    VStack(alignment: .leading) {
-                        TextField("", text: .constant(title))
-                            .font(.largeTitle)
-                            .textFieldStyle(.plain)
-                        Spacer()
-                            .frame(height: 20)
-                        LabelField(fetch: fetch, labels: labels, allLabels: [], user: user, workspace: workspace, document: document)
-                    }
-                    .foregroundColor(.primary)
-                }
-                HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, promptText: .constant(""), focused: $focused) {
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, focused: $focused) {
                         fetchBlocks()
                     }
                     
@@ -109,4 +109,3 @@ struct DocumentPreviewView: View {
         }
     }
 }
-

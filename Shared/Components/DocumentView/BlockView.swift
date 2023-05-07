@@ -16,11 +16,11 @@ struct BlockView: View {
     let workspace: Workspace
     let document: Document
     let block: Block
-    @Binding var promptText: String
     let editable: Bool
     @Binding var focused: FocusedPrompt
     @Binding var selectedLink: UUID?
     @Binding var selectedIndex: Int?
+    @Binding var promptMenuOpen: Bool
     let fetch: () -> Void
     let onEnter: (_ id: UUID, _ text: String) -> Void
     
@@ -30,11 +30,11 @@ struct BlockView: View {
         workspace: Workspace,
         document: Document,
         block: Block,
-        promptText: Binding<String>,
         editable: Bool,
         focused: Binding<FocusedPrompt>,
         selectedLink: Binding<UUID?>,
         selectedIndex: Binding<Int?>,
+        promptMenuOpen: Binding<Bool>,
         fetch: @escaping () -> Void,
         onEnter: @escaping (UUID, String) -> Void
     ) {
@@ -42,11 +42,11 @@ struct BlockView: View {
         self.workspace = workspace
         self.document = document
         self.block = block
-        self._promptText = promptText
         self.editable = editable
         self._focused = focused
         self._selectedLink = selectedLink
         self._selectedIndex = selectedIndex
+        self._promptMenuOpen = promptMenuOpen
         self.fetch = fetch
         self.onEnter = onEnter
         
@@ -64,7 +64,7 @@ struct BlockView: View {
     @State private var focusFieldPromptFlag = false
     
     var body: some View {
-        PromptField(id: block.id, type: .body, block: block, focused: $focused) { (id, text) in
+        PromptField(id: block.id, type: .body, block: block, focused: $focused, promptMenuOpen: $promptMenuOpen) { (id, text) in
             self.onEnter(id, text)
         } onBackspaceRemove: {
             do {

@@ -16,6 +16,7 @@ struct PromptField: View {
     let type: BlockType
     let block: Block
     @Binding var focused: FocusedPrompt
+    @Binding var promptMenuOpen: Bool
     let onSubmit: (_ id: UUID, _ text: String) -> Void
     let onBackspaceRemove: () -> Void
     
@@ -107,29 +108,23 @@ struct PromptField: View {
             .onChange(of: isFocused) { newValue in
                 if newValue == true {
                     focused = FocusedPrompt(uuid: id, text: block.content)
-                    #if os(macOS)
                     
-                    if let numMonitor {
-                        NSEvent.removeMonitor(numMonitor)
-                        self.numMonitor = nil
-                    }
-                    
-                    self.numMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-                        self.isKeyDown = true
-                        if self.keyDown(with: $0) == false {
-                            self.isKeyDown = false
-                            return nil
-                        }
-                        
-                        self.isKeyDown = false
-                    
-                        return $0
-                    }
-                    #endif
                 } else {
                     if let numMonitor {
                         NSEvent.removeMonitor(numMonitor)
                         self.numMonitor = nil
+                    }
+                }
+            }
+            .onChange(of: text) { newValue in
+                if newValue == "/" {
+                    withAnimation {
+                        promptMenuOpen = true
+                    }
+                    
+                } else if newValue == "" {
+                    withAnimation {
+                        promptMenuOpen = false
                     }
                 }
             }

@@ -66,7 +66,6 @@ struct DocumentView: View {
     @State private var linkMenuOpen = false
     @State private var selectedLink: UUID? = nil
     @State private var selectedIndex: Int? = nil
-    @State private var promptText = ""
     
     private let pad: Double = 30
     
@@ -100,7 +99,7 @@ struct DocumentView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), selectedIndex: .constant(nil), promptText: $promptText, focused: $focused) {
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), selectedIndex: .constant(nil), focused: $focused) {
                         fetch()
                     }
 
@@ -146,7 +145,6 @@ struct DocumentView: View {
         }
         .onChange(of: linkMenuOpen, perform: { newValue in
             if newValue == false {
-                promptText = ""
 //                vm.clearPrompt(user: user, workspace: workspace, document: document)
             }
         })

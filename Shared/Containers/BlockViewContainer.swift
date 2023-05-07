@@ -21,7 +21,6 @@ struct BlockViewContainer: View {
     let editable: Bool
     @Binding var selectedLink: UUID?
     @Binding var selectedIndex: Int?
-    @Binding var promptText: String
     @Binding var focused: FocusedPrompt
     let action: () -> Void
     
@@ -58,11 +57,11 @@ struct BlockViewContainer: View {
                           workspace: workspace,
                           document: document,
                           block: block,
-                          promptText: $promptText,
                           editable: editable,
                           focused: $focused,
                           selectedLink: $selectedLink,
                           selectedIndex: $selectedIndex,
+                          promptMenuOpen: $promptMenuOpen,
                           fetch: action
                 ) { (id, text) in
                     
@@ -95,7 +94,6 @@ struct BlockViewContainer: View {
             
             if focused.uuid != nil {
                 if let content = blocks.first(where: {$0.id == focused.uuid})?.content {
-                    promptText = content
                 }
             }
             
@@ -123,18 +121,6 @@ struct BlockViewContainer: View {
 //                }
 //            }
 //        })
-        .onChange(of: promptText) { newValue in
-            if newValue == "/" {
-                withAnimation {
-                    promptMenuOpen = true
-                }
-                
-            } else if newValue == "" {
-                withAnimation {
-                    promptMenuOpen = false
-                }
-            }
-        }
         .fixedSize(horizontal: false, vertical: true)
         .submitScope()
     }
