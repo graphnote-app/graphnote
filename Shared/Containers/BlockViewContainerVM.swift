@@ -31,7 +31,7 @@ class BlockViewContainerVM: ObservableObject {
         let type = type ?? block.type
         let text = text ?? block.content
         let updatedBlock = Block(id: block.id, type: type, content: text, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: .now, document: document)
-        try DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: updatedBlock)
+        DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: updatedBlock)
     }
 
 }
