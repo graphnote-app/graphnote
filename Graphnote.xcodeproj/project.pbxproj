@@ -34,9 +34,7 @@
 		F82EC64829D54B62009C46BE /* BlockSpacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */; };
 		F82EC64929D54B62009C46BE /* BulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6C29BECE560019E6CF /* BulletView.swift */; };
 		F82EC64A29D54B62009C46BE /* BlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6629BEC5760019E6CF /* BlockType.swift */; };
-		F82EC64B29D54B62009C46BE /* EmptyBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066F29BD35960023F833 /* EmptyBlockView.swift */; };
 		F82EC64C29D54B62009C46BE /* PromptField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880664329AB2EB3002A457D /* PromptField.swift */; };
-		F82EC64D29D54B62009C46BE /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */; };
 		F82EC64E29D54B62009C46BE /* HeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6329BEC3D90019E6CF /* HeadingView.swift */; };
 		F82EC64F29D54B62009C46BE /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
 		F82EC65029D54B62009C46BE /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
@@ -104,10 +102,8 @@
 		F8494DF429E8E1DC004DBA87 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8494DF229E8E1DC004DBA87 /* DataService.swift */; };
 		F84D087729C808B100410C10 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D087629C808B100410C10 /* DocumentView.swift */; };
 		F84D087929C809ED00410C10 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86978C829A88398002D9570 /* BlockView.swift */; };
-		F84D087A29C809FE00410C10 /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */; };
 		F84D087B29C809FE00410C10 /* BulletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6C29BECE560019E6CF /* BulletView.swift */; };
 		F84D087C29C809FE00410C10 /* PromptField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880664329AB2EB3002A457D /* PromptField.swift */; };
-		F84D087D29C809FE00410C10 /* EmptyBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EA066F29BD35960023F833 /* EmptyBlockView.swift */; };
 		F84D087E29C809FE00410C10 /* BlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6629BEC5760019E6CF /* BlockType.swift */; };
 		F84D087F29C809FE00410C10 /* BlockSpacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */; };
 		F84D088029C809FE00410C10 /* HeadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8AF6329BEC3D90019E6CF /* HeadingView.swift */; };
@@ -306,13 +302,11 @@
 		F8E19E5629A8669000BD0BB9 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		F8E19E5929A8695B00BD0BB9 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		F8E5A70F27B1EC8D001A5C43 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyView.swift; sourceTree = "<group>"; };
 		F8E8AF6329BEC3D90019E6CF /* HeadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingView.swift; sourceTree = "<group>"; };
 		F8E8AF6629BEC5760019E6CF /* BlockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockType.swift; sourceTree = "<group>"; };
 		F8E8AF6C29BECE560019E6CF /* BulletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletView.swift; sourceTree = "<group>"; };
 		F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSpacer.swift; sourceTree = "<group>"; };
 		F8EA066929BD1CFD0023F833 /* BlockEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEntity.swift; sourceTree = "<group>"; };
-		F8EA066F29BD35960023F833 /* EmptyBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBlockView.swift; sourceTree = "<group>"; };
 		F8EA1EC229E1D6ED00931810 /* TreeDocView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDocView.swift; sourceTree = "<group>"; };
 		F8EA1EC529E1DE9200931810 /* SyncStatusIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusIconView.swift; sourceTree = "<group>"; };
 		F8EA1ECE29E219F500931810 /* SyncMessageIDEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncMessageIDEntity.swift; sourceTree = "<group>"; };
@@ -403,9 +397,7 @@
 				F8E8AF6F29BED2B90019E6CF /* BlockSpacer.swift */,
 				F8E8AF6C29BECE560019E6CF /* BulletView.swift */,
 				F8E8AF6629BEC5760019E6CF /* BlockType.swift */,
-				F8EA066F29BD35960023F833 /* EmptyBlockView.swift */,
 				F880664329AB2EB3002A457D /* PromptField.swift */,
-				F8E8AF5D29BEC3AB0019E6CF /* BodyView.swift */,
 				F8E8AF6329BEC3D90019E6CF /* HeadingView.swift */,
 				F86978C829A88398002D9570 /* BlockView.swift */,
 				F851295429EDD5BB0027CDF2 /* BlockViewVM.swift */,
@@ -810,9 +802,7 @@
 				F8EA1EC729E1DE9200931810 /* SyncStatusIconView.swift in Sources */,
 				F82EC64A29D54B62009C46BE /* BlockType.swift in Sources */,
 				F863496429E03ED800C49D0B /* SyncServiceDBPushQueue.swift in Sources */,
-				F82EC64B29D54B62009C46BE /* EmptyBlockView.swift in Sources */,
 				F82EC64C29D54B62009C46BE /* PromptField.swift in Sources */,
-				F82EC64D29D54B62009C46BE /* BodyView.swift in Sources */,
 				F8D947C929F6FFF7003AE4DE /* AddLabelField.swift in Sources */,
 				F851295929EDDA170027CDF2 /* BlockViewContainer.swift in Sources */,
 				F82EC64E29D54B62009C46BE /* HeadingView.swift in Sources */,
@@ -891,7 +881,6 @@
 				F88D5EF129D9D4060088338F /* AuthService.swift in Sources */,
 				F84D087C29C809FE00410C10 /* PromptField.swift in Sources */,
 				F88D5EEE29D9CE5B0088338F /* LoadingSpinnerView.swift in Sources */,
-				F84D087A29C809FE00410C10 /* BodyView.swift in Sources */,
 				F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */,
 				F8A6B6FC29D1279300140A53 /* LabelLinkEntity.swift in Sources */,
 				F84D087B29C809FE00410C10 /* BulletView.swift in Sources */,
@@ -930,7 +919,6 @@
 				F8403DD529D3B1440027A196 /* LabelLinkRepo.swift in Sources */,
 				F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */,
 				F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */,
-				F84D087D29C809FE00410C10 /* EmptyBlockView.swift in Sources */,
 				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,
 				F88313B229EB7D990073658A /* SyncServiceDBApplyQueue.swift in Sources */,
 				F84D087729C808B100410C10 /* DocumentView.swift in Sources */,
