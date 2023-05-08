@@ -19,8 +19,8 @@ struct BlockView: View {
     let editable: Bool
     @Binding var focused: FocusedPrompt
     @Binding var selectedLink: UUID?
-    @Binding var selectedIndex: Int?
     @Binding var promptMenuOpen: Bool
+    @Binding var selectedContentId: UUID?
     let fetch: () -> Void
     let onEnter: (_ id: UUID, _ text: String) -> Void
     
@@ -33,8 +33,8 @@ struct BlockView: View {
         editable: Bool,
         focused: Binding<FocusedPrompt>,
         selectedLink: Binding<UUID?>,
-        selectedIndex: Binding<Int?>,
         promptMenuOpen: Binding<Bool>,
+        selectedContentId: Binding<UUID?>,
         fetch: @escaping () -> Void,
         onEnter: @escaping (UUID, String) -> Void
     ) {
@@ -45,8 +45,8 @@ struct BlockView: View {
         self.editable = editable
         self._focused = focused
         self._selectedLink = selectedLink
-        self._selectedIndex = selectedIndex
         self._promptMenuOpen = promptMenuOpen
+        self._selectedContentId = selectedContentId
         self.fetch = fetch
         self.onEnter = onEnter
         
@@ -61,9 +61,11 @@ struct BlockView: View {
             focusFieldPromptFlag = focusedField == .prompt ? true : false
         }
     }
-    @State private var focusFieldPromptFlag = false
     
-    var body: some View {
+    @State private var focusFieldPromptFlag = false
+    @State private var linkContent: String = ""
+    
+    @ViewBuilder var bodyType: some View {
         if editable {
             PromptField(id: block.id, type: .body, block: block, focused: $focused, promptMenuOpen: $promptMenuOpen) { (id, text) in
                 self.onEnter(id, text)
@@ -90,7 +92,47 @@ struct BlockView: View {
             }
             .id(block.id)
         } else {
-            PromptView(id: block.id, type: .body, block: block)
+            if block.id == selectedContentId  {
+                PromptView(id: block.id, type: block.type, block: block)
+                    .border(LabelPalette.primary.getColor(), width: 2)
+                    .onTapGesture {
+                        if block.id != selectedContentId {
+                            selectedContentId = block.id
+                        } else {
+                            selectedContentId = nil
+                        }
+                    }
+            } else {
+                PromptView(id: block.id, type: block.type, block: block)
+                    .onTapGesture {
+                        if block.id != selectedContentId {
+                            selectedContentId = block.id
+                        } else {
+                            selectedContentId = nil
+                        }
+                    }
+            }
+        }
+    }
+    
+    var contentLinkType: some View {
+        Text(linkContent)
+            .border(LabelPalette.primary.getColor(), width: 2)
+            .onAppear {
+                if let content = vm.readBlock(id: UUID(uuidString: block.content)!, user: user, workspace: workspace)?.content {
+                    linkContent = content
+                }
+            }
+    }
+    
+    var body: some View {
+        switch block.type {
+        case .body, .heading1, .heading2, .heading3, .heading4:
+            bodyType
+        case .contentLink:
+            contentLinkType
+        default:
+            fatalError()
         }
     }
 }

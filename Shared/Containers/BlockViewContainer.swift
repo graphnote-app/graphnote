@@ -20,7 +20,6 @@ struct BlockViewContainer: View {
     @Binding var promptMenuOpen: Bool
     let editable: Bool
     @Binding var selectedLink: UUID?
-    @Binding var selectedIndex: Int?
     @Binding var focused: FocusedPrompt
     let action: () -> Void
     
@@ -43,8 +42,8 @@ struct BlockViewContainer: View {
                           editable: editable,
                           focused: $focused,
                           selectedLink: $selectedLink,
-                          selectedIndex: $selectedIndex,
                           promptMenuOpen: $promptMenuOpen,
+                          selectedContentId: $selectedLink,
                           fetch: action
                 ) { (id, text) in
                     

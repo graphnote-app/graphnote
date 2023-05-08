@@ -14,9 +14,9 @@ struct ContentLinkModal: View {
     let workspace: Workspace
     let document: Document
     let documents: [Document]
-    @Binding var selectedIndex: Int?
     @Binding var selectedLink: UUID?
     @Binding var open: Bool
+    let createLink: () -> Void
     
     @State private var _document: Document?
     
@@ -36,14 +36,8 @@ struct ContentLinkModal: View {
             .padding()
             
             List {
-                DocumentPreviewView(title: vm.title, labels: vm.labels, blocks: vm.blocks, user: user, workspace: workspace, document: document, selectedLink: $selectedLink, selectedIndex: $selectedIndex) {
-                    
-                } fetchBlocks: {
-                    
-                } onRefresh: {
-                    
-                }
-                .frame(maxWidth: .infinity)
+                DocumentPreviewView(title: vm.title, labels: vm.labels, blocks: vm.blocks, user: user, workspace: workspace, document: document, selectedLink: $selectedLink)
+                    .frame(maxWidth: .infinity)
             }
             .scrollContentBackground(.hidden)
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
@@ -56,8 +50,9 @@ struct ContentLinkModal: View {
                 }
                 Spacer()
                 Button("Create link") {
-                    if let selectedLink, let selectedIndex {
-                        vm.createLink(user: user, workspace: workspace, document: document, content: selectedLink, prev: nil, next: nil)
+                    if let selectedLink {
+//                        vm.createLink(user: user, workspace: workspace, document: document, content: selectedLink, prev: nil, next: nil)
+                        createLink()
                         open = false
                     }
                 }

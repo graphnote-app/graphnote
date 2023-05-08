@@ -23,13 +23,7 @@ import SwiftUI
 ///         user: $vm.user,
 ///         workspace: $vm.workspace,
 ///         document: $vm.document
-///     ) {
-///
-///     } fetchBlocks: {
-///
-///     } onRefresh: {
-///
-///     }
+///     )
 /// ```
 ///
 struct DocumentPreviewView: View {
@@ -50,14 +44,6 @@ struct DocumentPreviewView: View {
     let document: Document
     /// The selected block when creating a content link.
     @Binding var selectedLink: UUID?
-    /// The selected index when creating a content link.
-    @Binding var selectedIndex: Int?
-    /// The fetch method is called whenver the entire document contents need updating.
-    let fetch: () -> Void
-    /// This method is for when only the blocks within the documnet need updating (no title, etc).
-    let fetchBlocks: () -> Void
-    /// Called when "pull to refresh" is invoked to refresh the whole documnet.
-    let onRefresh: () -> Void
     
     @StateObject private var vm = DocumentViewVM()
     @State private var promptMenuOpen = false
@@ -81,8 +67,7 @@ struct DocumentPreviewView: View {
 //                    .foregroundColor(.primary)
 //                }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, selectedIndex: $selectedIndex, focused: $focused) {
-                        fetchBlocks()
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: false, selectedLink: $selectedLink, focused: $focused) {
                     }
                     
                     Spacer()

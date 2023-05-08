@@ -64,7 +64,7 @@ struct DocumentView: View {
     @State private var promptMenuOpen = false
     @State private var linkMenuOpen = false
     @State private var selectedLink: UUID? = nil
-    @State private var selectedIndex: Int? = nil
+    
     
     private let pad: Double = 30
     
@@ -98,7 +98,7 @@ struct DocumentView: View {
                     .foregroundColor(.primary)
                 }
                 HStack() {
-                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), selectedIndex: .constant(nil), focused: $focused) {
+                    BlockViewContainer(user: user, workspace: workspace, document: document, blocks: blocks, promptMenuOpen: $promptMenuOpen, editable: true, selectedLink: .constant(nil), focused: $focused) {
                         fetch()
                     }
 
@@ -141,13 +141,26 @@ struct DocumentView: View {
                     linkMenuOpen = true
                 }
             } else if linkMenuOpen == true {
-                ContentLinkModal(user: user, workspace: workspace, document: document, documents: vm.documents, selectedIndex: $selectedIndex, selectedLink: $selectedLink, open: $linkMenuOpen)
+                ContentLinkModal(user: user, workspace: workspace, document: document, documents: vm.documents, selectedLink: $selectedLink, open: $linkMenuOpen) {
+                    do {
+                        let docRepo = DocumentRepo(user: user, workspace: workspace)
+                        if let insertId = focused.uuid, let selectedLink {
+                            if let insertBlock = try docRepo.readBlock(document: document, block: insertId) {
+                                let updatedBlock = Block(id: insertBlock.id, type: .contentLink, content: selectedLink.uuidString, prev: insertBlock.prev, next: insertBlock.next, createdAt: insertBlock.createdAt, modifiedAt: .now, document: document)
+                                vm.updateBlock(updatedBlock, user: user, workspace: workspace, document: document)
+                                onRefresh()
+                            }
+                        }
+                    } catch let error {
+                        print(error)
+                    }
+                }
             }
         }
         .onChange(of: linkMenuOpen, perform: { newValue in
-            if newValue == false {
+//            if newValue == false {
 //                vm.clearPrompt(user: user, workspace: workspace, document: document)
-            }
+//            }
         })
         .refreshable {
             onRefresh()
