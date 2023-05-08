@@ -11,22 +11,32 @@ struct PromptView: View {
     let id: UUID
     let type: BlockType
     let block: Block
+    let selected: Bool
     
     var font: Font {
         switch type {
-        case .body:
-            return .custom("", size: PromptFontDimensions.bodyFontSize, relativeTo: .body)
         default:
-            return .subheadline
+            return .custom("", size: PromptFontDimensions.bodyFontSize, relativeTo: .body)
         }
     }
 
     var body: some View {
         Text(block.content)
             .font(font)
+            .lineSpacing(Spacing.spacing2.rawValue)
             .disableAutocorrection(true)
             .textFieldStyle(.plain)
             .multilineTextAlignment(.leading)
             .padding([.top, .bottom], Spacing.spacing2.rawValue)
+            .overlay {
+                if selected {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(LabelPalette.primary.getColor())
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(LabelPalette.primary.getColor().opacity(0.125))
+                    }
+                }
+            }
     }
 }

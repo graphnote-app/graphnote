@@ -92,37 +92,44 @@ struct BlockView: View {
             }
             .id(block.id)
         } else {
-            if block.id == selectedContentId  {
-                PromptView(id: block.id, type: block.type, block: block)
-                    .border(LabelPalette.primary.getColor(), width: 2)
-                    .onTapGesture {
-                        if block.id != selectedContentId {
-                            selectedContentId = block.id
-                        } else {
-                            selectedContentId = nil
-                        }
+            PromptView(id: block.id, type: block.type, block: block, selected: block.id == selectedContentId)
+                .onTapGesture {
+                    if block.id != selectedContentId {
+                        selectedContentId = block.id
+                    } else {
+                        selectedContentId = nil
                     }
-            } else {
-                PromptView(id: block.id, type: block.type, block: block)
-                    .onTapGesture {
-                        if block.id != selectedContentId {
-                            selectedContentId = block.id
-                        } else {
-                            selectedContentId = nil
-                        }
-                    }
-            }
+                }
+        }
+    }
+    
+    var font: Font {
+        switch block.type {
+        default:
+            return .custom("", size: PromptFontDimensions.bodyFontSize, relativeTo: .body)
         }
     }
     
     var contentLinkType: some View {
         Text(linkContent)
-            .border(LabelPalette.primary.getColor(), width: 2)
+            .font(font)
+            .lineSpacing(Spacing.spacing2.rawValue)
             .onAppear {
                 if let content = vm.readBlock(id: UUID(uuidString: block.content)!, user: user, workspace: workspace)?.content {
                     linkContent = content
                 }
             }
+            .padding(Spacing.spacing4.rawValue)
+            .overlay {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(LabelPalette.primary.getColor())
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(LabelPalette.primary.getColor().opacity(0.125))
+                }
+            }
+            .padding([.top, .bottom], Spacing.spacing2.rawValue)
+
     }
     
     var body: some View {

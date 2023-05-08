@@ -39,7 +39,7 @@ struct BlockViewContainer: View {
                           workspace: workspace,
                           document: document,
                           block: block,
-                          editable: editable,
+                          editable: block.type == .contentLink ? false : editable,
                           focused: $focused,
                           selectedLink: $selectedLink,
                           promptMenuOpen: $promptMenuOpen,
