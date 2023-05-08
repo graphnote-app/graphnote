@@ -52,7 +52,7 @@ struct BlockViewContainer: View {
                         return
                     }
                     
-                    if index == 0 {
+                    if index == 0 && blocks.isEmpty {
                         if let newBlock = vm.insertBlock(user: user, workspace: workspace, document: document, promptText: "", prev: block.id, next: nil) {
                             vm.updateBlock(block, user: user, workspace: workspace,  document: document, next: newBlock.id, text: text)
                             DataService.shared.updateDocumentFocused(user: user, workspace: workspace, document: document, focused: newBlock.id)

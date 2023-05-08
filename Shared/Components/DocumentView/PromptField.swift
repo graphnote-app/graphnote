@@ -101,6 +101,9 @@ struct PromptField: View {
                 }
                 #endif
             }
+            .onChange(of: block.content, perform: { newValue in
+                text = newValue
+            })
             .onChange(of: focused.uuid) { newValue in
                 isFocused = newValue == id
             }
