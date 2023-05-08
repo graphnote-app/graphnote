@@ -152,7 +152,7 @@ struct WorkspaceRepo {
     func read(workspace: UUID) throws -> Workspace? {
         do {
             guard let workspaceEntity = try WorkspaceEntity.getEntity(id: workspace, moc: moc) else {
-                print("worksace entity does not exists")
+                print("workpsace entity does not exists")
                 return nil
             }
         
