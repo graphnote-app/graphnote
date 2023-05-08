@@ -54,7 +54,7 @@ struct PromptField: View {
     }
     
     var body: some View {
-        TextField("", text: $text, prompt: Text(text.isEmpty ? placeholder : ""), axis: .vertical)
+        TextField("", text: $text, prompt: Text(text.isEmpty && block.id == focused.uuid ? placeholder : ""), axis: .vertical)
             .font(font)
             .lineSpacing(Spacing.spacing2.rawValue)
             .disableAutocorrection(true)
