@@ -201,7 +201,7 @@ struct ContentView: View {
                             vm.fetch()
                         })
                         .onChange(of: document, perform: { newValue in
-                            print("DOC changed")
+                            vm.fetchDocument()
                         })
                         .id(vm.selectedDocument.hashValue)
                     } else {
