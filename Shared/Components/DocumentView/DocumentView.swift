@@ -126,7 +126,7 @@ struct DocumentView: View {
             .background(colorScheme == .dark ? ColorPalette.darkBG1 : ColorPalette.lightBG1)
         }
         .onAppear {
-//            vm.fetchDocuments(user: user, workspace: workspace)
+            vm.fetchDocuments(user: user, workspace: workspace)
             save(title)
             onRefresh()
         }

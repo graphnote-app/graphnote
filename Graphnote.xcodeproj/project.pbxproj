@@ -143,6 +143,8 @@
 		F88550B229D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
 		F88550B329D9B82B00EE458C /* AppGlobalUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */; };
 		F88550B429D9BA8300EE458C /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = F8EA4073279CFF54001F74B5 /* Assets.xcassets */; };
+		F88C05912A08B6D800FF55E8 /* PromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88C05902A08B6D800FF55E8 /* PromptView.swift */; };
+		F88C05922A08B6D800FF55E8 /* PromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88C05902A08B6D800FF55E8 /* PromptView.swift */; };
 		F88D5EEE29D9CE5B0088338F /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */; };
 		F88D5EEF29D9CE5B0088338F /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */; };
 		F88D5EF129D9D4060088338F /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D5EF029D9D4060088338F /* AuthService.swift */; };
@@ -258,6 +260,7 @@
 		F88550B129D9B82B00EE458C /* AppGlobalUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGlobalUIState.swift; sourceTree = "<group>"; };
 		F88550B629D9BC3A00EE458C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		F88550B829D9BC4500EE458C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F88C05902A08B6D800FF55E8 /* PromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptView.swift; sourceTree = "<group>"; };
 		F88D5EED29D9CE5B0088338F /* LoadingSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinnerView.swift; sourceTree = "<group>"; };
 		F88D5EF029D9D4060088338F /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		F88D5EF729D9F2700088338F /* Graphnote--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Graphnote--macOS--Info.plist"; sourceTree = "<group>"; };
@@ -398,6 +401,7 @@
 				F8E8AF6C29BECE560019E6CF /* BulletView.swift */,
 				F8E8AF6629BEC5760019E6CF /* BlockType.swift */,
 				F880664329AB2EB3002A457D /* PromptField.swift */,
+				F88C05902A08B6D800FF55E8 /* PromptView.swift */,
 				F8E8AF6329BEC3D90019E6CF /* HeadingView.swift */,
 				F86978C829A88398002D9570 /* BlockView.swift */,
 				F851295429EDD5BB0027CDF2 /* BlockViewVM.swift */,
@@ -836,6 +840,7 @@
 				F82EC66229D54B62009C46BE /* LabelLink.swift in Sources */,
 				F82EC66329D54B62009C46BE /* User.swift in Sources */,
 				F88D5EEF29D9CE5B0088338F /* LoadingSpinnerView.swift in Sources */,
+				F88C05922A08B6D800FF55E8 /* PromptView.swift in Sources */,
 				F82EC66429D54B62009C46BE /* Graphnote.xcdatamodeld in Sources */,
 				F88313B329EB7D990073658A /* SyncServiceDBApplyQueue.swift in Sources */,
 				F82EC66529D54B62009C46BE /* DataController.swift in Sources */,
@@ -917,6 +922,7 @@
 				F832C8EB29CA5FDD00ECA57B /* TreeViewLine.swift in Sources */,
 				F832C8F129CAA34E00ECA57B /* GearIconVIew.swift in Sources */,
 				F8403DD529D3B1440027A196 /* LabelLinkRepo.swift in Sources */,
+				F88C05912A08B6D800FF55E8 /* PromptView.swift in Sources */,
 				F807C8C729C9172200B7B239 /* XMarkIconView.swift in Sources */,
 				F832C8EF29CA61EF00ECA57B /* TreeViewItem.swift in Sources */,
 				F8BF73BE29C7F52500BA826E /* ArrowView.swift in Sources */,

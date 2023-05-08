@@ -12,6 +12,7 @@ class ContentLinkModalVM: ObservableObject {
     @Published var labels: [Label] = []
     @Published var title = ""
     
+    // TODO: - Investigate this?
     private func blockSort(_ a: Block, _ b: Block) -> Bool {
         return true
     }
@@ -23,7 +24,6 @@ class ContentLinkModalVM: ObservableObject {
                 self.blocks = blocks.sorted(by: { a, b in
                     blockSort(a, b)
                 })
-                
             }
             
             if let labels = repo.readLabels(document: document) {

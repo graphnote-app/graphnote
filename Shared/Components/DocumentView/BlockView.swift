@@ -64,34 +64,33 @@ struct BlockView: View {
     @State private var focusFieldPromptFlag = false
     
     var body: some View {
-        PromptField(id: block.id, type: .body, block: block, focused: $focused, promptMenuOpen: $promptMenuOpen) { (id, text) in
-            self.onEnter(id, text)
-        } onBackspaceRemove: {
-            do {
-                
-                if let prev = block.prev {
-                    if let prevBlock = vm.readBlock(id: prev, user: user, workspace: workspace) {
-                        self.focused = FocusedPrompt(uuid: prevBlock.id, text: prevBlock.content)
+        if editable {
+            PromptField(id: block.id, type: .body, block: block, focused: $focused, promptMenuOpen: $promptMenuOpen) { (id, text) in
+                self.onEnter(id, text)
+            } onBackspaceRemove: {
+                do {
+                    
+                    if let prev = block.prev {
+                        if let prevBlock = vm.readBlock(id: prev, user: user, workspace: workspace) {
+                            self.focused = FocusedPrompt(uuid: prevBlock.id, text: prevBlock.content)
+                        }
+                        
+                    } else if let next = block.next {
+                        if let nextBlock = vm.readBlock(id: next, user: user, workspace: workspace) {
+                            self.focused = FocusedPrompt(uuid: nextBlock.id, text: nextBlock.content)
+                        }
                     }
                     
-                } else if let next = block.next {
-                    if let nextBlock = vm.readBlock(id: next, user: user, workspace: workspace) {
-                        self.focused = FocusedPrompt(uuid: nextBlock.id, text: nextBlock.content)
-                    }
+                    try vm.deleteBlock(block: block, user: user, workspace: workspace)
+                    fetch()
+                    
+                } catch let error {
+                    print(error)
                 }
-                
-                try vm.deleteBlock(block: block, user: user, workspace: workspace)
-                fetch()
-                
-            } catch let error {
-                print(error)
             }
+            .id(block.id)
+        } else {
+            PromptView(id: block.id, type: .body, block: block)
         }
-//        .onChange(of: focused.uuid, perform: { newValue in
-//            if newValue == block.id {
-//                promptText = block.content
-//            }
-//        })
-        .id(block.id)
     }
 }
