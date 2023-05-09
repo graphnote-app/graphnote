@@ -67,7 +67,7 @@ struct BlockView: View {
     
     @ViewBuilder var bodyType: some View {
         if editable {
-            PromptField(id: block.id, type: .body, block: block, focused: $focused, promptMenuOpen: $promptMenuOpen) { (id, text) in
+            PromptField(id: block.id, type: .body, text: $vm.content, focused: $focused, promptMenuOpen: $promptMenuOpen) { (id, text) in
                 self.onEnter(id, text)
             } onBackspaceRemove: {
                 do {
@@ -91,6 +91,15 @@ struct BlockView: View {
                 }
             }
             .id(block.id)
+            .onAppear {
+                vm.content = block.content
+            }
+            .onChange(of: block.content) { newValue in
+                if newValue != vm.content {
+                    vm.content = newValue
+                }
+            }
+            
         } else {
             PromptView(id: block.id, type: block.type, block: block, selected: block.id == selectedContentId)
                 .onTapGesture {

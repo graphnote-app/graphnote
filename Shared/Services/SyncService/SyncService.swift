@@ -679,6 +679,7 @@ class SyncService: ObservableObject {
     }
     
     func pushMessage(user: User, message: SyncMessage) {
+        print("pushMessage.message.id: \(message.id)")
         if self.pushQueue != nil {
             if self.pushQueue!.add(message: message) == false {
                 fatalError("push queu add failed")
@@ -806,6 +807,7 @@ class SyncService: ObservableObject {
                             for id in ids {
                                 let uuid = UUID(uuidString: id)!
                                 if !syncMessageRepo.has(id: uuid) {
+                                    print("pullQueue.add.id: \(uuid)")
                                     self.pullQueue?.add(id: uuid)
                                 }
                             }

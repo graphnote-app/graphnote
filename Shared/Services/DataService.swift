@@ -321,7 +321,7 @@ class DataService: ObservableObject {
         let prev = prev ?? block.prev
         let next = next ?? block.next
         
-        let updatedBlock = Block(id: block.id, type: block.type, content: content, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: document)
+        let updatedBlock = Block(id: block.id, type: block.type, content: content, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: .now, document: document)
         if !documentRepo.update(block: updatedBlock) {
             print("Failed to update block content: \(updatedBlock) content: \(content)")
             return

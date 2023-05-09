@@ -14,7 +14,7 @@ struct PromptFontDimensions {
 struct PromptField: View {
     let id: UUID
     let type: BlockType
-    let block: Block
+    @Binding var text: String
     @Binding var focused: FocusedPrompt
     @Binding var promptMenuOpen: Bool
     let onSubmit: (_ id: UUID, _ text: String) -> Void
@@ -23,7 +23,6 @@ struct PromptField: View {
     @FocusState private var isFocused: Bool
     
     private let placeholder = "Press '/'"
-    @State private var text = ""
     
     @State private var isKeyDown = false
     @State private var numMonitor: Any? = nil
@@ -54,7 +53,7 @@ struct PromptField: View {
     }
     
     var body: some View {
-        TextField("", text: $text, prompt: Text(text.isEmpty && block.id == focused.uuid ? placeholder : ""), axis: .vertical)
+        TextField("", text: $text, prompt: Text(text.isEmpty && id == focused.uuid ? placeholder : ""), axis: .vertical)
             .font(font)
             .lineSpacing(Spacing.spacing2.rawValue)
             .disableAutocorrection(true)
@@ -66,9 +65,6 @@ struct PromptField: View {
                 self.onSubmit(id, text)
             }
             .onAppear {
-                if id == block.id {
-                    text = block.content
-                }
                 
                 if focused.uuid == id {
                     #if os(macOS)
@@ -102,16 +98,13 @@ struct PromptField: View {
                 }
                 #endif
             }
-            .onChange(of: block.content, perform: { newValue in
-                text = newValue
-            })
             .onChange(of: focused.uuid) { newValue in
                 isFocused = newValue == id
             }
             .onChange(of: isFocused) { newValue in
                 if newValue == true {
                     
-                    focused = FocusedPrompt(uuid: id, text: block.content)
+                    focused = FocusedPrompt(uuid: id, text: text)
                     
                     if focused.uuid == id {
                         #if os(macOS)

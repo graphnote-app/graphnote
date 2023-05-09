@@ -11,7 +11,11 @@ class BlockViewVM: ObservableObject {
     private let saveInterval = 2.0
     private var timer: Timer? = nil
     
-    @Published var content: String = "INIT"
+    @Published var content: String = "INIT" {
+        didSet {
+            prevContent = oldValue
+        }
+    }
     private var prevContent: String = "INIT"
     
     let user: User
@@ -25,6 +29,8 @@ class BlockViewVM: ObservableObject {
         self.workspace = workspace
         self.document = document
         self.block = block
+        self.timer?.invalidate()
+        self.timer = nil
         self.timer = Timer.scheduledTimer(timeInterval: saveInterval, target: self, selector: #selector(save), userInfo: nil, repeats: true)
     }
     
@@ -101,14 +107,9 @@ class BlockViewVM: ObservableObject {
         if let block = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: block.id) {
             if block.content != content {
                 content = block.content
-                prevContent = content
             }
         }
-//        } else {
-//            #if DEBUG
-//            fatalError()
-//            #endif
-//        }
+
     }
     
     func getBlockText(id: UUID) -> String? {
