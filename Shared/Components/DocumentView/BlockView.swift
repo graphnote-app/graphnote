@@ -97,6 +97,7 @@ struct BlockView: View {
             .onChange(of: block.content) { newValue in
                 if newValue != vm.content {
                     vm.content = newValue
+                    vm.prevContent = newValue
                 }
             }
             

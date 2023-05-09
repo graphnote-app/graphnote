@@ -16,7 +16,8 @@ class BlockViewVM: ObservableObject {
             prevContent = oldValue
         }
     }
-    private var prevContent: String = "INIT"
+    
+    var prevContent: String = "INIT"
     
     let user: User
     let workspace: Workspace
