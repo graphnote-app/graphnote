@@ -19,6 +19,7 @@ struct HorizontalFlexView: View {
                 .frame(maxWidth: GlobalDimension.maxDocumentContentWidth)
             #else
             AnyView(content())
+                .frame(maxWidth: GlobalDimension.maxDocumentContentWidth)
             #endif
             Spacer()
         }
