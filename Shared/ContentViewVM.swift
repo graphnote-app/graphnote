@@ -111,7 +111,7 @@ class ContentViewVM: NSObject, ObservableObject {
             do {
                 try DataService.shared.createDocument(user: user, document: document)
                 let now = Date.now
-                let prompt = Block(id: UUID(), type: .body, content: "", prev: nil, next: nil, createdAt: now, modifiedAt: now, document: document)
+                let prompt = Block(id: UUID(), type: .body, content: "", prev: nil, next: nil, graveyard: false, createdAt: now, modifiedAt: now, document: document)
                 if try DataService.shared.createBlock(user: user, workspace: selectedWorkspace, document: document, block: prompt, prev: nil, next: nil) == nil {
                     return false
                 }

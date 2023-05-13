@@ -18,16 +18,18 @@ struct Block: Codable, Hashable {
     let content: String
     let prev: UUID?
     let next: UUID?
+    let graveyard: Bool
     let createdAt: Date
     let modifiedAt: Date
     let document: Document
     
-    init(id: UUID, type: BlockType, content: String, prev: UUID?, next: UUID?, createdAt: Date, modifiedAt: Date, document: Document) {
+    init(id: UUID, type: BlockType, content: String, prev: UUID?, next: UUID?, graveyard: Bool, createdAt: Date, modifiedAt: Date, document: Document) {
         self.id = id
         self.type = type
         self.content = content
         self.prev = prev
         self.next = next
+        self.graveyard = graveyard
         self.createdAt = createdAt
         self.modifiedAt = modifiedAt
         self.document = document
@@ -41,6 +43,7 @@ struct Block: Codable, Hashable {
                 self.content = from.content
                 self.prev = from.prev
                 self.next = from.next
+                self.graveyard = from.graveyard
                 self.createdAt = from.createdAt
                 self.modifiedAt = from.modifiedAt
                 self.document = try Document(from: document)

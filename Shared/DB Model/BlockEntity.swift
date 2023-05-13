@@ -18,6 +18,7 @@ public class BlockEntity: NSManagedObject {
     @NSManaged public var content: String
     @NSManaged public var prev: UUID?
     @NSManaged public var next: UUID?
+    @NSManaged public var graveyard: Bool
     @NSManaged public var createdAt: Date
     @NSManaged public var modifiedAt: Date
     @NSManaged public var document: DocumentEntity?

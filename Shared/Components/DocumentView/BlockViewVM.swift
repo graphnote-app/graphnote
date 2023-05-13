@@ -50,45 +50,21 @@ class BlockViewVM: ObservableObject {
     }
     
     func deleteBlock(block: Block, user: User, workspace: Workspace) throws {
+        DataService.shared.deleteBlock(user: user, workspace: workspace, block: block)
         do {
-            let documentRepo = DocumentRepo(user: user, workspace: workspace)
-            
-            var delete = false
-            
-            if let prevUUID = block.prev {
-                if let prev = readBlock(id: prevUUID, user: user, workspace: workspace) {
-                    let updatedPrev = Block(id: prev.id,
-                                          type: prev.type,
-                                       content: prev.content,
-                                          prev: prev.prev,
-                                          next: block.next,
-                                     createdAt: prev.createdAt,
-                                    modifiedAt: .now,
-                                      document: document)
-                    documentRepo.update(block: updatedPrev)
-                    delete = true
-                }
-            }
-            
-            if let nextUUID = block.next {
-                if let next = readBlock(id: nextUUID, user: user, workspace: workspace) {
-                    let updatedNext = Block(id: next.id,
-                                          type: next.type,
-                                       content: next.content,
-                                          prev: block.prev,
-                                          next: next.next,
-                                     createdAt: next.createdAt,
-                                    modifiedAt: .now,
-                                      document: document)
-                    documentRepo.update(block: updatedNext)
-                    delete = true
-                }
-            }
-            
-            if delete {
-                try documentRepo.deleteBlock(id: block.id)
-            }
-            
+//            let documentRepo = DocumentRepo(user: user, workspace: workspace)
+//
+//            let updateBlock = Block(id: block.id,
+//                                  type: block.type,
+//                               content: block.content,
+//                                  prev: block.prev,
+//                                  next: block.next,
+//                             graveyard: true,
+//                             createdAt: block.createdAt,
+//                            modifiedAt: .now,
+//                              document: document)
+//            documentRepo.update(block: updateBlock)
+
         } catch let error {
             print(error)
         }

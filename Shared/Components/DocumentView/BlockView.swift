@@ -71,21 +71,26 @@ struct BlockView: View {
                 self.onEnter(id, text)
             } onBackspaceRemove: {
                 do {
-                    
                     if let prev = block.prev {
                         if let prevBlock = vm.readBlock(id: prev, user: user, workspace: workspace) {
-                            self.focused = FocusedPrompt(uuid: prevBlock.id, text: prevBlock.content)
+                            if prevBlock.graveyard == false {
+                                self.focused = FocusedPrompt(uuid: prevBlock.id, text: prevBlock.content)
+                                
+                                try vm.deleteBlock(block: block, user: user, workspace: workspace)
+                                fetch()
+                            }
                         }
-                        
+
                     } else if let next = block.next {
                         if let nextBlock = vm.readBlock(id: next, user: user, workspace: workspace) {
-                            self.focused = FocusedPrompt(uuid: nextBlock.id, text: nextBlock.content)
+                            if nextBlock.graveyard == false {
+                                self.focused = FocusedPrompt(uuid: nextBlock.id, text: nextBlock.content)
+                                
+                                try vm.deleteBlock(block: block, user: user, workspace: workspace)
+                                fetch()
+                            }
                         }
                     }
-                    
-                    try vm.deleteBlock(block: block, user: user, workspace: workspace)
-                    fetch()
-                    
                 } catch let error {
                     print(error)
                 }

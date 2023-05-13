@@ -32,6 +32,7 @@ struct DocumentRepo {
             blockEntity.createdAt = block.createdAt
             blockEntity.prev = block.prev
             blockEntity.next = block.next
+            blockEntity.graveyard = block.graveyard
             blockEntity.modifiedAt = block.modifiedAt
             blockEntity.document = documentEntity
             
@@ -125,7 +126,7 @@ struct DocumentRepo {
             let blockEntities = try moc.fetch(fetchRequest)
             
             let blocks = blockEntities.map { blockEntity in
-                Block(id: blockEntity.id, type: BlockType(rawValue: blockEntity.type)!, content: blockEntity.content, prev: blockEntity.prev, next: blockEntity.next, createdAt: blockEntity.createdAt, modifiedAt: blockEntity.modifiedAt, document: document)
+                Block(id: blockEntity.id, type: BlockType(rawValue: blockEntity.type)!, content: blockEntity.content, prev: blockEntity.prev, next: blockEntity.next, graveyard: blockEntity.graveyard, createdAt: blockEntity.createdAt, modifiedAt: blockEntity.modifiedAt, document: document)
             }
             
             var curr: Block? = blocks.first(where: {$0.prev == nil})
@@ -216,6 +217,7 @@ struct DocumentRepo {
                 blockEntity.prev = block.prev
                 blockEntity.next = block.next
                 blockEntity.type = block.type.rawValue
+                blockEntity.graveyard = block.graveyard
                 try moc.save()
             }
             
@@ -320,15 +322,13 @@ struct DocumentRepo {
     
     func deleteBlock(id: UUID) throws {
         do {
-            let fetchRequest = BlockEntity.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "id == %@", id.uuidString)
-            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
-        
-            try moc.execute(deleteRequest)
-            try moc.save()
+            if let blockEntity = try BlockEntity.getEntity(id: id, moc: moc) {
+                blockEntity.graveyard = true
+                blockEntity.modifiedAt = .now
+                try moc.save()
+            }
         } catch let error {
             print(error)
-            throw error
         }
     }
 }

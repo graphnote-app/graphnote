@@ -13,7 +13,7 @@ class BlockViewContainerVM: ObservableObject {
             let now = Date.now
             
             let type: BlockType = .body
-            let block = Block(id: UUID(), type: type, content: promptText, prev: prev, next: next, createdAt: now, modifiedAt: now, document: document)
+            let block = Block(id: UUID(), type: type, content: promptText, prev: prev, next: next, graveyard: false, createdAt: now, modifiedAt: now, document: document)
             
             return try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: block, prev: prev, next: next)
         } catch let error {
@@ -30,7 +30,7 @@ class BlockViewContainerVM: ObservableObject {
         let prev = prev ?? block.prev
         let type = type ?? block.type
         let text = text ?? block.content
-        let updatedBlock = Block(id: block.id, type: type, content: text, prev: prev, next: next, createdAt: block.createdAt, modifiedAt: .now, document: document)
+        let updatedBlock = Block(id: block.id, type: type, content: text, prev: prev, next: next, graveyard: block.graveyard, createdAt: block.createdAt, modifiedAt: .now, document: document)
         DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: updatedBlock)
     }
 

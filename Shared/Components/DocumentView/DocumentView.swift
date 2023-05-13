@@ -146,7 +146,7 @@ struct DocumentView: View {
                         let docRepo = DocumentRepo(user: user, workspace: workspace)
                         if let insertId = focused.uuid, let selectedLink {
                             if let insertBlock = try docRepo.readBlock(document: document, block: insertId) {
-                                let updatedBlock = Block(id: insertBlock.id, type: .contentLink, content: selectedLink.uuidString, prev: insertBlock.prev, next: insertBlock.next, createdAt: insertBlock.createdAt, modifiedAt: .now, document: document)
+                                let updatedBlock = Block(id: insertBlock.id, type: .contentLink, content: selectedLink.uuidString, prev: insertBlock.prev, next: insertBlock.next, graveyard: false, createdAt: insertBlock.createdAt, modifiedAt: .now, document: document)
                                 vm.updateBlock(updatedBlock, user: user, workspace: workspace, document: document)
                                 onRefresh()
                             }

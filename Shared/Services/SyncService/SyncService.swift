@@ -32,6 +32,7 @@ enum SyncServiceNotification: String {
     case labelLinkCreated
     case blockUpdated
     case blockCreated
+    case blockDeleted
     case userSyncCreated
 }
 
@@ -388,7 +389,12 @@ class SyncService: ObservableObject {
             
             return self.updateBlock(block, workspace: workspace, user: user)
         case .delete:
-            break
+            let block = try! decoder.decode(Block.self, from: data)
+            guard let workspace = try? WorkspaceRepo(user: user).read(workspace: block.document.workspace) else {
+                return false
+            }
+            
+            return self.deleteBlock(block, workspace: workspace, user: user)
         case .read:
             break
         }
@@ -582,6 +588,18 @@ class SyncService: ObservableObject {
             return true
         } else {
             print("Block update failed")
+            return false
+        }
+    }
+    
+    private func deleteBlock(_ block: Block, workspace: Workspace, user: User) -> Bool {
+        let documentRepo = DocumentRepo(user: user, workspace: workspace)
+        do {
+            try documentRepo.deleteBlock(id: block.id)
+            self.postSyncNotification(.blockDeleted)
+            return true
+        } catch let error {
+            print(error)
             return false
         }
     }

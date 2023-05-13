@@ -40,7 +40,7 @@ class ContentLinkModalVM: ObservableObject {
     func createLink(user: User, workspace: Workspace, document: Document, content: UUID, prev: UUID?, next: UUID?) {
         let now = Date.now
         // - TODO: BLOCK PREV NEXT
-        let link = Block(id: UUID(), type: .contentLink, content: content.uuidString, prev: prev, next: next, createdAt: now, modifiedAt: now, document: document)
+        let link = Block(id: UUID(), type: .contentLink, content: content.uuidString, prev: prev, next: next, graveyard: false, createdAt: now, modifiedAt: now, document: document)
         do {
             _ = try DataService.shared.createBlock(user: user, workspace: workspace, document: document, block: link, prev: prev, next: next)
         } catch let error {
