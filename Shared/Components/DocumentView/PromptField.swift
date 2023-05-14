@@ -91,7 +91,7 @@ struct PromptField: View {
                 self.onSubmit(id, text)
             }
                 .focused($isFocused)
-                .frame(width: promptSize.width, height: promptSize.height)
+                .frame(height: promptSize.height)
                 .zIndex(1)
         }
           
@@ -220,21 +220,24 @@ class GNTextView: UITextView, UITextViewDelegate {
     
     override func deleteBackward() {
         super.deleteBackward()
-        onDelete()
+        if text.isEmpty {
+            onDelete()
+        }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             // On Return! (iOS)
             onReturn()
-            return false
         }
         
         return true
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        promptText = textView.text
+        DispatchQueue.main.async {
+            self.promptText = textView.text
+        }
     }
 }
 
