@@ -26,6 +26,7 @@ struct PromptField: View {
     
     @State private var isKeyDown = false
     @State private var numMonitor: Any? = nil
+    @State private var promptSize: CGSize = .zero
 
     #if os(macOS)
     private func keyDown(with event: NSEvent) -> Bool {
@@ -52,8 +53,9 @@ struct PromptField: View {
         }
     }
     
-    var body: some View {
-        TextField("", text: $text, prompt: Text(text.isEmpty && id == focused.uuid ? placeholder : ""), axis: .vertical)
+    var textField: some View {
+        #if os(macOS)
+        return TextField("", text: $text, prompt: Text(text.isEmpty && id == focused.uuid ? placeholder : ""), axis: .vertical)
             .font(font)
             .lineSpacing(Spacing.spacing2.rawValue)
             .disableAutocorrection(true)
@@ -64,8 +66,41 @@ struct PromptField: View {
             .onSubmit {
                 self.onSubmit(id, text)
             }
+        #else
+        return ZStack {
+            TextField("", text: $text, prompt: Text(text.isEmpty && id == focused.uuid ? placeholder : ""), axis: .vertical)
+              .font(font)
+              .lineSpacing(Spacing.spacing2.rawValue)
+              .disableAutocorrection(true)
+              .textFieldStyle(.plain)
+              .multilineTextAlignment(.leading)
+              .padding([.top, .bottom], Spacing.spacing2.rawValue)
+              .disabled(true)
+              .opacity(0)
+              .background(
+                  GeometryReader { proxy in
+                      HStack {}
+                      .onAppear {
+                          promptSize = proxy.size
+                      }
+                  }
+              )
+            UITextViewRepresentable(text: $text, prompt: text.isEmpty && id == focused.uuid ? placeholder : "", size: $promptSize) {
+                self.onBackspaceRemove()
+            } onReturn: {
+                self.onSubmit(id, text)
+            }
+                .focused($isFocused)
+                .frame(width: promptSize.width, height: promptSize.height)
+                .zIndex(1)
+        }
+          
+        #endif
+    }
+    
+    var body: some View {
+        textField
             .onAppear {
-                
                 if focused.uuid == id {
                     #if os(macOS)
                     self.numMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
@@ -151,3 +186,82 @@ struct PromptField: View {
             }
     }
 }
+
+#if os(iOS)
+
+class GNTextView: UITextView, UITextViewDelegate {
+    @Binding var size: CGSize
+    @Binding var promptText: String
+    
+    let onDelete: () -> Void
+    let onReturn: () -> Void
+    
+    init(size: Binding<CGSize>, promptText: Binding<String>, onDelete: @escaping () -> Void, onReturn: @escaping () -> Void) {
+        self._size = size
+        self._promptText = promptText
+        self.onDelete = onDelete
+        self.onReturn = onReturn
+        
+        super.init(frame: .zero, textContainer: nil)
+        
+        self.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if contentSize.width > .zero && contentSize.height > .zero {
+            size = contentSize
+        }
+    }
+    
+    override func deleteBackward() {
+        super.deleteBackward()
+        onDelete()
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            // On Return! (iOS)
+            onReturn()
+            return false
+        }
+        
+        return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        promptText = textView.text
+    }
+}
+
+struct UITextViewRepresentable: UIViewRepresentable {
+    @Binding var text: String
+    let prompt: String
+    @Binding var size: CGSize
+    
+    let onDelete: () -> Void
+    let onReturn: () -> Void
+    
+    typealias UIViewType = GNTextView
+
+    func makeUIView(context: Context) -> UIViewType {
+        let textView = UIViewType(size: $size, promptText: $text, onDelete: onDelete, onReturn: onReturn)
+        textView.text = text
+        textView.font = .systemFont(ofSize: PromptFontDimensions.bodyFontSize)
+        textView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        textView.frame.size = size
+        return textView
+    }
+
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        uiView.text = text
+        uiView.frame.size = size
+        uiView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    }
+}
+
+#endif
