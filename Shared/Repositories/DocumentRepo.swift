@@ -139,14 +139,18 @@ struct DocumentRepo {
                 curr = blocks.first(where: {$0.id == curr?.next})
             }
             
-//            let blocksOutSet = Set(blocksOut)
+            // MARK: - DEBUG VISUAL
             
-//            let blocksSet = Set(blocks)
+            if DEBUG_VISUAL_LINKED_LIST {
+                let blocksOutSet = Set(blocksOut)
+                
+                let blocksSet = Set(blocks)
 
-//            let diffSet = blocksSet.subtracting(blocksOutSet)
-            
-//            blocksOut.append(Block(id: UUID(), type: .body, content: "SENTINEL BLOCK", prev: blocksOut.last?.id, next: diffSet.first?.id, createdAt: .now, modifiedAt: .now, document: document))
-//            blocksOut.append(contentsOf: diffSet)
+                let diffSet = blocksSet.subtracting(blocksOutSet)
+                
+                blocksOut.append(Block(id: UUID(), type: .body, content: "SENTINEL BLOCK", prev: blocksOut.last?.id, next: diffSet.first?.id, graveyard: false, createdAt: .now, modifiedAt: .now, document: document))
+                blocksOut.append(contentsOf: diffSet)
+            }
             
             return blocksOut
 

@@ -10,6 +10,7 @@ import SwiftUI
 struct NodeView: View, Hashable {
     let id: UUID
     let type: String
+    let graveyard: Bool
     let content: String
     let prev: UUID?
     let next: UUID?
@@ -24,7 +25,7 @@ struct NodeView: View, Hashable {
         }
         .frame(width: 300, alignment: .leading)
         .padding()
-        .background(content == "SENTINEL BLOCK" ? Color.green : Color.accentColor)
+        .background(graveyard ? Color.gray : content == "SENTINEL BLOCK" ? Color.green : Color.accentColor)
         .cornerRadius(Spacing.spacing3.rawValue)
     }
 }
@@ -46,8 +47,8 @@ struct LinkedListView: View {
 struct LinkedListView_Previews: PreviewProvider {
     static var previews: some View {
         LinkedListView(nodes: [
-            NodeView(id: UUID(), type: "prompt", content: "Testing prompt", prev: nil, next: nil),
-            NodeView(id: UUID(), type: "body", content: "Testing body", prev: nil, next: nil)
+            NodeView(id: UUID(), type: "prompt", graveyard: false, content: "Testing prompt", prev: nil, next: nil),
+            NodeView(id: UUID(), type: "body", graveyard: true, content: "Testing body", prev: nil, next: nil)
         ])
     }
 }

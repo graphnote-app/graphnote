@@ -42,8 +42,9 @@ enum SyncServiceStatus {
     case success
 }
 
-let baseURL = URL(string: "http://10.0.0.207:3000/")!
+//let baseURL = URL(string: "http://10.0.0.207:3000/")!
 //let baseURL = URL(string: "http://localhost:3000/")!
+let baseURL = URL(string: "https://graphnote-api.herokuapp.com/")!
 
 class SyncService: ObservableObject {    
     

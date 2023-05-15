@@ -70,9 +70,16 @@ struct DocumentView: View {
     
     var content: some View {
         Group {
-//            LinkedListView(nodes: blocks.map {
-//                return NodeView(id: $0.id, type: $0.type.rawValue, content: $0.content, prev: $0.prev, next: $0.next)
-//            })
+            if DEBUG_VISUAL_LINKED_LIST {
+                HStack {
+                    LinkedListView(nodes: blocks.map {
+                        return NodeView(id: $0.id, type: $0.type.rawValue, graveyard: $0.graveyard, content: $0.content, prev: $0.prev, next: $0.next)
+                    })
+                    LinkedListView(nodes: blocks.filter({$0.graveyard == false}).map {
+                        return NodeView(id: $0.id, type: $0.type.rawValue, graveyard: $0.graveyard, content: $0.content, prev: $0.prev, next: $0.next)
+                    })
+                }
+            }
             VStack(alignment: .center, spacing: pad) {
                 HStack() {
                     VStack(alignment: .leading) {
