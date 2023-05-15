@@ -220,98 +220,118 @@ class SyncService: ObservableObject {
         }
     }
     
+    private func updateProcessPullQueueToFalse() {
+        for key in processingPullQueue.keys {
+            processingPullQueue[key] = false
+        }
+    }
+    
     func processPullQueue(user: User) {
+        var messages: [String] = []
+        
         for i in 0..<10 {
             self.pullQueue?.fetchQueue()
             if let queueUUID = self.pullQueue?.peek(offset: i) {
                 if !(processingPullQueue[queueUUID] ?? false) {
                     self.processingPullQueue[queueUUID] = true
-                    var request = URLRequest(url: baseURL.appendingPathComponent("message").appending(queryItems: [.init(name: "id", value: queueUUID.uuidString)]))
-                    request.httpMethod = "GET"
-                    print(request)
-                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                        DispatchQueue.main.async {
-                            if let error = error as? URLError {
-                                switch error.networkUnavailableReason {
-                                case .cellular:
-                                    self.error = .cellular
-                                    return
-                                case .constrained:
-                                    self.error = .lowDataMode
-                                    return
-                                case .expensive:
-                                    self.error = .systemNetworkRestrained
-                                    return
-                                case .none:
-                                    self.error = .unknown
-                                    break
-                                case .some(_):
-                                    self.error = .unknown
-                                    break
-                                }
-                                
-                                print(error.errorCode)
-                                self.processingPullQueue[queueUUID] = false
-                                if error.errorCode == URLError.cannotConnectToHost.rawValue {
-                                    self.error = .cannotConnectToHost
-                                    return
-                                }
-                                
-                                self.error = .postFailed
-                                return
-                            }
-                            
-                            if let response = response as? HTTPURLResponse {
-                                switch response.statusCode {
-                                case 200:
-                                    self.error = nil
-                                default:
-                                    self.error = .unknown
-                                    self.processingPullQueue[queueUUID] = false
-                                    return
-                                }
-
-                            }
-                            
-                            if let data {
-                                let decoder = JSONDecoder()
-                                let formatter = DateFormatter()
-                                formatter.calendar = Calendar(identifier: .iso8601)
-                                formatter.locale = Locale(identifier: "en_US_POSIX")
-                                formatter.timeZone = TimeZone(secondsFromGMT: 0)
-                                decoder.dateDecodingStrategy = .millisecondsSince1970
-                                
-                                do {
-                                    let syncMessage = try decoder.decode(SyncMessage.self, from: data)
-                                    let repo = SyncMessageRepo(user: user)
-                                    if repo.has(message: syncMessage) {
-                                        self.pullQueue?.remove(id: syncMessage.id)
-                                        self.processingPullQueue[queueUUID] = false
-                                        return
-                                    }
-                                    
-                                    try repo.create(message: syncMessage)
-                                    if self.applyQueue?.add(message: syncMessage) ?? false {
-                                        self.pullQueue?.remove(id: syncMessage.id)
-                                    } else {
-                                        try repo.setSyncedOnMessageID(id: syncMessage.id)
-                                    }
-                                    
-                                } catch let error {
-                                    print(error)
-                                    fatalError()
-                                    self.error = .unknown
-                                }
-                            }
-                            
-                            self.processingPullQueue[queueUUID] = false
-                        }
-                    }
-                    
-                    task.resume()
+                    messages.append(queueUUID.uuidString)
                 }
             }
         }
+                
+        let jsonData = try! JSONSerialization.data(withJSONObject: ["messageIds": messages])
+        var request = URLRequest(url: baseURL.appendingPathComponent("messages"))
+        print(jsonData)
+        request.httpBody = jsonData
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        print(request)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+//                print(error)
+//                print(data)
+//                print(response)
+                if let error = error as? URLError {
+                    switch error.networkUnavailableReason {
+                    case .cellular:
+                        self.error = .cellular
+                        return
+                    case .constrained:
+                        self.error = .lowDataMode
+                        return
+                    case .expensive:
+                        self.error = .systemNetworkRestrained
+                        return
+                    case .none:
+                        self.error = .unknown
+                        break
+                    case .some(_):
+                        self.error = .unknown
+                        break
+                    }
+
+                    print(error.errorCode)
+                    self.updateProcessPullQueueToFalse()
+                    if error.errorCode == URLError.cannotConnectToHost.rawValue {
+                        self.error = .cannotConnectToHost
+                        return
+                    }
+
+                    self.error = .postFailed
+                    return
+                }
+
+                if let response = response as? HTTPURLResponse {
+                    switch response.statusCode {
+                    case 201:
+                        self.error = nil
+                    default:
+                        self.error = .unknown
+                        self.updateProcessPullQueueToFalse()
+                        return
+                    }
+
+                }
+
+                if let data {
+                    let decoder = JSONDecoder()
+                    let formatter = DateFormatter()
+                    formatter.calendar = Calendar(identifier: .iso8601)
+                    formatter.locale = Locale(identifier: "en_US_POSIX")
+                    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+                    decoder.dateDecodingStrategy = .millisecondsSince1970
+
+                    do {
+                        let syncMessages = try decoder.decode(Array<SyncMessage>.self, from: data)
+                        let repo = SyncMessageRepo(user: user)
+                        
+                        for syncMessage in syncMessages {
+                            if repo.has(message: syncMessage) {
+                                self.pullQueue?.remove(id: syncMessage.id)
+                                self.processingPullQueue[syncMessage.id] = false
+                                return
+                            }
+
+                            try repo.create(message: syncMessage)
+                            if self.applyQueue?.add(message: syncMessage) ?? false {
+                                self.pullQueue?.remove(id: syncMessage.id)
+                            } else {
+                                try repo.setSyncedOnMessageID(id: syncMessage.id)
+                            }
+                        }
+                    
+                    } catch let error {
+                        print(error)
+                        fatalError()
+                        self.error = .unknown
+                    }
+                }
+
+                self.updateProcessPullQueueToFalse()
+            }
+        }
+        
+        task.resume()
     }
     
     var decoder: JSONDecoder {
@@ -721,7 +741,7 @@ class SyncService: ObservableObject {
     func request(message: SyncMessage, callback: @escaping (_ result: Result<HTTPURLResponse, SyncServiceError>) -> Void) {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
-        var request = URLRequest(url: baseURL.appendingPathComponent("message"))
+        var request = URLRequest(url: baseURL.appendingPathComponent("message/create"))
         request.httpMethod = "POST"
         request.httpBody = try! encoder.encode(message)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
