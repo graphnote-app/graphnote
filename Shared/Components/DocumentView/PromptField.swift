@@ -86,7 +86,6 @@ struct PromptField: View {
                       }
                   }
               )
-              .border(.green)
             UITextViewRepresentable(text: $text, prompt: text.isEmpty && id == focused.uuid ? placeholder : "", size: $promptSize) {
                 self.onBackspaceRemove()
             } onReturn: {
@@ -95,7 +94,6 @@ struct PromptField: View {
                 .focused($isFocused)
                 .frame(height: promptSize.height)
                 .zIndex(1)
-                .border(.red)
         }
           
         #endif
