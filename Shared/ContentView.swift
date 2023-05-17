@@ -15,7 +15,7 @@ import Combine
 let seed = false
 
 // Set to false to remove the linked list node viewer
-public let DEBUG_VISUAL_LINKED_LIST = false
+public let DEBUG_VISUAL_LINKED_LIST = true
 
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme

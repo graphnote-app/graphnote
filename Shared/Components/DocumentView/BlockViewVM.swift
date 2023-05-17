@@ -23,7 +23,7 @@ class BlockViewVM: ObservableObject {
     let workspace: Workspace
     let document: Document
     let block: Block
-    
+        
     init(text: String, user: User, workspace: Workspace, document: Document, block: Block) {
         self.content = text
         self.user = user
@@ -43,9 +43,16 @@ class BlockViewVM: ObservableObject {
     @objc
     func save() {
         if content != prevContent && content != block.content {
-            DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block, content: content)
-            prevContent = content
+            
+//            if let localBlock = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: block.id) {
+            let contentCapture = content
             fetch()
+//            print("BLOCK: \(localBlock)")
+            DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block, content: contentCapture)
+            prevContent = contentCapture
+            fetch()
+//            }
+            
         }
     }
     

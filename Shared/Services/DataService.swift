@@ -321,7 +321,9 @@ class DataService: ObservableObject {
         let prev = prev ?? block.prev
         let next = next ?? block.next
         
-        let updatedBlock = Block(id: block.id, type: block.type, content: content, prev: prev, next: next, graveyard: false, createdAt: block.createdAt, modifiedAt: .now, document: document)
+        let now = Date.now
+        
+        let updatedBlock = Block(id: block.id, type: block.type, content: content, prev: prev, next: next, graveyard: block.graveyard, createdAt: block.createdAt, modifiedAt: now, document: document)
         if !documentRepo.update(block: updatedBlock) {
             print("Failed to update block content: \(updatedBlock) content: \(content)")
             return
@@ -333,12 +335,12 @@ class DataService: ObservableObject {
         
         do {
             let encoder = JSONEncoder()
-            let localBlock = Block(id: block.id, type: block.type, content: content, prev: block.prev, next: block.next, graveyard: block.graveyard, createdAt: block.createdAt, modifiedAt: block.modifiedAt, document: block.document)
+            let localBlock = Block(id: block.id, type: block.type, content: content, prev: block.prev, next: block.next, graveyard: block.graveyard, createdAt: block.createdAt, modifiedAt: now, document: block.document)
             let contentsData = try encoder.encode(localBlock)
 
             let contents = String(data: contentsData, encoding: .utf8)!
 
-            let message = SyncMessage(id: UUID(), user: user.id, timestamp: .now, type: .block, action: .update, isSynced: false, isApplied: true, contents: contents)
+            let message = SyncMessage(id: UUID(), user: user.id, timestamp: now, type: .block, action: .update, isSynced: false, isApplied: true, contents: contents)
             syncService?.pushMessage(user: user, message: message)
         } catch let error {
             print(error)
