@@ -17,19 +17,22 @@ class BlockViewVM: ObservableObject {
         }
     }
     
+    private var block: Block? = nil
+    
     var prevContent: String = "INIT"
     
     let user: User
     let workspace: Workspace
     let document: Document
-    let block: Block
+    let blockId: UUID
+    
         
-    init(text: String, user: User, workspace: Workspace, document: Document, block: Block) {
+    init(text: String, user: User, workspace: Workspace, document: Document, block: UUID) {
         self.content = text
         self.user = user
         self.workspace = workspace
         self.document = document
-        self.block = block
+        self.blockId = block
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(timeInterval: saveInterval, target: self, selector: #selector(save), userInfo: nil, repeats: true)
@@ -42,11 +45,15 @@ class BlockViewVM: ObservableObject {
     
     @objc
     func save() {
+        guard let block else {
+            return
+        }
+        
         if content != prevContent && content != block.content {
             
 //            if let localBlock = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: block.id) {
             let contentCapture = content
-            fetch()
+            fetch(force: true)
 //            print("BLOCK: \(localBlock)")
             DataService.shared.updateBlock(user: user, workspace: workspace, document: document, block: block, content: contentCapture)
             prevContent = contentCapture
@@ -87,11 +94,13 @@ class BlockViewVM: ObservableObject {
         }
     }
     
-    func fetch() {
-        if let block = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: block.id) {
-            if block.content != content {
+    func fetch(force: Bool = false) {
+        if let block = DataService.shared.readBlock(user: user, workspace: workspace, document: document, block: blockId) {
+            if (block.content != content) || force {
                 content = block.content
             }
+            
+            self.block = block
         }
 
     }

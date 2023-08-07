@@ -335,8 +335,7 @@ class DataService: ObservableObject {
         
         do {
             let encoder = JSONEncoder()
-            let localBlock = Block(id: block.id, type: block.type, content: content, prev: block.prev, next: block.next, graveyard: block.graveyard, createdAt: block.createdAt, modifiedAt: now, document: block.document)
-            let contentsData = try encoder.encode(localBlock)
+            let contentsData = try encoder.encode(updatedBlock)
 
             let contents = String(data: contentsData, encoding: .utf8)!
 
